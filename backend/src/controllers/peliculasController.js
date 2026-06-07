@@ -122,6 +122,15 @@ const eliminarPelicula = async (req, res) => {
 
         const pool = await poolPromise;
 
+        // Primero eliminar relaciones de la película con actores
+        await pool.request()
+            .input('PeliculaId', sql.Int, id)
+            .query(`
+                DELETE FROM ActoresPeliculas
+                WHERE PeliculaId = @PeliculaId
+            `);
+
+        // Luego eliminar la película
         const resultado = await pool.request()
             .input('Id', sql.Int, id)
             .query(`
@@ -149,9 +158,39 @@ const eliminarPelicula = async (req, res) => {
     }
 };
 
+const obtenerPeliculaPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const pool = await poolPromise;
+
+    const resultado = await pool.request()
+      .input("Id", sql.Int, id)
+      .query(`
+        SELECT Id, Titulo, Genero, Director, Productora, FechaEstreno, Foto
+        FROM Peliculas
+        WHERE Id = @Id
+      `);
+
+    if (resultado.recordset.length === 0) {
+      return res.status(404).json({
+        mensaje: "Película no encontrada"
+      });
+    }
+
+    res.json(resultado.recordset[0]);
+
+  } catch (error) {
+    res.status(500).json({
+      mensaje: "Error al obtener la película",
+      error: error.message
+    });
+  }
+};
 module.exports = {
-    obtenerPeliculas,
-    crearPelicula,
-    actualizarPelicula,
-    eliminarPelicula
+  obtenerPeliculas,
+  obtenerPeliculaPorId,
+  crearPelicula,
+  actualizarPelicula,
+  eliminarPelicula
 };

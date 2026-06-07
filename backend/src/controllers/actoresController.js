@@ -27,6 +27,44 @@ const obtenerActores = async (req, res) => {
     }
 };
 
+const obtenerActorPorId = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const pool = await poolPromise;
+
+        const resultado = await pool.request()
+            .input('Id', sql.Int, id)
+            .query(`
+                SELECT
+                    Id,
+                    NombreCompleto,
+                    NombreArtistico,
+                    FechaNacimiento,
+                    Sexo,
+                    EstaVivo,
+                    FechaFallecimiento,
+                    Foto
+                FROM Actores
+                WHERE Id = @Id
+            `);
+
+        if (resultado.recordset.length === 0) {
+            return res.status(404).json({
+                mensaje: 'Actor no encontrado'
+            });
+        }
+
+        res.json(resultado.recordset[0]);
+
+    } catch (error) {
+        res.status(500).json({
+            mensaje: 'Error al obtener el actor',
+            error: error.message
+        });
+    }
+};
+
 const crearActor = async (req, res) => {
     try {
         const {
@@ -131,6 +169,12 @@ const actualizarActor = async (req, res) => {
                 WHERE Id = @Id
             `);
 
+        if (resultado.recordset.length === 0) {
+            return res.status(404).json({
+                mensaje: 'Actor no encontrado'
+            });
+        }
+
         res.json({
             mensaje: 'Actor actualizado correctamente',
             actor: resultado.recordset[0]
@@ -150,6 +194,13 @@ const eliminarActor = async (req, res) => {
 
         const pool = await poolPromise;
 
+        await pool.request()
+            .input('ActorId', sql.Int, id)
+            .query(`
+                DELETE FROM ActoresPeliculas
+                WHERE ActorId = @ActorId
+            `);
+
         const resultado = await pool.request()
             .input('Id', sql.Int, id)
             .query(`
@@ -157,6 +208,12 @@ const eliminarActor = async (req, res) => {
                 OUTPUT DELETED.*
                 WHERE Id = @Id
             `);
+
+        if (resultado.recordset.length === 0) {
+            return res.status(404).json({
+                mensaje: 'Actor no encontrado'
+            });
+        }
 
         res.json({
             mensaje: 'Actor eliminado correctamente',
@@ -173,6 +230,7 @@ const eliminarActor = async (req, res) => {
 
 module.exports = {
     obtenerActores,
+    obtenerActorPorId,
     crearActor,
     actualizarActor,
     eliminarActor

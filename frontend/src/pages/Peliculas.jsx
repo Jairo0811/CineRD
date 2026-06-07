@@ -3,60 +3,111 @@ import api from "../services/api";
 import { Link } from "react-router-dom";
 
 function Peliculas() {
-    const [peliculas, setPeliculas] = useState([]);
+  const [peliculas, setPeliculas] = useState([]);
 
-    useEffect(() => {
-        obtenerPeliculas();
-    }, []);
+  useEffect(() => {
+    obtenerPeliculas();
+  }, []);
 
-    const obtenerPeliculas = async () => {
-        try {
-            const response = await api.get("/peliculas");
-            setPeliculas(response.data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+  const obtenerPeliculas = async () => {
+    try {
+      const response = await api.get("/peliculas");
+      setPeliculas(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    return (
-        <div className="container mt-4">
+  const eliminarPelicula = async (id) => {
+    const confirmar = window.confirm("¿Desea eliminar esta película?");
 
-           
+    if (!confirmar) return;
 
-            <h2>🎬 Películas</h2>
+    try {
+      await api.delete(`/peliculas/${id}`);
+      obtenerPeliculas();
+    } catch (error) {
+      console.error(error);
 
-            <table className="table table-striped mt-3">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Título</th>
-                        <th>Género</th>
-                        <th>Director</th>
-                        <th>Productora</th>
-                    </tr>
-                </thead>
+      alert(
+        error.response?.data?.mensaje ||
+          error.response?.data?.error ||
+          "Error al eliminar la película"
+      );
+    }
+  };
 
-                <tbody>
-                    {peliculas.map(pelicula => (
-                        <tr key={pelicula.Id}>
-                            <td>{pelicula.Id}</td>
+  return (
+    <div className="table-page-container">
+      <Link to="/" className="btn btn-secondary mb-3">
+        ← Volver al inicio
+      </Link>
 
-                            <td>{pelicula.Titulo}</td>
+      <div className="d-flex justify-content-between align-items-center page-header">
+        <h2>🎬 Películas</h2>
 
-                            <td>{pelicula.Genero}</td>
+        <Link to="/peliculas/nueva" className="btn btn-success">
+          ➕ Nueva Película
+        </Link>
+      </div>
 
-                            <td>{pelicula.Director || "-"}</td>
+      <div className="table-responsive">
+        <table className="table table-striped table-hover mt-3">
+          <thead className="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Género</th>
+              <th>Director</th>
+              <th>Productora</th>
+              <th>Estreno</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
 
-                            <td>{pelicula.Productora || "-"}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
- <Link to="/" className="btn btn-secondary mb-3">
-                ← Volver al inicio
-            </Link>
-        </div>
-    );
+          <tbody>
+            {peliculas.map((pelicula) => (
+              <tr key={pelicula.Id}>
+                <td>{pelicula.Id}</td>
+
+                <td>{pelicula.Titulo}</td>
+
+                <td>{pelicula.Genero}</td>
+
+                <td>{pelicula.Director || "-"}</td>
+
+                <td>{pelicula.Productora || "-"}</td>
+
+                <td>
+  {pelicula.FechaEstreno
+    ? new Date(pelicula.FechaEstreno).toLocaleDateString("es-DO")
+    : "-"}
+</td>
+
+                <td>
+                  <div className="action-buttons">
+                    <Link
+                      to={`/peliculas/editar/${pelicula.Id}`}
+                      className="btn btn-warning btn-sm"
+                    >
+                      ✏️ Editar
+                    </Link>
+
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => eliminarPelicula(pelicula.Id)}
+                    >
+                      🗑️ Eliminar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 }
 
 export default Peliculas;
