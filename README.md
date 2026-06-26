@@ -11,11 +11,11 @@
 # 🚀 Tecnologías Utilizadas
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=react,vite,nodejs,express,git,github,vscode&perline=7" />
+  <img src="https://skillicons.dev/icons?i=react,vite,nodejs,express,git,github,vscode,npm&perline=8" />
 </p>
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=html,css,javascript,npm&perline=4" />
+  <img src="https://skillicons.dev/icons?i=html,css,javascript,bootstrap&perline=4" />
 </p>
 
 ### 🗄️ Base de Datos
