@@ -32,7 +32,7 @@ function Peliculas() {
       alert(
         error.response?.data?.mensaje ||
           error.response?.data?.error ||
-          "Error al eliminar la película"
+          "Error al eliminar la película",
       );
     }
   };
@@ -79,10 +79,12 @@ function Peliculas() {
                 <td>{pelicula.Productora || "-"}</td>
 
                 <td>
-  {pelicula.FechaEstreno
-    ? new Date(pelicula.FechaEstreno).toLocaleDateString("es-DO")
-    : "-"}
-</td>
+                  {pelicula.FechaEstreno
+                    ? new Date(pelicula.FechaEstreno).toLocaleDateString(
+                        "es-DO",
+                      )
+                    : "-"}
+                </td>
 
                 <td>
                   <div className="action-buttons">
