@@ -1,57 +1,78 @@
 # 🎬 CineRD
 
-Aplicación Full Stack para la gestión de películas y actores, desarrollada con React, Node.js, Express y SQL Server.
+> Sistema Full Stack para la gestión de películas y actores, desarrollado con **React**, **Node.js**, **Express** y **SQL Server**.
 
-## 🚀 Tecnologías utilizadas
+![Status](https://img.shields.io/badge/Version-v1.0-success)
+![License](https://img.shields.io/badge/License-Academic-blue)
+![GitHub last commit](https://img.shields.io/github/last-commit/Jairo0811/CineRD)
 
-### Frontend
-- React
-- Vite
-- React Router
+---
+
+# 🚀 Tecnologías Utilizadas
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,vite,nodejs,express,git,github,vscode&perline=7" />
+</p>
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=html,css,javascript,npm&perline=4" />
+</p>
+
+### 🗄️ Base de Datos
+
+- Microsoft SQL Server
+
+### 📦 Librerías
+
+- React Router DOM
 - Axios
-- Bootstrap
-
-### Backend
-- Node.js
+- Bootstrap 5
 - Express
-
-### Base de datos
-- SQL Server
-
-### Control de versiones
-- Git
-- GitHub
+- mssql
+- dotenv
+- cors
+- nodemon
 
 ---
 
-## 📋 Funcionalidades
+# 📋 Funcionalidades
 
-### Actores
-- Consultar actores registrados.
-- Registrar actores.
-- Editar información de actores.
-- Eliminar actores.
-- Mostrar nombre artístico.
-- Indicar si el actor está vivo o fallecido.
+## 🎭 Gestión de Actores
 
-### Películas
-- Consultar películas registradas.
-- Registrar películas.
-- Editar películas.
-- Eliminar películas.
-- Mostrar director y productora.
-
-### Relaciones
-- Asociar actores a películas.
-- Registrar el personaje interpretado.
-- Indicar si el actor tuvo un papel principal o secundario.
-- Evitar relaciones duplicadas entre actores y películas.
+- ✅ Consultar actores registrados.
+- ✅ Registrar nuevos actores.
+- ✅ Editar información.
+- ✅ Eliminar actores.
+- ✅ Nombre artístico.
+- ✅ Estado (Vivo / Fallecido).
+- ✅ Fecha de fallecimiento condicional.
 
 ---
 
-## ⚙️ Instalación y ejecución
+## 🎬 Gestión de Películas
 
-### Clonar el repositorio
+- ✅ Consultar películas.
+- ✅ Registrar películas.
+- ✅ Editar películas.
+- ✅ Eliminar películas.
+- ✅ Director.
+- ✅ Productora.
+- ✅ Fecha de estreno.
+
+---
+
+## 🤝 Relaciones
+
+- ✅ Asociación Actor ↔ Película.
+- ✅ Personaje interpretado.
+- ✅ Papel principal o secundario.
+- ✅ Prevención de relaciones duplicadas.
+
+---
+
+# ⚙️ Instalación
+
+## 1️⃣ Clonar el proyecto
 
 ```bash
 git clone https://github.com/Jairo0811/CineRD.git
@@ -60,7 +81,7 @@ cd CineRD
 
 ---
 
-## Backend
+## 🖥️ Backend
 
 ```bash
 cd backend
@@ -68,7 +89,7 @@ npm install
 npm run dev
 ```
 
-El servidor se ejecutará en:
+Servidor:
 
 ```text
 http://localhost:3000
@@ -76,7 +97,7 @@ http://localhost:3000
 
 ---
 
-## Frontend
+## 🌐 Frontend
 
 ```bash
 cd frontend
@@ -84,7 +105,7 @@ npm install
 npm run dev
 ```
 
-La aplicación estará disponible en:
+Aplicación:
 
 ```text
 http://localhost:5173
@@ -92,7 +113,7 @@ http://localhost:5173
 
 ---
 
-## 🗄️ Base de datos
+# 🗄️ Base de Datos
 
 Ejecutar el script:
 
@@ -100,33 +121,83 @@ Ejecutar el script:
 CRUD-Peliculas.sql
 ```
 
-en SQL Server para crear la base de datos y las tablas necesarias.
+El script crea automáticamente:
+
+- Base de datos **CRUDPeliculas**
+- Tabla **Actores**
+- Tabla **Peliculas**
+- Tabla **ActoresPeliculas**
 
 ---
 
-## 📌 Estado del proyecto
+# 📂 Estructura del Proyecto
 
-✅ Primera versión funcional.
-
-Características implementadas:
-
-- API REST completa.
-- Integración React + Node.js + SQL Server.
-- Gestión de actores y películas.
-- Relaciones muchos a muchos.
-- Proyecto publicado en GitHub.
+```
+CineRD
+│
+├── backend
+│   ├── src
+│   │   ├── config
+│   │   ├── controllers
+│   │   └── routes
+│   ├── package.json
+│   └── server.js
+│
+├── frontend
+│   ├── src
+│   │   ├── pages
+│   │   ├── services
+│   │   └── assets
+│   ├── package.json
+│   └── vite.config.js
+│
+├── CRUD-Peliculas.sql
+└── README.md
+```
 
 ---
 
-## 👨‍💻 Autor
+# ✨ Características
+
+- 🎬 Arquitectura Cliente / Servidor.
+- ⚡ API REST con Express.
+- 🗄️ SQL Server.
+- ⚛️ React + Vite.
+- 🔄 CRUD completo.
+- 📱 Diseño Responsive.
+- 🎨 Bootstrap 5.
+- 🔀 React Router.
+- 🌐 Axios.
+- 📝 Código organizado por capas.
+
+---
+
+# 📌 Estado del Proyecto
+
+🟢 **Versión 1.0**
+
+Proyecto funcional con:
+
+- CRUD de Actores.
+- CRUD de Películas.
+- Relaciones Actor ↔ Película.
+- Formularios reutilizables.
+- Diseño responsive.
+- Integración completa React + Node.js + SQL Server.
+
+---
+
+# 👨‍💻 Autor
 
 **Francis Jairo Matías Rosario**
 
-GitHub:
-https://github.com/Jairo0811
+- 💼 LinkedIn: https://www.linkedin.com/in/jairomatias0811/
+- 💻 GitHub: https://github.com/Jairo0811
 
 ---
 
-## 📄 Licencia
+# 📄 Licencia
 
 Este proyecto fue desarrollado con fines educativos y de aprendizaje.
+
+© 2026 Francis Jairo Matías Rosario
