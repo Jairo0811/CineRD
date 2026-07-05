@@ -18,9 +18,49 @@ const obtenerPeliculas = async (req, res) => {
     }
 };
 
+const obtenerPeliculaPorId = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const pool = await poolPromise;
+
+        const resultado = await pool.request()
+            .input('Id', sql.Int, id)
+            .query(`
+                SELECT Id, Titulo, Genero, Director, Productora, FechaEstreno, Foto
+                FROM Peliculas
+                WHERE Id = @Id
+            `);
+
+        if (resultado.recordset.length === 0) {
+            return res.status(404).json({
+                mensaje: 'Película no encontrada'
+            });
+        }
+
+        res.json(resultado.recordset[0]);
+
+    } catch (error) {
+        res.status(500).json({
+            mensaje: 'Error al obtener la película',
+            error: error.message
+        });
+    }
+};
+
 const crearPelicula = async (req, res) => {
     try {
-        const { Titulo, Genero, Director, Productora, FechaEstreno, Foto } = req.body;
+        const {
+            Titulo,
+            Genero,
+            Director,
+            Productora,
+            FechaEstreno
+        } = req.body;
+
+        const Foto = req.file
+            ? `/uploads/peliculas/${req.file.filename}`
+            : null;
 
         if (!Titulo || !Genero || !FechaEstreno) {
             return res.status(400).json({
@@ -36,7 +76,7 @@ const crearPelicula = async (req, res) => {
             .input('Director', sql.NVarChar(150), Director || null)
             .input('Productora', sql.NVarChar(150), Productora || null)
             .input('FechaEstreno', sql.Date, FechaEstreno)
-            .input('Foto', sql.NVarChar(255), Foto || null)
+            .input('Foto', sql.NVarChar(255), Foto)
             .query(`
                 INSERT INTO Peliculas
                 (Titulo, Genero, Director, Productora, FechaEstreno, Foto)
@@ -67,7 +107,14 @@ const crearPelicula = async (req, res) => {
 const actualizarPelicula = async (req, res) => {
     try {
         const { id } = req.params;
-        const { Titulo, Genero, Director, Productora, FechaEstreno, Foto } = req.body;
+
+        const {
+            Titulo,
+            Genero,
+            Director,
+            Productora,
+            FechaEstreno
+        } = req.body;
 
         if (!Titulo || !Genero || !FechaEstreno) {
             return res.status(400).json({
@@ -77,6 +124,22 @@ const actualizarPelicula = async (req, res) => {
 
         const pool = await poolPromise;
 
+        let Foto = null;
+
+        if (req.file) {
+            Foto = `/uploads/peliculas/${req.file.filename}`;
+        } else {
+            const fotoActual = await pool.request()
+                .input('Id', sql.Int, id)
+                .query(`
+                    SELECT Foto
+                    FROM Peliculas
+                    WHERE Id = @Id
+                `);
+
+            Foto = fotoActual.recordset[0]?.Foto || null;
+        }
+
         const resultado = await pool.request()
             .input('Id', sql.Int, id)
             .input('Titulo', sql.NVarChar(150), Titulo)
@@ -84,10 +147,11 @@ const actualizarPelicula = async (req, res) => {
             .input('Director', sql.NVarChar(150), Director || null)
             .input('Productora', sql.NVarChar(150), Productora || null)
             .input('FechaEstreno', sql.Date, FechaEstreno)
-            .input('Foto', sql.NVarChar(255), Foto || null)
+            .input('Foto', sql.NVarChar(255), Foto)
             .query(`
                 UPDATE Peliculas
-                SET Titulo = @Titulo,
+                SET
+                    Titulo = @Titulo,
                     Genero = @Genero,
                     Director = @Director,
                     Productora = @Productora,
@@ -122,7 +186,6 @@ const eliminarPelicula = async (req, res) => {
 
         const pool = await poolPromise;
 
-        // Primero eliminar relaciones de la película con actores
         await pool.request()
             .input('PeliculaId', sql.Int, id)
             .query(`
@@ -130,7 +193,6 @@ const eliminarPelicula = async (req, res) => {
                 WHERE PeliculaId = @PeliculaId
             `);
 
-        // Luego eliminar la película
         const resultado = await pool.request()
             .input('Id', sql.Int, id)
             .query(`
@@ -158,39 +220,10 @@ const eliminarPelicula = async (req, res) => {
     }
 };
 
-const obtenerPeliculaPorId = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const pool = await poolPromise;
-
-    const resultado = await pool.request()
-      .input("Id", sql.Int, id)
-      .query(`
-        SELECT Id, Titulo, Genero, Director, Productora, FechaEstreno, Foto
-        FROM Peliculas
-        WHERE Id = @Id
-      `);
-
-    if (resultado.recordset.length === 0) {
-      return res.status(404).json({
-        mensaje: "Película no encontrada"
-      });
-    }
-
-    res.json(resultado.recordset[0]);
-
-  } catch (error) {
-    res.status(500).json({
-      mensaje: "Error al obtener la película",
-      error: error.message
-    });
-  }
-};
 module.exports = {
-  obtenerPeliculas,
-  obtenerPeliculaPorId,
-  crearPelicula,
-  actualizarPelicula,
-  eliminarPelicula
+    obtenerPeliculas,
+    obtenerPeliculaPorId,
+    crearPelicula,
+    actualizarPelicula,
+    eliminarPelicula
 };

@@ -7,6 +7,7 @@ function FormularioActor() {
   const { id } = useParams();
 
   const esEdicion = Boolean(id);
+  const API_URL = "http://localhost:3000";
 
   const [formulario, setFormulario] = useState({
     NombreCompleto: "",
@@ -15,8 +16,10 @@ function FormularioActor() {
     Sexo: "Masculino",
     EstaVivo: true,
     FechaFallecimiento: "",
-    Foto: null,
   });
+
+  const [foto, setFoto] = useState(null);
+  const [vistaPrevia, setVistaPrevia] = useState(null);
 
   useEffect(() => {
     if (esEdicion) {
@@ -41,8 +44,11 @@ function FormularioActor() {
         Sexo: actor.Sexo || "Masculino",
         EstaVivo: actor.EstaVivo,
         FechaFallecimiento: formatearFecha(actor.FechaFallecimiento),
-        Foto: actor.Foto || null,
       });
+
+      if (actor.Foto) {
+        setVistaPrevia(`${API_URL}${actor.Foto}`);
+      }
     } catch (error) {
       console.error(error);
       alert("Error al cargar el actor");
@@ -68,6 +74,15 @@ function FormularioActor() {
     });
   };
 
+  const manejarFoto = (e) => {
+    const archivo = e.target.files[0];
+
+    if (!archivo) return;
+
+    setFoto(archivo);
+    setVistaPrevia(URL.createObjectURL(archivo));
+  };
+
   const guardarActor = async (e) => {
     e.preventDefault();
 
@@ -85,26 +100,49 @@ function FormularioActor() {
       return;
     }
 
-    const datos = {
-      ...formulario,
-      FechaFallecimiento: formulario.EstaVivo
-        ? null
-        : formulario.FechaFallecimiento,
-    };
+    const datos = new FormData();
+
+    datos.append("NombreCompleto", formulario.NombreCompleto);
+    datos.append("NombreArtistico", formulario.NombreArtistico);
+    datos.append("FechaNacimiento", formulario.FechaNacimiento);
+    datos.append("Sexo", formulario.Sexo);
+    datos.append("EstaVivo", formulario.EstaVivo);
+    datos.append(
+      "FechaFallecimiento",
+      formulario.EstaVivo ? "" : formulario.FechaFallecimiento
+    );
+
+    if (foto) {
+      datos.append("Foto", foto);
+    }
 
     try {
       if (esEdicion) {
-        await api.put(`/actores/${id}`, datos);
+        await api.put(`/actores/${id}`, datos, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
         alert("Actor actualizado correctamente");
       } else {
-        await api.post("/actores", datos);
+        await api.post("/actores", datos, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
         alert("Actor registrado correctamente");
       }
 
       navigate("/actores");
     } catch (error) {
       console.error(error);
-      alert("Error al guardar el actor");
+      alert(
+        error.response?.data?.mensaje ||
+          error.response?.data?.error ||
+          "Error al guardar el actor"
+      );
     }
   };
 
@@ -193,6 +231,35 @@ function FormularioActor() {
                 className="form-control"
                 value={formulario.FechaFallecimiento}
                 onChange={manejarCambio}
+              />
+            </div>
+          )}
+
+          <div className="mb-3">
+            <label className="form-label">Fotografía del actor</label>
+
+            <input
+              type="file"
+              name="Foto"
+              className="form-control"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={manejarFoto}
+            />
+          </div>
+
+          {vistaPrevia && (
+            <div className="mb-3 text-center">
+              <p className="text-muted mb-2">Vista previa</p>
+
+              <img
+                src={vistaPrevia}
+                alt="Vista previa del actor"
+                className="img-thumbnail"
+                style={{
+                  width: "180px",
+                  height: "180px",
+                  objectFit: "cover",
+                }}
               />
             </div>
           )}

@@ -73,9 +73,12 @@ const crearActor = async (req, res) => {
             FechaNacimiento,
             Sexo,
             EstaVivo,
-            FechaFallecimiento,
-            Foto
+            FechaFallecimiento
         } = req.body;
+
+        const Foto = req.file
+            ? `/uploads/actores/${req.file.filename}`
+            : null;
 
         if (!NombreCompleto || !FechaNacimiento || !Sexo) {
             return res.status(400).json({
@@ -90,9 +93,9 @@ const crearActor = async (req, res) => {
             .input('NombreArtistico', sql.NVarChar(150), NombreArtistico || null)
             .input('FechaNacimiento', sql.Date, FechaNacimiento)
             .input('Sexo', sql.NVarChar(20), Sexo)
-            .input('EstaVivo', sql.Bit, EstaVivo ?? true)
+            .input('EstaVivo', sql.Bit, EstaVivo === 'true' || EstaVivo === true)
             .input('FechaFallecimiento', sql.Date, FechaFallecimiento || null)
-            .input('Foto', sql.NVarChar(255), Foto || null)
+            .input('Foto', sql.NVarChar(255), Foto)
             .query(`
                 INSERT INTO Actores
                 (
@@ -140,11 +143,26 @@ const actualizarActor = async (req, res) => {
             FechaNacimiento,
             Sexo,
             EstaVivo,
-            FechaFallecimiento,
-            Foto
+            FechaFallecimiento
         } = req.body;
 
         const pool = await poolPromise;
+
+        let Foto = null;
+
+        if (req.file) {
+            Foto = `/uploads/actores/${req.file.filename}`;
+        } else {
+            const fotoActual = await pool.request()
+                .input('Id', sql.Int, id)
+                .query(`
+                    SELECT Foto
+                    FROM Actores
+                    WHERE Id = @Id
+                `);
+
+            Foto = fotoActual.recordset[0]?.Foto || null;
+        }
 
         const resultado = await pool.request()
             .input('Id', sql.Int, id)
@@ -152,9 +170,9 @@ const actualizarActor = async (req, res) => {
             .input('NombreArtistico', sql.NVarChar(150), NombreArtistico || null)
             .input('FechaNacimiento', sql.Date, FechaNacimiento)
             .input('Sexo', sql.NVarChar(20), Sexo)
-            .input('EstaVivo', sql.Bit, EstaVivo)
+            .input('EstaVivo', sql.Bit, EstaVivo === 'true' || EstaVivo === true)
             .input('FechaFallecimiento', sql.Date, FechaFallecimiento || null)
-            .input('Foto', sql.NVarChar(255), Foto || null)
+            .input('Foto', sql.NVarChar(255), Foto)
             .query(`
                 UPDATE Actores
                 SET
