@@ -1,0 +1,48 @@
+@media (max-width: 768px) {
+  .page-container,
+  .table-page-container,
+  .form-page-container,
+  .dashboard-container {
+    padding: 25px 12px;
+  }
+
+  .home-logo {
+    max-width: 360px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 12px;
+  }
+
+  .page-header .btn,
+  .quick-actions .btn,
+  .form-page-container .btn {
+    width: 100%;
+  }
+
+  .dashboard-list-item {
+    flex-direction: column;
+  }
+
+  .dashboard-list-item small {
+    text-align: left;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons .btn {
+    width: 100%;
+  }
+}

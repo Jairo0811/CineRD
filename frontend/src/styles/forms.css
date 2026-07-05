@@ -1,0 +1,16 @@
+.form-page-container {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.form-page-container form {
+  border-radius: 16px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}

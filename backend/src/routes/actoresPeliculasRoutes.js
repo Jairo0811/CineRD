@@ -1,16 +1,16 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 const {
-    asignarActorAPelicula,
-    obtenerActoresPorPelicula,
-    obtenerPeliculasPorActor,
-    eliminarActorDePelicula
-} = require('../controllers/actoresPeliculasController');
+  asignarActorAPelicula,
+  obtenerActoresPorPelicula,
+  obtenerPeliculasPorActor,
+  eliminarActorDePelicula,
+} = require("../controllers/actoresPeliculasController");
 
-router.post('/', asignarActorAPelicula);
-router.get('/pelicula/:peliculaId/actores', obtenerActoresPorPelicula);
-router.get('/actor/:actorId/peliculas', obtenerPeliculasPorActor);
-router.delete('/pelicula/:peliculaId/actor/:actorId', eliminarActorDePelicula);
+router.get("/pelicula/:peliculaId", obtenerActoresPorPelicula);
+router.get("/actor/:actorId", obtenerPeliculasPorActor);
+router.post("/", asignarActorAPelicula);
+router.delete("/:peliculaId/:actorId", eliminarActorDePelicula);
 
 module.exports = router;

@@ -4,14 +4,22 @@ import { Link } from "react-router-dom";
 
 function Peliculas() {
   const [peliculas, setPeliculas] = useState([]);
+  const [buscar, setBuscar] = useState("");
+  const [orden, setOrden] = useState("estrenoDesc");
+  const [genero, setGenero] = useState("");
+
+  const API_URL = "http://localhost:3000";
 
   useEffect(() => {
     obtenerPeliculas();
-  }, []);
+  }, [buscar, orden, genero]);
 
   const obtenerPeliculas = async () => {
     try {
-      const response = await api.get("/peliculas");
+      const response = await api.get("/peliculas", {
+        params: { buscar, orden, genero },
+      });
+
       setPeliculas(response.data);
     } catch (error) {
       console.error(error);
@@ -20,7 +28,6 @@ function Peliculas() {
 
   const eliminarPelicula = async (id) => {
     const confirmar = window.confirm("¿Desea eliminar esta película?");
-
     if (!confirmar) return;
 
     try {
@@ -28,7 +35,6 @@ function Peliculas() {
       obtenerPeliculas();
     } catch (error) {
       console.error(error);
-
       alert(
         error.response?.data?.mensaje ||
           error.response?.data?.error ||
@@ -37,13 +43,22 @@ function Peliculas() {
     }
   };
 
+  const formatearFecha = (fecha) => {
+    if (!fecha) return "Sin fecha";
+
+    const soloFecha = fecha.substring(0, 10);
+    const [year, month, day] = soloFecha.split("-");
+
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <div className="table-page-container">
       <Link to="/" className="btn btn-secondary mb-3">
         ← Volver al inicio
       </Link>
 
-      <div className="d-flex justify-content-between align-items-center page-header">
+      <div className="d-flex justify-content-between align-items-center page-header mb-4">
         <h2>🎬 Películas</h2>
 
         <Link to="/peliculas/nueva" className="btn btn-success">
@@ -51,62 +66,125 @@ function Peliculas() {
         </Link>
       </div>
 
-      <div className="table-responsive">
-        <table className="table table-striped table-hover mt-3">
-          <thead className="table-dark">
-            <tr>
-              <th>ID</th>
-              <th>Título</th>
-              <th>Género</th>
-              <th>Director</th>
-              <th>Productora</th>
-              <th>Estreno</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
+      <div className="filter-panel card shadow-sm mb-4">
+        <div className="card-body">
+          <div className="row g-3">
+            <div className="col-12 col-md-5">
+              <label className="form-label">Buscar película</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Ej: Sanky Panky, Pinky, Caribbean..."
+                value={buscar}
+                onChange={(e) => setBuscar(e.target.value)}
+              />
+            </div>
 
-          <tbody>
-            {peliculas.map((pelicula) => (
-              <tr key={pelicula.Id}>
-                <td>{pelicula.Id}</td>
+            <div className="col-12 col-md-4">
+              <label className="form-label">Ordenar por</label>
+              <select
+                className="form-select"
+                value={orden}
+                onChange={(e) => setOrden(e.target.value)}
+              >
+                <option value="estrenoDesc">Estreno más reciente</option>
+                <option value="estrenoAsc">Estreno más antiguo</option>
+                <option value="az">A-Z</option>
+                <option value="za">Z-A</option>
+                <option value="masActores">Mayor reparto</option>
+                <option value="menosActores">Menor reparto</option>
+              </select>
+            </div>
 
-                <td>{pelicula.Titulo}</td>
+            <div className="col-12 col-md-3">
+              <label className="form-label">Género</label>
+              <select
+                className="form-select"
+                value={genero}
+                onChange={(e) => setGenero(e.target.value)}
+              >
+                <option value="">Todos</option>
+                <option value="Comedia">Comedia</option>
+                <option value="Drama">Drama</option>
+                <option value="Acción">Acción</option>
+                <option value="Terror">Terror</option>
+                <option value="Romance">Romance</option>
+                <option value="Documental">Documental</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                <td>{pelicula.Genero}</td>
+      <div className="row g-4">
+        {peliculas.map((pelicula) => (
+          <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={pelicula.Id}>
+            <div className="card h-100 shadow movie-card">
+              <div className="text-center pt-3">
+                {pelicula.Foto ? (
+                  <img
+                    src={`${API_URL}${pelicula.Foto}`}
+                    alt={pelicula.Titulo}
+                    className="movie-poster"
+                  />
+                ) : (
+                  <div className="movie-poster-placeholder">🎬</div>
+                )}
+              </div>
 
-                <td>{pelicula.Director || "-"}</td>
+              <div className="card-body text-center">
+                <h5 className="card-title mb-2">{pelicula.Titulo}</h5>
 
-                <td>{pelicula.Productora || "-"}</td>
+                <p className="text-muted mb-1">🎭 {pelicula.Genero || "-"}</p>
 
-                <td>
-                  {pelicula.FechaEstreno
-                    ? new Date(pelicula.FechaEstreno).toLocaleDateString(
-                        "es-DO",
-                      )
-                    : "-"}
-                </td>
+                <p className="text-muted mb-1">🎬 {pelicula.Director || "-"}</p>
 
-                <td>
-                  <div className="action-buttons">
-                    <Link
-                      to={`/peliculas/editar/${pelicula.Id}`}
-                      className="btn btn-warning btn-sm"
-                    >
-                      ✏️ Editar
-                    </Link>
+                <p className="text-muted mb-1">
+                  🏢 {pelicula.Productora || "-"}
+                </p>
 
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => eliminarPelicula(pelicula.Id)}
-                    >
-                      🗑️ Eliminar
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                <p className="mb-2">
+                  👥 {pelicula.CantidadActores || 0} actor(es)
+                </p>
+
+                <span className="badge bg-primary">
+                  📅 {formatearFecha(pelicula.FechaEstreno)}
+                </span>
+              </div>
+
+              <div className="card-footer bg-white border-0">
+                <div className="d-flex gap-2 mb-2">
+                  <Link
+                    to={`/peliculas/editar/${pelicula.Id}`}
+                    className="btn btn-warning btn-sm w-50"
+                  >
+                    ✏️ Editar
+                  </Link>
+
+                  <button
+                    className="btn btn-danger btn-sm w-50"
+                    onClick={() => eliminarPelicula(pelicula.Id)}
+                  >
+                    🗑️ Eliminar
+                  </button>
+                </div>
+
+                <Link
+                  to={`/peliculas/${pelicula.Id}/reparto`}
+                  className="btn btn-info btn-sm w-100"
+                >
+                  👥 Reparto
+                </Link>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {peliculas.length === 0 && (
+          <div className="col-12 text-center text-muted mt-5">
+            No se encontraron películas.
+          </div>
+        )}
       </div>
     </div>
   );

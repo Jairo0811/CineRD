@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.page-container,
+.table-page-container {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+}

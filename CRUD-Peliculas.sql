@@ -96,3 +96,4 @@ SELECT * FROM Peliculas;
 SELECT * FROM ActoresPeliculas;
 SELECT * FROM Directores;
 GO
+

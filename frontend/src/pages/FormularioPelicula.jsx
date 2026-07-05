@@ -7,6 +7,7 @@ function FormularioPelicula() {
   const { id } = useParams();
 
   const esEdicion = Boolean(id);
+  const API_URL = "http://localhost:3000";
 
   const [formulario, setFormulario] = useState({
     Titulo: "",
@@ -14,8 +15,10 @@ function FormularioPelicula() {
     Director: "",
     Productora: "",
     FechaEstreno: "",
-    Foto: null,
   });
+
+  const [foto, setFoto] = useState(null);
+  const [vistaPrevia, setVistaPrevia] = useState(null);
 
   useEffect(() => {
     if (esEdicion) {
@@ -39,8 +42,11 @@ function FormularioPelicula() {
         Director: pelicula.Director || "",
         Productora: pelicula.Productora || "",
         FechaEstreno: formatearFecha(pelicula.FechaEstreno),
-        Foto: pelicula.Foto || null,
       });
+
+      if (pelicula.Foto) {
+        setVistaPrevia(`${API_URL}${pelicula.Foto}`);
+      }
     } catch (error) {
       console.error(error);
       alert("Error al cargar la película");
@@ -56,6 +62,15 @@ function FormularioPelicula() {
     });
   };
 
+  const manejarFoto = (e) => {
+    const archivo = e.target.files[0];
+
+    if (!archivo) return;
+
+    setFoto(archivo);
+    setVistaPrevia(URL.createObjectURL(archivo));
+  };
+
   const guardarPelicula = async (e) => {
     e.preventDefault();
 
@@ -64,12 +79,34 @@ function FormularioPelicula() {
       return;
     }
 
+    const datos = new FormData();
+
+    datos.append("Titulo", formulario.Titulo);
+    datos.append("Genero", formulario.Genero);
+    datos.append("Director", formulario.Director);
+    datos.append("Productora", formulario.Productora);
+    datos.append("FechaEstreno", formulario.FechaEstreno);
+
+    if (foto) {
+      datos.append("Foto", foto);
+    }
+
     try {
       if (esEdicion) {
-        await api.put(`/peliculas/${id}`, formulario);
+        await api.put(`/peliculas/${id}`, datos, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
         alert("Película actualizada correctamente");
       } else {
-        await api.post("/peliculas", formulario);
+        await api.post("/peliculas", datos, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
         alert("Película registrada correctamente");
       }
 
@@ -156,6 +193,35 @@ function FormularioPelicula() {
               onChange={manejarCambio}
             />
           </div>
+
+          <div className="mb-3">
+            <label className="form-label">Portada de la película</label>
+
+            <input
+              type="file"
+              name="Foto"
+              className="form-control"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={manejarFoto}
+            />
+          </div>
+
+          {vistaPrevia && (
+            <div className="mb-3 text-center">
+              <p className="text-muted mb-2">Vista previa</p>
+
+              <img
+                src={vistaPrevia}
+                alt="Vista previa de la película"
+                className="img-thumbnail"
+                style={{
+                  width: "180px",
+                  height: "260px",
+                  objectFit: "cover",
+                }}
+              />
+            </div>
+          )}
 
           <div className="d-flex gap-2 flex-wrap">
             <button type="submit" className="btn btn-primary">

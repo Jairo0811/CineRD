@@ -2,20 +2,101 @@ const { sql, poolPromise } = require('../config/db');
 
 const obtenerActores = async (req, res) => {
     try {
+        const {
+            buscar = '',
+            estado = '',
+            anio = '',
+            orden = 'az'
+        } = req.query;
+
         const pool = await poolPromise;
 
-        const resultado = await pool.request().query(`
+        let query = `
             SELECT
-                Id,
-                NombreCompleto,
-                NombreArtistico,
-                FechaNacimiento,
-                Sexo,
-                EstaVivo,
-                FechaFallecimiento,
-                Foto
-            FROM Actores
-        `);
+                A.Id,
+                A.NombreCompleto,
+                A.NombreArtistico,
+                A.FechaNacimiento,
+                A.Sexo,
+                A.EstaVivo,
+                A.FechaFallecimiento,
+                A.Foto,
+                COUNT(AP.PeliculaId) AS CantidadPeliculas
+            FROM Actores A
+            LEFT JOIN ActoresPeliculas AP ON A.Id = AP.ActorId
+            WHERE 1 = 1
+        `;
+
+        if (buscar) {
+            query += `
+                AND (
+                    A.NombreCompleto LIKE @Buscar
+                    OR A.NombreArtistico LIKE @Buscar
+                )
+            `;
+        }
+
+        if (estado === 'vivo') {
+            query += ` AND A.EstaVivo = 1`;
+        }
+
+        if (estado === 'fallecido') {
+            query += ` AND A.EstaVivo = 0`;
+        }
+
+        if (anio) {
+            query += ` AND YEAR(A.FechaNacimiento) = @Anio`;
+        }
+
+        query += `
+            GROUP BY
+                A.Id,
+                A.NombreCompleto,
+                A.NombreArtistico,
+                A.FechaNacimiento,
+                A.Sexo,
+                A.EstaVivo,
+                A.FechaFallecimiento,
+                A.Foto
+        `;
+
+        switch (orden) {
+            case 'za':
+                query += ` ORDER BY A.NombreCompleto DESC`;
+                break;
+
+            case 'masPeliculas':
+                query += ` ORDER BY CantidadPeliculas DESC`;
+                break;
+
+            case 'menosPeliculas':
+                query += ` ORDER BY CantidadPeliculas ASC`;
+                break;
+
+            case 'nacimientoReciente':
+                query += ` ORDER BY A.FechaNacimiento DESC`;
+                break;
+
+            case 'nacimientoAntiguo':
+                query += ` ORDER BY A.FechaNacimiento ASC`;
+                break;
+
+            default:
+                query += ` ORDER BY A.NombreCompleto ASC`;
+                break;
+        }
+
+        const request = pool.request();
+
+        if (buscar) {
+            request.input('Buscar', sql.NVarChar(150), `%${buscar}%`);
+        }
+
+        if (anio) {
+            request.input('Anio', sql.Int, parseInt(anio));
+        }
+
+        const resultado = await request.query(query);
 
         res.json(resultado.recordset);
 

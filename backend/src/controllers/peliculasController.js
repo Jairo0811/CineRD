@@ -2,14 +2,94 @@ const { sql, poolPromise } = require('../config/db');
 
 const obtenerPeliculas = async (req, res) => {
     try {
+        const {
+            buscar = '',
+            genero = '',
+            orden = 'estrenoDesc'
+        } = req.query;
+
         const pool = await poolPromise;
 
-        const resultado = await pool.request().query(`
-            SELECT Id, Titulo, Genero, Director, Productora, FechaEstreno, Foto
-            FROM Peliculas
-        `);
+        let query = `
+            SELECT
+                P.Id,
+                P.Titulo,
+                P.Genero,
+                P.Director,
+                P.Productora,
+                P.FechaEstreno,
+                P.Foto,
+                COUNT(AP.ActorId) AS CantidadActores
+            FROM Peliculas P
+            LEFT JOIN ActoresPeliculas AP ON P.Id = AP.PeliculaId
+            WHERE 1 = 1
+        `;
+
+        if (buscar) {
+            query += `
+                AND (
+                    P.Titulo LIKE @Buscar
+                    OR P.Director LIKE @Buscar
+                    OR P.Productora LIKE @Buscar
+                )
+            `;
+        }
+
+        if (genero) {
+            query += ` AND P.Genero = @Genero`;
+        }
+
+        query += `
+            GROUP BY
+                P.Id,
+                P.Titulo,
+                P.Genero,
+                P.Director,
+                P.Productora,
+                P.FechaEstreno,
+                P.Foto
+        `;
+
+        switch (orden) {
+            case 'estrenoAsc':
+                query += ` ORDER BY P.FechaEstreno ASC`;
+                break;
+
+            case 'az':
+                query += ` ORDER BY P.Titulo ASC`;
+                break;
+
+            case 'za':
+                query += ` ORDER BY P.Titulo DESC`;
+                break;
+
+            case 'masActores':
+                query += ` ORDER BY CantidadActores DESC`;
+                break;
+
+            case 'menosActores':
+                query += ` ORDER BY CantidadActores ASC`;
+                break;
+
+            default:
+                query += ` ORDER BY P.FechaEstreno DESC`;
+                break;
+        }
+
+        const request = pool.request();
+
+        if (buscar) {
+            request.input('Buscar', sql.NVarChar(150), `%${buscar}%`);
+        }
+
+        if (genero) {
+            request.input('Genero', sql.NVarChar(80), genero);
+        }
+
+        const resultado = await request.query(query);
 
         res.json(resultado.recordset);
+
     } catch (error) {
         res.status(500).json({
             mensaje: 'Error al obtener las películas',
@@ -17,7 +97,6 @@ const obtenerPeliculas = async (req, res) => {
         });
     }
 };
-
 const obtenerPeliculaPorId = async (req, res) => {
     try {
         const { id } = req.params;

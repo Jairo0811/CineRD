@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const upload = require("../middlewares/upload");
+const { procesarImagenPelicula } = require("../middlewares/procesarImagen");
 
 const {
   obtenerPeliculas,
@@ -13,8 +14,15 @@ const {
 
 router.get("/", obtenerPeliculas);
 router.get("/:id", obtenerPeliculaPorId);
-router.post("/", upload.single("Foto"), crearPelicula);
-router.put("/:id", upload.single("Foto"), actualizarPelicula);
+
+router.post("/", upload.single("Foto"), procesarImagenPelicula, crearPelicula);
+router.put(
+  "/:id",
+  upload.single("Foto"),
+  procesarImagenPelicula,
+  actualizarPelicula
+);
+
 router.delete("/:id", eliminarPelicula);
 
 module.exports = router;
