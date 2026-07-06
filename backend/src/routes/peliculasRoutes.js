@@ -7,15 +7,20 @@ const { procesarImagenPelicula } = require("../middlewares/procesarImagen");
 const {
   obtenerPeliculas,
   obtenerPeliculaPorId,
+  obtenerPeliculasDirigidasPorActor,
   crearPelicula,
   actualizarPelicula,
   eliminarPelicula,
 } = require("../controllers/peliculasController");
 
 router.get("/", obtenerPeliculas);
+
+router.get("/director/:nombre", obtenerPeliculasDirigidasPorActor);
+
 router.get("/:id", obtenerPeliculaPorId);
 
 router.post("/", upload.single("Foto"), procesarImagenPelicula, crearPelicula);
+
 router.put(
   "/:id",
   upload.single("Foto"),

@@ -43,13 +43,40 @@ function Home() {
     }
   };
 
+  const colores = [
+    "#0057B8",
+    "#CE1126",
+    "#F4B400",
+    "#198754",
+    "#6F42C1",
+    "#FD7E14",
+    "#1F2937",
+    "#6C757D",
+  ];
+
   const actoresVivos = actores.filter((actor) => actor.EstaVivo).length;
   const actoresFallecidos = actores.length - actoresVivos;
+
+  const totalDirectores = actores.filter((actor) =>
+    actor.Profesion?.includes("Director"),
+  ).length;
+
+  const totalProductores = actores.filter((actor) =>
+    actor.Profesion?.includes("Productor"),
+  ).length;
+
+  const totalGuionistas = actores.filter((actor) =>
+    actor.Profesion?.includes("Guionista"),
+  ).length;
 
   const totalRepartos = peliculas.reduce(
     (total, pelicula) => total + (pelicula.CantidadActores || 0),
     0,
   );
+
+  const peliculasConReparto = peliculas.filter(
+    (pelicula) => (pelicula.CantidadActores || 0) > 0,
+  ).length;
 
   const ultimasPeliculas = [...peliculas]
     .sort((a, b) => b.Id - a.Id)
@@ -71,6 +98,21 @@ function Home() {
     return acc;
   }, {});
 
+  const profesiones = {};
+
+  actores.forEach((actor) => {
+    if (!actor.Profesion) {
+      profesiones["Sin profesión"] = (profesiones["Sin profesión"] || 0) + 1;
+      return;
+    }
+
+    actor.Profesion.split("/")
+      .map((p) => p.trim())
+      .forEach((p) => {
+        profesiones[p] = (profesiones[p] || 0) + 1;
+      });
+  });
+
   const estrenosPorAnio = peliculas.reduce((acc, pelicula) => {
     if (!pelicula.FechaEstreno) return acc;
 
@@ -86,13 +128,20 @@ function Home() {
       {
         label: "Películas",
         data: Object.values(generos),
-        backgroundColor: [
-          "#0057B8",
-          "#CE1126",
-          "#F4B400",
-          "#1F2937",
-          "#6C757D",
-        ],
+        backgroundColor: colores,
+        borderColor: "#ffffff",
+        borderWidth: 2,
+      },
+    ],
+  };
+
+  const datosProfesiones = {
+    labels: Object.keys(profesiones),
+    datasets: [
+      {
+        label: "Actores",
+        data: Object.values(profesiones),
+        backgroundColor: colores,
         borderColor: "#ffffff",
         borderWidth: 2,
       },
@@ -129,10 +178,6 @@ function Home() {
     ],
   };
 
-  const peliculasConReparto = peliculas.filter(
-    (pelicula) => (pelicula.CantidadActores || 0) > 0,
-  ).length;
-
   return (
     <div className="dashboard-container">
       <div className="text-center mb-5">
@@ -163,6 +208,7 @@ function Home() {
             <p>Repartos</p>
           </div>
         </div>
+
         <div className="col-12 col-md-4">
           <div className="dashboard-card">
             <h2>🎞️</h2>
@@ -170,6 +216,7 @@ function Home() {
             <p>Películas con reparto</p>
           </div>
         </div>
+
         <div className="col-12 col-md-4">
           <div className="dashboard-card">
             <h2>🟢</h2>
@@ -183,6 +230,29 @@ function Home() {
             <h2>⚰️</h2>
             <h3>{actoresFallecidos}</h3>
             <p>Actores fallecidos</p>
+          </div>
+        </div>
+        <div className="col-12 col-md-4">
+          <div className="dashboard-card">
+            <h2>🎬</h2>
+            <h3>{totalDirectores}</h3>
+            <p>Directores</p>
+          </div>
+        </div>
+
+        <div className="col-12 col-md-4">
+          <div className="dashboard-card">
+            <h2>🎥</h2>
+            <h3>{totalProductores}</h3>
+            <p>Productores</p>
+          </div>
+        </div>
+
+        <div className="col-12 col-md-4">
+          <div className="dashboard-card">
+            <h2>✍️</h2>
+            <h3>{totalGuionistas}</h3>
+            <p>Guionistas</p>
           </div>
         </div>
       </div>
@@ -203,44 +273,6 @@ function Home() {
         <Link to="/actores/nuevo" className="btn btn-outline-success">
           ➕ Nuevo Actor
         </Link>
-      </div>
-
-      <div className="row g-4 mb-5">
-        <div className="col-12 col-lg-6">
-          <div className="card shadow h-100">
-            <div className="card-header fw-bold">
-              🎬 Últimas películas agregadas
-            </div>
-
-            <div className="card-body">
-              {ultimasPeliculas.map((pelicula) => (
-                <div className="dashboard-list-item" key={pelicula.Id}>
-                  <span>{pelicula.Titulo}</span>
-                  <small>{pelicula.Genero}</small>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="col-12 col-lg-6">
-          <div className="card shadow h-100">
-            <div className="card-header fw-bold">
-              🎭 Últimos actores registrados
-            </div>
-
-            <div className="card-body">
-              {ultimosActores.map((actor) => (
-                <div className="dashboard-list-item" key={actor.Id}>
-                  <span>{actor.NombreCompleto}</span>
-                  <small>
-                    {actor.NombreArtistico || "Sin nombre artístico"}
-                  </small>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
       </div>
 
       <div className="row g-4 mb-5">
@@ -298,10 +330,78 @@ function Home() {
         </div>
       </div>
 
+      <div className="row g-4 mb-5">
+        <div className="col-12 col-lg-6">
+          <div className="card shadow h-100">
+            <div className="card-header fw-bold">
+              💼 Distribución por profesión
+            </div>
+
+            <div className="card-body chart-container">
+              <Pie data={datosProfesiones} />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 col-lg-6">
+          <div className="card shadow h-100">
+            <div className="card-header fw-bold">
+              🎭 Profesiones registradas
+            </div>
+
+            <div className="card-body">
+              {Object.entries(profesiones)
+                .sort((a, b) => b[1] - a[1])
+                .map(([profesion, total]) => (
+                  <div className="dashboard-list-item" key={profesion}>
+                    <span>{profesion}</span>
+                    <small>{total} actor(es)</small>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="row g-4 mb-5">
+        <div className="col-12 col-lg-6">
+          <div className="card shadow h-100">
+            <div className="card-header fw-bold">
+              🎬 Últimas películas agregadas
+            </div>
+
+            <div className="card-body">
+              {ultimasPeliculas.map((pelicula) => (
+                <div className="dashboard-list-item" key={pelicula.Id}>
+                  <span>{pelicula.Titulo}</span>
+                  <small>{pelicula.Genero}</small>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 col-lg-6">
+          <div className="card shadow h-100">
+            <div className="card-header fw-bold">
+              🎭 Últimos actores registrados
+            </div>
+
+            <div className="card-body">
+              {ultimosActores.map((actor) => (
+                <div className="dashboard-list-item" key={actor.Id}>
+                  <span>{actor.NombreCompleto}</span>
+                  <small>{actor.Profesion || "Sin profesión"}</small>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <footer className="text-center mt-5 text-muted">
         <small>
           © {new Date().getFullYear()} CineRD | Todos los derechos reservados.
-          <br />
         </small>
       </footer>
     </div>

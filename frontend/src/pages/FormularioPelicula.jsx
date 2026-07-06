@@ -19,8 +19,11 @@ function FormularioPelicula() {
 
   const [foto, setFoto] = useState(null);
   const [vistaPrevia, setVistaPrevia] = useState(null);
+  const [directores, setDirectores] = useState([]);
 
   useEffect(() => {
+    obtenerDirectores();
+
     if (esEdicion) {
       obtenerPelicula();
     }
@@ -29,6 +32,20 @@ function FormularioPelicula() {
   const formatearFecha = (fecha) => {
     if (!fecha) return "";
     return fecha.substring(0, 10);
+  };
+
+  const obtenerDirectores = async () => {
+    try {
+      const response = await api.get("/actores", {
+        params: {
+          profesion: "Director",
+        },
+      });
+
+      setDirectores(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const obtenerPelicula = async () => {
@@ -161,13 +178,23 @@ function FormularioPelicula() {
           <div className="mb-3">
             <label className="form-label">Director</label>
 
-            <input
-              type="text"
+            <select
               name="Director"
-              className="form-control"
+              className="form-select"
               value={formulario.Director}
               onChange={manejarCambio}
-            />
+            >
+              <option value="">Seleccione un director</option>
+
+              {directores.map((director) => (
+                <option key={director.Id} value={director.NombreCompleto}>
+                  {director.NombreCompleto}
+                  {director.NombreArtistico
+                    ? ` (${director.NombreArtistico})`
+                    : ""}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mb-3">

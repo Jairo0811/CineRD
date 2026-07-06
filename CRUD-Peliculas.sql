@@ -18,11 +18,12 @@ BEGIN
         Id INT IDENTITY(1,1) PRIMARY KEY,
         NombreCompleto NVARCHAR(150) NOT NULL,
         NombreArtistico NVARCHAR(150) NULL,
-        FechaNacimiento DATE NOT NULL,
+        FechaNacimiento DATE NULL,
         Sexo NVARCHAR(20) NOT NULL,
         EstaVivo BIT NOT NULL CONSTRAINT DF_Actores_EstaVivo DEFAULT 1,
         FechaFallecimiento DATE NULL,
-        Foto NVARCHAR(255) NULL
+        Foto NVARCHAR(255) NULL,
+        ProfesionPrincipal NVARCHAR(100) NULL
     );
 END
 GO
@@ -97,3 +98,43 @@ SELECT * FROM ActoresPeliculas;
 SELECT * FROM Directores;
 GO
 
+SELECT
+    Profesion,
+    COUNT(*) Total
+FROM Actores
+WHERE Profesion IS NOT NULL
+GROUP BY Profesion
+ORDER BY Total DESC;
+
+USE CRUDPeliculas;
+GO
+
+ALTER TABLE Actores
+ALTER COLUMN FechaNacimiento DATE NULL;
+GO
+
+SELECT COLUMN_NAME, IS_NULLABLE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'Actores'
+  AND COLUMN_NAME = 'FechaNacimiento';
+
+
+  USE CRUDPeliculas;
+GO
+
+IF COL_LENGTH('ActoresPeliculas', 'TipoParticipacion') IS NULL
+BEGIN
+    ALTER TABLE ActoresPeliculas
+    ADD TipoParticipacion NVARCHAR(50) NULL;
+END
+GO
+
+USE CRUDPeliculas;
+GO
+
+IF COL_LENGTH('ActoresPeliculas', 'TipoParticipacion') IS NULL
+BEGIN
+    ALTER TABLE ActoresPeliculas
+    ADD TipoParticipacion NVARCHAR(50) NULL;
+END
+GO

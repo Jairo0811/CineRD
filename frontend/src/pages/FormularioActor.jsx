@@ -2,6 +2,35 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
+const profesiones = [
+  "Actor",
+  "Actriz",
+  "Actor / Director",
+  "Actor / Productor",
+  "Actor / Guionista",
+  "Actor / Director / Productor",
+  "Actor / Director / Guionista",
+  "Director",
+  "Director / Productor",
+  "Director / Guionista",
+  "Director / Productor / Guionista",
+  "Productor",
+  "Guionista",
+  "Humorista",
+  "Comediante",
+  "Cantante",
+  "Artista urbano",
+  "Artista urbana",
+  "Influencer",
+  "YouTuber",
+  "Comunicador",
+  "Locutor",
+  "Modelo",
+  "Deportista",
+  "Músico",
+  "Otro",
+];
+
 function FormularioActor() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -12,6 +41,7 @@ function FormularioActor() {
   const [formulario, setFormulario] = useState({
     NombreCompleto: "",
     NombreArtistico: "",
+    Profesion: "",
     FechaNacimiento: "",
     Sexo: "Masculino",
     EstaVivo: true,
@@ -40,6 +70,7 @@ function FormularioActor() {
       setFormulario({
         NombreCompleto: actor.NombreCompleto || "",
         NombreArtistico: actor.NombreArtistico || "",
+        Profesion: actor.Profesion || "",
         FechaNacimiento: formatearFecha(actor.FechaNacimiento),
         Sexo: actor.Sexo || "Masculino",
         EstaVivo: actor.EstaVivo,
@@ -86,12 +117,8 @@ function FormularioActor() {
   const guardarActor = async (e) => {
     e.preventDefault();
 
-    if (
-      !formulario.NombreCompleto ||
-      !formulario.FechaNacimiento ||
-      !formulario.Sexo
-    ) {
-      alert("Nombre completo, fecha de nacimiento y sexo son obligatorios");
+    if (!formulario.NombreCompleto || !formulario.Sexo) {
+      alert("Nombre completo y sexo son obligatorios");
       return;
     }
 
@@ -104,6 +131,7 @@ function FormularioActor() {
 
     datos.append("NombreCompleto", formulario.NombreCompleto);
     datos.append("NombreArtistico", formulario.NombreArtistico);
+    datos.append("Profesion", formulario.Profesion);
     datos.append("FechaNacimiento", formulario.FechaNacimiento);
     datos.append("Sexo", formulario.Sexo);
     datos.append("EstaVivo", formulario.EstaVivo);
@@ -183,6 +211,25 @@ function FormularioActor() {
           </div>
 
           <div className="mb-3">
+            <label className="form-label">Profesión</label>
+
+            <select
+              name="Profesion"
+              className="form-select"
+              value={formulario.Profesion}
+              onChange={manejarCambio}
+            >
+              <option value="">Seleccione una profesión</option>
+
+              {profesiones.map((profesion) => (
+                <option key={profesion} value={profesion}>
+                  {profesion}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mb-3">
             <label className="form-label">Fecha de Nacimiento</label>
 
             <input
@@ -192,6 +239,10 @@ function FormularioActor() {
               value={formulario.FechaNacimiento}
               onChange={manejarCambio}
             />
+
+            <small className="text-muted">
+              Déjalo vacío si la fecha de nacimiento es desconocida.
+            </small>
           </div>
 
           <div className="mb-3">

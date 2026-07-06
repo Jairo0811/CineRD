@@ -8,17 +8,24 @@ function Actores() {
   const [orden, setOrden] = useState("az");
   const [estado, setEstado] = useState("");
   const [anio, setAnio] = useState("");
+  const [profesion, setProfesion] = useState("");
 
   const API_URL = "http://localhost:3000";
 
   useEffect(() => {
     obtenerActores();
-  }, [buscar, orden, estado, anio]);
+  }, [buscar, orden, estado, anio, profesion]);
 
   const obtenerActores = async () => {
     try {
       const response = await api.get("/actores", {
-        params: { buscar, orden, estado, anio },
+        params: {
+          buscar,
+          orden,
+          estado,
+          anio,
+          profesion,
+        },
       });
 
       setActores(response.data);
@@ -40,20 +47,22 @@ function Actores() {
     }
   };
 
-  const calcularEdad = (fechaNacimiento) => {
-    if (!fechaNacimiento) return "N/A";
+  const calcularEdad = (fechaNacimiento, fechaFallecimiento = null) => {
+    if (!fechaNacimiento) return "Edad no disponible";
 
     const nacimiento = new Date(fechaNacimiento);
-    const hoy = new Date();
+    const fechaFinal = fechaFallecimiento
+      ? new Date(fechaFallecimiento)
+      : new Date();
 
-    let edad = hoy.getFullYear() - nacimiento.getFullYear();
-    const mes = hoy.getMonth() - nacimiento.getMonth();
+    let edad = fechaFinal.getFullYear() - nacimiento.getFullYear();
+    const mes = fechaFinal.getMonth() - nacimiento.getMonth();
 
-    if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+    if (mes < 0 || (mes === 0 && fechaFinal.getDate() < nacimiento.getDate())) {
       edad--;
     }
 
-    return edad;
+    return `${edad} años`;
   };
 
   return (
@@ -75,10 +84,11 @@ function Actores() {
           <div className="row g-3">
             <div className="col-12 col-md-4">
               <label className="form-label">Buscar actor</label>
+
               <input
                 type="text"
                 className="form-control"
-                placeholder="Ej: Fausto, Boca de Piano..."
+                placeholder="Ej: Fausto, Boca de Piano, Director..."
                 value={buscar}
                 onChange={(e) => setBuscar(e.target.value)}
               />
@@ -86,6 +96,7 @@ function Actores() {
 
             <div className="col-12 col-md-3">
               <label className="form-label">Ordenar por</label>
+
               <select
                 className="form-select"
                 value={orden}
@@ -102,6 +113,7 @@ function Actores() {
 
             <div className="col-12 col-md-3">
               <label className="form-label">Estado</label>
+
               <select
                 className="form-select"
                 value={estado}
@@ -115,6 +127,7 @@ function Actores() {
 
             <div className="col-12 col-md-2">
               <label className="form-label">Año</label>
+
               <input
                 type="number"
                 className="form-control"
@@ -122,6 +135,54 @@ function Actores() {
                 value={anio}
                 onChange={(e) => setAnio(e.target.value)}
               />
+            </div>
+
+            <div className="col-12 col-md-4">
+              <label className="form-label">Profesión / Rol</label>
+
+              <select
+                className="form-select"
+                value={profesion}
+                onChange={(e) => setProfesion(e.target.value)}
+              >
+                <option value="">Todas las profesiones</option>
+
+                <optgroup label="🎭 Interpretación">
+                  <option value="Actor">Actor</option>
+                  <option value="Actriz">Actriz</option>
+                  <option value="Comediante">Comediante</option>
+                  <option value="Humorista">Humorista</option>
+                </optgroup>
+
+                <optgroup label="🎬 Dirección">
+                  <option value="Director">Director</option>
+                </optgroup>
+
+                <optgroup label="🎥 Producción">
+                  <option value="Productor">Productor</option>
+                  <option value="Guionista">Guionista</option>
+                </optgroup>
+
+                <optgroup label="🎵 Música">
+                  <option value="Cantante">Cantante</option>
+                  <option value="Artista urbano">Artista urbano</option>
+                  <option value="Artista urbana">Artista urbana</option>
+                </optgroup>
+
+                <optgroup label="📺 Medios">
+                  <option value="YouTuber">YouTuber</option>
+                  <option value="Influencer">Influencer</option>
+                  <option value="Comunicador">Comunicador</option>
+                  <option value="Locutor">Locutor</option>
+                </optgroup>
+
+                <optgroup label="⭐ Otros">
+                  <option value="Modelo">Modelo</option>
+                  <option value="Deportista">Deportista</option>
+                  <option value="Músico">Músico</option>
+                  <option value="Otro">Otro</option>
+                </optgroup>
+              </select>
             </div>
           </div>
         </div>
@@ -150,20 +211,40 @@ function Actores() {
                   🎭 {actor.NombreArtistico || "Sin nombre artístico"}
                 </p>
 
-                <p className="mb-1">🎂 {calcularEdad(actor.FechaNacimiento)} años</p>
+                <p className="mb-1">
+                  💼{" "}
+                  <strong>{actor.Profesion || "Sin profesión definida"}</strong>
+                </p>
+
+                <p className="mb-1">
+                  🎂{" "}
+                  {calcularEdad(
+                    actor.FechaNacimiento,
+                    actor.FechaFallecimiento,
+                  )}
+                </p>
 
                 <p className="mb-2">
                   🎬 {actor.CantidadPeliculas || 0} película(s)
                 </p>
 
                 <span
-                  className={`badge ${actor.EstaVivo ? "bg-success" : "bg-dark"}`}
+                  className={`badge ${
+                    actor.EstaVivo ? "bg-success" : "bg-dark"
+                  }`}
                 >
                   {actor.EstaVivo ? "🟢 Vivo" : "⚫ Fallecido"}
                 </span>
               </div>
 
               <div className="card-footer bg-white border-0">
+                <Link
+                  to={`/actores/${actor.Id}`}
+                  className="btn btn-info btn-sm w-100 mb-2"
+                >
+                  👤 Ver perfil
+                </Link>
+
                 <div className="d-flex gap-2">
                   <Link
                     to={`/actores/editar/${actor.Id}`}
