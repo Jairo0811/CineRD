@@ -1,8 +1,8 @@
 # 🎬 CineRD
 
-> Sistema Full Stack para la gestión de películas y actores, desarrollado con **React**, **Node.js**, **Express** y **SQL Server**.
+> **Base de datos del cine dominicano**, desarrollada con **React**, **Node.js**, **Express** y **SQL Server**. Permite administrar películas, talentos, repartos y consultar la filmografía de cada persona mediante una interfaz moderna inspirada en IMDb.
 
-![Status](https://img.shields.io/badge/Version-v1.0-success)
+![Status](https://img.shields.io/badge/Version-v1.6.0-success)
 ![License](https://img.shields.io/badge/License-Academic-blue)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Jairo0811/CineRD)
 
@@ -18,55 +18,100 @@
   <img src="https://skillicons.dev/icons?i=html,css,javascript,bootstrap&perline=4" />
 </p>
 
-### 🗄️ Base de Datos
+## 🗄️ Base de Datos
 
 - Microsoft SQL Server
 
-### 📦 Librerías
+## 📦 Librerías
 
 - React Router DOM
 - Axios
 - Bootstrap 5
+- Chart.js
+- React Chart.js 2
 - Express
-- mssql
+- MSSQL
+- Multer
+- Sharp
 - dotenv
 - cors
 - nodemon
 
 ---
 
-# 📋 Funcionalidades
+# ✨ Funcionalidades
 
-## 🎭 Gestión de Actores
+## 👤 Gestión de Talentos
 
-- ✅ Consultar actores registrados.
-- ✅ Registrar nuevos actores.
+- ✅ Registrar talentos.
 - ✅ Editar información.
-- ✅ Eliminar actores.
+- ✅ Eliminar registros.
+- ✅ Fotografía.
 - ✅ Nombre artístico.
+- ✅ Profesiones múltiples.
+- ✅ Fecha de nacimiento.
+- ✅ Fecha de fallecimiento.
 - ✅ Estado (Vivo / Fallecido).
-- ✅ Fecha de fallecimiento condicional.
+- ✅ Edad calculada automáticamente.
 
 ---
 
 ## 🎬 Gestión de Películas
 
-- ✅ Consultar películas.
 - ✅ Registrar películas.
 - ✅ Editar películas.
 - ✅ Eliminar películas.
+- ✅ Portada.
 - ✅ Director.
 - ✅ Productora.
 - ✅ Fecha de estreno.
+- ✅ Género.
 
 ---
 
-## 🤝 Relaciones
+## 🎭 Gestión de Repartos
 
-- ✅ Asociación Actor ↔ Película.
+- ✅ Relación Actor ↔ Película.
 - ✅ Personaje interpretado.
-- ✅ Papel principal o secundario.
+- ✅ Participación principal o secundaria.
+- ✅ Cameo.
+- ✅ Voz.
+- ✅ Aparición especial.
 - ✅ Prevención de relaciones duplicadas.
+- ✅ Edición de participaciones.
+
+---
+
+## 👤 Perfil Artístico
+
+Cada talento dispone de una ficha individual con:
+
+- ✅ Fotografía.
+- ✅ Nombre artístico.
+- ✅ Profesiones.
+- ✅ Fecha de nacimiento.
+- ✅ Edad.
+- ✅ Estado.
+- ✅ Filmografía como actor.
+- ✅ Filmografía como director.
+- ✅ Mini carteles de películas.
+
+---
+
+## 📊 Dashboard
+
+- ✅ Total de películas.
+- ✅ Total de talentos.
+- ✅ Total de repartos.
+- ✅ Actores vivos.
+- ✅ Actores fallecidos.
+- ✅ Películas con reparto.
+- ✅ Distribución por género.
+- ✅ Distribución por profesiones.
+- ✅ Estrenos por año.
+- ✅ Últimas películas.
+- ✅ Últimos talentos.
+- ✅ Gráficos interactivos con Chart.js.
 
 ---
 
@@ -91,7 +136,7 @@ npm run dev
 
 Servidor:
 
-```text
+```
 http://localhost:3000
 ```
 
@@ -107,7 +152,7 @@ npm run dev
 
 Aplicación:
 
-```text
+```
 http://localhost:5173
 ```
 
@@ -117,7 +162,7 @@ http://localhost:5173
 
 Ejecutar el script:
 
-```text
+```
 CRUD-Peliculas.sql
 ```
 
@@ -130,7 +175,7 @@ El script crea automáticamente:
 
 ---
 
-# 📂 Estructura del Proyecto
+# 📂 Arquitectura
 
 ```
 CineRD
@@ -139,15 +184,21 @@ CineRD
 │   ├── src
 │   │   ├── config
 │   │   ├── controllers
-│   │   └── routes
+│   │   ├── middlewares
+│   │   ├── routes
+│   │   └── uploads
+│   │
 │   ├── package.json
 │   └── server.js
 │
 ├── frontend
 │   ├── src
+│   │   ├── assets
+│   │   ├── components
 │   │   ├── pages
 │   │   ├── services
-│   │   └── assets
+│   │   └── styles
+│   │
 │   ├── package.json
 │   └── vite.config.js
 │
@@ -157,33 +208,59 @@ CineRD
 
 ---
 
-# ✨ Características
+# 🎨 Características
 
 - 🎬 Arquitectura Cliente / Servidor.
-- ⚡ API REST con Express.
-- 🗄️ SQL Server.
 - ⚛️ React + Vite.
-- 🔄 CRUD completo.
-- 📱 Diseño Responsive.
+- ⚡ Express.
+- 🗄️ SQL Server.
+- 📸 Gestión de imágenes.
+- 🎭 Relación Actor ↔ Película.
+- 👤 Perfil artístico.
+- 🎬 Filmografía.
+- 📊 Dashboard estadístico.
+- 📈 Gráficos dinámicos.
 - 🎨 Bootstrap 5.
-- 🔀 React Router.
+- 📱 Responsive.
 - 🌐 Axios.
+- 🔀 React Router.
 - 📝 Código organizado por capas.
 
 ---
 
 # 📌 Estado del Proyecto
 
-🟢 **Versión 1.0**
+🟢 **Versión 1.6.0**
 
-Proyecto funcional con:
+Actualmente CineRD incluye:
 
-- CRUD de Actores.
-- CRUD de Películas.
-- Relaciones Actor ↔ Película.
-- Formularios reutilizables.
-- Diseño responsive.
-- Integración completa React + Node.js + SQL Server.
+- ✅ CRUD de Talentos.
+- ✅ CRUD de Películas.
+- ✅ Gestión de Repartos.
+- ✅ Profesiones múltiples.
+- ✅ Dashboard.
+- ✅ Estadísticas.
+- ✅ Gráficos interactivos.
+- ✅ Perfil artístico.
+- ✅ Filmografía.
+- ✅ Portadas de películas.
+- ✅ Cálculo automático de edad.
+- ✅ Integración React + Node.js + SQL Server.
+
+---
+
+# 🚀 Próximas Funcionalidades
+
+- 🎥 Gestión de Productoras.
+- 🏆 Premios nacionales e internacionales.
+- 📺 Plataformas de Streaming.
+- 🎞️ Tráilers.
+- 📝 Biografías completas.
+- 🎬 Sagas y franquicias.
+- 🌎 Universo cinematográfico dominicano.
+- ⭐ Calificaciones de usuarios.
+- 🔍 Búsqueda avanzada.
+- 📈 Estadísticas por director y productor.
 
 ---
 
@@ -198,6 +275,6 @@ Proyecto funcional con:
 
 # 📄 Licencia
 
-Este proyecto fue desarrollado con fines educativos y de aprendizaje.
+Este proyecto fue desarrollado con fines educativos y como parte del portafolio profesional del autor.
 
 © 2026 Francis Jairo Matías Rosario
