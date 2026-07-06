@@ -1,5 +1,16 @@
 const { sql, poolPromise } = require("../config/db");
 
+const normalizarFecha = (fecha) => {
+  return fecha && fecha.trim() !== "" ? fecha : null;
+};
+
+const normalizarEntero = (valor) => {
+  if (!valor || valor.toString().trim() === "") return null;
+
+  const numero = parseInt(valor, 10);
+  return Number.isNaN(numero) ? null : numero;
+};
+
 const obtenerActores = async (req, res) => {
   try {
     const {
@@ -19,6 +30,7 @@ const obtenerActores = async (req, res) => {
         A.NombreArtistico,
         A.Profesion,
         A.FechaNacimiento,
+        A.AnioNacimiento,
         A.Sexo,
         A.EstaVivo,
         A.FechaFallecimiento,
@@ -41,7 +53,16 @@ const obtenerActores = async (req, res) => {
 
     if (estado === "vivo") query += ` AND A.EstaVivo = 1`;
     if (estado === "fallecido") query += ` AND A.EstaVivo = 0`;
-    if (anio) query += ` AND YEAR(A.FechaNacimiento) = @Anio`;
+
+    if (anio) {
+      query += `
+        AND (
+          YEAR(A.FechaNacimiento) = @Anio
+          OR A.AnioNacimiento = @Anio
+        )
+      `;
+    }
+
     if (profesion) {
       query += ` AND A.Profesion LIKE @Profesion`;
     }
@@ -53,6 +74,7 @@ const obtenerActores = async (req, res) => {
         A.NombreArtistico,
         A.Profesion,
         A.FechaNacimiento,
+        A.AnioNacimiento,
         A.Sexo,
         A.EstaVivo,
         A.FechaFallecimiento,
@@ -63,32 +85,46 @@ const obtenerActores = async (req, res) => {
       case "za":
         query += ` ORDER BY A.NombreCompleto DESC`;
         break;
+
       case "masPeliculas":
         query += ` ORDER BY CantidadPeliculas DESC`;
         break;
+
       case "menosPeliculas":
         query += ` ORDER BY CantidadPeliculas ASC`;
         break;
+
       case "nacimientoReciente":
-        query += ` ORDER BY A.FechaNacimiento DESC`;
+        query += `
+          ORDER BY
+            COALESCE(YEAR(A.FechaNacimiento), A.AnioNacimiento) DESC
+        `;
         break;
+
       case "nacimientoAntiguo":
-        query += ` ORDER BY A.FechaNacimiento ASC`;
+        query += `
+          ORDER BY
+            COALESCE(YEAR(A.FechaNacimiento), A.AnioNacimiento) ASC
+        `;
         break;
+
       default:
         query += ` ORDER BY A.NombreCompleto ASC`;
     }
 
     const request = pool.request();
 
-    if (buscar) request.input("Buscar", sql.NVarChar(150), `%${buscar}%`);
-    if (anio) request.input("Anio", sql.Int, parseInt(anio));
-    if (profesion)
-      request.input(
-        "Profesion",
-        sql.NVarChar(100),
-        `%${profesion}%`
-      );
+    if (buscar) {
+      request.input("Buscar", sql.NVarChar(150), `%${buscar}%`);
+    }
+
+    if (anio) {
+      request.input("Anio", sql.Int, parseInt(anio, 10));
+    }
+
+    if (profesion) {
+      request.input("Profesion", sql.NVarChar(100), `%${profesion}%`);
+    }
 
     const resultado = await request.query(query);
 
@@ -107,13 +143,17 @@ const obtenerActorPorId = async (req, res) => {
 
     const pool = await poolPromise;
 
-    const resultado = await pool.request().input("Id", sql.Int, id).query(`
+    const resultado = await pool
+      .request()
+      .input("Id", sql.Int, id)
+      .query(`
         SELECT
           Id,
           NombreCompleto,
           NombreArtistico,
           Profesion,
           FechaNacimiento,
+          AnioNacimiento,
           Sexo,
           EstaVivo,
           FechaFallecimiento,
@@ -144,6 +184,7 @@ const crearActor = async (req, res) => {
       NombreArtistico,
       Profesion,
       FechaNacimiento,
+      AnioNacimiento,
       Sexo,
       EstaVivo,
       FechaFallecimiento,
@@ -164,29 +205,20 @@ const crearActor = async (req, res) => {
       .input("NombreCompleto", sql.NVarChar(150), NombreCompleto)
       .input("NombreArtistico", sql.NVarChar(150), NombreArtistico || null)
       .input("Profesion", sql.NVarChar(100), Profesion || null)
-      .input(
-        "FechaNacimiento",
-        sql.Date,
-        FechaNacimiento && FechaNacimiento.trim() !== ""
-          ? FechaNacimiento
-          : null,
-      )
+      .input("FechaNacimiento", sql.Date, normalizarFecha(FechaNacimiento))
+      .input("AnioNacimiento", sql.Int, normalizarEntero(AnioNacimiento))
       .input("Sexo", sql.NVarChar(20), Sexo)
       .input("EstaVivo", sql.Bit, EstaVivo === "true" || EstaVivo === true)
-      .input(
-        "FechaFallecimiento",
-        sql.Date,
-        FechaFallecimiento && FechaFallecimiento.trim() !== ""
-          ? FechaFallecimiento
-          : null,
-      )
-      .input("Foto", sql.NVarChar(255), Foto).query(`
+      .input("FechaFallecimiento", sql.Date, normalizarFecha(FechaFallecimiento))
+      .input("Foto", sql.NVarChar(255), Foto)
+      .query(`
         INSERT INTO Actores
         (
           NombreCompleto,
           NombreArtistico,
           Profesion,
           FechaNacimiento,
+          AnioNacimiento,
           Sexo,
           EstaVivo,
           FechaFallecimiento,
@@ -199,6 +231,7 @@ const crearActor = async (req, res) => {
           @NombreArtistico,
           @Profesion,
           @FechaNacimiento,
+          @AnioNacimiento,
           @Sexo,
           @EstaVivo,
           @FechaFallecimiento,
@@ -227,6 +260,7 @@ const actualizarActor = async (req, res) => {
       NombreArtistico,
       Profesion,
       FechaNacimiento,
+      AnioNacimiento,
       Sexo,
       EstaVivo,
       FechaFallecimiento,
@@ -245,7 +279,10 @@ const actualizarActor = async (req, res) => {
     if (req.file) {
       Foto = `/uploads/actores/${req.file.filename}`;
     } else {
-      const fotoActual = await pool.request().input("Id", sql.Int, id).query(`
+      const fotoActual = await pool
+        .request()
+        .input("Id", sql.Int, id)
+        .query(`
           SELECT Foto
           FROM Actores
           WHERE Id = @Id
@@ -260,17 +297,20 @@ const actualizarActor = async (req, res) => {
       .input("NombreCompleto", sql.NVarChar(150), NombreCompleto)
       .input("NombreArtistico", sql.NVarChar(150), NombreArtistico || null)
       .input("Profesion", sql.NVarChar(100), Profesion || null)
-      .input("FechaNacimiento", sql.Date, FechaNacimiento || null)
+      .input("FechaNacimiento", sql.Date, normalizarFecha(FechaNacimiento))
+      .input("AnioNacimiento", sql.Int, normalizarEntero(AnioNacimiento))
       .input("Sexo", sql.NVarChar(20), Sexo)
       .input("EstaVivo", sql.Bit, EstaVivo === "true" || EstaVivo === true)
-      .input("FechaFallecimiento", sql.Date, FechaFallecimiento || null)
-      .input("Foto", sql.NVarChar(255), Foto).query(`
+      .input("FechaFallecimiento", sql.Date, normalizarFecha(FechaFallecimiento))
+      .input("Foto", sql.NVarChar(255), Foto)
+      .query(`
         UPDATE Actores
         SET
           NombreCompleto = @NombreCompleto,
           NombreArtistico = @NombreArtistico,
           Profesion = @Profesion,
           FechaNacimiento = @FechaNacimiento,
+          AnioNacimiento = @AnioNacimiento,
           Sexo = @Sexo,
           EstaVivo = @EstaVivo,
           FechaFallecimiento = @FechaFallecimiento,
@@ -303,12 +343,18 @@ const eliminarActor = async (req, res) => {
 
     const pool = await poolPromise;
 
-    await pool.request().input("ActorId", sql.Int, id).query(`
+    await pool
+      .request()
+      .input("ActorId", sql.Int, id)
+      .query(`
         DELETE FROM ActoresPeliculas
         WHERE ActorId = @ActorId
       `);
 
-    const resultado = await pool.request().input("Id", sql.Int, id).query(`
+    const resultado = await pool
+      .request()
+      .input("Id", sql.Int, id)
+      .query(`
         DELETE FROM Actores
         OUTPUT DELETED.*
         WHERE Id = @Id

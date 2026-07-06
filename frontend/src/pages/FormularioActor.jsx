@@ -19,8 +19,7 @@ const profesiones = [
   "Humorista",
   "Comediante",
   "Cantante",
-  "Artista urbano",
-  "Artista urbana",
+  "Artista Urbano (a)",
   "Influencer",
   "YouTuber",
   "Comunicador",
@@ -43,6 +42,7 @@ function FormularioActor() {
     NombreArtistico: "",
     Profesion: "",
     FechaNacimiento: "",
+    AnioNacimiento: "",
     Sexo: "Masculino",
     EstaVivo: true,
     FechaFallecimiento: "",
@@ -72,6 +72,7 @@ function FormularioActor() {
         NombreArtistico: actor.NombreArtistico || "",
         Profesion: actor.Profesion || "",
         FechaNacimiento: formatearFecha(actor.FechaNacimiento),
+        AnioNacimiento: actor.AnioNacimiento || "",
         Sexo: actor.Sexo || "Masculino",
         EstaVivo: actor.EstaVivo,
         FechaFallecimiento: formatearFecha(actor.FechaFallecimiento),
@@ -122,6 +123,15 @@ function FormularioActor() {
       return;
     }
 
+    if (
+      formulario.AnioNacimiento &&
+      (Number(formulario.AnioNacimiento) < 1800 ||
+        Number(formulario.AnioNacimiento) > new Date().getFullYear())
+    ) {
+      alert("El año de nacimiento no es válido");
+      return;
+    }
+
     if (!formulario.EstaVivo && !formulario.FechaFallecimiento) {
       alert("Debe indicar la fecha de fallecimiento");
       return;
@@ -133,6 +143,7 @@ function FormularioActor() {
     datos.append("NombreArtistico", formulario.NombreArtistico);
     datos.append("Profesion", formulario.Profesion);
     datos.append("FechaNacimiento", formulario.FechaNacimiento);
+    datos.append("AnioNacimiento", formulario.AnioNacimiento);
     datos.append("Sexo", formulario.Sexo);
     datos.append("EstaVivo", formulario.EstaVivo);
     datos.append(
@@ -241,7 +252,27 @@ function FormularioActor() {
             />
 
             <small className="text-muted">
-              Déjalo vacío si la fecha de nacimiento es desconocida.
+              Usa este campo si conoces la fecha completa.
+            </small>
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Año de Nacimiento</label>
+
+            <input
+              type="number"
+              name="AnioNacimiento"
+              className="form-control"
+              placeholder="Ej: 1979"
+              min="1800"
+              max={new Date().getFullYear()}
+              value={formulario.AnioNacimiento}
+              onChange={manejarCambio}
+            />
+
+            <small className="text-muted">
+              Si solo conoces el año, deja la fecha completa vacía y coloca el
+              año aquí.
             </small>
           </div>
 

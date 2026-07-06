@@ -47,22 +47,58 @@ function Actores() {
     }
   };
 
-  const calcularEdad = (fechaNacimiento, fechaFallecimiento = null) => {
-    if (!fechaNacimiento) return "Edad no disponible";
+  const calcularEdad = (
+    fechaNacimiento,
+    fechaFallecimiento = null,
+    anioNacimiento = null
+  ) => {
+    if (fechaNacimiento) {
+      const nacimiento = new Date(fechaNacimiento);
+      const fechaFinal = fechaFallecimiento
+        ? new Date(fechaFallecimiento)
+        : new Date();
 
-    const nacimiento = new Date(fechaNacimiento);
-    const fechaFinal = fechaFallecimiento
-      ? new Date(fechaFallecimiento)
-      : new Date();
+      let edad = fechaFinal.getFullYear() - nacimiento.getFullYear();
+      const mes = fechaFinal.getMonth() - nacimiento.getMonth();
 
-    let edad = fechaFinal.getFullYear() - nacimiento.getFullYear();
-    const mes = fechaFinal.getMonth() - nacimiento.getMonth();
+      if (
+        mes < 0 ||
+        (mes === 0 && fechaFinal.getDate() < nacimiento.getDate())
+      ) {
+        edad--;
+      }
 
-    if (mes < 0 || (mes === 0 && fechaFinal.getDate() < nacimiento.getDate())) {
-      edad--;
+      return `${edad} años`;
     }
 
-    return `${edad} años`;
+    if (anioNacimiento) {
+      const anioActual = new Date().getFullYear();
+      const edadAproximada = anioActual - Number(anioNacimiento);
+
+      return `Aprox. ${edadAproximada} años`;
+    }
+
+    return "Edad no disponible";
+  };
+
+  const mostrarNacimiento = (actor) => {
+    if (actor.FechaNacimiento) {
+      return calcularEdad(
+        actor.FechaNacimiento,
+        actor.FechaFallecimiento,
+        actor.AnioNacimiento
+      );
+    }
+
+    if (actor.AnioNacimiento) {
+      return `${actor.AnioNacimiento} · ${calcularEdad(
+        null,
+        null,
+        actor.AnioNacimiento
+      )}`;
+    }
+
+    return "Fecha desconocida";
   };
 
   return (
@@ -213,16 +249,12 @@ function Actores() {
 
                 <p className="mb-1">
                   💼{" "}
-                  <strong>{actor.Profesion || "Sin profesión definida"}</strong>
+                  <strong>
+                    {actor.Profesion || "Sin profesión definida"}
+                  </strong>
                 </p>
 
-                <p className="mb-1">
-                  🎂{" "}
-                  {calcularEdad(
-                    actor.FechaNacimiento,
-                    actor.FechaFallecimiento,
-                  )}
-                </p>
+                <p className="mb-1">🎂 {mostrarNacimiento(actor)}</p>
 
                 <p className="mb-2">
                   🎬 {actor.CantidadPeliculas || 0} película(s)

@@ -37,22 +37,38 @@ function PerfilActor() {
     }
   };
 
-  const calcularEdad = (fechaNacimiento, fechaFallecimiento = null) => {
-    if (!fechaNacimiento) return "Edad no disponible";
+  const calcularEdad = (
+    fechaNacimiento,
+    fechaFallecimiento = null,
+    anioNacimiento = null
+  ) => {
+    if (fechaNacimiento) {
+      const nacimiento = new Date(fechaNacimiento);
+      const fechaFinal = fechaFallecimiento
+        ? new Date(fechaFallecimiento)
+        : new Date();
 
-    const nacimiento = new Date(fechaNacimiento);
-    const fechaFinal = fechaFallecimiento
-      ? new Date(fechaFallecimiento)
-      : new Date();
+      let edad = fechaFinal.getFullYear() - nacimiento.getFullYear();
+      const mes = fechaFinal.getMonth() - nacimiento.getMonth();
 
-    let edad = fechaFinal.getFullYear() - nacimiento.getFullYear();
-    const mes = fechaFinal.getMonth() - nacimiento.getMonth();
+      if (
+        mes < 0 ||
+        (mes === 0 && fechaFinal.getDate() < nacimiento.getDate())
+      ) {
+        edad--;
+      }
 
-    if (mes < 0 || (mes === 0 && fechaFinal.getDate() < nacimiento.getDate())) {
-      edad--;
+      return `${edad} años`;
     }
 
-    return `${edad} años`;
+    if (anioNacimiento) {
+      const anioActual = new Date().getFullYear();
+      const edadAproximada = anioActual - Number(anioNacimiento);
+
+      return `Aprox. ${edadAproximada} años`;
+    }
+
+    return "Edad no disponible";
   };
 
   const formatearFechaCompleta = (fecha) => {
@@ -75,6 +91,41 @@ function PerfilActor() {
     });
   };
 
+  const mostrarNacimiento = () => {
+    if (actor.FechaNacimiento) {
+      return (
+        <>
+          <p className="mb-1">
+            🎂{" "}
+            <strong>{formatearFechaCompleta(actor.FechaNacimiento)}</strong>
+          </p>
+
+          <p className="text-muted mb-2">
+            {calcularEdad(actor.FechaNacimiento, actor.FechaFallecimiento)}
+          </p>
+        </>
+      );
+    }
+
+    if (actor.AnioNacimiento) {
+      return (
+        <>
+          <p className="mb-1">
+            🎂 Año de nacimiento: <strong>{actor.AnioNacimiento}</strong>
+          </p>
+
+          <p className="text-muted mb-2">
+            {calcularEdad(null, null, actor.AnioNacimiento)}
+          </p>
+        </>
+      );
+    }
+
+    return (
+      <p className="text-muted mb-2">🎂 Fecha de nacimiento desconocida</p>
+    );
+  };
+
   const renderPoster = (pelicula) => {
     if (pelicula.Foto) {
       return (
@@ -87,6 +138,7 @@ function PerfilActor() {
             objectFit: "cover",
             borderRadius: "8px",
             boxShadow: "0 2px 8px rgba(0,0,0,.25)",
+            flexShrink: 0,
           }}
         />
       );
@@ -147,22 +199,7 @@ function PerfilActor() {
             💼 <strong>{actor.Profesion || "Sin profesión definida"}</strong>
           </p>
 
-          {actor.FechaNacimiento ? (
-            <>
-              <p className="mb-1">
-                🎂{" "}
-                <strong>{formatearFechaCompleta(actor.FechaNacimiento)}</strong>
-              </p>
-
-              <p className="text-muted mb-2">
-                {calcularEdad(actor.FechaNacimiento, actor.FechaFallecimiento)}
-              </p>
-            </>
-          ) : (
-            <p className="text-muted mb-2">
-              🎂 Fecha de nacimiento desconocida
-            </p>
-          )}
+          {mostrarNacimiento()}
 
           {!actor.EstaVivo && actor.FechaFallecimiento && (
             <p className="text-danger">

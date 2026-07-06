@@ -138,3 +138,17 @@ BEGIN
     ADD TipoParticipacion NVARCHAR(50) NULL;
 END
 GO
+
+/* ==========================
+ Solo Año de Nacimiento
+   ========================== */
+
+USE CRUDPeliculas;
+GO
+
+IF COL_LENGTH('Actores', 'AnioNacimiento') IS NULL
+BEGIN
+    ALTER TABLE Actores
+    ADD AnioNacimiento INT NULL;
+END
+GO
