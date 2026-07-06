@@ -249,20 +249,7 @@ Actualmente CineRD incluye:
 
 ---
 
-# 🚀 Próximas Funcionalidades
 
-- 🎥 Gestión de Productoras.
-- 🏆 Premios nacionales e internacionales.
-- 📺 Plataformas de Streaming.
-- 🎞️ Tráilers.
-- 📝 Biografías completas.
-- 🎬 Sagas y franquicias.
-- 🌎 Universo cinematográfico dominicano.
-- ⭐ Calificaciones de usuarios.
-- 🔍 Búsqueda avanzada.
-- 📈 Estadísticas por director y productor.
-
----
 
 # 👨‍💻 Autor
 
