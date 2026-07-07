@@ -27,3 +27,21 @@ body {
   border: none;
   border-radius: 12px;
 }
+
+.btn {
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.btn-info {
+  color: #fff;
+}
+
+.actor-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.actor-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(13, 110, 253, 0.12) !important;
+}

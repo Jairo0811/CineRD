@@ -21,11 +21,11 @@ function PerfilActor() {
       const actorData = actorResponse.data;
 
       const participacionesResponse = await api.get(
-        `/actores-peliculas/actor/${id}`
+        `/actores-peliculas/actor/${id}`,
       );
 
       const dirigidasResponse = await api.get(
-        `/peliculas/director/${encodeURIComponent(actorData.NombreCompleto)}`
+        `/peliculas/director/${encodeURIComponent(actorData.NombreCompleto)}`,
       );
 
       setActor(actorData);
@@ -40,7 +40,7 @@ function PerfilActor() {
   const calcularEdad = (
     fechaNacimiento,
     fechaFallecimiento = null,
-    anioNacimiento = null
+    anioNacimiento = null,
   ) => {
     if (fechaNacimiento) {
       const nacimiento = new Date(fechaNacimiento);
@@ -96,8 +96,7 @@ function PerfilActor() {
       return (
         <>
           <p className="mb-1">
-            🎂{" "}
-            <strong>{formatearFechaCompleta(actor.FechaNacimiento)}</strong>
+            🎂 <strong>{formatearFechaCompleta(actor.FechaNacimiento)}</strong>
           </p>
 
           <p className="text-muted mb-2">
@@ -124,6 +123,12 @@ function PerfilActor() {
     return (
       <p className="text-muted mb-2">🎂 Fecha de nacimiento desconocida</p>
     );
+  };
+
+  const obtenerEstadoActor = () => {
+    if (actor.EstaVivo) return "🟢 Vivo";
+
+    return actor.Sexo === "Femenino" ? "⚫ Fallecida" : "⚫ Fallecido";
   };
 
   const renderPoster = (pelicula) => {
@@ -189,7 +194,21 @@ function PerfilActor() {
             <div className="actor-photo-placeholder mb-3">🎭</div>
           )}
 
-          <h2>{actor.NombreCompleto}</h2>
+          <h2 className="mb-2">
+            <div>{actor.Nombres || actor.NombreCompleto}</div>
+
+            {actor.Apellidos && (
+              <div
+                className="text-secondary"
+                style={{
+                  fontSize: "0.85em",
+                  fontWeight: 600,
+                }}
+              >
+                {actor.Apellidos}
+              </div>
+            )}
+          </h2>
 
           <p className="text-muted mb-1">
             🎭 {actor.NombreArtistico || "Sin nombre artístico"}
@@ -213,7 +232,7 @@ function PerfilActor() {
           <span
             className={`badge ${actor.EstaVivo ? "bg-success" : "bg-dark"}`}
           >
-            {actor.EstaVivo ? "🟢 Vivo" : "⚫ Fallecido"}
+            {obtenerEstadoActor()}
           </span>
         </div>
       </div>

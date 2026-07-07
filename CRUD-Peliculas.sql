@@ -152,3 +152,16 @@ BEGIN
     ADD AnioNacimiento INT NULL;
 END
 GO
+
+
+
+
+USE CRUDPeliculas;
+GO
+
+IF COL_LENGTH('Actores', 'Apellido') IS NULL
+BEGIN
+    ALTER TABLE Actores
+    ADD Apellido NVARCHAR(100) NULL;
+END
+GO

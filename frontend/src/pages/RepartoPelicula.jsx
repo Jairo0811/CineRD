@@ -177,24 +177,31 @@ function RepartoPelicula() {
   const obtenerClaseBadge = (tipo) => {
     switch (tipo) {
       case "Principal":
-        return "bg-warning text-dark";
+        return "bg-primary";
       case "Secundario":
         return "bg-secondary";
       case "Cameo":
-        return "bg-info text-dark";
+        return "bg-light text-primary border border-primary";
       case "Especial":
         return "bg-primary";
       case "Voz":
-        return "bg-success";
+        return "bg-secondary";
       case "Archivo":
         return "bg-dark";
       case "Sin acreditar":
         return "bg-light text-dark border";
       case "Escena postcréditos":
-        return "bg-danger";
+        return "bg-dark";
       default:
         return "bg-secondary";
     }
+  };
+
+  const obtenerNombreVisual = (actor) => {
+    const nombre = actor.Nombres || actor.NombreCompleto || "Sin nombre";
+    const apellidos = actor.Apellidos || "";
+
+    return { nombre, apellidos };
   };
 
   return (
@@ -291,7 +298,15 @@ function RepartoPelicula() {
               </div>
 
               <div className="card-body text-center">
-                <h5 className="card-title mb-1">{actor.NombreCompleto}</h5>
+                <h5 className="card-title text-center mb-2">
+                  <div className="fw-bold">{obtenerNombreVisual(actor).nombre}</div>
+
+                  {obtenerNombreVisual(actor).apellidos && (
+                    <div className="text-secondary fw-semibold">
+                      {obtenerNombreVisual(actor).apellidos}
+                    </div>
+                  )}
+                </h5>
 
                 <p className="text-muted mb-1">
                   {actor.NombreArtistico || "Sin nombre artístico"}

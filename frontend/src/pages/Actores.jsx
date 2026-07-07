@@ -50,7 +50,7 @@ function Actores() {
   const calcularEdad = (
     fechaNacimiento,
     fechaFallecimiento = null,
-    anioNacimiento = null
+    anioNacimiento = null,
   ) => {
     if (fechaNacimiento) {
       const nacimiento = new Date(fechaNacimiento);
@@ -86,7 +86,7 @@ function Actores() {
       return calcularEdad(
         actor.FechaNacimiento,
         actor.FechaFallecimiento,
-        actor.AnioNacimiento
+        actor.AnioNacimiento,
       );
     }
 
@@ -94,11 +94,17 @@ function Actores() {
       return `${actor.AnioNacimiento} · ${calcularEdad(
         null,
         null,
-        actor.AnioNacimiento
+        actor.AnioNacimiento,
       )}`;
     }
 
     return "Fecha desconocida";
+  };
+
+  const obtenerEstadoActor = (actor) => {
+    if (actor.EstaVivo) return "🟢 Vivo";
+
+    return actor.Sexo === "Femenino" ? "⚫ Fallecida" : "⚫ Fallecido";
   };
 
   return (
@@ -110,7 +116,7 @@ function Actores() {
       <div className="d-flex justify-content-between align-items-center page-header mb-4">
         <h2>🎭 Actores</h2>
 
-        <Link to="/actores/nuevo" className="btn btn-success">
+        <Link to="/actores/nuevo" className="btn btn-primary">
           ➕ Nuevo Actor
         </Link>
       </div>
@@ -241,7 +247,15 @@ function Actores() {
               </div>
 
               <div className="card-body text-center">
-                <h5 className="card-title mb-1">{actor.NombreCompleto}</h5>
+                <h5 className="card-title text-center mb-2">
+                  <div className="fw-bold fs-4">{actor.Nombres}</div>
+
+                  {actor.Apellidos && (
+                    <div className="text-secondary fw-semibold">
+                      {actor.Apellidos}
+                    </div>
+                  )}
+                </h5>
 
                 <p className="text-muted mb-2">
                   🎭 {actor.NombreArtistico || "Sin nombre artístico"}
@@ -249,9 +263,7 @@ function Actores() {
 
                 <p className="mb-1">
                   💼{" "}
-                  <strong>
-                    {actor.Profesion || "Sin profesión definida"}
-                  </strong>
+                  <strong>{actor.Profesion || "Sin profesión definida"}</strong>
                 </p>
 
                 <p className="mb-1">🎂 {mostrarNacimiento(actor)}</p>
@@ -265,14 +277,14 @@ function Actores() {
                     actor.EstaVivo ? "bg-success" : "bg-dark"
                   }`}
                 >
-                  {actor.EstaVivo ? "🟢 Vivo" : "⚫ Fallecido"}
+                  {obtenerEstadoActor(actor)}
                 </span>
               </div>
 
               <div className="card-footer bg-white border-0">
                 <Link
                   to={`/actores/${actor.Id}`}
-                  className="btn btn-info btn-sm w-100 mb-2"
+                  className="btn btn-outline-primary btn-sm w-100 mb-2"
                 >
                   👤 Ver perfil
                 </Link>

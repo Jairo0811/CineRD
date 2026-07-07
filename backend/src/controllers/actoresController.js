@@ -11,6 +11,10 @@ const normalizarEntero = (valor) => {
   return Number.isNaN(numero) ? null : numero;
 };
 
+const construirNombreCompleto = (nombres, apellidos) => {
+  return `${nombres || ""} ${apellidos || ""}`.trim();
+};
+
 const obtenerActores = async (req, res) => {
   try {
     const {
@@ -26,6 +30,8 @@ const obtenerActores = async (req, res) => {
     let query = `
       SELECT
         A.Id,
+        A.Nombres,
+        A.Apellidos,
         A.NombreCompleto,
         A.NombreArtistico,
         A.Profesion,
@@ -44,7 +50,9 @@ const obtenerActores = async (req, res) => {
     if (buscar) {
       query += `
         AND (
-          A.NombreCompleto LIKE @Buscar
+          A.Nombres LIKE @Buscar
+          OR A.Apellidos LIKE @Buscar
+          OR A.NombreCompleto LIKE @Buscar
           OR A.NombreArtistico LIKE @Buscar
           OR A.Profesion LIKE @Buscar
         )
@@ -70,6 +78,8 @@ const obtenerActores = async (req, res) => {
     query += `
       GROUP BY
         A.Id,
+        A.Nombres,
+        A.Apellidos,
         A.NombreCompleto,
         A.NombreArtistico,
         A.Profesion,
@@ -96,15 +106,13 @@ const obtenerActores = async (req, res) => {
 
       case "nacimientoReciente":
         query += `
-          ORDER BY
-            COALESCE(YEAR(A.FechaNacimiento), A.AnioNacimiento) DESC
+          ORDER BY COALESCE(YEAR(A.FechaNacimiento), A.AnioNacimiento) DESC
         `;
         break;
 
       case "nacimientoAntiguo":
         query += `
-          ORDER BY
-            COALESCE(YEAR(A.FechaNacimiento), A.AnioNacimiento) ASC
+          ORDER BY COALESCE(YEAR(A.FechaNacimiento), A.AnioNacimiento) ASC
         `;
         break;
 
@@ -149,6 +157,8 @@ const obtenerActorPorId = async (req, res) => {
       .query(`
         SELECT
           Id,
+          Nombres,
+          Apellidos,
           NombreCompleto,
           NombreArtistico,
           Profesion,
@@ -180,7 +190,8 @@ const obtenerActorPorId = async (req, res) => {
 const crearActor = async (req, res) => {
   try {
     const {
-      NombreCompleto,
+      Nombres,
+      Apellidos,
       NombreArtistico,
       Profesion,
       FechaNacimiento,
@@ -190,11 +201,13 @@ const crearActor = async (req, res) => {
       FechaFallecimiento,
     } = req.body;
 
-    if (!NombreCompleto || !Sexo) {
+    if (!Nombres || !Sexo) {
       return res.status(400).json({
-        mensaje: "Nombre completo y sexo son obligatorios",
+        mensaje: "Nombres y sexo son obligatorios",
       });
     }
+
+    const NombreCompleto = construirNombreCompleto(Nombres, Apellidos);
 
     const Foto = req.file ? `/uploads/actores/${req.file.filename}` : null;
 
@@ -202,6 +215,8 @@ const crearActor = async (req, res) => {
 
     const resultado = await pool
       .request()
+      .input("Nombres", sql.NVarChar(150), Nombres)
+      .input("Apellidos", sql.NVarChar(150), Apellidos || null)
       .input("NombreCompleto", sql.NVarChar(150), NombreCompleto)
       .input("NombreArtistico", sql.NVarChar(150), NombreArtistico || null)
       .input("Profesion", sql.NVarChar(100), Profesion || null)
@@ -214,6 +229,8 @@ const crearActor = async (req, res) => {
       .query(`
         INSERT INTO Actores
         (
+          Nombres,
+          Apellidos,
           NombreCompleto,
           NombreArtistico,
           Profesion,
@@ -227,6 +244,8 @@ const crearActor = async (req, res) => {
         OUTPUT INSERTED.*
         VALUES
         (
+          @Nombres,
+          @Apellidos,
           @NombreCompleto,
           @NombreArtistico,
           @Profesion,
@@ -256,7 +275,8 @@ const actualizarActor = async (req, res) => {
     const { id } = req.params;
 
     const {
-      NombreCompleto,
+      Nombres,
+      Apellidos,
       NombreArtistico,
       Profesion,
       FechaNacimiento,
@@ -266,11 +286,13 @@ const actualizarActor = async (req, res) => {
       FechaFallecimiento,
     } = req.body;
 
-    if (!NombreCompleto || !Sexo) {
+    if (!Nombres || !Sexo) {
       return res.status(400).json({
-        mensaje: "Nombre completo y sexo son obligatorios",
+        mensaje: "Nombres y sexo son obligatorios",
       });
     }
+
+    const NombreCompleto = construirNombreCompleto(Nombres, Apellidos);
 
     const pool = await poolPromise;
 
@@ -294,6 +316,8 @@ const actualizarActor = async (req, res) => {
     const resultado = await pool
       .request()
       .input("Id", sql.Int, id)
+      .input("Nombres", sql.NVarChar(150), Nombres)
+      .input("Apellidos", sql.NVarChar(150), Apellidos || null)
       .input("NombreCompleto", sql.NVarChar(150), NombreCompleto)
       .input("NombreArtistico", sql.NVarChar(150), NombreArtistico || null)
       .input("Profesion", sql.NVarChar(100), Profesion || null)
@@ -306,6 +330,8 @@ const actualizarActor = async (req, res) => {
       .query(`
         UPDATE Actores
         SET
+          Nombres = @Nombres,
+          Apellidos = @Apellidos,
           NombreCompleto = @NombreCompleto,
           NombreArtistico = @NombreArtistico,
           Profesion = @Profesion,

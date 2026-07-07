@@ -7,9 +7,7 @@ const profesiones = [
   "Actriz",
   "Actor / Director",
   "Actor / Productor",
-  "Actor / Guionista",
   "Actor / Director / Productor",
-  "Actor / Director / Guionista",
   "Director",
   "Director / Productor",
   "Director / Guionista",
@@ -19,7 +17,7 @@ const profesiones = [
   "Humorista",
   "Comediante",
   "Cantante",
-  "Artista Urbano (a)",
+  "Artista Urbano",
   "Influencer",
   "YouTuber",
   "Comunicador",
@@ -38,7 +36,8 @@ function FormularioActor() {
   const API_URL = "http://localhost:3000";
 
   const [formulario, setFormulario] = useState({
-    NombreCompleto: "",
+    Nombres: "",
+    Apellidos: "",
     NombreArtistico: "",
     Profesion: "",
     FechaNacimiento: "",
@@ -68,7 +67,8 @@ function FormularioActor() {
       const actor = response.data;
 
       setFormulario({
-        NombreCompleto: actor.NombreCompleto || "",
+        Nombres: actor.Nombres || actor.NombreCompleto || "",
+        Apellidos: actor.Apellidos || "",
         NombreArtistico: actor.NombreArtistico || "",
         Profesion: actor.Profesion || "",
         FechaNacimiento: formatearFecha(actor.FechaNacimiento),
@@ -118,8 +118,8 @@ function FormularioActor() {
   const guardarActor = async (e) => {
     e.preventDefault();
 
-    if (!formulario.NombreCompleto || !formulario.Sexo) {
-      alert("Nombre completo y sexo son obligatorios");
+    if (!formulario.Nombres || !formulario.Sexo) {
+      alert("Nombres y sexo son obligatorios");
       return;
     }
 
@@ -139,7 +139,8 @@ function FormularioActor() {
 
     const datos = new FormData();
 
-    datos.append("NombreCompleto", formulario.NombreCompleto);
+    datos.append("Nombres", formulario.Nombres);
+    datos.append("Apellidos", formulario.Apellidos);
     datos.append("NombreArtistico", formulario.NombreArtistico);
     datos.append("Profesion", formulario.Profesion);
     datos.append("FechaNacimiento", formulario.FechaNacimiento);
@@ -198,13 +199,25 @@ function FormularioActor() {
       <form onSubmit={guardarActor} className="card mt-3 shadow">
         <div className="card-body">
           <div className="mb-3">
-            <label className="form-label">Nombre Completo</label>
+            <label className="form-label">Nombres</label>
 
             <input
               type="text"
-              name="NombreCompleto"
+              name="Nombres"
               className="form-control"
-              value={formulario.NombreCompleto}
+              value={formulario.Nombres}
+              onChange={manejarCambio}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Apellidos</label>
+
+            <input
+              type="text"
+              name="Apellidos"
+              className="form-control"
+              value={formulario.Apellidos}
               onChange={manejarCambio}
             />
           </div>

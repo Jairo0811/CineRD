@@ -2,6 +2,23 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
+const generos = [
+  "Acción",
+  "Animación",
+  "Aventura",
+  "Biográfica",
+  "Ciencia ficción",
+  "Comedia",
+  "Documental",
+  "Drama",
+  "Fantasía",
+  "Infantil",
+  "Musical",
+  "Romance",
+  "Suspenso",
+  "Terror",
+];
+
 function FormularioPelicula() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -134,7 +151,7 @@ function FormularioPelicula() {
       alert(
         error.response?.data?.mensaje ||
           error.response?.data?.error ||
-          "Error al guardar la película"
+          "Error al guardar la película",
       );
     }
   };
@@ -166,13 +183,20 @@ function FormularioPelicula() {
           <div className="mb-3">
             <label className="form-label">Género</label>
 
-            <input
-              type="text"
+            <select
               name="Genero"
-              className="form-control"
+              className="form-select"
               value={formulario.Genero}
               onChange={manejarCambio}
-            />
+            >
+              <option value="">Seleccione un género</option>
+
+              {generos.map((genero) => (
+                <option key={genero} value={genero}>
+                  {genero}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mb-3">
