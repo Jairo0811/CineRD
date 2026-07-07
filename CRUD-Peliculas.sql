@@ -165,3 +165,39 @@ BEGIN
     ADD Apellido NVARCHAR(100) NULL;
 END
 GO
+
+
+USE CRUDPeliculas;
+GO
+
+IF COL_LENGTH('Actores', 'Nombres') IS NULL
+BEGIN
+    ALTER TABLE Actores
+    ADD Nombres NVARCHAR(150) NULL;
+END
+GO
+
+IF COL_LENGTH('Actores', 'Apellidos') IS NULL
+BEGIN
+    ALTER TABLE Actores
+    ADD Apellidos NVARCHAR(150) NULL;
+END
+GO
+
+
+
+
+UPDATE Peliculas
+SET Genero = LTRIM(RTRIM(Genero));
+
+UPDATE Peliculas
+SET Genero = 'Comedia'
+WHERE LOWER(Genero) = 'comedia';
+
+
+UPDATE Peliculas
+SET Genero = LTRIM(RTRIM(Genero));
+
+UPDATE Peliculas
+SET Genero = 'Comedia'
+WHERE LOWER(Genero) IN ('comedia', 'comedia dominicana', 'dramática');
