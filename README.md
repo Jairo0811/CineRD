@@ -1,10 +1,6 @@
 # 🎬 CineRD
 
 <p align="center">
-  <img src="docs/logo.png" width="180" alt="CineRD Logo"/>
-</p>
-
-<p align="center">
 
 **La base de datos del cine dominicano.**
 
