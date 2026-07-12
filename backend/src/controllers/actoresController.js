@@ -1,18 +1,109 @@
 const { sql, poolPromise } = require("../config/db");
 
 const normalizarFecha = (fecha) => {
-  return fecha && fecha.trim() !== "" ? fecha : null;
+  if (!fecha || fecha.toString().trim() === "") {
+    return null;
+  }
+
+  return fecha;
 };
 
 const normalizarEntero = (valor) => {
-  if (!valor || valor.toString().trim() === "") return null;
+  if (
+    valor === null ||
+    valor === undefined ||
+    valor.toString().trim() === ""
+  ) {
+    return null;
+  }
 
-  const numero = parseInt(valor, 10);
+  const numero = Number.parseInt(valor, 10);
+
   return Number.isNaN(numero) ? null : numero;
 };
 
+const normalizarTexto = (valor) => {
+  if (!valor || valor.toString().trim() === "") {
+    return null;
+  }
+
+  return valor.toString().trim();
+};
+
 const construirNombreCompleto = (nombres, apellidos) => {
-  return `${nombres || ""} ${apellidos || ""}`.trim();
+  return `${nombres || ""} ${apellidos || ""}`
+    .replace(/\s+/g, " ")
+    .trim();
+};
+
+const verificarTmdbIdDisponible = async ({
+  pool,
+  tmdbId,
+  actorId = null,
+}) => {
+  if (!tmdbId) {
+    return null;
+  }
+
+  const request = pool
+    .request()
+    .input("TMDbId", sql.Int, tmdbId);
+
+  let query = `
+    SELECT
+      Id,
+      NombreCompleto
+    FROM Actores
+    WHERE TMDbId = @TMDbId
+  `;
+
+  if (actorId) {
+    request.input("ActorId", sql.Int, actorId);
+
+    query += `
+      AND Id <> @ActorId
+    `;
+  }
+
+  const resultado = await request.query(query);
+
+  return resultado.recordset[0] || null;
+};
+
+const verificarNombreExistente = async ({
+  pool,
+  nombreCompleto,
+  actorId = null,
+}) => {
+  const request = pool
+    .request()
+    .input(
+      "NombreCompleto",
+      sql.NVarChar(300),
+      nombreCompleto,
+    );
+
+  let query = `
+    SELECT
+      Id,
+      NombreCompleto,
+      TMDbId
+    FROM Actores
+    WHERE LOWER(LTRIM(RTRIM(NombreCompleto))) =
+          LOWER(LTRIM(RTRIM(@NombreCompleto)))
+  `;
+
+  if (actorId) {
+    request.input("ActorId", sql.Int, actorId);
+
+    query += `
+      AND Id <> @ActorId
+    `;
+  }
+
+  const resultado = await request.query(query);
+
+  return resultado.recordset[0] || null;
 };
 
 const obtenerActores = async (req, res) => {
@@ -30,6 +121,7 @@ const obtenerActores = async (req, res) => {
     let query = `
       SELECT
         A.Id,
+        A.TMDbId,
         A.Nombres,
         A.Apellidos,
         A.NombreCompleto,
@@ -43,7 +135,8 @@ const obtenerActores = async (req, res) => {
         A.Foto,
         COUNT(AP.PeliculaId) AS CantidadPeliculas
       FROM Actores A
-      LEFT JOIN ActoresPeliculas AP ON A.Id = AP.ActorId
+      LEFT JOIN ActoresPeliculas AP
+        ON A.Id = AP.ActorId
       WHERE 1 = 1
     `;
 
@@ -59,8 +152,17 @@ const obtenerActores = async (req, res) => {
       `;
     }
 
-    if (estado === "vivo") query += ` AND A.EstaVivo = 1`;
-    if (estado === "fallecido") query += ` AND A.EstaVivo = 0`;
+    if (estado === "vivo") {
+      query += `
+        AND A.EstaVivo = 1
+      `;
+    }
+
+    if (estado === "fallecido") {
+      query += `
+        AND A.EstaVivo = 0
+      `;
+    }
 
     if (anio) {
       query += `
@@ -72,12 +174,15 @@ const obtenerActores = async (req, res) => {
     }
 
     if (profesion) {
-      query += ` AND A.Profesion LIKE @Profesion`;
+      query += `
+        AND A.Profesion LIKE @Profesion
+      `;
     }
 
     query += `
       GROUP BY
         A.Id,
+        A.TMDbId,
         A.Nombres,
         A.Apellidos,
         A.NombreCompleto,
@@ -93,51 +198,86 @@ const obtenerActores = async (req, res) => {
 
     switch (orden) {
       case "za":
-        query += ` ORDER BY A.NombreCompleto DESC`;
+        query += `
+          ORDER BY A.NombreCompleto DESC
+        `;
         break;
 
       case "masPeliculas":
-        query += ` ORDER BY CantidadPeliculas DESC`;
+        query += `
+          ORDER BY CantidadPeliculas DESC,
+                   A.NombreCompleto ASC
+        `;
         break;
 
       case "menosPeliculas":
-        query += ` ORDER BY CantidadPeliculas ASC`;
+        query += `
+          ORDER BY CantidadPeliculas ASC,
+                   A.NombreCompleto ASC
+        `;
         break;
 
       case "nacimientoReciente":
         query += `
-          ORDER BY COALESCE(YEAR(A.FechaNacimiento), A.AnioNacimiento) DESC
+          ORDER BY
+            COALESCE(
+              YEAR(A.FechaNacimiento),
+              A.AnioNacimiento
+            ) DESC,
+            A.NombreCompleto ASC
         `;
         break;
 
       case "nacimientoAntiguo":
         query += `
-          ORDER BY COALESCE(YEAR(A.FechaNacimiento), A.AnioNacimiento) ASC
+          ORDER BY
+            COALESCE(
+              YEAR(A.FechaNacimiento),
+              A.AnioNacimiento
+            ) ASC,
+            A.NombreCompleto ASC
         `;
         break;
 
       default:
-        query += ` ORDER BY A.NombreCompleto ASC`;
+        query += `
+          ORDER BY A.NombreCompleto ASC
+        `;
+        break;
     }
 
     const request = pool.request();
 
     if (buscar) {
-      request.input("Buscar", sql.NVarChar(150), `%${buscar}%`);
+      request.input(
+        "Buscar",
+        sql.NVarChar(150),
+        `%${buscar.trim()}%`,
+      );
     }
 
     if (anio) {
-      request.input("Anio", sql.Int, parseInt(anio, 10));
+      request.input(
+        "Anio",
+        sql.Int,
+        Number.parseInt(anio, 10),
+      );
     }
 
     if (profesion) {
-      request.input("Profesion", sql.NVarChar(100), `%${profesion}%`);
+      request.input(
+        "Profesion",
+        sql.NVarChar(100),
+        `%${profesion.trim()}%`,
+      );
     }
 
     const resultado = await request.query(query);
 
     res.json(resultado.recordset);
   } catch (error) {
+    console.error("Error al obtener los actores:", error);
+
     res.status(500).json({
       mensaje: "Error al obtener los actores",
       error: error.message,
@@ -147,7 +287,13 @@ const obtenerActores = async (req, res) => {
 
 const obtenerActorPorId = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({
+        mensaje: "El identificador del actor no es válido",
+      });
+    }
 
     const pool = await poolPromise;
 
@@ -157,6 +303,7 @@ const obtenerActorPorId = async (req, res) => {
       .query(`
         SELECT
           Id,
+          TMDbId,
           Nombres,
           Apellidos,
           NombreCompleto,
@@ -180,6 +327,8 @@ const obtenerActorPorId = async (req, res) => {
 
     res.json(resultado.recordset[0]);
   } catch (error) {
+    console.error("Error al obtener el actor:", error);
+
     res.status(500).json({
       mensaje: "Error al obtener el actor",
       error: error.message,
@@ -190,6 +339,7 @@ const obtenerActorPorId = async (req, res) => {
 const crearActor = async (req, res) => {
   try {
     const {
+      TMDbId,
       Nombres,
       Apellidos,
       NombreArtistico,
@@ -201,34 +351,137 @@ const crearActor = async (req, res) => {
       FechaFallecimiento,
     } = req.body;
 
-    if (!Nombres || !Sexo) {
+    const nombresNormalizados = normalizarTexto(Nombres);
+    const apellidosNormalizados =
+      normalizarTexto(Apellidos);
+
+    if (!nombresNormalizados || !Sexo) {
       return res.status(400).json({
         mensaje: "Nombres y sexo son obligatorios",
       });
     }
 
-    const NombreCompleto = construirNombreCompleto(Nombres, Apellidos);
+    const NombreCompleto = construirNombreCompleto(
+      nombresNormalizados,
+      apellidosNormalizados,
+    );
 
-    const Foto = req.file ? `/uploads/actores/${req.file.filename}` : null;
+    const tmdbIdNormalizado = normalizarEntero(TMDbId);
+    const estaVivoNormalizado =
+      EstaVivo === true || EstaVivo === "true";
+
+    if (
+      !estaVivoNormalizado &&
+      !normalizarFecha(FechaFallecimiento)
+    ) {
+      return res.status(400).json({
+        mensaje:
+          "Debe indicar la fecha de fallecimiento",
+      });
+    }
 
     const pool = await poolPromise;
 
+    const actorTmdbExistente =
+      await verificarTmdbIdDisponible({
+        pool,
+        tmdbId: tmdbIdNormalizado,
+      });
+
+    if (actorTmdbExistente) {
+      return res.status(409).json({
+        mensaje:
+          "Este talento de TMDb ya está registrado en CineRD",
+        actor: actorTmdbExistente,
+      });
+    }
+
+    const actorNombreExistente =
+      await verificarNombreExistente({
+        pool,
+        nombreCompleto: NombreCompleto,
+      });
+
+    if (actorNombreExistente) {
+      return res.status(409).json({
+        mensaje:
+          "Ya existe un talento registrado con ese nombre",
+        actor: actorNombreExistente,
+      });
+    }
+
+    const Foto = req.file
+      ? `/uploads/actores/${req.file.filename}`
+      : null;
+
     const resultado = await pool
       .request()
-      .input("Nombres", sql.NVarChar(150), Nombres)
-      .input("Apellidos", sql.NVarChar(150), Apellidos || null)
-      .input("NombreCompleto", sql.NVarChar(150), NombreCompleto)
-      .input("NombreArtistico", sql.NVarChar(150), NombreArtistico || null)
-      .input("Profesion", sql.NVarChar(100), Profesion || null)
-      .input("FechaNacimiento", sql.Date, normalizarFecha(FechaNacimiento))
-      .input("AnioNacimiento", sql.Int, normalizarEntero(AnioNacimiento))
-      .input("Sexo", sql.NVarChar(20), Sexo)
-      .input("EstaVivo", sql.Bit, EstaVivo === "true" || EstaVivo === true)
-      .input("FechaFallecimiento", sql.Date, normalizarFecha(FechaFallecimiento))
-      .input("Foto", sql.NVarChar(255), Foto)
+      .input(
+        "TMDbId",
+        sql.Int,
+        tmdbIdNormalizado,
+      )
+      .input(
+        "Nombres",
+        sql.NVarChar(150),
+        nombresNormalizados,
+      )
+      .input(
+        "Apellidos",
+        sql.NVarChar(150),
+        apellidosNormalizados,
+      )
+      .input(
+        "NombreCompleto",
+        sql.NVarChar(300),
+        NombreCompleto,
+      )
+      .input(
+        "NombreArtistico",
+        sql.NVarChar(150),
+        normalizarTexto(NombreArtistico),
+      )
+      .input(
+        "Profesion",
+        sql.NVarChar(100),
+        normalizarTexto(Profesion),
+      )
+      .input(
+        "FechaNacimiento",
+        sql.Date,
+        normalizarFecha(FechaNacimiento),
+      )
+      .input(
+        "AnioNacimiento",
+        sql.Int,
+        normalizarEntero(AnioNacimiento),
+      )
+      .input(
+        "Sexo",
+        sql.NVarChar(20),
+        Sexo,
+      )
+      .input(
+        "EstaVivo",
+        sql.Bit,
+        estaVivoNormalizado,
+      )
+      .input(
+        "FechaFallecimiento",
+        sql.Date,
+        estaVivoNormalizado
+          ? null
+          : normalizarFecha(FechaFallecimiento),
+      )
+      .input(
+        "Foto",
+        sql.NVarChar(255),
+        Foto,
+      )
       .query(`
         INSERT INTO Actores
         (
+          TMDbId,
           Nombres,
           Apellidos,
           NombreCompleto,
@@ -244,6 +497,7 @@ const crearActor = async (req, res) => {
         OUTPUT INSERTED.*
         VALUES
         (
+          @TMDbId,
           @Nombres,
           @Apellidos,
           @NombreCompleto,
@@ -263,6 +517,21 @@ const crearActor = async (req, res) => {
       actor: resultado.recordset[0],
     });
   } catch (error) {
+    console.error("Error al registrar el actor:", error);
+
+    if (
+      error.message.includes("TMDbId") &&
+      (
+        error.message.includes("duplicate") ||
+        error.message.includes("UNIQUE")
+      )
+    ) {
+      return res.status(409).json({
+        mensaje:
+          "Este talento de TMDb ya está registrado",
+      });
+    }
+
     res.status(500).json({
       mensaje: "Error al registrar el actor",
       error: error.message,
@@ -272,9 +541,16 @@ const crearActor = async (req, res) => {
 
 const actualizarActor = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({
+        mensaje: "El identificador del actor no es válido",
+      });
+    }
 
     const {
+      TMDbId,
       Nombres,
       Apellidos,
       NombreArtistico,
@@ -286,50 +562,159 @@ const actualizarActor = async (req, res) => {
       FechaFallecimiento,
     } = req.body;
 
-    if (!Nombres || !Sexo) {
+    const nombresNormalizados = normalizarTexto(Nombres);
+    const apellidosNormalizados =
+      normalizarTexto(Apellidos);
+
+    if (!nombresNormalizados || !Sexo) {
       return res.status(400).json({
         mensaje: "Nombres y sexo son obligatorios",
       });
     }
 
-    const NombreCompleto = construirNombreCompleto(Nombres, Apellidos);
+    const NombreCompleto = construirNombreCompleto(
+      nombresNormalizados,
+      apellidosNormalizados,
+    );
+
+    const tmdbIdNormalizado = normalizarEntero(TMDbId);
+    const estaVivoNormalizado =
+      EstaVivo === true || EstaVivo === "true";
+
+    if (
+      !estaVivoNormalizado &&
+      !normalizarFecha(FechaFallecimiento)
+    ) {
+      return res.status(400).json({
+        mensaje:
+          "Debe indicar la fecha de fallecimiento",
+      });
+    }
 
     const pool = await poolPromise;
 
-    let Foto = null;
+    const actorActual = await pool
+      .request()
+      .input("Id", sql.Int, id)
+      .query(`
+        SELECT
+          Id,
+          TMDbId,
+          Foto
+        FROM Actores
+        WHERE Id = @Id
+      `);
 
-    if (req.file) {
-      Foto = `/uploads/actores/${req.file.filename}`;
-    } else {
-      const fotoActual = await pool
-        .request()
-        .input("Id", sql.Int, id)
-        .query(`
-          SELECT Foto
-          FROM Actores
-          WHERE Id = @Id
-        `);
-
-      Foto = fotoActual.recordset[0]?.Foto || null;
+    if (actorActual.recordset.length === 0) {
+      return res.status(404).json({
+        mensaje: "Actor no encontrado",
+      });
     }
+
+    const tmdbIdFinal =
+      tmdbIdNormalizado ??
+      actorActual.recordset[0].TMDbId ??
+      null;
+
+    const actorTmdbExistente =
+      await verificarTmdbIdDisponible({
+        pool,
+        tmdbId: tmdbIdFinal,
+        actorId: id,
+      });
+
+    if (actorTmdbExistente) {
+      return res.status(409).json({
+        mensaje:
+          "Este perfil de TMDb ya está vinculado con otro talento",
+        actor: actorTmdbExistente,
+      });
+    }
+
+    const actorNombreExistente =
+      await verificarNombreExistente({
+        pool,
+        nombreCompleto: NombreCompleto,
+        actorId: id,
+      });
+
+    if (actorNombreExistente) {
+      return res.status(409).json({
+        mensaje:
+          "Ya existe otro talento registrado con ese nombre",
+        actor: actorNombreExistente,
+      });
+    }
+
+    const Foto = req.file
+      ? `/uploads/actores/${req.file.filename}`
+      : actorActual.recordset[0].Foto || null;
 
     const resultado = await pool
       .request()
       .input("Id", sql.Int, id)
-      .input("Nombres", sql.NVarChar(150), Nombres)
-      .input("Apellidos", sql.NVarChar(150), Apellidos || null)
-      .input("NombreCompleto", sql.NVarChar(150), NombreCompleto)
-      .input("NombreArtistico", sql.NVarChar(150), NombreArtistico || null)
-      .input("Profesion", sql.NVarChar(100), Profesion || null)
-      .input("FechaNacimiento", sql.Date, normalizarFecha(FechaNacimiento))
-      .input("AnioNacimiento", sql.Int, normalizarEntero(AnioNacimiento))
-      .input("Sexo", sql.NVarChar(20), Sexo)
-      .input("EstaVivo", sql.Bit, EstaVivo === "true" || EstaVivo === true)
-      .input("FechaFallecimiento", sql.Date, normalizarFecha(FechaFallecimiento))
-      .input("Foto", sql.NVarChar(255), Foto)
+      .input("TMDbId", sql.Int, tmdbIdFinal)
+      .input(
+        "Nombres",
+        sql.NVarChar(150),
+        nombresNormalizados,
+      )
+      .input(
+        "Apellidos",
+        sql.NVarChar(150),
+        apellidosNormalizados,
+      )
+      .input(
+        "NombreCompleto",
+        sql.NVarChar(300),
+        NombreCompleto,
+      )
+      .input(
+        "NombreArtistico",
+        sql.NVarChar(150),
+        normalizarTexto(NombreArtistico),
+      )
+      .input(
+        "Profesion",
+        sql.NVarChar(100),
+        normalizarTexto(Profesion),
+      )
+      .input(
+        "FechaNacimiento",
+        sql.Date,
+        normalizarFecha(FechaNacimiento),
+      )
+      .input(
+        "AnioNacimiento",
+        sql.Int,
+        normalizarEntero(AnioNacimiento),
+      )
+      .input(
+        "Sexo",
+        sql.NVarChar(20),
+        Sexo,
+      )
+      .input(
+        "EstaVivo",
+        sql.Bit,
+        estaVivoNormalizado,
+      )
+      .input(
+        "FechaFallecimiento",
+        sql.Date,
+        estaVivoNormalizado
+          ? null
+          : normalizarFecha(FechaFallecimiento),
+      )
+      .input(
+        "Foto",
+        sql.NVarChar(255),
+        Foto,
+      )
       .query(`
         UPDATE Actores
         SET
+          TMDbId = @TMDbId,
           Nombres = @Nombres,
           Apellidos = @Apellidos,
           NombreCompleto = @NombreCompleto,
@@ -345,17 +730,13 @@ const actualizarActor = async (req, res) => {
         WHERE Id = @Id
       `);
 
-    if (resultado.recordset.length === 0) {
-      return res.status(404).json({
-        mensaje: "Actor no encontrado",
-      });
-    }
-
     res.json({
       mensaje: "Actor actualizado correctamente",
       actor: resultado.recordset[0],
     });
   } catch (error) {
+    console.error("Error al actualizar el actor:", error);
+
     res.status(500).json({
       mensaje: "Error al actualizar el actor",
       error: error.message,
@@ -364,21 +745,29 @@ const actualizarActor = async (req, res) => {
 };
 
 const eliminarActor = async (req, res) => {
+  const transaction = new sql.Transaction(
+    await poolPromise,
+  );
+
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id);
 
-    const pool = await poolPromise;
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({
+        mensaje: "El identificador del actor no es válido",
+      });
+    }
 
-    await pool
-      .request()
+    await transaction.begin();
+
+    await new sql.Request(transaction)
       .input("ActorId", sql.Int, id)
       .query(`
         DELETE FROM ActoresPeliculas
         WHERE ActorId = @ActorId
       `);
 
-    const resultado = await pool
-      .request()
+    const resultado = await new sql.Request(transaction)
       .input("Id", sql.Int, id)
       .query(`
         DELETE FROM Actores
@@ -387,16 +776,31 @@ const eliminarActor = async (req, res) => {
       `);
 
     if (resultado.recordset.length === 0) {
+      await transaction.rollback();
+
       return res.status(404).json({
         mensaje: "Actor no encontrado",
       });
     }
+
+    await transaction.commit();
 
     res.json({
       mensaje: "Actor eliminado correctamente",
       actor: resultado.recordset[0],
     });
   } catch (error) {
+    try {
+      await transaction.rollback();
+    } catch (rollbackError) {
+      console.error(
+        "Error al revertir la transacción:",
+        rollbackError,
+      );
+    }
+
+    console.error("Error al eliminar el actor:", error);
+
     res.status(500).json({
       mensaje: "Error al eliminar el actor",
       error: error.message,

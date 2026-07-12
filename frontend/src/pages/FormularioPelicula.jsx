@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import api from "../services/api";
 
 const generos = [
@@ -19,6 +19,37 @@ const generos = [
   "Terror",
 ];
 
+const MAPA_GENEROS_TMDB = {
+  Action: "Acción",
+  Acción: "Acción",
+  Animation: "Animación",
+  Animación: "Animación",
+  Adventure: "Aventura",
+  Aventura: "Aventura",
+  Biography: "Biográfica",
+  Biográfica: "Biográfica",
+  "Science Fiction": "Ciencia ficción",
+  "Ciencia ficción": "Ciencia ficción",
+  Comedy: "Comedia",
+  Comedia: "Comedia",
+  Documentary: "Documental",
+  Documental: "Documental",
+  Drama: "Drama",
+  Fantasy: "Fantasía",
+  Fantasía: "Fantasía",
+  Family: "Infantil",
+  Familia: "Infantil",
+  Infantil: "Infantil",
+  Music: "Musical",
+  Música: "Musical",
+  Musical: "Musical",
+  Romance: "Romance",
+  Thriller: "Suspenso",
+  Suspenso: "Suspenso",
+  Horror: "Terror",
+  Terror: "Terror",
+};
+
 function FormularioPelicula() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -27,6 +58,7 @@ function FormularioPelicula() {
   const API_URL = "http://localhost:3000";
 
   const [formulario, setFormulario] = useState({
+    TMDbId: "",
     Titulo: "",
     Genero: "",
     Director: "",
@@ -38,6 +70,11 @@ function FormularioPelicula() {
   const [vistaPrevia, setVistaPrevia] = useState(null);
   const [directores, setDirectores] = useState([]);
 
+  const [resultadosTmdb, setResultadosTmdb] = useState([]);
+  const [buscandoTmdb, setBuscandoTmdb] = useState(false);
+  const [importandoTmdbId, setImportandoTmdbId] = useState(null);
+  const [mensajeTmdb, setMensajeTmdb] = useState("");
+
   useEffect(() => {
     obtenerDirectores();
 
@@ -46,9 +83,44 @@ function FormularioPelicula() {
     }
   }, [id]);
 
+  useEffect(() => {
+    return () => {
+      if (vistaPrevia?.startsWith("blob:")) {
+        URL.revokeObjectURL(vistaPrevia);
+      }
+    };
+  }, [vistaPrevia]);
+
+  const directorImportadoNoRegistrado = useMemo(() => {
+    if (!formulario.Director) return false;
+
+    return !directores.some(
+      (director) =>
+        director.NombreCompleto.trim().toLowerCase() ===
+        formulario.Director.trim().toLowerCase(),
+    );
+  }, [directores, formulario.Director]);
+
   const formatearFecha = (fecha) => {
     if (!fecha) return "";
+
     return fecha.substring(0, 10);
+  };
+
+  const formatearFechaVisual = (fecha) => {
+    if (!fecha) return "Fecha no disponible";
+
+    return new Date(`${fecha}T00:00:00`).toLocaleDateString("es-DO", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const normalizarGeneroTmdb = (genero) => {
+    if (!genero) return "";
+
+    return MAPA_GENEROS_TMDB[genero] || genero;
   };
 
   const obtenerDirectores = async () => {
@@ -61,7 +133,7 @@ function FormularioPelicula() {
 
       setDirectores(response.data);
     } catch (error) {
-      console.error(error);
+      console.error("Error al cargar los directores:", error);
     }
   };
 
@@ -71,6 +143,7 @@ function FormularioPelicula() {
       const pelicula = response.data;
 
       setFormulario({
+        TMDbId: pelicula.TMDbId || "",
         Titulo: pelicula.Titulo || "",
         Genero: pelicula.Genero || "",
         Director: pelicula.Director || "",
@@ -83,42 +156,215 @@ function FormularioPelicula() {
       }
     } catch (error) {
       console.error(error);
-      alert("Error al cargar la película");
+      alert(error.response?.data?.mensaje || "Error al cargar la película");
     }
   };
 
   const manejarCambio = (e) => {
     const { name, value } = e.target;
 
-    setFormulario({
-      ...formulario,
+    setFormulario((actual) => ({
+      ...actual,
       [name]: value,
-    });
+    }));
+
+    if (name === "Titulo") {
+      setMensajeTmdb("");
+    }
   };
 
   const manejarFoto = (e) => {
-    const archivo = e.target.files[0];
+    const archivo = e.target.files?.[0];
 
     if (!archivo) return;
+
+    if (vistaPrevia?.startsWith("blob:")) {
+      URL.revokeObjectURL(vistaPrevia);
+    }
 
     setFoto(archivo);
     setVistaPrevia(URL.createObjectURL(archivo));
   };
 
+  const buscarEnTmdb = async () => {
+    const titulo = formulario.Titulo.trim();
+
+    if (titulo.length < 2) {
+      alert("Escribe al menos 2 caracteres para buscar en TMDb");
+      return;
+    }
+
+    try {
+      setBuscandoTmdb(true);
+      setMensajeTmdb("");
+      setResultadosTmdb([]);
+
+      const response = await api.get("/tmdb/peliculas/buscar", {
+        params: {
+          titulo,
+        },
+      });
+
+      const resultados = response.data || [];
+
+      setResultadosTmdb(resultados);
+
+      if (resultados.length === 0) {
+        setMensajeTmdb(
+          "No se encontraron resultados en TMDb. Puedes registrar la película manualmente.",
+        );
+      }
+    } catch (error) {
+      console.error("Error al buscar en TMDb:", error);
+
+      setMensajeTmdb(
+        error.response?.data?.mensaje ||
+          "No fue posible consultar TMDb en este momento.",
+      );
+    } finally {
+      setBuscandoTmdb(false);
+    }
+  };
+
+  const descargarPosterComoArchivo = async (posterUrl, tmdbId) => {
+    if (!posterUrl) return null;
+
+    try {
+      const response = await fetch(posterUrl);
+
+      if (!response.ok) {
+        throw new Error("No fue posible descargar el póster");
+      }
+
+      const blob = await response.blob();
+
+      const extension =
+        blob.type === "image/png"
+          ? "png"
+          : blob.type === "image/webp"
+            ? "webp"
+            : "jpg";
+
+      return new File([blob], `tmdb-pelicula-${tmdbId}.${extension}`, {
+        type: blob.type || "image/jpeg",
+      });
+    } catch (error) {
+      console.warn(
+        "No fue posible descargar automáticamente el póster:",
+        error,
+      );
+
+      return null;
+    }
+  };
+
+  const importarDesdeTmdb = async (resultado) => {
+    try {
+      setImportandoTmdbId(resultado.TmdbId);
+      setMensajeTmdb("");
+
+      const response = await api.get(`/tmdb/peliculas/${resultado.TmdbId}`);
+
+      const peliculaTmdb = response.data;
+
+      const generoNormalizado = normalizarGeneroTmdb(peliculaTmdb.Genero);
+
+      setFormulario((actual) => ({
+        ...actual,
+        TMDbId: peliculaTmdb.TmdbId || resultado.TmdbId,
+        Titulo: peliculaTmdb.Titulo || resultado.Titulo || actual.Titulo,
+        Genero: generos.includes(generoNormalizado) ? generoNormalizado : "",
+        Director: peliculaTmdb.Director || "",
+        FechaEstreno:
+          formatearFecha(peliculaTmdb.FechaEstreno) ||
+          formatearFecha(resultado.FechaEstreno),
+      }));
+
+      const posterUrl = peliculaTmdb.PosterUrl || resultado.PosterUrl || null;
+
+      if (posterUrl) {
+        if (vistaPrevia?.startsWith("blob:")) {
+          URL.revokeObjectURL(vistaPrevia);
+        }
+
+        setVistaPrevia(posterUrl);
+
+        const archivoPoster = await descargarPosterComoArchivo(
+          posterUrl,
+          resultado.TmdbId,
+        );
+
+        setFoto(archivoPoster);
+      }
+
+      setResultadosTmdb([]);
+
+      if (
+        peliculaTmdb.Director &&
+        !directores.some(
+          (director) =>
+            director.NombreCompleto.trim().toLowerCase() ===
+            peliculaTmdb.Director.trim().toLowerCase(),
+        )
+      ) {
+        setMensajeTmdb(
+          `Información importada. El director "${peliculaTmdb.Director}" todavía no está registrado como talento en CineRD.`,
+        );
+      } else {
+        setMensajeTmdb(
+          "Información importada correctamente. Revisa los datos antes de guardar.",
+        );
+      }
+    } catch (error) {
+      console.error("Error al importar desde TMDb:", error);
+
+      alert(
+        error.response?.data?.mensaje ||
+          "No fue posible importar la información desde TMDb",
+      );
+    } finally {
+      setImportandoTmdbId(null);
+    }
+  };
+
+  const desvincularTmdb = () => {
+    const confirmar = window.confirm(
+      "¿Deseas eliminar la vinculación de esta película con TMDb?",
+    );
+
+    if (!confirmar) return;
+
+    setFormulario((actual) => ({
+      ...actual,
+      TMDbId: "",
+    }));
+
+    setMensajeTmdb("La película quedará guardada sin vinculación con TMDb.");
+  };
+
+  const limpiarResultadosTmdb = () => {
+    setResultadosTmdb([]);
+    setMensajeTmdb("");
+  };
+
   const guardarPelicula = async (e) => {
     e.preventDefault();
 
-    if (!formulario.Titulo || !formulario.Genero || !formulario.FechaEstreno) {
+    const titulo = formulario.Titulo.trim();
+    const productora = formulario.Productora.trim();
+
+    if (!titulo || !formulario.Genero || !formulario.FechaEstreno) {
       alert("Título, género y fecha de estreno son obligatorios");
       return;
     }
 
     const datos = new FormData();
 
-    datos.append("Titulo", formulario.Titulo);
+    datos.append("TMDbId", formulario.TMDbId || "");
+    datos.append("Titulo", titulo);
     datos.append("Genero", formulario.Genero);
     datos.append("Director", formulario.Director);
-    datos.append("Productora", formulario.Productora);
+    datos.append("Productora", productora);
     datos.append("FechaEstreno", formulario.FechaEstreno);
 
     if (foto) {
@@ -168,6 +414,170 @@ function FormularioPelicula() {
 
       <form onSubmit={guardarPelicula} className="card mt-3 shadow">
         <div className="card-body">
+          <div className="card border-primary mb-4">
+            <div className="card-header bg-white fw-bold text-primary">
+              🎬 Asistente de importación desde TMDb
+            </div>
+
+            <div className="card-body">
+              <p className="text-muted">
+                Busca una película en TMDb para completar automáticamente sus
+                datos. Podrás revisarlos antes de guardar.
+              </p>
+
+              <div className="row g-2">
+                <div className="col-12 col-md-8">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Ej: Sanky Panky"
+                    value={formulario.Titulo}
+                    onChange={(e) =>
+                      setFormulario((actual) => ({
+                        ...actual,
+                        Titulo: e.target.value,
+                      }))
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        buscarEnTmdb();
+                      }
+                    }}
+                  />
+                </div>
+
+                <div className="col-12 col-md-4">
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary w-100"
+                    onClick={buscarEnTmdb}
+                    disabled={buscandoTmdb}
+                  >
+                    {buscandoTmdb ? "Buscando..." : "🔍 Buscar en TMDb"}
+                  </button>
+                </div>
+              </div>
+
+              {formulario.TMDbId && (
+                <div className="alert alert-success mt-3 mb-0">
+                  <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+                    <span>
+                      ✅ Película vinculada con TMDb.
+                      <strong> ID: {formulario.TMDbId}</strong>
+                    </span>
+
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={desvincularTmdb}
+                    >
+                      Desvincular
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {mensajeTmdb && (
+                <div className="alert alert-info mt-3 mb-0">{mensajeTmdb}</div>
+              )}
+
+              {resultadosTmdb.length > 0 && (
+                <div className="mt-4">
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h5 className="mb-0">Resultados encontrados</h5>
+
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={limpiarResultadosTmdb}
+                    >
+                      Cerrar resultados
+                    </button>
+                  </div>
+
+                  <div className="row g-3">
+                    {resultadosTmdb.map((resultado) => (
+                      <div className="col-12" key={resultado.TmdbId}>
+                        <div className="card shadow-sm">
+                          <div className="card-body">
+                            <div className="d-flex flex-column flex-sm-row gap-3">
+                              {resultado.PosterUrl ? (
+                                <img
+                                  src={resultado.PosterUrl}
+                                  alt={`Póster de ${resultado.Titulo}`}
+                                  style={{
+                                    width: "100px",
+                                    height: "150px",
+                                    objectFit: "cover",
+                                    borderRadius: "8px",
+                                    flexShrink: 0,
+                                  }}
+                                />
+                              ) : (
+                                <div
+                                  className="d-flex align-items-center justify-content-center bg-light border rounded"
+                                  style={{
+                                    width: "100px",
+                                    height: "150px",
+                                    fontSize: "32px",
+                                    flexShrink: 0,
+                                  }}
+                                >
+                                  🎬
+                                </div>
+                              )}
+
+                              <div className="flex-grow-1">
+                                <h5>{resultado.Titulo}</h5>
+
+                                {resultado.TituloOriginal &&
+                                  resultado.TituloOriginal !==
+                                    resultado.Titulo && (
+                                    <p className="text-muted mb-1">
+                                      Título original:{" "}
+                                      {resultado.TituloOriginal}
+                                    </p>
+                                  )}
+
+                                <p className="mb-2">
+                                  📅{" "}
+                                  {formatearFechaVisual(resultado.FechaEstreno)}
+                                </p>
+
+                                <p className="text-muted">
+                                  {resultado.Sinopsis ||
+                                    "Sinopsis no disponible."}
+                                </p>
+
+                                <button
+                                  type="button"
+                                  className="btn btn-primary"
+                                  disabled={
+                                    importandoTmdbId === resultado.TmdbId
+                                  }
+                                  onClick={() => importarDesdeTmdb(resultado)}
+                                >
+                                  {importandoTmdbId === resultado.TmdbId
+                                    ? "Importando..."
+                                    : "📥 Importar información"}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <p className="text-muted small mt-3 mb-0">
+                    Datos e imágenes proporcionados por TMDb.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="mb-3">
             <label className="form-label">Título</label>
 
@@ -177,6 +587,7 @@ function FormularioPelicula() {
               className="form-control"
               value={formulario.Titulo}
               onChange={manejarCambio}
+              required
             />
           </div>
 
@@ -188,6 +599,7 @@ function FormularioPelicula() {
               className="form-select"
               value={formulario.Genero}
               onChange={manejarCambio}
+              required
             >
               <option value="">Seleccione un género</option>
 
@@ -210,6 +622,12 @@ function FormularioPelicula() {
             >
               <option value="">Seleccione un director</option>
 
+              {directorImportadoNoRegistrado && (
+                <option value={formulario.Director}>
+                  {formulario.Director} — Importado desde TMDb
+                </option>
+              )}
+
               {directores.map((director) => (
                 <option key={director.Id} value={director.NombreCompleto}>
                   {director.NombreCompleto}
@@ -219,6 +637,12 @@ function FormularioPelicula() {
                 </option>
               ))}
             </select>
+
+            {directorImportadoNoRegistrado && (
+              <small className="text-muted">
+                Este director todavía no está registrado como talento en CineRD.
+              </small>
+            )}
           </div>
 
           <div className="mb-3">
@@ -234,7 +658,7 @@ function FormularioPelicula() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Fecha de Estreno</label>
+            <label className="form-label">Fecha de estreno</label>
 
             <input
               type="date"
@@ -242,6 +666,7 @@ function FormularioPelicula() {
               className="form-control"
               value={formulario.FechaEstreno}
               onChange={manejarCambio}
+              required
             />
           </div>
 
@@ -255,6 +680,10 @@ function FormularioPelicula() {
               accept="image/jpeg,image/png,image/webp"
               onChange={manejarFoto}
             />
+
+            <small className="text-muted">
+              Puedes reemplazar manualmente la portada obtenida desde TMDb.
+            </small>
           </div>
 
           {vistaPrevia && (

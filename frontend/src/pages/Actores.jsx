@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
-import api from "../services/api";
 import { Link } from "react-router-dom";
+import api from "../services/api";
+
+import {
+  calcularEdad,
+  calcularEdadAproximada,
+  calcularEdadEnFecha,
+  obtenerAnioFecha,
+} from "../utils/fechas";
 
 function Actores() {
   const [actores, setActores] = useState([]);
@@ -9,6 +16,7 @@ function Actores() {
   const [estado, setEstado] = useState("");
   const [anio, setAnio] = useState("");
   const [profesion, setProfesion] = useState("");
+  const [cargando, setCargando] = useState(false);
 
   const API_URL = "http://localhost:3000";
 
@@ -18,6 +26,8 @@ function Actores() {
 
   const obtenerActores = async () => {
     try {
+      setCargando(true);
+
       const response = await api.get("/actores", {
         params: {
           buscar,
@@ -28,83 +38,92 @@ function Actores() {
         },
       });
 
-      setActores(response.data);
+      setActores(response.data || []);
     } catch (error) {
       console.error(error);
+    } finally {
+      setCargando(false);
     }
   };
 
   const eliminarActor = async (id) => {
-    const confirmar = window.confirm("¿Desea eliminar este actor?");
-    if (!confirmar) return;
+    const confirmar = window.confirm(
+      "¿Desea eliminar este actor?",
+    );
+
+    if (!confirmar) {
+      return;
+    }
 
     try {
       await api.delete(`/actores/${id}`);
-      obtenerActores();
+      await obtenerActores();
     } catch (error) {
       console.error(error);
-      alert("Error al eliminar el actor");
+
+      alert(
+        error.response?.data?.mensaje ||
+          "Error al eliminar el actor",
+      );
     }
   };
 
-  const calcularEdad = (
-    fechaNacimiento,
-    fechaFallecimiento = null,
-    anioNacimiento = null,
-  ) => {
-    if (fechaNacimiento) {
-      const nacimiento = new Date(fechaNacimiento);
-      const fechaFinal = fechaFallecimiento
-        ? new Date(fechaFallecimiento)
-        : new Date();
-
-      let edad = fechaFinal.getFullYear() - nacimiento.getFullYear();
-      const mes = fechaFinal.getMonth() - nacimiento.getMonth();
-
+  const obtenerEdadActor = (actor) => {
+    if (actor.FechaNacimiento) {
       if (
-        mes < 0 ||
-        (mes === 0 && fechaFinal.getDate() < nacimiento.getDate())
+        !actor.EstaVivo &&
+        actor.FechaFallecimiento
       ) {
-        edad--;
+        return calcularEdadEnFecha(
+          actor.FechaNacimiento,
+          actor.FechaFallecimiento,
+        );
       }
 
-      return `${edad} años`;
-    }
-
-    if (anioNacimiento) {
-      const anioActual = new Date().getFullYear();
-      const edadAproximada = anioActual - Number(anioNacimiento);
-
-      return `Aprox. ${edadAproximada} años`;
-    }
-
-    return "Edad no disponible";
-  };
-
-  const mostrarNacimiento = (actor) => {
-    if (actor.FechaNacimiento) {
-      return calcularEdad(
-        actor.FechaNacimiento,
-        actor.FechaFallecimiento,
-        actor.AnioNacimiento,
-      );
+      return calcularEdad(actor.FechaNacimiento);
     }
 
     if (actor.AnioNacimiento) {
-      return `${actor.AnioNacimiento} · ${calcularEdad(
-        null,
-        null,
+      const anioFinal =
+        !actor.EstaVivo && actor.FechaFallecimiento
+          ? obtenerAnioFecha(actor.FechaFallecimiento)
+          : new Date().getFullYear();
+
+      return calcularEdadAproximada(
         actor.AnioNacimiento,
-      )}`;
+        anioFinal,
+      );
+    }
+
+    return null;
+  };
+
+  const mostrarNacimiento = (actor) => {
+    const edad = obtenerEdadActor(actor);
+
+    if (actor.FechaNacimiento) {
+      return edad !== null
+        ? `${edad} años`
+        : "Edad no disponible";
+    }
+
+    if (actor.AnioNacimiento) {
+      return edad !== null
+        ? `${actor.AnioNacimiento} · Aprox. ${edad} años`
+        : String(actor.AnioNacimiento);
     }
 
     return "Fecha desconocida";
   };
 
   const obtenerEstadoActor = (actor) => {
-    if (actor.EstaVivo) return "🟢 Vivo";
+    if (actor.EstaVivo) {
+      return "🟢 Vivo";
+    }
 
-    return actor.Sexo === "Femenino" ? "⚫ Fallecida" : "⚫ Fallecido";
+    return actor.Sexo === "Femenino"
+      ? "⚫ Fallecida"
+      : "⚫ Fallecido";
   };
 
   return (
@@ -113,10 +132,13 @@ function Actores() {
         ← Volver al inicio
       </Link>
 
-      <div className="d-flex justify-content-between align-items-center page-header mb-4">
-        <h2>🎭 Actores</h2>
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 page-header mb-4">
+        <h2 className="mb-0">🎭 Actores</h2>
 
-        <Link to="/actores/nuevo" className="btn btn-primary">
+        <Link
+          to="/actores/nuevo"
+          className="btn btn-primary"
+        >
           ➕ Nuevo Actor
         </Link>
       </div>
@@ -125,45 +147,67 @@ function Actores() {
         <div className="card-body">
           <div className="row g-3">
             <div className="col-12 col-md-4">
-              <label className="form-label">Buscar actor</label>
+              <label className="form-label">
+                Buscar actor
+              </label>
 
               <input
                 type="text"
                 className="form-control"
                 placeholder="Ej: Fausto, Boca de Piano, Director..."
                 value={buscar}
-                onChange={(e) => setBuscar(e.target.value)}
+                onChange={(e) =>
+                  setBuscar(e.target.value)
+                }
               />
             </div>
 
             <div className="col-12 col-md-3">
-              <label className="form-label">Ordenar por</label>
+              <label className="form-label">
+                Ordenar por
+              </label>
 
               <select
                 className="form-select"
                 value={orden}
-                onChange={(e) => setOrden(e.target.value)}
+                onChange={(e) =>
+                  setOrden(e.target.value)
+                }
               >
                 <option value="az">A-Z</option>
                 <option value="za">Z-A</option>
-                <option value="masPeliculas">Más películas</option>
-                <option value="menosPeliculas">Menos películas</option>
-                <option value="nacimientoReciente">Nacimiento reciente</option>
-                <option value="nacimientoAntiguo">Nacimiento antiguo</option>
+                <option value="masPeliculas">
+                  Más películas
+                </option>
+                <option value="menosPeliculas">
+                  Menos películas
+                </option>
+                <option value="nacimientoReciente">
+                  Nacimiento reciente
+                </option>
+                <option value="nacimientoAntiguo">
+                  Nacimiento antiguo
+                </option>
               </select>
             </div>
 
             <div className="col-12 col-md-3">
-              <label className="form-label">Estado</label>
+              <label className="form-label">
+                Estado
+              </label>
 
               <select
                 className="form-select"
                 value={estado}
-                onChange={(e) => setEstado(e.target.value)}
+                onChange={(e) =>
+                  setEstado(e.target.value)
+                }
               >
                 <option value="">Todos</option>
                 <option value="vivo">Vivos</option>
-                <option value="fallecido">Fallecidos</option>
+                <option value="fallecido">
+                  Fallecidos
+                </option>
               </select>
             </div>
 
@@ -175,52 +219,86 @@ function Actores() {
                 className="form-control"
                 placeholder="1971"
                 value={anio}
-                onChange={(e) => setAnio(e.target.value)}
+                onChange={(e) =>
+                  setAnio(e.target.value)
+                }
               />
             </div>
 
             <div className="col-12 col-md-4">
-              <label className="form-label">Profesión / Rol</label>
+              <label className="form-label">
+                Profesión / Rol
+              </label>
 
               <select
                 className="form-select"
                 value={profesion}
-                onChange={(e) => setProfesion(e.target.value)}
+                onChange={(e) =>
+                  setProfesion(e.target.value)
+                }
               >
-                <option value="">Todas las profesiones</option>
+                <option value="">
+                  Todas las profesiones
+                </option>
 
                 <optgroup label="🎭 Interpretación">
                   <option value="Actor">Actor</option>
                   <option value="Actriz">Actriz</option>
-                  <option value="Comediante">Comediante</option>
-                  <option value="Humorista">Humorista</option>
+                  <option value="Comediante">
+                    Comediante
+                  </option>
+                  <option value="Humorista">
+                    Humorista
+                  </option>
                 </optgroup>
 
                 <optgroup label="🎬 Dirección">
-                  <option value="Director">Director</option>
+                  <option value="Director">
+                    Director
+                  </option>
                 </optgroup>
 
                 <optgroup label="🎥 Producción">
-                  <option value="Productor">Productor</option>
-                  <option value="Guionista">Guionista</option>
+                  <option value="Productor">
+                    Productor
+                  </option>
+                  <option value="Guionista">
+                    Guionista
+                  </option>
                 </optgroup>
 
                 <optgroup label="🎵 Música">
-                  <option value="Cantante">Cantante</option>
-                  <option value="Artista urbano">Artista urbano</option>
-                  <option value="Artista urbana">Artista urbana</option>
+                  <option value="Cantante">
+                    Cantante
+                  </option>
+                  <option value="Artista urbano">
+                    Artista urbano
+                  </option>
+                  <option value="Artista urbana">
+                    Artista urbana
+                  </option>
                 </optgroup>
 
                 <optgroup label="📺 Medios">
-                  <option value="YouTuber">YouTuber</option>
-                  <option value="Influencer">Influencer</option>
-                  <option value="Comunicador">Comunicador</option>
-                  <option value="Locutor">Locutor</option>
+                  <option value="YouTuber">
+                    YouTuber
+                  </option>
+                  <option value="Influencer">
+                    Influencer
+                  </option>
+                  <option value="Comunicador">
+                    Comunicador
+                  </option>
+                  <option value="Locutor">
+                    Locutor
+                  </option>
                 </optgroup>
 
                 <optgroup label="⭐ Otros">
                   <option value="Modelo">Modelo</option>
-                  <option value="Deportista">Deportista</option>
+                  <option value="Deportista">
+                    Deportista
+                  </option>
                   <option value="Músico">Músico</option>
                   <option value="Otro">Otro</option>
                 </optgroup>
@@ -230,91 +308,128 @@ function Actores() {
         </div>
       </div>
 
-      <div className="row g-4">
-        {actores.map((actor) => (
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={actor.Id}>
-            <div className="card h-100 shadow actor-card">
-              <div className="text-center pt-3">
-                {actor.Foto ? (
-                  <img
-                    src={`${API_URL}${actor.Foto}`}
-                    alt={actor.NombreCompleto}
-                    className="actor-photo"
-                  />
-                ) : (
-                  <div className="actor-photo-placeholder">🎭</div>
-                )}
-              </div>
+      {cargando && (
+        <div className="text-center py-4">
+          <div
+            className="spinner-border text-primary"
+            role="status"
+          />
 
-              <div className="card-body text-center">
-                <h5 className="card-title text-center mb-2">
-                  <div className="fw-bold fs-4">{actor.Nombres}</div>
+          <p className="text-muted mt-2 mb-0">
+            Cargando actores...
+          </p>
+        </div>
+      )}
 
-                  {actor.Apellidos && (
-                    <div className="text-secondary fw-semibold">
-                      {actor.Apellidos}
+      {!cargando && (
+        <div className="row g-4">
+          {actores.map((actor) => (
+            <div
+              className="col-12 col-sm-6 col-md-4 col-lg-3"
+              key={actor.Id}
+            >
+              <div className="card h-100 shadow actor-card">
+                <div className="text-center pt-3">
+                  {actor.Foto ? (
+                    <img
+                      src={`${API_URL}${actor.Foto}`}
+                      alt={actor.NombreCompleto}
+                      className="actor-photo"
+                    />
+                  ) : (
+                    <div className="actor-photo-placeholder">
+                      🎭
                     </div>
                   )}
-                </h5>
+                </div>
 
-                <p className="text-muted mb-2">
-                  🎭 {actor.NombreArtistico || "Sin nombre artístico"}
-                </p>
+                <div className="card-body text-center">
+                  <h5 className="card-title text-center mb-2">
+                    <div className="fw-bold fs-4">
+                      {actor.Nombres ||
+                        actor.NombreCompleto ||
+                        "Sin nombre"}
+                    </div>
 
-                <p className="mb-1">
-                  💼{" "}
-                  <strong>{actor.Profesion || "Sin profesión definida"}</strong>
-                </p>
+                    {actor.Apellidos && (
+                      <div className="text-secondary fw-semibold">
+                        {actor.Apellidos}
+                      </div>
+                    )}
+                  </h5>
 
-                <p className="mb-1">🎂 {mostrarNacimiento(actor)}</p>
+                  {actor.NombreArtistico && (
+                    <p className="text-muted mb-2">
+                      🎭 {actor.NombreArtistico}
+                    </p>
+                  )}
 
-                <p className="mb-2">
-                  🎬 {actor.CantidadPeliculas || 0} película(s)
-                </p>
+                  <p className="mb-1">
+                    💼{" "}
+                    <strong>
+                      {actor.Profesion ||
+                        "Sin profesión definida"}
+                    </strong>
+                  </p>
 
-                <span
-                  className={`badge ${
-                    actor.EstaVivo ? "bg-success" : "bg-dark"
-                  }`}
-                >
-                  {obtenerEstadoActor(actor)}
-                </span>
-              </div>
+                  <p className="mb-1">
+                    🎂 {mostrarNacimiento(actor)}
+                  </p>
 
-              <div className="card-footer bg-white border-0">
-                <Link
-                  to={`/actores/${actor.Id}`}
-                  className="btn btn-outline-primary btn-sm w-100 mb-2"
-                >
-                  👤 Ver perfil
-                </Link>
+                  <p className="mb-2">
+                    🎬 {actor.CantidadPeliculas || 0}{" "}
+                    película(s)
+                  </p>
 
-                <div className="d-flex gap-2">
-                  <Link
-                    to={`/actores/editar/${actor.Id}`}
-                    className="btn btn-warning btn-sm w-50"
+                  <span
+                    className={`badge ${
+                      actor.EstaVivo
+                        ? "bg-success"
+                        : "bg-dark"
+                    }`}
                   >
-                    ✏️ Editar
+                    {obtenerEstadoActor(actor)}
+                  </span>
+                </div>
+
+                <div className="card-footer bg-white border-0">
+                  <Link
+                    to={`/actores/${actor.Id}`}
+                    className="btn btn-outline-primary btn-sm w-100 mb-2"
+                  >
+                    👤 Ver perfil
                   </Link>
 
-                  <button
-                    className="btn btn-danger btn-sm w-50"
-                    onClick={() => eliminarActor(actor.Id)}
-                  >
-                    🗑️ Eliminar
-                  </button>
+                  <div className="d-flex gap-2">
+                    <Link
+                      to={`/actores/editar/${actor.Id}`}
+                      className="btn btn-warning btn-sm w-50"
+                    >
+                      ✏️ Editar
+                    </Link>
+
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm w-50"
+                      onClick={() =>
+                        eliminarActor(actor.Id)
+                      }
+                    >
+                      🗑️ Eliminar
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
 
-        {actores.length === 0 && (
-          <div className="col-12 text-center text-muted mt-5">
-            No se encontraron actores.
-          </div>
-        )}
-      </div>
+          {actores.length === 0 && (
+            <div className="col-12 text-center text-muted py-5">
+              No se encontraron actores.
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

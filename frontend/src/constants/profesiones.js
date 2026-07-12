@@ -1,0 +1,30 @@
+
+
+
+export const PROFESIONES = [
+  "Actor",
+  "Actriz",
+  "Actor / Director",
+  "Actor / Productor",
+  "Actor / Guionista",
+  "Actor / Director / Productor",
+  "Actor / Director / Guionista",
+  "Director",
+  "Director / Productor",
+  "Director / Guionista",
+  "Director / Productor / Guionista",
+  "Productor",
+  "Guionista",
+  "Humorista",
+  "Comediante",
+  "Cantante",
+  "Artista Urbano",
+  "Influencer",
+  "YouTuber",
+  "Comunicador",
+  "Locutor",
+  "Modelo",
+  "Deportista",
+  "Músico",
+  "Otro",
+];

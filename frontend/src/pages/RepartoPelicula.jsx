@@ -1,38 +1,68 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../services/api";
 
-const tiposParticipacion = [
-  "Principal",
-  "Secundario",
-  "Cameo",
-  "Especial",
-  "Voz",
-  "Archivo",
-  "Sin acreditar",
-  "Escena postcréditos",
-];
+import ActorFormFields from "../components/actores/ActorFormFields";
+import ParticipacionFormFields from "../components/reparto/ParticipacionFormFields";
+
+import {
+  obtenerClaseParticipacion,
+  obtenerTextoParticipacion,
+} from "../constants/tiposParticipacion";
+
+const formularioParticipacionInicial = {
+  ActorId: "",
+  Personaje: "",
+  TipoParticipacion: "Principal",
+};
+
+const formularioNuevoTalentoInicial = {
+  TMDbId: "",
+  Nombres: "",
+  Apellidos: "",
+  NombreArtistico: "",
+  Profesion: "Actor",
+  Sexo: "Masculino",
+  FechaNacimiento: "",
+  AnioNacimiento: "",
+  FechaFallecimiento: "",
+  EstaVivo: true,
+  Personaje: "",
+  TipoParticipacion: "Reparto",
+  FotoUrl: "",
+  FotoLocal: null,
+};
 
 function RepartoPelicula() {
   const { id } = useParams();
+
+  const API_URL = "http://localhost:3000";
 
   const [pelicula, setPelicula] = useState(null);
   const [actores, setActores] = useState([]);
   const [reparto, setReparto] = useState([]);
 
-  const [formulario, setFormulario] = useState({
-    ActorId: "",
-    Personaje: "",
-    TipoParticipacion: "Principal",
-  });
+  const [formulario, setFormulario] = useState(formularioParticipacionInicial);
 
   const [editando, setEditando] = useState(null);
 
-  const API_URL = "http://localhost:3000";
+  const [repartoTmdb, setRepartoTmdb] = useState([]);
+  const [resumenTmdb, setResumenTmdb] = useState(null);
+  const [consultandoTmdb, setConsultandoTmdb] = useState(false);
+  const [mensajeTmdb, setMensajeTmdb] = useState("");
+  const [procesandoTmdbId, setProcesandoTmdbId] = useState(null);
+
+  const [nuevoTalento, setNuevoTalento] = useState(null);
+  const [guardandoTalento, setGuardandoTalento] = useState(false);
 
   useEffect(() => {
     cargarDatos();
   }, [id]);
+
+  const actoresEnReparto = useMemo(
+    () => new Set(reparto.map((actor) => Number(actor.Id))),
+    [reparto],
+  );
 
   const cargarDatos = async () => {
     try {
@@ -52,21 +82,34 @@ function RepartoPelicula() {
     }
   };
 
-  const manejarCambio = (e) => {
+  const manejarCambioParticipacion = (e) => {
     const { name, value } = e.target;
 
-    setFormulario({
-      ...formulario,
+    setFormulario((actual) => ({
+      ...actual,
       [name]: value,
-    });
+    }));
   };
 
   const manejarCambioEdicion = (e) => {
     const { name, value } = e.target;
 
-    setEditando({
-      ...editando,
+    setEditando((actual) => ({
+      ...actual,
       [name]: value,
+    }));
+  };
+
+  const agregarRelacion = async ({
+    actorId,
+    personaje = "",
+    tipoParticipacion = "Reparto",
+  }) => {
+    await api.post("/actores-peliculas", {
+      PeliculaId: Number(id),
+      ActorId: Number(actorId),
+      Personaje: personaje,
+      TipoParticipacion: tipoParticipacion,
     });
   };
 
@@ -79,26 +122,22 @@ function RepartoPelicula() {
     }
 
     try {
-      await api.post("/actores-peliculas", {
-        PeliculaId: Number(id),
-        ActorId: Number(formulario.ActorId),
-        Personaje: formulario.Personaje,
-        TipoParticipacion: formulario.TipoParticipacion,
+      await agregarRelacion({
+        actorId: formulario.ActorId,
+        personaje: formulario.Personaje,
+        tipoParticipacion: formulario.TipoParticipacion,
       });
 
-      setFormulario({
-        ActorId: "",
-        Personaje: "",
-        TipoParticipacion: "Principal",
-      });
+      setFormulario(formularioParticipacionInicial);
 
-      cargarDatos();
+      await cargarDatos();
     } catch (error) {
       console.error(error);
+
       alert(
         error.response?.data?.mensaje ||
           error.response?.data?.error ||
-          "Error al agregar actor al reparto"
+          "Error al agregar actor al reparto",
       );
     }
   };
@@ -112,10 +151,6 @@ function RepartoPelicula() {
     });
   };
 
-  const cerrarEdicion = () => {
-    setEditando(null);
-  };
-
   const guardarEdicion = async (e) => {
     e.preventDefault();
 
@@ -125,14 +160,13 @@ function RepartoPelicula() {
         TipoParticipacion: editando.TipoParticipacion,
       });
 
-      cerrarEdicion();
-      cargarDatos();
+      setEditando(null);
+      await cargarDatos();
     } catch (error) {
       console.error(error);
+
       alert(
-        error.response?.data?.mensaje ||
-          error.response?.data?.error ||
-          "Error al actualizar la participación"
+        error.response?.data?.mensaje || "Error al actualizar la participación",
       );
     }
   };
@@ -144,64 +178,303 @@ function RepartoPelicula() {
 
     try {
       await api.delete(`/actores-peliculas/${id}/${actorId}`);
-      cargarDatos();
+
+      await cargarDatos();
     } catch (error) {
       console.error(error);
       alert("Error al quitar actor del reparto");
     }
   };
 
-  const obtenerBadgeParticipacion = (tipo) => {
-    switch (tipo) {
-      case "Principal":
-        return "⭐ Principal";
-      case "Secundario":
-        return "🎭 Secundario";
-      case "Cameo":
-        return "🎬 Cameo";
-      case "Especial":
-        return "🌟 Especial";
-      case "Voz":
-        return "🎙️ Voz";
-      case "Archivo":
-        return "📼 Archivo";
-      case "Sin acreditar":
-        return "👤 Sin acreditar";
-      case "Escena postcréditos":
-        return "🎁 Escena postcréditos";
-      default:
-        return "🎭 Participación";
+  const consultarRepartoTmdb = async () => {
+    if (!pelicula?.TMDbId) {
+      setMensajeTmdb("Esta película todavía no está vinculada con TMDb.");
+      return;
+    }
+
+    try {
+      setConsultandoTmdb(true);
+      setMensajeTmdb("");
+
+      const response = await api.get(
+        `/tmdb/peliculas/${pelicula.TMDbId}/reparto`,
+      );
+
+      setRepartoTmdb(response.data.Reparto || []);
+      setResumenTmdb(response.data.Resumen || null);
+    } catch (error) {
+      console.error(error);
+
+      setMensajeTmdb(
+        error.response?.data?.mensaje ||
+          "No fue posible consultar el reparto de TMDb.",
+      );
+    } finally {
+      setConsultandoTmdb(false);
     }
   };
 
-  const obtenerClaseBadge = (tipo) => {
-    switch (tipo) {
-      case "Principal":
-        return "bg-primary";
-      case "Secundario":
-        return "bg-secondary";
-      case "Cameo":
-        return "bg-light text-primary border border-primary";
-      case "Especial":
-        return "bg-primary";
-      case "Voz":
-        return "bg-secondary";
-      case "Archivo":
-        return "bg-dark";
-      case "Sin acreditar":
-        return "bg-light text-dark border";
-      case "Escena postcréditos":
-        return "bg-dark";
-      default:
-        return "bg-secondary";
+  const usarActorExistente = async (personaTmdb, actorExistente) => {
+    if (!actorExistente?.Id) {
+      alert("No se encontró un actor válido");
+      return;
+    }
+
+    if (actoresEnReparto.has(Number(actorExistente.Id))) {
+      alert("Este actor ya pertenece al reparto");
+      return;
+    }
+
+    try {
+      setProcesandoTmdbId(personaTmdb.TmdbId);
+
+      if (
+        personaTmdb.TmdbId &&
+        Number(actorExistente.TMDbId) !== Number(personaTmdb.TmdbId)
+      ) {
+        await api.patch(`/tmdb/actores/${actorExistente.Id}/vincular`, {
+          TMDbId: personaTmdb.TmdbId,
+        });
+      }
+
+      await agregarRelacion({
+        actorId: actorExistente.Id,
+        personaje: personaTmdb.Personaje || "",
+        tipoParticipacion: "Reparto",
+      });
+
+      await cargarDatos();
+      await consultarRepartoTmdb();
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        error.response?.data?.mensaje ||
+          "No fue posible utilizar el actor existente.",
+      );
+    } finally {
+      setProcesandoTmdbId(null);
     }
   };
 
-  const obtenerNombreVisual = (actor) => {
-    const nombre = actor.Nombres || actor.NombreCompleto || "Sin nombre";
-    const apellidos = actor.Apellidos || "";
+  const separarNombreInicial = (nombreCompleto = "") => {
+    const partes = nombreCompleto.trim().split(/\s+/).filter(Boolean);
 
-    return { nombre, apellidos };
+    if (partes.length <= 1) {
+      return {
+        Nombres: partes[0] || "",
+        Apellidos: "",
+      };
+    }
+
+    return {
+      Nombres: partes[0],
+      Apellidos: partes.slice(1).join(" "),
+    };
+  };
+
+  const abrirCreacionTalento = async (personaTmdb) => {
+    try {
+      setProcesandoTmdbId(personaTmdb.TmdbId);
+
+      const response = await api.get(`/tmdb/personas/${personaTmdb.TmdbId}`);
+
+      const persona = response.data;
+      const nombreSeparado = separarNombreInicial(persona.NombreCompleto);
+
+      const sexo = persona.SexoTmdb === 1 ? "Femenino" : "Masculino";
+
+      const profesion =
+        persona.Departamento === "Directing"
+          ? "Director"
+          : sexo === "Femenino"
+            ? "Actriz"
+            : "Actor";
+
+      setNuevoTalento({
+        ...formularioNuevoTalentoInicial,
+        TMDbId: persona.TmdbId,
+        Nombres: nombreSeparado.Nombres,
+        Apellidos: nombreSeparado.Apellidos,
+        NombreArtistico: persona.NombreArtistico || "",
+        Profesion: profesion,
+        Sexo: sexo,
+        FechaNacimiento: persona.FechaNacimiento || "",
+        FechaFallecimiento: persona.FechaFallecimiento || "",
+        EstaVivo: !persona.FechaFallecimiento,
+        Personaje: personaTmdb.Personaje || "",
+        FotoUrl: persona.FotoUrl || personaTmdb.FotoUrl || "",
+      });
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        error.response?.data?.mensaje ||
+          "No fue posible obtener los datos de la persona.",
+      );
+    } finally {
+      setProcesandoTmdbId(null);
+    }
+  };
+
+  const manejarCambioNuevoTalento = (e) => {
+    const { name, value } = e.target;
+
+    setNuevoTalento((actual) => {
+      const actualizado = {
+        ...actual,
+        [name]: value,
+      };
+
+      if (name === "FechaNacimiento" && value) {
+        actualizado.AnioNacimiento = "";
+      }
+
+      return actualizado;
+    });
+  };
+
+  const cambiarEstadoNuevoTalento = (e) => {
+    const estaVivo = e.target.value === "true";
+
+    setNuevoTalento((actual) => ({
+      ...actual,
+      EstaVivo: estaVivo,
+      FechaFallecimiento: estaVivo ? "" : actual.FechaFallecimiento,
+    }));
+  };
+
+  const manejarFotoNuevoTalento = (e) => {
+    const archivo = e.target.files?.[0];
+
+    if (!archivo) return;
+
+    setNuevoTalento((actual) => ({
+      ...actual,
+      FotoLocal: archivo,
+      FotoUrl: URL.createObjectURL(archivo),
+    }));
+  };
+
+  const manejarParticipacionNuevoTalento = (e) => {
+    const { name, value } = e.target;
+
+    setNuevoTalento((actual) => ({
+      ...actual,
+      [name]: value,
+    }));
+  };
+
+  const descargarFotoComoArchivo = async (url, tmdbId) => {
+    if (!url || url.startsWith("blob:")) return null;
+
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) return null;
+
+      const blob = await response.blob();
+
+      return new File([blob], `tmdb-persona-${tmdbId}.jpg`, {
+        type: blob.type || "image/jpeg",
+      });
+    } catch (error) {
+      console.warn("No se pudo descargar la fotografía:", error);
+
+      return null;
+    }
+  };
+
+  const guardarNuevoTalento = async (e) => {
+    e.preventDefault();
+
+    if (!nuevoTalento.Nombres.trim()) {
+      alert("Debe indicar los nombres del talento");
+      return;
+    }
+
+    if (!nuevoTalento.EstaVivo && !nuevoTalento.FechaFallecimiento) {
+      alert("Debe indicar la fecha de fallecimiento");
+      return;
+    }
+
+    try {
+      setGuardandoTalento(true);
+
+      const datos = new FormData();
+
+      datos.append("TMDbId", nuevoTalento.TMDbId || "");
+      datos.append("Nombres", nuevoTalento.Nombres.trim());
+      datos.append("Apellidos", nuevoTalento.Apellidos.trim());
+      datos.append("NombreArtistico", nuevoTalento.NombreArtistico.trim());
+      datos.append("Profesion", nuevoTalento.Profesion);
+      datos.append("FechaNacimiento", nuevoTalento.FechaNacimiento || "");
+      datos.append("AnioNacimiento", nuevoTalento.AnioNacimiento || "");
+      datos.append("Sexo", nuevoTalento.Sexo);
+      datos.append("EstaVivo", nuevoTalento.EstaVivo);
+      datos.append(
+        "FechaFallecimiento",
+        nuevoTalento.EstaVivo ? "" : nuevoTalento.FechaFallecimiento,
+      );
+
+      let foto = nuevoTalento.FotoLocal;
+
+      if (!foto) {
+        foto = await descargarFotoComoArchivo(
+          nuevoTalento.FotoUrl,
+          nuevoTalento.TMDbId,
+        );
+      }
+
+      if (foto) {
+        datos.append("Foto", foto);
+      }
+
+      const actorResponse = await api.post("/actores", datos, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const actorCreado = actorResponse.data.actor || actorResponse.data;
+
+      await agregarRelacion({
+        actorId: actorCreado.Id,
+        personaje: nuevoTalento.Personaje,
+        tipoParticipacion: nuevoTalento.TipoParticipacion,
+      });
+
+      setNuevoTalento(null);
+
+      await cargarDatos();
+      await consultarRepartoTmdb();
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        error.response?.data?.mensaje ||
+          error.response?.data?.error ||
+          "No fue posible crear el talento.",
+      );
+    } finally {
+      setGuardandoTalento(false);
+    }
+  };
+
+  const renderEstadoCoincidencia = (persona) => {
+    if (persona.EstadoCoincidencia === "existente") {
+      return <span className="badge bg-success">✅ Existe en CineRD</span>;
+    }
+
+    if (persona.EstadoCoincidencia === "posible") {
+      return (
+        <span className="badge bg-warning text-dark">
+          ⚠️ Posible coincidencia
+        </span>
+      );
+    }
+
+    return <span className="badge bg-primary">➕ Nuevo talento</span>;
   };
 
   return (
@@ -212,74 +485,183 @@ function RepartoPelicula() {
 
       <div className="mb-4">
         <h2>👥 Reparto</h2>
+
         {pelicula && <p className="text-muted mb-0">🎬 {pelicula.Titulo}</p>}
       </div>
 
       <form onSubmit={agregarActor} className="card shadow-sm mb-4">
         <div className="card-body">
-          <h5 className="mb-3">➕ Agregar actor a la película</h5>
+          <h5 className="mb-3">➕ Agregar actor manualmente</h5>
 
           <div className="row g-3">
-            <div className="col-12 col-md-3">
+            <div className="col-12">
               <label className="form-label">Actor</label>
 
               <select
                 name="ActorId"
                 className="form-select"
                 value={formulario.ActorId}
-                onChange={manejarCambio}
+                onChange={manejarCambioParticipacion}
               >
                 <option value="">Seleccione un actor</option>
 
                 {actores.map((actor) => (
                   <option key={actor.Id} value={actor.Id}>
                     {actor.NombreCompleto}
-                    {actor.NombreArtistico
-                      ? ` (${actor.NombreArtistico})`
-                      : ""}
+                    {actor.NombreArtistico ? ` (${actor.NombreArtistico})` : ""}
                   </option>
                 ))}
               </select>
             </div>
 
-            <div className="col-12 col-md-3">
-              <label className="form-label">Personaje</label>
-
-              <input
-                type="text"
-                name="Personaje"
-                className="form-control"
-                placeholder="Ej: Genaro"
-                value={formulario.Personaje}
-                onChange={manejarCambio}
+            <div className="col-12">
+              <ParticipacionFormFields
+                valores={formulario}
+                onChange={manejarCambioParticipacion}
               />
             </div>
 
-            <div className="col-12 col-md-3">
-              <label className="form-label">Tipo de participación</label>
-
-              <select
-                name="TipoParticipacion"
-                className="form-select"
-                value={formulario.TipoParticipacion}
-                onChange={manejarCambio}
-              >
-                {tiposParticipacion.map((tipo) => (
-                  <option key={tipo} value={tipo}>
-                    {tipo}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="col-12 col-md-3 d-flex align-items-end">
-              <button type="submit" className="btn btn-primary w-100">
+            <div className="col-12">
+              <button type="submit" className="btn btn-primary">
                 Agregar
               </button>
             </div>
           </div>
         </div>
       </form>
+
+      <div className="card shadow-sm mb-4">
+        <div className="card-header bg-white fw-bold text-primary">
+          🌍 Reparto disponible en TMDb
+        </div>
+
+        <div className="card-body">
+          <button
+            type="button"
+            className="btn btn-outline-primary"
+            onClick={consultarRepartoTmdb}
+            disabled={consultandoTmdb}
+          >
+            {consultandoTmdb
+              ? "Consultando..."
+              : "👥 Consultar reparto en TMDb"}
+          </button>
+
+          {mensajeTmdb && (
+            <div className="alert alert-info mt-3">{mensajeTmdb}</div>
+          )}
+
+          {resumenTmdb && (
+            <div className="row g-3 mt-2">
+              {[
+                ["Total", resumenTmdb.Total],
+                ["Existentes", resumenTmdb.Existentes],
+                ["Posibles", resumenTmdb.Posibles],
+                ["Nuevos", resumenTmdb.Nuevos],
+              ].map(([texto, valor]) => (
+                <div className="col-6 col-md-3" key={texto}>
+                  <div className="border rounded p-3 text-center">
+                    <strong>{valor}</strong>
+                    <div className="small text-muted">{texto}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {repartoTmdb.length > 0 && (
+            <div className="row g-3 mt-2">
+              {repartoTmdb.map((persona) => {
+                const actorCoincidente = persona.ActorCoincidente;
+
+                const yaAsignado =
+                  actorCoincidente?.Id &&
+                  actoresEnReparto.has(Number(actorCoincidente.Id));
+
+                return (
+                  <div
+                    className="col-12 col-lg-6"
+                    key={`${persona.TmdbId}-${persona.Personaje}`}
+                  >
+                    <div className="card h-100 shadow-sm">
+                      <div className="card-body d-flex gap-3">
+                        {persona.FotoUrl ? (
+                          <img
+                            src={persona.FotoUrl}
+                            alt={persona.NombreCompleto}
+                            style={{
+                              width: "80px",
+                              height: "110px",
+                              objectFit: "cover",
+                              borderRadius: "8px",
+                            }}
+                          />
+                        ) : (
+                          <div
+                            className="bg-light border rounded d-flex align-items-center justify-content-center"
+                            style={{
+                              width: "80px",
+                              height: "110px",
+                            }}
+                          >
+                            🎭
+                          </div>
+                        )}
+
+                        <div className="flex-grow-1">
+                          <h6>{persona.NombreCompleto}</h6>
+
+                          <p className="text-muted mb-2">
+                            Personaje:{" "}
+                            <strong>{persona.Personaje || "-"}</strong>
+                          </p>
+
+                          <div className="mb-2">
+                            {renderEstadoCoincidencia(persona)}
+                          </div>
+
+                          {actorCoincidente && (
+                            <p className="small">
+                              Coincidencia:{" "}
+                              <strong>{actorCoincidente.NombreCompleto}</strong>
+                            </p>
+                          )}
+
+                          {yaAsignado ? (
+                            <span className="text-success small">
+                              ✅ Ya pertenece al reparto
+                            </span>
+                          ) : persona.EstadoCoincidencia === "nuevo" ? (
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-outline-primary"
+                              disabled={procesandoTmdbId === persona.TmdbId}
+                              onClick={() => abrirCreacionTalento(persona)}
+                            >
+                              Crear talento
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-primary"
+                              disabled={procesandoTmdbId === persona.TmdbId}
+                              onClick={() =>
+                                usarActorExistente(persona, actorCoincidente)
+                              }
+                            >
+                              Usar actor existente
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
 
       <div className="row g-4">
         {reparto.map((actor) => (
@@ -298,42 +680,29 @@ function RepartoPelicula() {
               </div>
 
               <div className="card-body text-center">
-                <h5 className="card-title text-center mb-2">
-                  <div className="fw-bold">{obtenerNombreVisual(actor).nombre}</div>
+                <h5>{actor.NombreCompleto}</h5>
 
-                  {obtenerNombreVisual(actor).apellidos && (
-                    <div className="text-secondary fw-semibold">
-                      {obtenerNombreVisual(actor).apellidos}
-                    </div>
-                  )}
-                </h5>
-
-                <p className="text-muted mb-1">
+                <p className="text-muted">
                   {actor.NombreArtistico || "Sin nombre artístico"}
                 </p>
 
-                {actor.Profesion && (
-                  <p className="mb-1">
-                    💼 <strong>{actor.Profesion}</strong>
-                  </p>
-                )}
-
-                <p className="mb-2">
+                <p>
                   Personaje: <strong>{actor.Personaje || "-"}</strong>
                 </p>
 
                 <span
-                  className={`badge ${obtenerClaseBadge(
-                    actor.TipoParticipacion
+                  className={`badge ${obtenerClaseParticipacion(
+                    actor.TipoParticipacion,
                   )}`}
                 >
-                  {obtenerBadgeParticipacion(actor.TipoParticipacion)}
+                  {obtenerTextoParticipacion(actor.TipoParticipacion)}
                 </span>
               </div>
 
               <div className="card-footer bg-white border-0">
                 <div className="d-flex gap-2">
                   <button
+                    type="button"
                     className="btn btn-warning btn-sm w-50"
                     onClick={() => abrirEdicion(actor)}
                   >
@@ -341,6 +710,7 @@ function RepartoPelicula() {
                   </button>
 
                   <button
+                    type="button"
                     className="btn btn-danger btn-sm w-50"
                     onClick={() => eliminarDelReparto(actor.Id)}
                   >
@@ -351,19 +721,15 @@ function RepartoPelicula() {
             </div>
           </div>
         ))}
-
-        {reparto.length === 0 && (
-          <div className="col-12 text-center text-muted mt-5">
-            Esta película todavía no tiene actores asignados.
-          </div>
-        )}
       </div>
 
       {editando && (
         <div
           className="modal fade show"
-          style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
-          tabIndex="-1"
+          style={{
+            display: "block",
+            backgroundColor: "rgba(0,0,0,.5)",
+          }}
         >
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
@@ -374,56 +740,98 @@ function RepartoPelicula() {
                   <button
                     type="button"
                     className="btn-close"
-                    onClick={cerrarEdicion}
-                  ></button>
+                    onClick={() => setEditando(null)}
+                  />
                 </div>
 
                 <div className="modal-body">
-                  <p className="text-muted mb-3">
+                  <p>
                     Actor: <strong>{editando.NombreCompleto}</strong>
                   </p>
 
-                  <div className="mb-3">
-                    <label className="form-label">Personaje</label>
-
-                    <input
-                      type="text"
-                      name="Personaje"
-                      className="form-control"
-                      value={editando.Personaje}
-                      onChange={manejarCambioEdicion}
-                    />
-                  </div>
-
-                  <div className="mb-3">
-                    <label className="form-label">Tipo de participación</label>
-
-                    <select
-                      name="TipoParticipacion"
-                      className="form-select"
-                      value={editando.TipoParticipacion}
-                      onChange={manejarCambioEdicion}
-                    >
-                      {tiposParticipacion.map((tipo) => (
-                        <option key={tipo} value={tipo}>
-                          {tipo}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <ParticipacionFormFields
+                    valores={editando}
+                    onChange={manejarCambioEdicion}
+                    columnas={false}
+                  />
                 </div>
 
                 <div className="modal-footer">
                   <button
                     type="button"
                     className="btn btn-secondary"
-                    onClick={cerrarEdicion}
+                    onClick={() => setEditando(null)}
                   >
                     Cancelar
                   </button>
 
                   <button type="submit" className="btn btn-primary">
                     Guardar cambios
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {nuevoTalento && (
+        <div
+          className="modal fade show"
+          style={{
+            display: "block",
+            backgroundColor: "rgba(0,0,0,.5)",
+          }}
+        >
+          <div className="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div className="modal-content">
+              <form onSubmit={guardarNuevoTalento}>
+                <div className="modal-header">
+                  <h5 className="modal-title">➕ Crear talento desde TMDb</h5>
+
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={() => setNuevoTalento(null)}
+                  />
+                </div>
+
+                <div className="modal-body">
+                  <ActorFormFields
+                    formulario={nuevoTalento}
+                    onChange={manejarCambioNuevoTalento}
+                    onChangeEstadoVida={cambiarEstadoNuevoTalento}
+                    onFotoChange={manejarFotoNuevoTalento}
+                    vistaPrevia={nuevoTalento.FotoUrl}
+                  />
+
+                  <hr className="my-4" />
+
+                  <h6 className="mb-3">Participación en la película</h6>
+
+                  <ParticipacionFormFields
+                    valores={nuevoTalento}
+                    onChange={manejarParticipacionNuevoTalento}
+                  />
+                </div>
+
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setNuevoTalento(null)}
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={guardandoTalento}
+                  >
+                    {guardandoTalento
+                      ? "Guardando..."
+                      : "Crear y agregar al reparto"}
                   </button>
                 </div>
               </form>

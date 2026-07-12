@@ -1,18 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-import "./styles/global.css";
-import "./styles/cards.css";
-import "./styles/forms.css";
-import "./styles/dashboard.css";
-import "./styles/responsive.css";
+// Debe cargarse después de Bootstrap para aplicar los estilos de CineRD.
+import "./index.css";
 
 import App from "./App.jsx";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
     <App />
-  </React.StrictMode>
+  </StrictMode>,
 );

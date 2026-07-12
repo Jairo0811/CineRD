@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -21,9 +21,21 @@ ChartJS.register(
   Legend,
 );
 
+const COLORES_GRAFICOS = [
+  "#0057B8",
+  "#CE1126",
+  "#F4B400",
+  "#198754",
+  "#6F42C1",
+  "#FD7E14",
+  "#1F2937",
+  "#6C757D",
+];
+
 function Home() {
   const [actores, setActores] = useState([]);
   const [peliculas, setPeliculas] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     cargarDatos();
@@ -31,96 +43,142 @@ function Home() {
 
   const cargarDatos = async () => {
     try {
+      setCargando(true);
+
       const [actoresRes, peliculasRes] = await Promise.all([
         api.get("/actores"),
         api.get("/peliculas"),
       ]);
 
-      setActores(actoresRes.data);
-      setPeliculas(peliculasRes.data);
+      setActores(actoresRes.data || []);
+      setPeliculas(peliculasRes.data || []);
     } catch (error) {
-      console.error(error);
+      console.error("Error al cargar el dashboard:", error);
+    } finally {
+      setCargando(false);
     }
   };
 
-  const colores = [
-    "#0057B8",
-    "#CE1126",
-    "#F4B400",
-    "#198754",
-    "#6F42C1",
-    "#FD7E14",
-    "#1F2937",
-    "#6C757D",
-  ];
+  const estadisticas = useMemo(() => {
+    const actoresVivos = actores.filter((actor) =>
+      Boolean(actor.EstaVivo),
+    ).length;
 
-  const actoresVivos = actores.filter((actor) => actor.EstaVivo).length;
-  const actoresFallecidos = actores.length - actoresVivos;
+    const actoresFallecidos = actores.length - actoresVivos;
 
-  const totalDirectores = actores.filter((actor) =>
-    actor.Profesion?.includes("Director"),
-  ).length;
+    const totalDirectores = actores.filter((actor) =>
+      actor.Profesion?.includes("Director"),
+    ).length;
 
-  const totalProductores = actores.filter((actor) =>
-    actor.Profesion?.includes("Productor"),
-  ).length;
+    const totalProductores = actores.filter((actor) =>
+      actor.Profesion?.includes("Productor"),
+    ).length;
 
-  const totalGuionistas = actores.filter((actor) =>
-    actor.Profesion?.includes("Guionista"),
-  ).length;
+    const totalGuionistas = actores.filter((actor) =>
+      actor.Profesion?.includes("Guionista"),
+    ).length;
 
-  const totalRepartos = peliculas.reduce(
-    (total, pelicula) => total + (pelicula.CantidadActores || 0),
-    0,
+    const totalRepartos = peliculas.reduce(
+      (total, pelicula) => total + Number(pelicula.CantidadActores || 0),
+      0,
+    );
+
+    const peliculasConReparto = peliculas.filter(
+      (pelicula) => Number(pelicula.CantidadActores || 0) > 0,
+    ).length;
+
+    return {
+      actoresVivos,
+      actoresFallecidos,
+      totalDirectores,
+      totalProductores,
+      totalGuionistas,
+      totalRepartos,
+      peliculasConReparto,
+    };
+  }, [actores, peliculas]);
+
+  const ultimasPeliculas = useMemo(
+    () =>
+      [...peliculas].sort((a, b) => Number(b.Id) - Number(a.Id)).slice(0, 5),
+    [peliculas],
   );
 
-  const peliculasConReparto = peliculas.filter(
-    (pelicula) => (pelicula.CantidadActores || 0) > 0,
-  ).length;
+  const ultimosActores = useMemo(
+    () => [...actores].sort((a, b) => Number(b.Id) - Number(a.Id)).slice(0, 5),
+    [actores],
+  );
 
-  const ultimasPeliculas = [...peliculas]
-    .sort((a, b) => b.Id - a.Id)
-    .slice(0, 5);
+  const actoresConMasPeliculas = useMemo(
+    () =>
+      [...actores]
+        .sort(
+          (a, b) =>
+            Number(b.CantidadPeliculas || 0) - Number(a.CantidadPeliculas || 0),
+        )
+        .slice(0, 5),
+    [actores],
+  );
 
-  const ultimosActores = [...actores].sort((a, b) => b.Id - a.Id).slice(0, 5);
+  const peliculasConMasActores = useMemo(
+    () =>
+      [...peliculas]
+        .sort(
+          (a, b) =>
+            Number(b.CantidadActores || 0) - Number(a.CantidadActores || 0),
+        )
+        .slice(0, 10),
+    [peliculas],
+  );
 
-  const actoresConMasPeliculas = [...actores]
-    .sort((a, b) => (b.CantidadPeliculas || 0) - (a.CantidadPeliculas || 0))
-    .slice(0, 5);
+  const generos = useMemo(
+    () =>
+      peliculas.reduce((acumulador, pelicula) => {
+        const genero = pelicula.Genero || "Sin género";
 
-  const peliculasConMasActores = [...peliculas]
-    .sort((a, b) => (b.CantidadActores || 0) - (a.CantidadActores || 0))
-    .slice(0, 10);
+        acumulador[genero] = (acumulador[genero] || 0) + 1;
 
-  const generos = peliculas.reduce((acc, pelicula) => {
-    const genero = pelicula.Genero || "Sin género";
-    acc[genero] = (acc[genero] || 0) + 1;
-    return acc;
-  }, {});
+        return acumulador;
+      }, {}),
+    [peliculas],
+  );
 
-  const profesiones = {};
+  const profesiones = useMemo(() => {
+    const acumulador = {};
 
-  actores.forEach((actor) => {
-    if (!actor.Profesion) {
-      profesiones["Sin profesión"] = (profesiones["Sin profesión"] || 0) + 1;
-      return;
-    }
+    actores.forEach((actor) => {
+      if (!actor.Profesion) {
+        acumulador["Sin profesión"] = (acumulador["Sin profesión"] || 0) + 1;
 
-    actor.Profesion.split("/")
-      .map((p) => p.trim())
-      .forEach((p) => {
-        profesiones[p] = (profesiones[p] || 0) + 1;
-      });
-  });
+        return;
+      }
 
-  const estrenosPorAnio = peliculas.reduce((acc, pelicula) => {
-    if (!pelicula.FechaEstreno) return acc;
+      actor.Profesion.split("/")
+        .map((profesion) => profesion.trim())
+        .filter(Boolean)
+        .forEach((profesion) => {
+          acumulador[profesion] = (acumulador[profesion] || 0) + 1;
+        });
+    });
 
-    const anio = pelicula.FechaEstreno.substring(0, 4);
-    acc[anio] = (acc[anio] || 0) + 1;
+    return acumulador;
+  }, [actores]);
 
-    return acc;
-  }, {});
+  const estrenosPorAnio = useMemo(
+    () =>
+      peliculas.reduce((acumulador, pelicula) => {
+        if (!pelicula.FechaEstreno) {
+          return acumulador;
+        }
+
+        const anio = pelicula.FechaEstreno.substring(0, 4);
+
+        acumulador[anio] = (acumulador[anio] || 0) + 1;
+
+        return acumulador;
+      }, {}),
+    [peliculas],
+  );
 
   const datosGeneros = {
     labels: Object.keys(generos),
@@ -128,7 +186,7 @@ function Home() {
       {
         label: "Películas",
         data: Object.values(generos),
-        backgroundColor: colores,
+        backgroundColor: COLORES_GRAFICOS,
         borderColor: "#ffffff",
         borderWidth: 2,
       },
@@ -139,23 +197,23 @@ function Home() {
     labels: Object.keys(profesiones),
     datasets: [
       {
-        label: "Actores",
+        label: "Talentos",
         data: Object.values(profesiones),
-        backgroundColor: colores,
+        backgroundColor: COLORES_GRAFICOS,
         borderColor: "#ffffff",
         borderWidth: 2,
       },
     ],
   };
 
+  const aniosOrdenados = Object.keys(estrenosPorAnio).sort();
+
   const datosEstrenos = {
-    labels: Object.keys(estrenosPorAnio).sort(),
+    labels: aniosOrdenados,
     datasets: [
       {
         label: "Estrenos",
-        data: Object.keys(estrenosPorAnio)
-          .sort()
-          .map((anio) => estrenosPorAnio[anio]),
+        data: aniosOrdenados.map((anio) => estrenosPorAnio[anio]),
         backgroundColor: "#0057B8",
         borderColor: "#CE1126",
         borderWidth: 2,
@@ -171,210 +229,313 @@ function Home() {
         data: peliculasConMasActores.map(
           (pelicula) => pelicula.CantidadActores || 0,
         ),
-        backgroundColor: "#CE1126",
-        borderColor: "#0057B8",
+        backgroundColor: "#0057B8",
+        borderColor: "#CE1126",
         borderWidth: 2,
       },
     ],
   };
 
+  const opcionesGrafico = {
+    responsive: true,
+    maintainAspectRatio: false,
+  };
+
+  const tarjetas = [
+    {
+      icono: "🎬",
+      valor: peliculas.length,
+      texto: "Películas",
+      enlace: "/peliculas",
+    },
+    {
+      icono: "🎭",
+      valor: actores.length,
+      texto: "Actores",
+      enlace: "/actores",
+    },
+    {
+      icono: "👥",
+      valor: estadisticas.totalRepartos,
+      texto: "Participaciones",
+    },
+    {
+      icono: "🎞️",
+      valor: estadisticas.peliculasConReparto,
+      texto: "Películas con reparto",
+    },
+    {
+      icono: "🟢",
+      valor: estadisticas.actoresVivos,
+      texto: "Actores vivos",
+    },
+    {
+      icono: "⚰️",
+      valor: estadisticas.actoresFallecidos,
+      texto: "Actores fallecidos",
+    },
+    {
+      icono: "🎬",
+      valor: estadisticas.totalDirectores,
+      texto: "Directores",
+    },
+    {
+      icono: "🎥",
+      valor: estadisticas.totalProductores,
+      texto: "Productores",
+    },
+    {
+      icono: "✍️",
+      valor: estadisticas.totalGuionistas,
+      texto: "Guionistas",
+    },
+  ];
+
+  if (cargando) {
+    return (
+      <div className="dashboard-loading">
+        <div className="spinner-border text-primary" role="status" />
+
+        <p className="mt-3 mb-0">Cargando información de CineRD...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard-container">
-      <div className="text-center mb-5">
-        <img src="/logo.png" alt="CineRD" className="home-logo" />
-      </div>
+      <section className="dashboard-hero">
+        <div>
+          <span className="dashboard-eyebrow">
+            Catálogo del cine dominicano
+          </span>
 
-      <div className="row g-4 mb-5">
-        <div className="col-12 col-md-4">
-          <div className="dashboard-card">
-            <h2>🎬</h2>
-            <h3>{peliculas.length}</h3>
-            <p>Películas</p>
-          </div>
+          <h1>Bienvenido a CineRD</h1>
+
+          <p>
+            Administra películas, actores, directores y repartos desde un solo
+            lugar.
+          </p>
         </div>
 
-        <div className="col-12 col-md-4">
-          <div className="dashboard-card">
-            <h2>🎭</h2>
-            <h3>{actores.length}</h3>
-            <p>Actores</p>
-          </div>
-        </div>
+        <img
+          src="/logo.png"
+          alt="Logo de CineRD"
+          className="dashboard-hero-logo"
+        />
+      </section>
 
-        <div className="col-12 col-md-4">
-          <div className="dashboard-card">
-            <h2>👥</h2>
-            <h3>{totalRepartos}</h3>
-            <p>Repartos</p>
-          </div>
-        </div>
+      <section className="dashboard-actions">
+        <Link to="/peliculas/nueva" className="dashboard-action-primary">
+          <span>➕</span>
 
-        <div className="col-12 col-md-4">
-          <div className="dashboard-card">
-            <h2>🎞️</h2>
-            <h3>{peliculasConReparto}</h3>
-            <p>Películas con reparto</p>
+          <div>
+            <strong>Nueva película</strong>
+            <small>Registrar o importar desde TMDb</small>
           </div>
-        </div>
-
-        <div className="col-12 col-md-4">
-          <div className="dashboard-card">
-            <h2>🟢</h2>
-            <h3>{actoresVivos}</h3>
-            <p>Actores vivos</p>
-          </div>
-        </div>
-
-        <div className="col-12 col-md-4">
-          <div className="dashboard-card">
-            <h2>⚰️</h2>
-            <h3>{actoresFallecidos}</h3>
-            <p>Actores fallecidos</p>
-          </div>
-        </div>
-        <div className="col-12 col-md-4">
-          <div className="dashboard-card">
-            <h2>🎬</h2>
-            <h3>{totalDirectores}</h3>
-            <p>Directores</p>
-          </div>
-        </div>
-
-        <div className="col-12 col-md-4">
-          <div className="dashboard-card">
-            <h2>🎥</h2>
-            <h3>{totalProductores}</h3>
-            <p>Productores</p>
-          </div>
-        </div>
-
-        <div className="col-12 col-md-4">
-          <div className="dashboard-card">
-            <h2>✍️</h2>
-            <h3>{totalGuionistas}</h3>
-            <p>Guionistas</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="quick-actions mb-5">
-        <Link to="/peliculas" className="btn btn-primary">
-          🎬 Ver Películas
         </Link>
 
-        <Link to="/actores" className="btn btn-success">
-          🎭 Ver Actores
+        <Link to="/actores/nuevo" className="dashboard-action-secondary">
+          <span>🎭</span>
+
+          <div>
+            <strong>Nuevo actor</strong>
+            <small>Agregar un nuevo talento</small>
+          </div>
         </Link>
 
-        <Link to="/peliculas/nueva" className="btn btn-outline-primary">
-          ➕ Nueva Película
-        </Link>
+        <Link to="/peliculas" className="dashboard-action-secondary">
+          <span>🔎</span>
 
-        <Link to="/actores/nuevo" className="btn btn-outline-success">
-          ➕ Nuevo Actor
+          <div>
+            <strong>Explorar catálogo</strong>
+            <small>Consultar películas registradas</small>
+          </div>
         </Link>
-      </div>
+      </section>
 
-      <div className="row g-4 mb-5">
-        <div className="col-12 col-lg-6">
-          <div className="card shadow h-100">
-            <div className="card-header fw-bold">
-              ⭐ Actores con más participaciones
+      <section className="dashboard-stat-grid">
+        {tarjetas.map((tarjeta) => {
+          const contenido = (
+            <>
+              <span className="dashboard-stat-icon">{tarjeta.icono}</span>
+
+              <strong className="dashboard-stat-value">{tarjeta.valor}</strong>
+
+              <span className="dashboard-stat-label">{tarjeta.texto}</span>
+            </>
+          );
+
+          return tarjeta.enlace ? (
+            <Link
+              to={tarjeta.enlace}
+              className="dashboard-stat-card dashboard-stat-link"
+              key={tarjeta.texto}
+            >
+              {contenido}
+            </Link>
+          ) : (
+            <article className="dashboard-stat-card" key={tarjeta.texto}>
+              {contenido}
+            </article>
+          );
+        })}
+      </section>
+
+      <section className="row g-4 mb-4">
+        <div className="col-12 col-xl-5">
+          <div className="dashboard-panel h-100">
+            <div className="dashboard-panel-header">
+              <div>
+                <span className="dashboard-panel-eyebrow">Talentos</span>
+
+                <h2>Actores con más participaciones</h2>
+              </div>
+
+              <Link to="/actores">Ver todos</Link>
             </div>
 
-            <div className="card-body">
-              {actoresConMasPeliculas.map((actor) => (
-                <div className="dashboard-list-item" key={actor.Id}>
-                  <span>{actor.NombreCompleto}</span>
-                  <small>{actor.CantidadPeliculas || 0} película(s)</small>
-                </div>
+            <div className="dashboard-list">
+              {actoresConMasPeliculas.map((actor, indice) => (
+                <Link
+                  to={`/actores/${actor.Id}`}
+                  className="dashboard-list-item"
+                  key={actor.Id}
+                >
+                  <span className="dashboard-list-position">{indice + 1}</span>
+
+                  <div className="dashboard-list-content">
+                    <strong>{actor.NombreCompleto}</strong>
+                    <small>{actor.Profesion || "Sin profesión"}</small>
+                  </div>
+
+                  <span className="dashboard-list-total">
+                    {actor.CantidadPeliculas || 0}
+                  </span>
+                </Link>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="col-12 col-lg-6">
-          <div className="card shadow h-100">
-            <div className="card-header fw-bold">
-              🏆 Top películas con más actores
+        <div className="col-12 col-xl-7">
+          <div className="dashboard-panel h-100">
+            <div className="dashboard-panel-header">
+              <div>
+                <span className="dashboard-panel-eyebrow">Producciones</span>
+
+                <h2>Películas con más actores</h2>
+              </div>
             </div>
 
-            <div className="card-body">
-              <Bar data={datosTopPeliculas} />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="row g-4 mb-5">
-        <div className="col-12 col-lg-6">
-          <div className="card shadow h-100">
-            <div className="card-header fw-bold">
-              📈 Distribución por género
-            </div>
-
-            <div className="card-body chart-container">
-              <Pie data={datosGeneros} />
+            <div className="dashboard-chart dashboard-chart-bar">
+              <Bar data={datosTopPeliculas} options={opcionesGrafico} />
             </div>
           </div>
         </div>
+      </section>
 
+      <section className="row g-4 mb-4">
         <div className="col-12 col-lg-6">
-          <div className="card shadow h-100">
-            <div className="card-header fw-bold">📅 Estrenos por año</div>
+          <div className="dashboard-panel h-100">
+            <div className="dashboard-panel-header">
+              <div>
+                <span className="dashboard-panel-eyebrow">Catálogo</span>
 
-            <div className="card-body">
-              <Bar data={datosEstrenos} />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="row g-4 mb-5">
-        <div className="col-12 col-lg-6">
-          <div className="card shadow h-100">
-            <div className="card-header fw-bold">
-              💼 Distribución por profesión
+                <h2>Distribución por género</h2>
+              </div>
             </div>
 
-            <div className="card-body chart-container">
-              <Pie data={datosProfesiones} />
+            <div className="dashboard-chart dashboard-chart-pie">
+              <Pie data={datosGeneros} options={opcionesGrafico} />
             </div>
           </div>
         </div>
 
         <div className="col-12 col-lg-6">
-          <div className="card shadow h-100">
-            <div className="card-header fw-bold">
-              🎭 Profesiones registradas
+          <div className="dashboard-panel h-100">
+            <div className="dashboard-panel-header">
+              <div>
+                <span className="dashboard-panel-eyebrow">Cronología</span>
+
+                <h2>Estrenos por año</h2>
+              </div>
             </div>
 
-            <div className="card-body">
+            <div className="dashboard-chart dashboard-chart-bar">
+              <Bar data={datosEstrenos} options={opcionesGrafico} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="row g-4 mb-4">
+        <div className="col-12 col-lg-6">
+          <div className="dashboard-panel h-100">
+            <div className="dashboard-panel-header">
+              <div>
+                <span className="dashboard-panel-eyebrow">Profesiones</span>
+
+                <h2>Distribución de talentos</h2>
+              </div>
+            </div>
+
+            <div className="dashboard-chart dashboard-chart-pie">
+              <Pie data={datosProfesiones} options={opcionesGrafico} />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 col-lg-6">
+          <div className="dashboard-panel h-100">
+            <div className="dashboard-panel-header">
+              <div>
+                <span className="dashboard-panel-eyebrow">Resumen</span>
+
+                <h2>Profesiones registradas</h2>
+              </div>
+            </div>
+
+            <div className="dashboard-list dashboard-list-compact">
               {Object.entries(profesiones)
                 .sort((a, b) => b[1] - a[1])
                 .map(([profesion, total]) => (
                   <div className="dashboard-list-item" key={profesion}>
-                    <span>{profesion}</span>
-                    <small>{total} actor(es)</small>
+                    <div className="dashboard-list-content">
+                      <strong>{profesion}</strong>
+                    </div>
+
+                    <span className="dashboard-list-total">{total}</span>
                   </div>
                 ))}
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="row g-4 mb-5">
+      <section className="row g-4">
         <div className="col-12 col-lg-6">
-          <div className="card shadow h-100">
-            <div className="card-header fw-bold">
-              🎬 Últimas películas agregadas
+          <div className="dashboard-panel h-100">
+            <div className="dashboard-panel-header">
+              <div>
+                <span className="dashboard-panel-eyebrow">Recientes</span>
+
+                <h2>Últimas películas</h2>
+              </div>
+
+              <Link to="/peliculas">Ver todas</Link>
             </div>
 
-            <div className="card-body">
+            <div className="dashboard-list">
               {ultimasPeliculas.map((pelicula) => (
                 <div className="dashboard-list-item" key={pelicula.Id}>
-                  <span>{pelicula.Titulo}</span>
-                  <small>{pelicula.Genero}</small>
+                  <div className="dashboard-list-content">
+                    <strong>{pelicula.Titulo}</strong>
+                    <small>{pelicula.Genero || "Sin género"}</small>
+                  </div>
+
+                  <span className="dashboard-list-total">
+                    {pelicula.CantidadActores || 0}
+                  </span>
                 </div>
               ))}
             </div>
@@ -382,28 +543,36 @@ function Home() {
         </div>
 
         <div className="col-12 col-lg-6">
-          <div className="card shadow h-100">
-            <div className="card-header fw-bold">
-              🎭 Últimos actores registrados
+          <div className="dashboard-panel h-100">
+            <div className="dashboard-panel-header">
+              <div>
+                <span className="dashboard-panel-eyebrow">Recientes</span>
+
+                <h2>Últimos actores</h2>
+              </div>
+
+              <Link to="/actores">Ver todos</Link>
             </div>
 
-            <div className="card-body">
+            <div className="dashboard-list">
               {ultimosActores.map((actor) => (
-                <div className="dashboard-list-item" key={actor.Id}>
-                  <span>{actor.NombreCompleto}</span>
-                  <small>{actor.Profesion || "Sin profesión"}</small>
-                </div>
+                <Link
+                  to={`/actores/${actor.Id}`}
+                  className="dashboard-list-item"
+                  key={actor.Id}
+                >
+                  <div className="dashboard-list-content">
+                    <strong>{actor.NombreCompleto}</strong>
+                    <small>{actor.Profesion || "Sin profesión"}</small>
+                  </div>
+
+                  <span className="dashboard-list-arrow">→</span>
+                </Link>
               ))}
             </div>
           </div>
         </div>
-      </div>
-
-      <footer className="text-center mt-5 text-muted">
-        <small>
-          © {new Date().getFullYear()} CineRD | Todos los derechos reservados.
-        </small>
-      </footer>
+      </section>
     </div>
   );
 }

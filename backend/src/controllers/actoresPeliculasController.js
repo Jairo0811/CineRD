@@ -93,18 +93,27 @@ const obtenerActoresPorPelicula = async (req, res) => {
         INNER JOIN Actores A ON AP.ActorId = A.Id
         WHERE AP.PeliculaId = @PeliculaId
         ORDER BY
-          CASE
-            WHEN AP.TipoParticipacion = 'Principal' THEN 1
-            WHEN AP.TipoParticipacion = 'Secundario' THEN 2
-            WHEN AP.TipoParticipacion = 'Cameo' THEN 3
-            WHEN AP.TipoParticipacion = 'Especial' THEN 4
-            WHEN AP.TipoParticipacion = 'Voz' THEN 5
-            WHEN AP.TipoParticipacion = 'Escena postcréditos' THEN 6
-            WHEN AP.TipoParticipacion = 'Sin acreditar' THEN 7
-            WHEN AP.TipoParticipacion = 'Archivo' THEN 8
-            ELSE 9
-          END,
-          A.NombreCompleto ASC
+CASE
+    WHEN AP.TipoParticipacion='Principal' THEN 1
+    WHEN AP.TipoParticipacion='Secundario' THEN 2
+    WHEN AP.TipoParticipacion='Reparto' THEN 3
+    WHEN AP.TipoParticipacion='Cameo' THEN 4
+    WHEN AP.TipoParticipacion='Especial' THEN 5
+    WHEN AP.TipoParticipacion='Flashback' THEN 6
+    WHEN AP.TipoParticipacion='Flashforward' THEN 7
+    WHEN AP.TipoParticipacion='Versión joven' THEN 8
+    WHEN AP.TipoParticipacion='Versión adulta' THEN 9
+    WHEN AP.TipoParticipacion='Versión anciana' THEN 10
+    WHEN AP.TipoParticipacion='Niño(a)' THEN 11
+    WHEN AP.TipoParticipacion='Voz' THEN 12
+    WHEN AP.TipoParticipacion='Narrador' THEN 13
+    WHEN AP.TipoParticipacion='Archivo' THEN 14
+    WHEN AP.TipoParticipacion='Fotografía' THEN 15
+    WHEN AP.TipoParticipacion='Escena postcréditos' THEN 16
+    WHEN AP.TipoParticipacion='Sin acreditar' THEN 17
+    ELSE 18
+END,
+A.NombreCompleto ASC
       `);
 
     res.json(resultado.recordset);

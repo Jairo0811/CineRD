@@ -2,12 +2,22 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../services/api";
 
+import {
+  calcularEdad,
+  calcularEdadAproximada,
+  calcularEdadEnFecha,
+  formatearFecha,
+  formatearFechaCorta,
+  obtenerAnioFecha,
+} from "../utils/fechas";
+
 function PerfilActor() {
   const { id } = useParams();
 
   const [actor, setActor] = useState(null);
   const [participaciones, setParticipaciones] = useState([]);
   const [dirigidas, setDirigidas] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
   const API_URL = "http://localhost:3000";
 
@@ -17,91 +27,71 @@ function PerfilActor() {
 
   const cargarPerfil = async () => {
     try {
+      setCargando(true);
+
       const actorResponse = await api.get(`/actores/${id}`);
       const actorData = actorResponse.data;
 
-      const participacionesResponse = await api.get(
-        `/actores-peliculas/actor/${id}`,
-      );
-
-      const dirigidasResponse = await api.get(
-        `/peliculas/director/${encodeURIComponent(actorData.NombreCompleto)}`,
-      );
+      const [participacionesResponse, dirigidasResponse] = await Promise.all([
+        api.get(`/actores-peliculas/actor/${id}`),
+        api.get(
+          `/peliculas/director/${encodeURIComponent(actorData.NombreCompleto)}`,
+        ),
+      ]);
 
       setActor(actorData);
-      setParticipaciones(participacionesResponse.data);
-      setDirigidas(dirigidasResponse.data);
+      setParticipaciones(participacionesResponse.data || []);
+      setDirigidas(dirigidasResponse.data || []);
     } catch (error) {
       console.error(error);
-      alert("Error al cargar el perfil del actor");
+
+      alert(
+        error.response?.data?.mensaje || "Error al cargar el perfil del actor",
+      );
+    } finally {
+      setCargando(false);
     }
   };
 
-  const calcularEdad = (
-    fechaNacimiento,
-    fechaFallecimiento = null,
-    anioNacimiento = null,
-  ) => {
-    if (fechaNacimiento) {
-      const nacimiento = new Date(fechaNacimiento);
-      const fechaFinal = fechaFallecimiento
-        ? new Date(fechaFallecimiento)
-        : new Date();
+  const obtenerEdadActor = () => {
+    if (!actor) {
+      return null;
+    }
 
-      let edad = fechaFinal.getFullYear() - nacimiento.getFullYear();
-      const mes = fechaFinal.getMonth() - nacimiento.getMonth();
-
-      if (
-        mes < 0 ||
-        (mes === 0 && fechaFinal.getDate() < nacimiento.getDate())
-      ) {
-        edad--;
+    if (actor.FechaNacimiento) {
+      if (!actor.EstaVivo && actor.FechaFallecimiento) {
+        return calcularEdadEnFecha(
+          actor.FechaNacimiento,
+          actor.FechaFallecimiento,
+        );
       }
 
-      return `${edad} años`;
+      return calcularEdad(actor.FechaNacimiento);
     }
 
-    if (anioNacimiento) {
-      const anioActual = new Date().getFullYear();
-      const edadAproximada = anioActual - Number(anioNacimiento);
+    if (actor.AnioNacimiento) {
+      const anioFinal =
+        !actor.EstaVivo && actor.FechaFallecimiento
+          ? obtenerAnioFecha(actor.FechaFallecimiento)
+          : new Date().getFullYear();
 
-      return `Aprox. ${edadAproximada} años`;
+      return calcularEdadAproximada(actor.AnioNacimiento, anioFinal);
     }
 
-    return "Edad no disponible";
-  };
-
-  const formatearFechaCompleta = (fecha) => {
-    if (!fecha) return "Desconocida";
-
-    return new Date(fecha).toLocaleDateString("es-DO", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  };
-
-  const formatearFecha = (fecha) => {
-    if (!fecha) return "Sin fecha";
-
-    return new Date(fecha).toLocaleDateString("es-DO", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
+    return null;
   };
 
   const mostrarNacimiento = () => {
+    const edad = obtenerEdadActor();
+
     if (actor.FechaNacimiento) {
       return (
         <>
           <p className="mb-1">
-            🎂 <strong>{formatearFechaCompleta(actor.FechaNacimiento)}</strong>
+            🎂 <strong>{formatearFecha(actor.FechaNacimiento)}</strong>
           </p>
 
-          <p className="text-muted mb-2">
-            {calcularEdad(actor.FechaNacimiento, actor.FechaFallecimiento)}
-          </p>
+          {edad !== null && <p className="text-muted mb-2">{edad} años</p>}
         </>
       );
     }
@@ -113,9 +103,9 @@ function PerfilActor() {
             🎂 Año de nacimiento: <strong>{actor.AnioNacimiento}</strong>
           </p>
 
-          <p className="text-muted mb-2">
-            {calcularEdad(null, null, actor.AnioNacimiento)}
-          </p>
+          {edad !== null && (
+            <p className="text-muted mb-2">Aprox. {edad} años</p>
+          )}
         </>
       );
     }
@@ -126,7 +116,9 @@ function PerfilActor() {
   };
 
   const obtenerEstadoActor = () => {
-    if (actor.EstaVivo) return "🟢 Vivo";
+    if (actor.EstaVivo) {
+      return "🟢 Vivo";
+    }
 
     return actor.Sexo === "Femenino" ? "⚫ Fallecida" : "⚫ Fallecido";
   };
@@ -168,10 +160,24 @@ function PerfilActor() {
     );
   };
 
+  if (cargando) {
+    return (
+      <div className="table-page-container text-center py-5">
+        <div className="spinner-border text-primary" role="status" />
+
+        <p className="mt-3 mb-0">Cargando perfil...</p>
+      </div>
+    );
+  }
+
   if (!actor) {
     return (
-      <div className="table-page-container text-center">
-        <p>Cargando perfil...</p>
+      <div className="table-page-container text-center py-5">
+        <p className="text-muted">No se encontró el actor solicitado.</p>
+
+        <Link to="/actores" className="btn btn-primary">
+          Volver a Actores
+        </Link>
       </div>
     );
   }
@@ -195,7 +201,7 @@ function PerfilActor() {
           )}
 
           <h2 className="mb-2">
-            <div>{actor.Nombres || actor.NombreCompleto}</div>
+            <div>{actor.Nombres || actor.NombreCompleto || "Sin nombre"}</div>
 
             {actor.Apellidos && (
               <div
@@ -210,9 +216,9 @@ function PerfilActor() {
             )}
           </h2>
 
-          <p className="text-muted mb-1">
-            🎭 {actor.NombreArtistico || "Sin nombre artístico"}
-          </p>
+          {actor.NombreArtistico && (
+            <p className="text-muted mb-1">🎭 {actor.NombreArtistico}</p>
+          )}
 
           <p className="mb-1">
             💼 <strong>{actor.Profesion || "Sin profesión definida"}</strong>
@@ -221,11 +227,9 @@ function PerfilActor() {
           {mostrarNacimiento()}
 
           {!actor.EstaVivo && actor.FechaFallecimiento && (
-            <p className="text-danger">
+            <p className="text-danger mb-2">
               ⚰️ Falleció el{" "}
-              <strong>
-                {formatearFechaCompleta(actor.FechaFallecimiento)}
-              </strong>
+              <strong>{formatearFecha(actor.FechaFallecimiento)}</strong>
             </p>
           )}
 
@@ -239,33 +243,45 @@ function PerfilActor() {
 
       <div className="row g-4 mb-4">
         <div className="col-12 col-md-4">
-          <div className="dashboard-card">
-            <h2>🎭</h2>
-            <h3>{participaciones.length}</h3>
-            <p>Participaciones como actor/actriz</p>
+          <div className="dashboard-stat-card">
+            <span className="dashboard-stat-icon">🎭</span>
+
+            <strong className="dashboard-stat-value">
+              {participaciones.length}
+            </strong>
+
+            <span className="dashboard-stat-label">
+              Participaciones como actor/actriz
+            </span>
           </div>
         </div>
 
         <div className="col-12 col-md-4">
-          <div className="dashboard-card">
-            <h2>🎬</h2>
-            <h3>{dirigidas.length}</h3>
-            <p>Películas dirigidas</p>
+          <div className="dashboard-stat-card">
+            <span className="dashboard-stat-icon">🎬</span>
+
+            <strong className="dashboard-stat-value">{dirigidas.length}</strong>
+
+            <span className="dashboard-stat-label">Películas dirigidas</span>
           </div>
         </div>
 
         <div className="col-12 col-md-4">
-          <div className="dashboard-card">
-            <h2>📽️</h2>
-            <h3>{participaciones.length + dirigidas.length}</h3>
-            <p>Total créditos</p>
+          <div className="dashboard-stat-card">
+            <span className="dashboard-stat-icon">📽️</span>
+
+            <strong className="dashboard-stat-value">
+              {participaciones.length + dirigidas.length}
+            </strong>
+
+            <span className="dashboard-stat-label">Total de créditos</span>
           </div>
         </div>
       </div>
 
-      <div className="row g-4">
+      <div className="row g-4 align-items-start">
         <div className="col-12 col-lg-6">
-          <div className="card shadow h-100">
+          <div className="card shadow">
             <div className="card-header fw-bold">
               🎭 Participaciones como actor/actriz
             </div>
@@ -300,7 +316,9 @@ function PerfilActor() {
                     </div>
 
                     <small className="text-muted text-end">
-                      {formatearFecha(pelicula.FechaEstreno)}
+                      {pelicula.FechaEstreno
+                        ? formatearFechaCorta(pelicula.FechaEstreno)
+                        : "Sin fecha"}
                     </small>
                   </div>
                 ))
@@ -310,7 +328,7 @@ function PerfilActor() {
         </div>
 
         <div className="col-12 col-lg-6">
-          <div className="card shadow h-100">
+          <div className="card shadow">
             <div className="card-header fw-bold">🎬 Películas dirigidas</div>
 
             <div className="card-body">
@@ -337,7 +355,9 @@ function PerfilActor() {
                     </div>
 
                     <small className="text-muted text-end">
-                      {formatearFecha(pelicula.FechaEstreno)}
+                      {pelicula.FechaEstreno
+                        ? formatearFechaCorta(pelicula.FechaEstreno)
+                        : "Sin fecha"}
                     </small>
                   </div>
                 ))
