@@ -32,7 +32,7 @@ Así nació **CineRD**, una plataforma cuyo objetivo es convertirse en la base d
 # 🚀 Tecnologías
 
 <p align="center">
-<img src="https://skillicons.dev/icons?i=react,vite,nodejs,express,javascript,html,css,bootstrap,npm,git,github,vscode&perline=6"/>
+<img src="https://skillicons.dev/icons?i=react,vite,nodejs,express,npm,vscode,html,css,javascript,bootstrap,git,github&perline=6"/>
 </p>
 
 ## Backend
