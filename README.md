@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="frontend/src/assets/logo.png" alt="Logo de CineRD" width="260" />
+
 # 🎬 CineRD
 
 ### La base de datos del cine dominicano
