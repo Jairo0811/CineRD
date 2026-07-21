@@ -1,6 +1,5 @@
 <div align="center">
 
-# 🎬 CineRD
 
 <img src="frontend/src/assets/logo.png" alt="Logo de CineRD" width="260" />
 
