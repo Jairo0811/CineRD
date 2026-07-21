@@ -14,6 +14,7 @@ import FormularioActor from "./pages/FormularioActor";
 import FormularioPelicula from "./pages/FormularioPelicula";
 import RepartoPelicula from "./pages/RepartoPelicula";
 import PerfilActor from "./pages/PerfilActor";
+import PerfilPelicula from "./pages/PerfilPelicula";
 
 function App() {
   return (
@@ -50,6 +51,10 @@ function App() {
             <Route
               path="/peliculas/editar/:id"
               element={<FormularioPelicula />}
+            />
+            <Route
+              path="/peliculas/:id"
+              element={<PerfilPelicula />}
             />
             <Route
               path="/peliculas/:id/reparto"
