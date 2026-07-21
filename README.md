@@ -1,186 +1,167 @@
+<div align="center">
+
 # 🎬 CineRD
 
-<p align="center">
+### La base de datos del cine dominicano
 
-**La base de datos del cine dominicano.**
+Plataforma Full Stack inspirada en IMDb para preservar, organizar y consultar información sobre películas, talentos y producciones cinematográficas de la República Dominicana.
 
-Un proyecto Full Stack desarrollado con **React, Node.js, Express y SQL Server**, inspirado en plataformas como IMDb, enfocado en preservar, organizar y consultar información sobre películas, actores, directores y repartos del cine dominicano.
+[![Version](https://img.shields.io/badge/version-2.1.0-success)](https://github.com/Jairo0811/CineRD)
+[![Status](https://img.shields.io/badge/status-en%20desarrollo-2563eb)](https://github.com/Jairo0811/CineRD)
+[![License](https://img.shields.io/badge/license-portafolio-f59e0b)](#-licencia)
+[![Last Commit](https://img.shields.io/github/last-commit/Jairo0811/CineRD)](https://github.com/Jairo0811/CineRD/commits/main)
 
-</p>
+<img src="https://skillicons.dev/icons?i=react,vite,nodejs,express,js,html,css,bootstrap,git,github,vscode&perline=11" alt="Tecnologías de CineRD" />
 
-<p align="center">
-
-![Version](https://img.shields.io/badge/Version-v2.0.0-success)
-![Status](https://img.shields.io/badge/Status-En%20Desarrollo-blue)
-![License](https://img.shields.io/badge/License-Portfolio-orange)
-![GitHub last commit](https://img.shields.io/github/last-commit/Jairo0811/CineRD)
-
-</p>
+</div>
 
 ---
 
-# 📖 Historia
+## 🌟 ¿Qué es CineRD?
 
-En **2021** recibí una prueba técnica desarrollada en **React** que no pude completar porque todavía estaba aprendiendo la tecnología.
+**CineRD** es una plataforma especializada en documentar el cine dominicano mediante una base de datos moderna, centralizada y extensible.
 
-Años después decidí retomarla y convertirla en un proyecto mucho más ambicioso.
+Permite administrar películas, actores, actrices, directores, productores, guionistas y sus relaciones profesionales. También integra información de **TMDb** para acelerar el registro de producciones, talentos, fotografías, pósteres y repartos.
 
-Así nació **CineRD**, una plataforma cuyo objetivo es convertirse en la base de datos más completa dedicada al cine dominicano.
-
----
-
-# 🚀 Tecnologías
-
-<p align="center">
-<img src="https://skillicons.dev/icons?i=react,vite,nodejs,express,npm,vscode,html,css,javascript,bootstrap,git,github&perline=6"/>
-</p>
-
-## Backend
-
-- Node.js
-- Express
-- SQL Server
-- MSSQL
-- Multer
-- Sharp
-- dotenv
-- cors
-
-## Frontend
-
-- React
-- React Router DOM
-- Axios
-- Bootstrap 5
-- Chart.js
-- React Chart.js 2
+El proyecto nació a partir de una prueba técnica de React recibida en 2021. Años después fue retomado y transformado en una aplicación Full Stack orientada a portafolio profesional, preservación cultural y crecimiento futuro.
 
 ---
 
-# 🎯 Funcionalidades
+## ✨ Funcionalidades
 
-## 🎬 Gestión de Películas
+### 🎬 Películas
 
-- ✅ Registrar películas
-- ✅ Editar películas
-- ✅ Eliminar películas
-- ✅ Portadas
-- ✅ Director
-- ✅ Productora
-- ✅ Fecha de estreno
-- ✅ Género
-- ✅ Perfil individual
+- CRUD completo de películas.
+- Póster, género, director, productora y fecha de estreno.
+- Perfil cinematográfico individual.
+- Hero visual con backdrop cuando está disponible.
+- Soporte para sinopsis, eslogan, duración, calificación, estado e idioma original.
+- Soporte para presupuesto, recaudación y tráiler de YouTube.
+- Navegación directa hacia edición y administración del reparto.
 
----
+### 👤 Talentos
 
-## 👤 Gestión de Talentos
+- Gestión de actores, actrices, directores, productores y guionistas.
+- Profesiones múltiples.
+- Fotografía y nombre artístico.
+- Fecha de nacimiento y fallecimiento.
+- Estado vivo/fallecido y edad calculada automáticamente.
+- Perfil artístico individual.
+- Filmografía como actor y director.
+- Estadísticas y mini carteles.
 
-- ✅ Actores
-- ✅ Actrices
-- ✅ Directores
-- ✅ Productores
-- ✅ Guionistas
-- ✅ Profesiones múltiples
-- ✅ Fotografía
-- ✅ Nombre artístico
-- ✅ Fecha de nacimiento
-- ✅ Fecha de fallecimiento
-- ✅ Estado (Vivo/Fallecido)
-- ✅ Edad calculada automáticamente
+### 🎭 Repartos
 
----
+- Relación muchos a muchos entre talentos y películas.
+- Registro de personajes.
+- Participaciones principales, secundarias, cameos, voz y flashbacks.
+- Orden de créditos.
+- Prevención de duplicados.
+- Edición de participaciones.
+- Navegación entre películas y perfiles artísticos.
 
-## 🎭 Gestión de Repartos
+### 🌐 Integración con TMDb
 
-- ✅ Actor ↔ Película
-- ✅ Personaje
-- ✅ Participación principal
-- ✅ Participación secundaria
-- ✅ Cameo
-- ✅ Voz
-- ✅ Flashback
-- ✅ Aparición especial
-- ✅ Prevención de duplicados
-- ✅ Edición de participaciones
+- Búsqueda de películas y talentos.
+- Importación automática de información.
+- Consulta e importación de reparto.
+- Descarga de pósteres y fotografías.
+- Identificación mediante `TMDbId`.
+- Detección de coincidencias por nombre completo y nombre artístico.
+- Creación automática de talentos cuando no existen localmente.
 
----
+### 📊 Dashboard
 
-## 👤 Perfil Artístico
-
-Cada talento dispone de una ficha profesional que incluye:
-
-- Fotografía
-- Nombre artístico
-- Profesiones
-- Edad
-- Estado
-- Filmografía como actor
-- Filmografía como director
-- Mini carteles
-- Estadísticas
+- Total de películas, talentos y participaciones.
+- Actores vivos y fallecidos.
+- Películas con reparto.
+- Distribución por género y profesión.
+- Estrenos por año.
+- Últimos registros.
+- Gráficos interactivos con Chart.js.
 
 ---
 
-# 🌐 Integración con TMDb
+## 🚀 Tecnologías
 
-Una de las características principales del proyecto.
-
-Permite:
-
-- 🔎 Buscar películas
-- 🔎 Buscar actores
-- 🎬 Importar información automáticamente
-- 👥 Consultar el reparto
-- 🖼️ Descargar posters
-- 👤 Descargar fotografías
-- 🤝 Detectar coincidencias por nombre completo
-- 🎭 Detectar coincidencias por nombre artístico
-- ➕ Crear talentos automáticamente desde TMDb
+| Área | Tecnologías |
+|---|---|
+| Frontend | React, Vite, React Router DOM, Axios, Bootstrap 5, Chart.js |
+| Backend | Node.js, Express, MSSQL, Multer, Sharp, dotenv, CORS |
+| Base de datos | Microsoft SQL Server |
+| API externa | TMDb |
+| Herramientas | Git, GitHub, npm, Visual Studio Code |
 
 ---
 
-# 📊 Dashboard
+## 🏗️ Arquitectura
 
-Incluye estadísticas en tiempo real.
+```text
+CineRD/
+├── backend/
+│   └── src/
+│       ├── config/
+│       ├── controllers/
+│       ├── middlewares/
+│       ├── routes/
+│       ├── services/
+│       ├── utils/
+│       └── uploads/
+├── frontend/
+│   └── src/
+│       ├── assets/
+│       ├── components/
+│       ├── pages/
+│       ├── services/
+│       ├── styles/
+│       └── utils/
+├── database/
+│   └── migrations/
+├── CRUD-Peliculas.sql
+└── README.md
+```
 
-- Total de películas
-- Total de talentos
-- Total de participaciones
-- Actores vivos
-- Actores fallecidos
-- Películas con reparto
-- Distribución por género
-- Distribución por profesiones
-- Estrenos por año
-- Últimas películas
-- Últimos talentos
-- Gráficos interactivos
+La solución mantiene separadas las responsabilidades del frontend, backend, acceso a datos, procesamiento de imágenes, integración externa y migraciones de base de datos.
 
 ---
 
-# 🎨 Interfaz
+## ⚙️ Instalación
 
-- Responsive
-- Navbar adaptable
-- Dashboard moderno
-- Cards
-- Perfil artístico
-- Footer
-- Bootstrap 5
-- Chart.js
-
----
-
-# ⚙️ Instalación
-
-## Clonar
+### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/Jairo0811/CineRD.git
 cd CineRD
 ```
 
-## Backend
+### 2. Preparar la base de datos
+
+Ejecuta en SQL Server:
+
+```text
+CRUD-Peliculas.sql
+```
+
+Luego aplica la migración de metadatos cinematográficos:
+
+```text
+database/migrations/002_peliculas_metadatos.sql
+```
+
+La migración es idempotente y agrega soporte para:
+
+- `Sinopsis`
+- `DuracionMinutos`
+- `Calificacion`
+- `IdiomaOriginal`
+- `Presupuesto`
+- `Recaudacion`
+- `Backdrop`
+- `TrailerUrl`
+- `Estado`
+- `Eslogan`
+
+### 3. Iniciar el backend
 
 ```bash
 cd backend
@@ -188,13 +169,15 @@ npm install
 npm run dev
 ```
 
-Servidor
+Servidor local:
 
-```
+```text
 http://localhost:3000
 ```
 
-## Frontend
+### 4. Iniciar el frontend
+
+En otra terminal:
 
 ```bash
 cd frontend
@@ -202,124 +185,73 @@ npm install
 npm run dev
 ```
 
-Aplicación
+Aplicación local:
 
-```
+```text
 http://localhost:5173
 ```
 
 ---
 
-# 🗄️ Base de Datos
+## 🔌 Endpoints destacados
 
-Ejecutar
-
-```
-CRUD-Peliculas.sql
-```
-
-Se crea automáticamente:
-
-- Base de datos
-- Actores
-- Películas
-- ActoresPeliculas
-
----
-
-# 📁 Arquitectura
-
-```
-CineRD
-│
-├── backend
-│   ├── src
-│   │
-│   ├── config
-│   ├── controllers
-│   ├── middlewares
-│   ├── routes
-│   ├── services
-│   ├── utils
-│   └── uploads
-│
-├── frontend
-│   ├── src
-│   │
-│   ├── assets
-│   ├── components
-│   ├── pages
-│   ├── services
-│   ├── utils
-│   └── styles
-│
-├── CRUD-Peliculas.sql
-└── README.md
+```http
+GET /api/peliculas
+GET /api/peliculas/:id
+GET /api/peliculas/:id/perfil
+GET /api/actores-peliculas/pelicula/:id
 ```
 
----
-
-# 🚧 Próximas funcionalidades
-
-- ⭐ Perfil completo de películas
-- 🎥 Trailers
-- 🖼️ Galerías
-- 🏆 Premios
-- 📺 Series dominicanas
-- 🔍 Buscador global
-- 📈 Estadísticas avanzadas
-- 🌍 Mapa del cine dominicano
-- ☁️ Despliegue en la nube
+El endpoint de perfil devuelve la información general y los metadatos cinematográficos disponibles. Mantiene compatibilidad temporal con instalaciones que todavía no hayan ejecutado la migración.
 
 ---
 
-# 📌 Estado del Proyecto
+## 🗺️ Roadmap
 
-🟢 **Versión 2.0.0**
-
-Actualmente CineRD ya cuenta con:
-
-- ✅ React
-- ✅ Node.js
-- ✅ SQL Server
-- ✅ Dashboard
-- ✅ CRUD de películas
-- ✅ CRUD de talentos
-- ✅ Gestión de repartos
-- ✅ Perfil artístico
-- ✅ Dashboard estadístico
-- ✅ Gráficos
-- ✅ Responsive
-- ✅ Integración con TMDb
-- ✅ Importación de películas
-- ✅ Importación de actores
-- ✅ Detección automática de coincidencias
-- ✅ Nombre artístico
-- ✅ Fotografías
-- ✅ Posters
+| Estado | Funcionalidad |
+|---|---|
+| ✅ | CRUD de películas |
+| ✅ | CRUD de talentos |
+| ✅ | Gestión de repartos |
+| ✅ | Dashboard estadístico |
+| ✅ | Perfil artístico |
+| ✅ | Perfil cinematográfico de películas |
+| 🟡 | Edición completa de metadatos desde el formulario |
+| 🟡 | Importación avanzada de metadatos desde TMDb |
+| 🟡 | Galerías multimedia |
+| 🟡 | Premios y nominaciones |
+| 🟡 | Series dominicanas |
+| 🟡 | Buscador global |
+| 🟡 | Estadísticas avanzadas |
+| 🟡 | Mapa del cine dominicano |
+| 🟡 | Despliegue en la nube |
 
 ---
 
-# 👨‍💻 Autor
+## 📌 Estado del proyecto
 
-## Francis Jairo Matías Rosario
+🟢 **Versión 2.1.0 — En desarrollo activo**
 
-**Ingeniero de Software**
-
-🔗 LinkedIn
-
-https://www.linkedin.com/in/jairomatias0811/
-
-💻 GitHub
-
-https://github.com/Jairo0811
+La versión actual incorpora el perfil cinematográfico de películas, una migración extensible de metadatos y una base técnica preparada para enriquecer automáticamente cada ficha desde TMDb.
 
 ---
 
-# 📄 Licencia
+## 👨‍💻 Autor
 
-Este proyecto forma parte de mi **portafolio profesional** y fue desarrollado con fines educativos y de investigación.
+### Francis Jairo Matías Rosario
 
-No está afiliado ni respaldado por **TMDb**.
+**Ingeniero de Software · Desarrollador Full Stack**  
+República Dominicana
+
+- [GitHub](https://github.com/Jairo0811)
+- [LinkedIn](https://www.linkedin.com/in/jairomatias0811/)
+
+---
+
+## 📄 Licencia
+
+Este proyecto forma parte de mi **portafolio profesional** y fue desarrollado con fines educativos, culturales y de investigación.
+
+CineRD no está afiliado, patrocinado ni respaldado por **TMDb**.
 
 © 2026 Francis Jairo Matías Rosario.
