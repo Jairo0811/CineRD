@@ -3,6 +3,9 @@ const router = express.Router();
 
 const upload = require("../middlewares/upload");
 const { procesarImagenPelicula } = require("../middlewares/procesarImagen");
+const {
+  obtenerPerfilPelicula,
+} = require("../controllers/peliculasPerfilController");
 
 const {
   obtenerPeliculas,
@@ -16,7 +19,7 @@ const {
 router.get("/", obtenerPeliculas);
 
 router.get("/director/:nombre", obtenerPeliculasDirigidasPorActor);
-
+router.get("/:id/perfil", obtenerPerfilPelicula);
 router.get("/:id", obtenerPeliculaPorId);
 
 router.post("/", upload.single("Foto"), procesarImagenPelicula, crearPelicula);
@@ -25,7 +28,7 @@ router.put(
   "/:id",
   upload.single("Foto"),
   procesarImagenPelicula,
-  actualizarPelicula
+  actualizarPelicula,
 );
 
 router.delete("/:id", eliminarPelicula);
