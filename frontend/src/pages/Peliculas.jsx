@@ -61,7 +61,7 @@ function Peliculas() {
       <div className="d-flex justify-content-between align-items-center page-header mb-4">
         <h2>🎬 Películas</h2>
 
-        <Link to="/peliculas/nueva" className="btn btn-success">
+        <Link to="/peliculas/nueva" className="btn btn-primary">
           ➕ Nueva Película
         </Link>
       </div>
@@ -153,6 +153,13 @@ function Peliculas() {
               </div>
 
               <div className="card-footer bg-white border-0">
+                <Link
+                  to={`/peliculas/${pelicula.Id}`}
+                  className="btn btn-outline-primary btn-sm w-100 mb-2"
+                >
+                  🎬 Ver perfil
+                </Link>
+
                 <div className="d-flex gap-2 mb-2">
                   <Link
                     to={`/peliculas/editar/${pelicula.Id}`}
@@ -162,6 +169,7 @@ function Peliculas() {
                   </Link>
 
                   <button
+                    type="button"
                     className="btn btn-danger btn-sm w-50"
                     onClick={() => eliminarPelicula(pelicula.Id)}
                   >
@@ -171,7 +179,7 @@ function Peliculas() {
 
                 <Link
                   to={`/peliculas/${pelicula.Id}/reparto`}
-                  className="btn btn-info btn-sm w-100"
+                  className="btn btn-primary btn-sm w-100"
                 >
                   👥 Reparto
                 </Link>
