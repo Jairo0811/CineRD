@@ -11,7 +11,7 @@ Plataforma Full Stack inspirada en IMDb para preservar, organizar y consultar in
 [![License](https://img.shields.io/badge/license-portafolio-f59e0b)](#-licencia)
 [![Last Commit](https://img.shields.io/github/last-commit/Jairo0811/CineRD)](https://github.com/Jairo0811/CineRD/commits/main)
 
-<img src="https://skillicons.dev/icons?i=react,vite,nodejs,express,js,html,css,bootstrap,git,github,vscode&perline=11" alt="Tecnologías de CineRD" />
+<img src="https://skillicons.dev/icons?i=react,vite,nodejs,express,html,css,js,bootstrap,git,github,vscode&perline=11" alt="Tecnologías de CineRD" />
 
 </div>
 
