@@ -30,6 +30,14 @@ const construirCamposOpcionales = (columnasDisponibles) =>
       : `NULL AS ${campo}`,
   ).join(",\n          ");
 
+const construirGroupByOpcional = (columnasDisponibles) => {
+  const campos = CAMPOS_OPCIONALES.filter((campo) =>
+    columnasDisponibles.has(campo),
+  ).map((campo) => `P.${campo}`);
+
+  return campos.length > 0 ? `,\n          ${campos.join(",\n          ")}` : "";
+};
+
 const obtenerPerfilPelicula = async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -43,6 +51,7 @@ const obtenerPerfilPelicula = async (req, res) => {
     const pool = await poolPromise;
     const columnasDisponibles = await obtenerColumnasPeliculas(pool);
     const camposOpcionales = construirCamposOpcionales(columnasDisponibles);
+    const groupByOpcional = construirGroupByOpcional(columnasDisponibles);
 
     const resultado = await pool
       .request()
@@ -71,12 +80,7 @@ const obtenerPerfilPelicula = async (req, res) => {
           P.Director,
           P.Productora,
           P.FechaEstreno,
-          P.Foto,
-          ${CAMPOS_OPCIONALES.map((campo) =>
-            columnasDisponibles.has(campo) ? `P.${campo}` : null,
-          )
-            .filter(Boolean)
-            .join(",\n          ")}
+          P.Foto${groupByOpcional}
       `);
 
     if (resultado.recordset.length === 0) {
