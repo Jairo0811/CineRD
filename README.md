@@ -90,7 +90,7 @@ El proyecto nació a partir de una prueba técnica de React recibida en 2021. A�
 ### 🎨 Frontend y diseño de interfaces
 
 <p>
-  <img src="https://skillicons.dev/icons?i=react,vite,js,html,css,bootstrap" alt="React, Vite, JavaScript, HTML, CSS y Bootstrap" />
+  <img src="https://skillicons.dev/icons?i=react,vite,html,css,js,bootstrap" alt="React, Vite, JavaScript, HTML, CSS y Bootstrap" />
 </p>
 
 - **React:** construcción de la interfaz mediante componentes reutilizables.
