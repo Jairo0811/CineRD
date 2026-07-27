@@ -1,9 +1,6 @@
 <div align="center">
 
-
 <img src="frontend/src/assets/logo.png" alt="Logo de CineRD" width="260" />
-
-
 
 ### La base de datos del cine dominicano
 
@@ -14,9 +11,22 @@ Plataforma Full Stack inspirada en IMDb para preservar, organizar y consultar in
 [![License](https://img.shields.io/badge/license-portafolio-f59e0b)](#-licencia)
 [![Last Commit](https://img.shields.io/github/last-commit/Jairo0811/CineRD)](https://github.com/Jairo0811/CineRD/commits/main)
 
-<img src="https://skillicons.dev/icons?i=react,vite,nodejs,express,html,css,js,bootstrap,git,github,vscode&perline=11" alt="Tecnologías de CineRD" />
-
 </div>
+
+---
+
+## 📑 Contenido
+
+- [¿Qué es CineRD?](#-qué-es-cinerd)
+- [Funcionalidades](#-funcionalidades)
+- [Tecnologías](#-tecnologías)
+- [Arquitectura](#️-arquitectura)
+- [Instalación](#️-instalación)
+- [Endpoints destacados](#-endpoints-destacados)
+- [Roadmap](#️-roadmap)
+- [Estado del proyecto](#-estado-del-proyecto)
+- [Autor](#-autor)
+- [Licencia](#-licencia)
 
 ---
 
@@ -38,8 +48,8 @@ El proyecto nació a partir de una prueba técnica de React recibida en 2021. A�
 - Póster, género, director, productora y fecha de estreno.
 - Perfil cinematográfico individual.
 - Hero visual con backdrop cuando está disponible.
-- Soporte para sinopsis, eslogan, duración, calificación, estado e idioma original.
-- Soporte para presupuesto, recaudación y tráiler de YouTube.
+- Sinopsis, eslogan, duración, calificación, estado e idioma original.
+- Presupuesto, recaudación y tráiler de YouTube.
 - Navegación directa hacia edición y administración del reparto.
 
 ### 👤 Talentos
@@ -174,6 +184,15 @@ La solución mantiene separadas las responsabilidades del frontend, backend, acc
 
 ## ⚙️ Instalación
 
+### Requisitos previos
+
+Antes de iniciar, asegúrate de tener instalado:
+
+- Node.js y npm.
+- Microsoft SQL Server.
+- SQL Server Management Studio o una herramienta equivalente.
+- Una cuenta de TMDb con acceso a su API.
+
 ### 1. Clonar el repositorio
 
 ```bash
@@ -208,7 +227,24 @@ La migración es idempotente y agrega soporte para:
 - `Estado`
 - `Eslogan`
 
-### 3. Iniciar el backend
+### 3. Configurar variables de entorno
+
+Crea el archivo `backend/.env` a partir de la configuración utilizada por el proyecto y define las credenciales locales de SQL Server y TMDb.
+
+Ejemplo de referencia:
+
+```env
+PORT=3000
+DB_SERVER=localhost
+DB_DATABASE=CineRD
+DB_USER=usuario
+DB_PASSWORD=contraseña
+TMDB_API_KEY=tu_api_key
+```
+
+> Los nombres exactos de las variables deben coincidir con los utilizados por la configuración actual del backend.
+
+### 4. Iniciar el backend
 
 ```bash
 cd backend
@@ -222,7 +258,7 @@ Servidor local:
 http://localhost:3000
 ```
 
-### 4. Iniciar el frontend
+### 5. Iniciar el frontend
 
 En otra terminal:
 
