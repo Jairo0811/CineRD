@@ -87,13 +87,57 @@ El proyecto nació a partir de una prueba técnica de React recibida en 2021. A�
 
 ## 🚀 Tecnologías
 
-| Área | Tecnologías |
-|---|---|
-| Frontend | React, Vite, React Router DOM, Axios, Bootstrap 5, Chart.js |
-| Backend | Node.js, Express, MSSQL, Multer, Sharp, dotenv, CORS |
-| Base de datos | Microsoft SQL Server |
-| API externa | TMDb |
-| Herramientas | Git, GitHub, npm, Visual Studio Code |
+### 🎨 Frontend y diseño de interfaces
+
+<p>
+  <img src="https://skillicons.dev/icons?i=react,vite,js,html,css,bootstrap" alt="React, Vite, JavaScript, HTML, CSS y Bootstrap" />
+</p>
+
+- **React:** construcción de la interfaz mediante componentes reutilizables.
+- **Vite:** entorno de desarrollo y compilación del frontend.
+- **React Router DOM:** navegación y enrutamiento de la SPA.
+- **Axios:** consumo de la API REST.
+- **Bootstrap 5:** diseño responsivo y componentes visuales.
+- **Chart.js:** gráficos e indicadores del dashboard.
+
+### ⚙️ Backend, frameworks y APIs
+
+<p>
+  <img src="https://skillicons.dev/icons?i=nodejs,express" alt="Node.js y Express" />
+</p>
+
+- **Node.js:** entorno de ejecución del servidor.
+- **Express:** API REST y enrutamiento del backend.
+- **MSSQL:** conectividad con Microsoft SQL Server.
+- **Multer:** carga y gestión de archivos.
+- **Sharp:** procesamiento y optimización de imágenes.
+- **dotenv:** configuración mediante variables de entorno.
+- **CORS:** control de acceso entre frontend y backend.
+
+### 🌐 Servicios e integraciones externas
+
+- **TMDb API:** búsqueda e importación de películas, talentos, repartos e imágenes.
+- **YouTube:** integración de tráileres mediante URL.
+
+### 🗄️ Base de datos y persistencia
+
+<p>
+  <img src="https://img.shields.io/badge/SQL%20Server-CC2927?style=flat-square&logo=microsoftsqlserver&logoColor=white" alt="Microsoft SQL Server" />
+</p>
+
+- **Microsoft SQL Server:** persistencia relacional de películas, talentos, profesiones y repartos.
+- **Scripts y migraciones SQL:** creación y evolución controlada del esquema de datos.
+
+### 🧰 Herramientas de desarrollo
+
+<p>
+  <img src="https://skillicons.dev/icons?i=vscode,git,github,npm" alt="Visual Studio Code, Git, GitHub y npm" />
+</p>
+
+- **Visual Studio Code:** entorno principal de desarrollo.
+- **npm:** administración de dependencias y scripts.
+- **Git:** control de versiones.
+- **GitHub:** publicación y mantenimiento del repositorio.
 
 ---
 
