@@ -132,7 +132,7 @@ El proyecto nació a partir de una prueba técnica de React recibida en 2021. A�
 ### 🗄️ Base de datos y persistencia
 
 <p>
-  <img src="https://img.shields.io/badge/SQL%20Server-CC2927?style=flat-square&logo=microsoftsqlserver&logoColor=white" alt="Microsoft SQL Server" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" alt="Microsoft SQL Server" width="48" height="48" />
 </p>
 
 - **Microsoft SQL Server:** persistencia relacional de películas, talentos, profesiones y repartos.
