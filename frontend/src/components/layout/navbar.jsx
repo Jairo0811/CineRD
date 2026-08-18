@@ -47,6 +47,9 @@ function Navbar() {
             <li className="nav-item"><NavLink className={obtenerClaseNav} to="/" end onClick={cerrarMenuMovil}>Inicio</NavLink></li>
             <li className="nav-item"><NavLink className={obtenerClaseNav} to="/peliculas" onClick={cerrarMenuMovil}>Películas</NavLink></li>
             <li className="nav-item"><NavLink className={obtenerClaseNav} to="/actores" onClick={cerrarMenuMovil}>Talentos</NavLink></li>
+            {usuario && !esAdmin && (
+              <li className="nav-item"><NavLink className={obtenerClaseNav} to="/verificar-perfil" onClick={cerrarMenuMovil}>Verificar mi perfil</NavLink></li>
+            )}
             {esAdmin && (
               <li className="nav-item"><NavLink className={obtenerClaseNav} to="/admin/verificaciones" onClick={cerrarMenuMovil}>Verificaciones</NavLink></li>
             )}
