@@ -1,24 +1,33 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const actoresRoutes = require("./routes/actoresRoutes");
 const peliculasRoutes = require("./routes/peliculasRoutes");
 const actoresPeliculasRoutes = require("./routes/actoresPeliculasRoutes");
 const tmdbRoutes = require("./routes/tmdbRoutes");
+const authRoutes = require("./routes/authRoutes");
+const verificacionRoutes = require("./routes/verificacionRoutes");
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  credentials: true,
+}));
+app.use(express.json({ limit: "1mb" }));
+app.use(cookieParser());
 
 app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
   res.json({
-    mensaje: "API CRUD de Películas funcionando correctamente",
+    mensaje: "API de CineRD funcionando correctamente",
   });
 });
 
+app.use("/api/auth", authRoutes);
+app.use("/api/verificaciones", verificacionRoutes);
 app.use("/api/actores", actoresRoutes);
 app.use("/api/peliculas", peliculasRoutes);
 app.use("/api/actores-peliculas", actoresPeliculasRoutes);
