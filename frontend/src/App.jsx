@@ -17,6 +17,7 @@ import PerfilActor from "./pages/PerfilActor";
 import PerfilPelicula from "./pages/PerfilPelicula";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
+import VerificarTalento from "./pages/VerificarTalento";
 import ReclamarPerfil from "./pages/ReclamarPerfil";
 import AdminVerificaciones from "./pages/AdminVerificaciones";
 
@@ -31,6 +32,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Registro />} />
+            <Route path="/verificar-perfil" element={<VerificarTalento />} />
 
             <Route path="/actores" element={<Actores />} />
             <Route path="/actores/nuevo" element={<FormularioActor />} />
