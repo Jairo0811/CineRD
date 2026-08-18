@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { autenticar, autorizar } = require("../middlewares/auth");
 
 const {
   actualizarParticipacion,
@@ -11,8 +12,8 @@ const {
 
 router.get("/pelicula/:peliculaId", obtenerActoresPorPelicula);
 router.get("/actor/:actorId", obtenerPeliculasPorActor);
-router.post("/", asignarActorAPelicula);
-router.put("/:peliculaId/:actorId", actualizarParticipacion);
-router.delete("/:peliculaId/:actorId", eliminarActorDePelicula);
+router.post("/", autenticar, autorizar("ADMINISTRADOR"), asignarActorAPelicula);
+router.put("/:peliculaId/:actorId", autenticar, autorizar("ADMINISTRADOR"), actualizarParticipacion);
+router.delete("/:peliculaId/:actorId", autenticar, autorizar("ADMINISTRADOR"), eliminarActorDePelicula);
 
 module.exports = router;
