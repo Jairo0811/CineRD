@@ -40,10 +40,14 @@ function Actores() {
               {actor.Foto ? <img src={`${API_URL}${actor.Foto}`} alt={actor.NombreCompleto} /> : <div className="cinerd-talent-placeholder">🎭</div>}
               <div className="cinerd-talent-gradient" />
               <span className={`cinerd-status-dot ${actor.EstaVivo ? "alive" : "deceased"}`}>{actor.EstaVivo ? "Vivo" : "In memoriam"}</span>
+              {actor.EsVerificado && <span className="cinerd-verified-card-badge">✓ Verificado</span>}
             </Link>
             <div className="cinerd-talent-copy">
               <span className="cinerd-genre">{actor.Profesion || "Talento"}</span>
-              <h2><Link to={`/actores/${actor.Id}`}>{actor.NombreArtistico || `${actor.Nombres || actor.NombreCompleto || "Sin nombre"}${actor.Apellidos ? ` ${actor.Apellidos}` : ""}`}</Link></h2>
+              <div className="cinerd-talent-name-row">
+                <h2><Link to={`/actores/${actor.Id}`}>{actor.NombreArtistico || `${actor.Nombres || actor.NombreCompleto || "Sin nombre"}${actor.Apellidos ? ` ${actor.Apellidos}` : ""}`}</Link></h2>
+                {actor.EsVerificado && <span className="cinerd-verified-mark" title="Perfil verificado por CineRD" aria-label="Perfil verificado">✓</span>}
+              </div>
               {actor.NombreArtistico && <small>{actor.NombreCompleto || `${actor.Nombres || ""} ${actor.Apellidos || ""}`}</small>}
               <div className="cinerd-talent-facts"><span>🎬 {actor.CantidadPeliculas || 0} películas</span><span>🎂 {mostrarNacimiento(actor)}</span></div>
               <Link to={`/actores/${actor.Id}`} className="cinerd-profile-link">Ver filmografía <span>→</span></Link>
