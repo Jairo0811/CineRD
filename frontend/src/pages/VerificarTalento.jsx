@@ -2,63 +2,36 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 
+const API_URL = "http://localhost:3000";
+
 function VerificarTalento() {
   const [actores, setActores] = useState([]);
   const [buscar, setBuscar] = useState("");
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    api.get("/actores")
-      .then((response) => setActores(response.data || []))
-      .finally(() => setCargando(false));
+    api.get("/actores").then((response) => setActores(response.data || [])).finally(() => setCargando(false));
   }, []);
 
   const resultados = useMemo(() => {
     const termino = buscar.trim().toLowerCase();
     if (!termino) return actores.slice(0, 24);
-    return actores.filter((actor) =>
-      [actor.NombreCompleto, actor.Nombres, actor.Apellidos, actor.NombreArtistico]
-        .filter(Boolean)
-        .some((valor) => valor.toLowerCase().includes(termino)),
-    );
+    return actores.filter((actor) => [actor.NombreCompleto, actor.Nombres, actor.Apellidos, actor.NombreArtistico].filter(Boolean).some((valor) => valor.toLowerCase().includes(termino)));
   }, [actores, buscar]);
 
-  return (
-    <div className="table-page-container">
-      <div className="text-center mb-4">
-        <span className="badge bg-primary mb-2">Talentos de CineRD</span>
-        <h1 className="h2">¿Eres un talento registrado?</h1>
-        <p className="text-muted">Busca tu perfil y solicita la verificación de identidad para vincularlo con tu cuenta.</p>
-      </div>
-
-      <div className="card shadow-sm mb-4">
-        <div className="card-body">
-          <input className="form-control form-control-lg" placeholder="Busca por nombre completo o nombre artístico"
-            value={buscar} onChange={(e) => setBuscar(e.target.value)} />
+  return <div className="verification-page">
+    <section className="verification-hero"><div><span>Identidad profesional</span><h1>Encuentra tu perfil artístico</h1><p>Busca tu nombre completo o artístico y solicita la vinculación segura de tu identidad con CineRD.</p></div></section>
+    <div className="verification-search"><input placeholder="Buscar por nombre completo o nombre artístico..." value={buscar} onChange={(e)=>setBuscar(e.target.value)} /></div>
+    {cargando ? <div className="text-center py-5"><div className="spinner-border text-primary" /></div> : <section className="verification-grid">
+      {resultados.map((actor)=><article className="verification-card" key={actor.Id}>
+        <div className="verification-card-head">
+          {actor.Foto ? <img src={`${API_URL}${actor.Foto}`} alt={actor.NombreArtistico || actor.NombreCompleto} className="verification-photo"/> : <div className="verification-photo-placeholder">🎭</div>}
+          <div><h2>{actor.NombreArtistico || actor.NombreCompleto}</h2>{actor.NombreArtistico && <small>{actor.NombreCompleto}</small>}<small>{actor.Profesion || "Talento cinematográfico"}</small></div>
         </div>
-      </div>
-
-      {cargando ? <div className="text-center py-5"><div className="spinner-border text-primary" /></div> : (
-        <div className="row g-3">
-          {resultados.map((actor) => (
-            <div className="col-12 col-md-6 col-lg-4" key={actor.Id}>
-              <div className="card h-100 shadow-sm">
-                <div className="card-body">
-                  <h2 className="h5 mb-1">{actor.NombreArtistico || actor.NombreCompleto}</h2>
-                  {actor.NombreArtistico && <div className="text-muted small mb-2">{actor.NombreCompleto}</div>}
-                  <div className="text-muted mb-3">{actor.Profesion || "Talento"}</div>
-                  <div className="d-flex gap-2">
-                    <Link className="btn btn-outline-secondary btn-sm" to={`/actores/${actor.Id}`}>Ver perfil</Link>
-                    <Link className="btn btn-primary btn-sm" to={`/actores/${actor.Id}/reclamar`}>Este soy yo</Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+        <div className="verification-card-actions"><Link className="btn btn-outline-secondary btn-sm" to={`/actores/${actor.Id}`}>Ver perfil</Link><Link className="btn btn-primary btn-sm" to={`/actores/${actor.Id}/reclamar`}>Este soy yo</Link></div>
+      </article>)}
+    </section>}
+    {!cargando && !resultados.length && <div className="admin-review-empty">No encontramos talentos con ese criterio.</div>}
+  </div>;
 }
-
 export default VerificarTalento;
