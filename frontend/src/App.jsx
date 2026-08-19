@@ -7,7 +7,8 @@ import {
 import Navbar from "./components/layout/navbar";
 import Footer from "./components/layout/footer";
 
-import Home from "./pages/Home";
+import HomePublica from "./pages/HomePublica";
+import Dashboard from "./pages/Dashboard";
 import Actores from "./pages/Actores";
 import Peliculas from "./pages/Peliculas";
 import FormularioActor from "./pages/FormularioActor";
@@ -29,7 +30,8 @@ function App() {
 
         <main className="container py-4 app-main">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<HomePublica />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Registro />} />
             <Route path="/verificar-perfil" element={<VerificarTalento />} />
