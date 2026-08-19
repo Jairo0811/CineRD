@@ -59,20 +59,29 @@
 .cinematic-manifesto>span { font-size:2.6rem; }
 .cinematic-manifesto small { color:#063b9a; font-weight:800; letter-spacing:.12em; }
 .cinematic-manifesto h2 { max-width:1000px; margin:5px 0 0; font-size:clamp(1.25rem,2.4vw,2rem); font-weight:800; }
-.cinematic-ranking-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; margin-bottom:26px; }
-.cinematic-ranking-panel { overflow:hidden; border:1px solid #e2e7ef; border-radius:22px; background:#fff; box-shadow:0 14px 38px rgba(8,25,56,.08); }
-.cinematic-section-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:18px; padding:24px 26px 18px; border-bottom:1px solid #e9edf3; }
-.cinematic-section-heading h2 { margin:5px 0 0; font-size:1.45rem; font-weight:850; }
-.cinematic-section-heading a { color:#063b9a; font-size:.85rem; font-weight:700; }
-.cinematic-ranking-list { padding:10px 18px 18px; }
-.cinematic-ranking-item { display:grid; grid-template-columns:48px minmax(0,1fr) auto; align-items:center; gap:14px; min-height:72px; padding:10px 8px; border-bottom:1px solid #edf0f4; color:#111827; transition:transform .18s ease,color .18s ease; }
-.cinematic-ranking-item:last-child { border-bottom:0; }
-.cinematic-ranking-item:hover { transform:translateX(3px); color:#063b9a; }
-.cinematic-ranking-number { font-family:Georgia,serif; color:#d7ae55; font-size:1.5rem; font-weight:800; }
-.cinematic-ranking-item div { display:flex; min-width:0; flex-direction:column; }
-.cinematic-ranking-item strong,.cinematic-ranking-item small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.cinematic-ranking-item small { color:#7b8495; }
-.cinematic-ranking-item b { display:grid; min-width:40px; height:34px; place-items:center; border-radius:10px; background:#eef4ff; color:#063b9a; }
+
+.cinematic-showcase-section{margin-bottom:26px;padding:24px 26px 26px;border:1px solid #e2e7ef;border-radius:22px;background:#fff;box-shadow:0 14px 38px rgba(8,25,56,.08)}
+.cinematic-showcase-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px}
+.cinematic-showcase-heading h2{margin:5px 0 4px;font-size:1.55rem;font-weight:850}
+.cinematic-showcase-heading p{max-width:720px;margin:0;color:#7b8495;font-size:.86rem}
+.cinematic-showcase-heading>a{color:#063b9a;font-size:.85rem;font-weight:700;white-space:nowrap}
+.cinematic-talent-showcase,.cinematic-movie-showcase{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.cinematic-talent-card,.cinematic-movie-showcase-card{overflow:hidden;border:1px solid #e7ebf0;border-radius:16px;background:#fff;color:#111827;box-shadow:0 6px 18px rgba(8,25,56,.05);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.cinematic-talent-card:hover,.cinematic-movie-showcase-card:hover{transform:translateY(-4px);border-color:#bfd2ee;box-shadow:0 14px 26px rgba(8,25,56,.11);color:#063b9a}
+.cinematic-talent-photo-wrap,.cinematic-movie-poster-wrap{position:relative;overflow:hidden;background:linear-gradient(145deg,#0b1729,#17365f)}
+.cinematic-talent-photo-wrap{height:190px}
+.cinematic-movie-poster-wrap{aspect-ratio:2/3}
+.cinematic-talent-photo-wrap img,.cinematic-movie-poster-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+.cinematic-talent-photo-wrap img{object-position:center top}
+.cinematic-talent-card:hover img,.cinematic-movie-showcase-card:hover img{transform:scale(1.035)}
+.cinematic-talent-photo-placeholder,.cinematic-movie-poster-placeholder{display:grid;width:100%;height:100%;place-items:center;color:#fff;font-size:2.7rem}
+.cinematic-rank-badge{position:absolute;left:10px;top:10px;display:grid;min-width:32px;height:32px;place-items:center;padding:0 8px;border-radius:999px;background:rgba(5,11,22,.82);color:#fff;font-size:.72rem;font-weight:850;backdrop-filter:blur(8px)}
+.cinematic-cast-badge{position:absolute;right:10px;bottom:10px;padding:6px 9px;border-radius:999px;background:rgba(206,17,38,.88);color:#fff;font-size:.7rem;font-weight:800;backdrop-filter:blur(8px)}
+.cinematic-talent-card-copy,.cinematic-movie-showcase-copy{display:flex;min-width:0;flex-direction:column;padding:12px 13px 14px}
+.cinematic-talent-card-copy strong,.cinematic-movie-showcase-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.88rem}
+.cinematic-talent-card-copy small,.cinematic-movie-showcase-copy small{margin-top:3px;color:#7b8495;font-size:.74rem}
+.cinematic-talent-card-copy span,.cinematic-movie-showcase-copy span{margin-top:8px;color:#063b9a;font-size:.72rem;font-weight:800}
+
 .cinematic-value-grid { margin-bottom:26px; }
 .cinematic-value-card { position:relative; overflow:hidden; }
 .cinematic-value-card::after { content:""; position:absolute; right:-36px; bottom:-36px; width:120px; height:120px; border-radius:50%; background:rgba(7,59,154,.06); }
@@ -81,5 +90,7 @@
 .cinematic-cta p { color:rgba(255,255,255,.68); }
 .cinematic-cta .public-eyebrow { color:#9dc5ff; }
 
-@media(max-width:991.98px){.cinematic-hero{grid-template-columns:1fr;min-height:auto}.cinematic-hero-brand{min-height:260px}.cinematic-ranking-grid{grid-template-columns:1fr}.cine-navbar-actions,.cine-admin-quick-actions{align-items:stretch;flex-direction:column}.cine-navbar-cinematic .cine-navbar-link.active::after{display:none}}
-@media(max-width:575.98px){.cinematic-hero{padding:34px 22px;border-radius:20px}.cinematic-hero h1{font-size:clamp(2.25rem,13vw,3.35rem)}.cinematic-stats{gap:18px}.cinematic-manifesto{align-items:flex-start;padding:22px}.cinematic-ranking-item{grid-template-columns:38px minmax(0,1fr) auto}}
+@media(max-width:1199.98px){.cinematic-talent-showcase,.cinematic-movie-showcase{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:991.98px){.cinematic-hero{grid-template-columns:1fr;min-height:auto}.cinematic-hero-brand{min-height:260px}.cine-navbar-actions,.cine-admin-quick-actions{align-items:stretch;flex-direction:column}.cine-navbar-cinematic .cine-navbar-link.active::after{display:none}}
+@media(max-width:767.98px){.cinematic-talent-showcase,.cinematic-movie-showcase{grid-template-columns:repeat(2,minmax(0,1fr))}.cinematic-showcase-heading{align-items:flex-start;flex-direction:column}}
+@media(max-width:575.98px){.cinematic-hero{padding:34px 22px;border-radius:20px}.cinematic-hero h1{font-size:clamp(2.25rem,13vw,3.35rem)}.cinematic-stats{gap:18px}.cinematic-manifesto{align-items:flex-start;padding:22px}.cinematic-showcase-section{padding:20px}.cinematic-talent-photo-wrap{height:220px}}
