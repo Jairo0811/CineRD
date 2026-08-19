@@ -16,7 +16,8 @@ function Login() {
       const response = await api.post("/auth/login", formulario);
       localStorage.setItem("cineRdAccessToken", response.data.accessToken);
       localStorage.setItem("cineRdUsuario", JSON.stringify(response.data.usuario));
-      navigate("/");
+      navigate("/dashboard");
+      window.location.reload();
     } catch (err) {
       setError(err.response?.data?.mensaje || "No fue posible iniciar sesión");
     } finally {
