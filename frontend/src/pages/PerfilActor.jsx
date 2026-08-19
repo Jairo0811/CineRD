@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../services/api";
-import { calcularEdad, calcularEdadAproximada, calcularEdadEnFecha, formatearFechaCorta, obtenerAnioFecha } from "../utils/fechas";
+import { calcularEdad, calcularEdadAproximada, calcularEdadEnFecha, formatearFechaCorta, formatearFechaNumerica, obtenerAnioFecha } from "../utils/fechas";
 
 const API_URL = "http://localhost:3000";
 const resolverImagen = (ruta) => !ruta ? null : ruta.startsWith("http") ? ruta : `${API_URL}${ruta}`;
@@ -40,6 +40,8 @@ function PerfilActor() {
     : actor.AnioNacimiento ? calcularEdadAproximada(actor.AnioNacimiento,!actor.EstaVivo&&actor.FechaFallecimiento?obtenerAnioFecha(actor.FechaFallecimiento):new Date().getFullYear()) : null;
   const nombre = actor.NombreArtistico || actor.NombreCompleto || `${actor.Nombres||""} ${actor.Apellidos||""}`.trim();
   const foto = resolverImagen(actor.Foto);
+  const fechaNacimiento = formatearFechaNumerica(actor.FechaNacimiento);
+  const fechaFallecimiento = formatearFechaNumerica(actor.FechaFallecimiento);
 
   const credito = (pelicula, tipo) => <Link to={`/peliculas/${pelicula.Id}`} className="actor-credit" key={`${tipo}-${pelicula.Id}`}>
     {pelicula.Foto ? <img src={resolverImagen(pelicula.Foto)} alt={pelicula.Titulo}/> : <span className="actor-credit-poster-empty">🎬</span>}
@@ -51,7 +53,19 @@ function PerfilActor() {
     <div><Link to="/actores" className="btn btn-outline-secondary btn-sm">← Talentos</Link></div>
     <section className="actor-profile-hero">
       {foto ? <img src={foto} alt={nombre} className="actor-profile-photo"/> : <div className="actor-profile-photo-empty">🎭</div>}
-      <div className="actor-profile-copy"><span className="eyebrow">Talento · CineRD</span><h1>{nombre}</h1>{actor.NombreArtistico && <p className="stage-name">{actor.NombreCompleto}</p>}<div className="actor-profile-meta"><span>{actor.Profesion || "Profesión no registrada"}</span>{edad != null && <span>{edad} años</span>}<span>{actor.EstaVivo ? "Activo" : "In memoriam"}</span></div></div>
+      <div className="actor-profile-copy">
+        <span className="eyebrow">Talento · CineRD</span>
+        <h1>{nombre}</h1>
+        {actor.NombreArtistico && <p className="stage-name">{actor.NombreCompleto}</p>}
+        <div className="actor-profile-meta">
+          <span>{actor.Profesion || "Profesión no registrada"}</span>
+          {fechaNacimiento && <span>Nació: {fechaNacimiento}</span>}
+          {!fechaNacimiento && actor.AnioNacimiento && <span>Nació: {actor.AnioNacimiento}</span>}
+          {edad != null && <span>{edad} años</span>}
+          {!actor.EstaVivo && fechaFallecimiento && <span>Falleció: {fechaFallecimiento}</span>}
+          <span>{actor.EstaVivo ? "Activo" : "In memoriam"}</span>
+        </div>
+      </div>
       <div className="actor-profile-actions">{esAdmin && <Link to={`/actores/editar/${actor.Id}`} className="btn btn-light">Editar perfil</Link>}{esUsuario && <Link to={`/actores/${actor.Id}/reclamar`} className="btn btn-primary">Este soy yo</Link>}</div>
     </section>
     <section className="actor-profile-kpis"><article className="actor-profile-kpi"><strong>{participaciones.length}</strong><span>Participaciones como intérprete</span></article><article className="actor-profile-kpi"><strong>{dirigidas.length}</strong><span>Películas dirigidas</span></article><article className="actor-profile-kpi"><strong>{participaciones.length+dirigidas.length}</strong><span>Créditos registrados</span></article></section>
