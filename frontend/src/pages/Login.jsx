@@ -25,33 +25,24 @@ function Login() {
     }
   };
 
-  return (
-    <div className="form-page-container" style={{ maxWidth: "520px" }}>
-      <div className="card shadow">
-        <div className="card-body p-4">
-          <h1 className="h3 mb-2">Iniciar sesión</h1>
-          <p className="text-muted">Accede a CineRD para gestionar tu cuenta o reclamar un perfil artístico.</p>
-          {error && <div className="alert alert-danger">{error}</div>}
-          <form onSubmit={enviar}>
-            <div className="mb-3">
-              <label className="form-label">Correo electrónico</label>
-              <input className="form-control" type="email" required value={formulario.email}
-                onChange={(e) => setFormulario({ ...formulario, email: e.target.value })} />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Contraseña</label>
-              <input className="form-control" type="password" required value={formulario.password}
-                onChange={(e) => setFormulario({ ...formulario, password: e.target.value })} />
-            </div>
-            <button className="btn btn-primary w-100" disabled={cargando}>
-              {cargando ? "Ingresando..." : "Ingresar"}
-            </button>
-          </form>
-          <p className="text-center mt-3 mb-0">¿No tienes cuenta? <Link to="/registro">Crear cuenta</Link></p>
-        </div>
-      </div>
-    </div>
-  );
+  return <section className="cine-auth-shell">
+    <aside className="cine-auth-brand">
+      <img src="/logo.png" alt="CineRD" className="cine-auth-logo" />
+      <small>Archivo cinematográfico dominicano</small>
+      <h1>Tu acceso a la memoria del cine dominicano.</h1>
+      <p>Explora producciones, consulta talentos y administra tu identidad profesional dentro de CineRD.</p>
+    </aside>
+    <div className="cine-auth-panel"><div className="cine-auth-panel-inner">
+      <h2>Bienvenido de nuevo</h2>
+      <p className="lead-copy">Inicia sesión para acceder a tu espacio personalizado.</p>
+      {error && <div className="alert alert-danger">{error}</div>}
+      <form onSubmit={enviar}>
+        <div className="cine-field"><label>Correo electrónico</label><input type="email" autoComplete="email" required value={formulario.email} onChange={(e)=>setFormulario({...formulario,email:e.target.value})}/></div>
+        <div className="cine-field"><label>Contraseña</label><input type="password" autoComplete="current-password" required value={formulario.password} onChange={(e)=>setFormulario({...formulario,password:e.target.value})}/></div>
+        <button className="cine-submit" disabled={cargando}>{cargando ? "Ingresando..." : "Ingresar a CineRD"}</button>
+      </form>
+      <p className="cine-auth-switch">¿No tienes cuenta? <Link to="/registro">Crear cuenta</Link></p>
+    </div></div>
+  </section>;
 }
-
 export default Login;
