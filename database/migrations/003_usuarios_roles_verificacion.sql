@@ -75,8 +75,6 @@ BEGIN
         CONSTRAINT FK_TalentosUsuarios_Usuarios FOREIGN KEY (UsuarioId) REFERENCES dbo.Usuarios(Id),
         CONSTRAINT FK_TalentosUsuarios_Actores FOREIGN KEY (ActorId) REFERENCES dbo.Actores(Id),
         CONSTRAINT FK_TalentosUsuarios_Verificador FOREIGN KEY (VerificadoPorUsuarioId) REFERENCES dbo.Usuarios(Id),
-        CONSTRAINT UQ_TalentosUsuarios_Usuario UNIQUE (UsuarioId),
-        CONSTRAINT UQ_TalentosUsuarios_Actor UNIQUE (ActorId),
         CONSTRAINT CK_TalentosUsuarios_Estado CHECK (Estado IN (N'ACTIVO', N'REVOCADO'))
     );
 END
@@ -105,4 +103,12 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_SolicitudesVerificacion_UsuarioActor' AND object_id = OBJECT_ID(N'dbo.SolicitudesVerificacion'))
     CREATE INDEX IX_SolicitudesVerificacion_UsuarioActor ON dbo.SolicitudesVerificacion (UsuarioId, ActorId);
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'UX_TalentosUsuarios_Usuario_Activo' AND object_id = OBJECT_ID(N'dbo.TalentosUsuarios'))
+    CREATE UNIQUE INDEX UX_TalentosUsuarios_Usuario_Activo ON dbo.TalentosUsuarios (UsuarioId) WHERE Estado = N'ACTIVO';
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'UX_TalentosUsuarios_Actor_Activo' AND object_id = OBJECT_ID(N'dbo.TalentosUsuarios'))
+    CREATE UNIQUE INDEX UX_TalentosUsuarios_Actor_Activo ON dbo.TalentosUsuarios (ActorId) WHERE Estado = N'ACTIVO';
 GO
