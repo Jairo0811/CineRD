@@ -42,7 +42,7 @@ const obtenerActores = async (req, res) => {
     let query = `
       SELECT A.Id,A.TMDbId,A.Nombres,A.Apellidos,A.NombreCompleto,A.NombreArtistico,A.Profesion,
              A.FechaNacimiento,A.AnioNacimiento,A.Sexo,A.EstaVivo,A.FechaFallecimiento,A.Foto,
-             A.InstagramUrl,A.FacebookUrl,A.TikTokUrl,A.YouTubeUrl,A.XUrl,A.SitioWebUrl,
+             A.InstagramUrl,A.FacebookUrl,A.TikTokUrl,A.YouTubeUrl,A.SpotifyUrl,A.XUrl,A.SitioWebUrl,
              COUNT(AP.PeliculaId) AS CantidadPeliculas
       FROM Actores A
       LEFT JOIN ActoresPeliculas AP ON A.Id = AP.ActorId
@@ -52,7 +52,7 @@ const obtenerActores = async (req, res) => {
     if (estado === "fallecido") query += ` AND A.EstaVivo = 0`;
     if (anio) query += ` AND (YEAR(A.FechaNacimiento) = @Anio OR A.AnioNacimiento = @Anio)`;
     if (profesion) query += ` AND A.Profesion LIKE @Profesion`;
-    query += ` GROUP BY A.Id,A.TMDbId,A.Nombres,A.Apellidos,A.NombreCompleto,A.NombreArtistico,A.Profesion,A.FechaNacimiento,A.AnioNacimiento,A.Sexo,A.EstaVivo,A.FechaFallecimiento,A.Foto,A.InstagramUrl,A.FacebookUrl,A.TikTokUrl,A.YouTubeUrl,A.XUrl,A.SitioWebUrl`;
+    query += ` GROUP BY A.Id,A.TMDbId,A.Nombres,A.Apellidos,A.NombreCompleto,A.NombreArtistico,A.Profesion,A.FechaNacimiento,A.AnioNacimiento,A.Sexo,A.EstaVivo,A.FechaFallecimiento,A.Foto,A.InstagramUrl,A.FacebookUrl,A.TikTokUrl,A.YouTubeUrl,A.SpotifyUrl,A.XUrl,A.SitioWebUrl`;
     switch (orden) {
       case "za": query += ` ORDER BY A.NombreCompleto DESC`; break;
       case "masPeliculas": query += ` ORDER BY CantidadPeliculas DESC, A.NombreCompleto ASC`; break;
@@ -80,7 +80,7 @@ const obtenerActorPorId = async (req, res) => {
     const pool = await poolPromise;
     const resultado = await pool.request().input("Id", sql.Int, id).query(`
       SELECT Id,TMDbId,Nombres,Apellidos,NombreCompleto,NombreArtistico,Profesion,FechaNacimiento,AnioNacimiento,
-             Sexo,EstaVivo,FechaFallecimiento,Foto,InstagramUrl,FacebookUrl,TikTokUrl,YouTubeUrl,XUrl,SitioWebUrl
+             Sexo,EstaVivo,FechaFallecimiento,Foto,InstagramUrl,FacebookUrl,TikTokUrl,YouTubeUrl,SpotifyUrl,XUrl,SitioWebUrl
       FROM Actores WHERE Id = @Id`);
     if (!resultado.recordset.length) return res.status(404).json({ mensaje: "Actor no encontrado" });
     res.json(resultado.recordset[0]);
@@ -92,7 +92,7 @@ const obtenerActorPorId = async (req, res) => {
 
 const crearActor = async (req, res) => {
   try {
-    const { TMDbId,Nombres,Apellidos,NombreArtistico,Profesion,FechaNacimiento,AnioNacimiento,Sexo,EstaVivo,FechaFallecimiento,InstagramUrl,FacebookUrl,TikTokUrl,YouTubeUrl,XUrl,SitioWebUrl } = req.body;
+    const { TMDbId,Nombres,Apellidos,NombreArtistico,Profesion,FechaNacimiento,AnioNacimiento,Sexo,EstaVivo,FechaFallecimiento,InstagramUrl,FacebookUrl,TikTokUrl,YouTubeUrl,SpotifyUrl,XUrl,SitioWebUrl } = req.body;
     const nombresNormalizados = normalizarTexto(Nombres);
     const apellidosNormalizados = normalizarTexto(Apellidos);
     if (!nombresNormalizados || !Sexo) return res.status(400).json({ mensaje: "Nombres y sexo son obligatorios" });
@@ -112,10 +112,10 @@ const crearActor = async (req, res) => {
       .input("FechaNacimiento",sql.Date,normalizarFecha(FechaNacimiento)).input("AnioNacimiento",sql.Int,normalizarEntero(AnioNacimiento)).input("Sexo",sql.NVarChar(20),Sexo).input("EstaVivo",sql.Bit,estaVivoNormalizado)
       .input("FechaFallecimiento",sql.Date,estaVivoNormalizado?null:normalizarFecha(FechaFallecimiento)).input("Foto",sql.NVarChar(255),Foto)
       .input("InstagramUrl",sql.NVarChar(300),normalizarTexto(InstagramUrl)).input("FacebookUrl",sql.NVarChar(300),normalizarTexto(FacebookUrl)).input("TikTokUrl",sql.NVarChar(300),normalizarTexto(TikTokUrl))
-      .input("YouTubeUrl",sql.NVarChar(300),normalizarTexto(YouTubeUrl)).input("XUrl",sql.NVarChar(300),normalizarTexto(XUrl)).input("SitioWebUrl",sql.NVarChar(300),normalizarTexto(SitioWebUrl));
+      .input("YouTubeUrl",sql.NVarChar(300),normalizarTexto(YouTubeUrl)).input("SpotifyUrl",sql.NVarChar(300),normalizarTexto(SpotifyUrl)).input("XUrl",sql.NVarChar(300),normalizarTexto(XUrl)).input("SitioWebUrl",sql.NVarChar(300),normalizarTexto(SitioWebUrl));
     const resultado = await request.query(`
-      INSERT INTO Actores (TMDbId,Nombres,Apellidos,NombreCompleto,NombreArtistico,Profesion,FechaNacimiento,AnioNacimiento,Sexo,EstaVivo,FechaFallecimiento,Foto,InstagramUrl,FacebookUrl,TikTokUrl,YouTubeUrl,XUrl,SitioWebUrl)
-      OUTPUT INSERTED.* VALUES (@TMDbId,@Nombres,@Apellidos,@NombreCompleto,@NombreArtistico,@Profesion,@FechaNacimiento,@AnioNacimiento,@Sexo,@EstaVivo,@FechaFallecimiento,@Foto,@InstagramUrl,@FacebookUrl,@TikTokUrl,@YouTubeUrl,@XUrl,@SitioWebUrl)`);
+      INSERT INTO Actores (TMDbId,Nombres,Apellidos,NombreCompleto,NombreArtistico,Profesion,FechaNacimiento,AnioNacimiento,Sexo,EstaVivo,FechaFallecimiento,Foto,InstagramUrl,FacebookUrl,TikTokUrl,YouTubeUrl,SpotifyUrl,XUrl,SitioWebUrl)
+      OUTPUT INSERTED.* VALUES (@TMDbId,@Nombres,@Apellidos,@NombreCompleto,@NombreArtistico,@Profesion,@FechaNacimiento,@AnioNacimiento,@Sexo,@EstaVivo,@FechaFallecimiento,@Foto,@InstagramUrl,@FacebookUrl,@TikTokUrl,@YouTubeUrl,@SpotifyUrl,@XUrl,@SitioWebUrl)`);
     res.status(201).json({ mensaje: "Actor registrado correctamente", actor: resultado.recordset[0] });
   } catch (error) {
     console.error("Error al registrar el actor:", error);
@@ -127,7 +127,7 @@ const actualizarActor = async (req, res) => {
   try {
     const id = Number(req.params.id);
     if (!Number.isInteger(id) || id <= 0) return res.status(400).json({ mensaje: "El identificador del actor no es válido" });
-    const { TMDbId,Nombres,Apellidos,NombreArtistico,Profesion,FechaNacimiento,AnioNacimiento,Sexo,EstaVivo,FechaFallecimiento,InstagramUrl,FacebookUrl,TikTokUrl,YouTubeUrl,XUrl,SitioWebUrl } = req.body;
+    const { TMDbId,Nombres,Apellidos,NombreArtistico,Profesion,FechaNacimiento,AnioNacimiento,Sexo,EstaVivo,FechaFallecimiento,InstagramUrl,FacebookUrl,TikTokUrl,YouTubeUrl,SpotifyUrl,XUrl,SitioWebUrl } = req.body;
     const nombresNormalizados = normalizarTexto(Nombres);
     const apellidosNormalizados = normalizarTexto(Apellidos);
     if (!nombresNormalizados || !Sexo) return res.status(400).json({ mensaje: "Nombres y sexo son obligatorios" });
@@ -149,11 +149,11 @@ const actualizarActor = async (req, res) => {
       .input("FechaNacimiento",sql.Date,normalizarFecha(FechaNacimiento)).input("AnioNacimiento",sql.Int,normalizarEntero(AnioNacimiento)).input("Sexo",sql.NVarChar(20),Sexo).input("EstaVivo",sql.Bit,estaVivoNormalizado)
       .input("FechaFallecimiento",sql.Date,estaVivoNormalizado?null:normalizarFecha(FechaFallecimiento)).input("Foto",sql.NVarChar(255),Foto)
       .input("InstagramUrl",sql.NVarChar(300),normalizarTexto(InstagramUrl)).input("FacebookUrl",sql.NVarChar(300),normalizarTexto(FacebookUrl)).input("TikTokUrl",sql.NVarChar(300),normalizarTexto(TikTokUrl))
-      .input("YouTubeUrl",sql.NVarChar(300),normalizarTexto(YouTubeUrl)).input("XUrl",sql.NVarChar(300),normalizarTexto(XUrl)).input("SitioWebUrl",sql.NVarChar(300),normalizarTexto(SitioWebUrl));
+      .input("YouTubeUrl",sql.NVarChar(300),normalizarTexto(YouTubeUrl)).input("SpotifyUrl",sql.NVarChar(300),normalizarTexto(SpotifyUrl)).input("XUrl",sql.NVarChar(300),normalizarTexto(XUrl)).input("SitioWebUrl",sql.NVarChar(300),normalizarTexto(SitioWebUrl));
     const resultado = await request.query(`
       UPDATE Actores SET TMDbId=@TMDbId,Nombres=@Nombres,Apellidos=@Apellidos,NombreCompleto=@NombreCompleto,NombreArtistico=@NombreArtistico,Profesion=@Profesion,
         FechaNacimiento=@FechaNacimiento,AnioNacimiento=@AnioNacimiento,Sexo=@Sexo,EstaVivo=@EstaVivo,FechaFallecimiento=@FechaFallecimiento,Foto=@Foto,
-        InstagramUrl=@InstagramUrl,FacebookUrl=@FacebookUrl,TikTokUrl=@TikTokUrl,YouTubeUrl=@YouTubeUrl,XUrl=@XUrl,SitioWebUrl=@SitioWebUrl
+        InstagramUrl=@InstagramUrl,FacebookUrl=@FacebookUrl,TikTokUrl=@TikTokUrl,YouTubeUrl=@YouTubeUrl,SpotifyUrl=@SpotifyUrl,XUrl=@XUrl,SitioWebUrl=@SitioWebUrl
       OUTPUT INSERTED.* WHERE Id=@Id`);
     res.json({ mensaje: "Actor actualizado correctamente", actor: resultado.recordset[0] });
   } catch (error) {
