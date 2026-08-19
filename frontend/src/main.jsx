@@ -12,6 +12,7 @@ import "./styles/catalog.css";
 import "./styles/admin-dashboard.css";
 import "./styles/talent-dashboard.css";
 import "./styles/user-dashboard.css";
+import "./styles/workspace.css";
 
 import App from "./App.jsx";
 
