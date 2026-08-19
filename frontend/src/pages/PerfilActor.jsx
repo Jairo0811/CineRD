@@ -52,12 +52,12 @@ function PerfilActor() {
   const nacimiento = actor.FechaNacimiento ? formatearFechaNumerica(actor.FechaNacimiento) : actor.AnioNacimiento ? String(actor.AnioNacimiento) : null;
   const fallecimiento = actor.FechaFallecimiento ? formatearFechaNumerica(actor.FechaFallecimiento) : null;
   const redes = [
-    { nombre: "Instagram", descripcion: "Perfil oficial", url: actor.InstagramUrl, clase: "instagram", logo: SOCIAL_LOGOS.instagram },
     { nombre: "Facebook", descripcion: "Página oficial", url: actor.FacebookUrl, clase: "facebook", logo: SOCIAL_LOGOS.facebook },
-    { nombre: "TikTok", descripcion: "Perfil oficial", url: actor.TikTokUrl, clase: "tiktok", logo: SOCIAL_LOGOS.tiktok },
+    { nombre: "X / Twitter", descripcion: "Perfil oficial", url: actor.XUrl, clase: "x", logo: SOCIAL_LOGOS.x },
+    { nombre: "Instagram", descripcion: "Perfil oficial", url: actor.InstagramUrl, clase: "instagram", logo: SOCIAL_LOGOS.instagram },
     { nombre: "YouTube", descripcion: "Canal oficial", url: actor.YouTubeUrl, clase: "youtube", logo: SOCIAL_LOGOS.youtube },
     { nombre: "Spotify", descripcion: "Escuchar artista", url: actor.SpotifyUrl, clase: "spotify", logo: SOCIAL_LOGOS.spotify },
-    { nombre: "X / Twitter", descripcion: "Perfil oficial", url: actor.XUrl, clase: "x", logo: SOCIAL_LOGOS.x },
+    { nombre: "TikTok", descripcion: "Perfil oficial", url: actor.TikTokUrl, clase: "tiktok", logo: SOCIAL_LOGOS.tiktok },
     { nombre: "Sitio web", descripcion: "Sitio oficial", url: actor.SitioWebUrl, clase: "website", icono: "🌐" },
   ].filter((red) => Boolean(red.url));
 
@@ -77,13 +77,6 @@ function PerfilActor() {
       <div className="actor-profile-actions">{esAdmin && <Link to={`/actores/editar/${actor.Id}`} className="btn btn-light">Editar perfil</Link>}{esUsuario && <Link to={`/actores/${actor.Id}/reclamar`} className="btn btn-primary">Este soy yo</Link>}</div>
     </section>
 
-    <section className="actor-profile-kpis"><article className="actor-profile-kpi"><strong>{participaciones.length}</strong><span>Participaciones como intérprete</span></article><article className="actor-profile-kpi"><strong>{dirigidas.length}</strong><span>Películas dirigidas</span></article><article className="actor-profile-kpi"><strong>{participaciones.length+dirigidas.length}</strong><span>Créditos registrados</span></article></section>
-
-    <section className="actor-filmography-grid">
-      <article className="actor-filmography-panel"><header className="actor-filmography-header"><span>Filmografía</span><h2>Participaciones como actor/actriz</h2></header><div className="actor-credit-list">{participaciones.length ? participaciones.map((p)=>credito(p,"actuacion")) : <div className="actor-empty">No tiene participaciones registradas.</div>}</div></article>
-      <article className="actor-filmography-panel"><header className="actor-filmography-header"><span>Dirección</span><h2>Películas dirigidas</h2></header><div className="actor-credit-list">{dirigidas.length ? dirigidas.map((p)=>credito(p,"direccion")) : <div className="actor-empty">No tiene películas dirigidas registradas.</div>}</div></article>
-    </section>
-
     {redes.length > 0 && <section className="actor-social-panel">
       <div className="actor-social-copy">
         <div className="actor-social-heading-row"><span className="eyebrow">Presencia digital</span><span className="actor-social-official">Perfiles oficiales</span></div>
@@ -95,6 +88,13 @@ function PerfilActor() {
         <span className="actor-social-link-copy"><strong>{red.nombre}</strong><small>{red.descripcion}</small></span>
       </a>)}</div>
     </section>}
+
+    <section className="actor-profile-kpis"><article className="actor-profile-kpi"><strong>{participaciones.length}</strong><span>Participaciones como intérprete</span></article><article className="actor-profile-kpi"><strong>{dirigidas.length}</strong><span>Películas dirigidas</span></article><article className="actor-profile-kpi"><strong>{participaciones.length+dirigidas.length}</strong><span>Créditos registrados</span></article></section>
+
+    <section className="actor-filmography-grid">
+      <article className="actor-filmography-panel"><header className="actor-filmography-header"><span>Filmografía</span><h2>Participaciones como actor/actriz</h2></header><div className="actor-credit-list">{participaciones.length ? participaciones.map((p)=>credito(p,"actuacion")) : <div className="actor-empty">No tiene participaciones registradas.</div>}</div></article>
+      <article className="actor-filmography-panel"><header className="actor-filmography-header"><span>Dirección</span><h2>Películas dirigidas</h2></header><div className="actor-credit-list">{dirigidas.length ? dirigidas.map((p)=>credito(p,"direccion")) : <div className="actor-empty">No tiene películas dirigidas registradas.</div>}</div></article>
+    </section>
   </div>;
 }
 export default PerfilActor;
