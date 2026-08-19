@@ -43,9 +43,14 @@ function PerfilActor() {
   const nacimiento = actor.FechaNacimiento ? formatearFechaNumerica(actor.FechaNacimiento) : actor.AnioNacimiento ? String(actor.AnioNacimiento) : null;
   const fallecimiento = actor.FechaFallecimiento ? formatearFechaNumerica(actor.FechaFallecimiento) : null;
   const redes = [
-    ["Instagram", actor.InstagramUrl], ["Facebook", actor.FacebookUrl], ["TikTok", actor.TikTokUrl],
-    ["YouTube", actor.YouTubeUrl], ["X / Twitter", actor.XUrl], ["Sitio web", actor.SitioWebUrl],
-  ].filter(([,url]) => Boolean(url));
+    { nombre: "Instagram", url: actor.InstagramUrl, icono: "◎", clase: "instagram" },
+    { nombre: "Facebook", url: actor.FacebookUrl, icono: "f", clase: "facebook" },
+    { nombre: "TikTok", url: actor.TikTokUrl, icono: "♪", clase: "tiktok" },
+    { nombre: "YouTube", url: actor.YouTubeUrl, icono: "▶", clase: "youtube" },
+    { nombre: "Spotify", url: actor.SpotifyUrl, icono: "●", clase: "spotify" },
+    { nombre: "X / Twitter", url: actor.XUrl, icono: "𝕏", clase: "x" },
+    { nombre: "Sitio web", url: actor.SitioWebUrl, icono: "🌐", clase: "website" },
+  ].filter((red) => Boolean(red.url));
 
   const credito = (pelicula, tipo) => <Link to={`/peliculas/${pelicula.Id}`} className="actor-credit" key={`${tipo}-${pelicula.Id}`}>
     {pelicula.Foto ? <img src={resolverImagen(pelicula.Foto)} alt={pelicula.Titulo}/> : <span className="actor-credit-poster-empty">🎬</span>}
@@ -63,13 +68,17 @@ function PerfilActor() {
       <div className="actor-profile-actions">{esAdmin && <Link to={`/actores/editar/${actor.Id}`} className="btn btn-light">Editar perfil</Link>}{esUsuario && <Link to={`/actores/${actor.Id}/reclamar`} className="btn btn-primary">Este soy yo</Link>}</div>
     </section>
 
-    {redes.length > 0 && <section className="actor-social-panel"><div><span className="eyebrow">Presencia digital</span><h2>Redes sociales y enlaces oficiales</h2></div><div className="actor-social-links">{redes.map(([nombreRed,url])=><a key={nombreRed} href={url} target="_blank" rel="noreferrer noopener" className="actor-social-link">{nombreRed} ↗</a>)}</div></section>}
-
     <section className="actor-profile-kpis"><article className="actor-profile-kpi"><strong>{participaciones.length}</strong><span>Participaciones como intérprete</span></article><article className="actor-profile-kpi"><strong>{dirigidas.length}</strong><span>Películas dirigidas</span></article><article className="actor-profile-kpi"><strong>{participaciones.length+dirigidas.length}</strong><span>Créditos registrados</span></article></section>
+
     <section className="actor-filmography-grid">
       <article className="actor-filmography-panel"><header className="actor-filmography-header"><span>Filmografía</span><h2>Participaciones como actor/actriz</h2></header><div className="actor-credit-list">{participaciones.length ? participaciones.map((p)=>credito(p,"actuacion")) : <div className="actor-empty">No tiene participaciones registradas.</div>}</div></article>
       <article className="actor-filmography-panel"><header className="actor-filmography-header"><span>Dirección</span><h2>Películas dirigidas</h2></header><div className="actor-credit-list">{dirigidas.length ? dirigidas.map((p)=>credito(p,"direccion")) : <div className="actor-empty">No tiene películas dirigidas registradas.</div>}</div></article>
     </section>
+
+    {redes.length > 0 && <section className="actor-social-panel">
+      <div className="actor-social-copy"><span className="eyebrow">Presencia digital</span><h2>Redes sociales y enlaces oficiales</h2><p>Perfiles públicos asociados a este talento.</p></div>
+      <div className="actor-social-links">{redes.map((red)=><a key={red.nombre} href={red.url} target="_blank" rel="noreferrer noopener" className={`actor-social-link ${red.clase}`}><span className="actor-social-icon" aria-hidden="true">{red.icono}</span><span>{red.nombre}</span><span className="actor-social-arrow">↗</span></a>)}</div>
+    </section>}
   </div>;
 }
 export default PerfilActor;
