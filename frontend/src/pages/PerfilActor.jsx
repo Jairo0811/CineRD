@@ -71,10 +71,26 @@ function PerfilActor() {
     <div><Link to="/actores" className="btn btn-outline-secondary btn-sm">← Talentos</Link></div>
     <section className="actor-profile-hero">
       {foto ? <img src={foto} alt={nombre} className="actor-profile-photo"/> : <div className="actor-profile-photo-empty">🎭</div>}
-      <div className="actor-profile-copy"><span className="eyebrow">Talento · CineRD</span><h1>{nombre}</h1>{actor.NombreArtistico && <p className="stage-name">{actor.NombreCompleto}</p>}
-        <div className="actor-profile-meta"><span>{actor.Profesion || "Profesión no registrada"}</span>{nacimiento && <span>Nació: {nacimiento}</span>}{edad != null && <span>{edad} años</span>}{fallecimiento && <span>Falleció: {fallecimiento}</span>}<span>{actor.EstaVivo ? "Activo" : "In memoriam"}</span></div>
+      <div className="actor-profile-copy">
+        <span className="eyebrow">Talento · CineRD</span>
+        <div className="actor-profile-title-row">
+          <h1>{nombre}</h1>
+          {actor.EsVerificado && <span className="cinerd-verified-mark" title="Perfil verificado por CineRD" aria-label="Perfil verificado">✓</span>}
+        </div>
+        {actor.NombreArtistico && <p className="stage-name">{actor.NombreCompleto}</p>}
+        <div className="actor-profile-meta">
+          <span>{actor.Profesion || "Profesión no registrada"}</span>
+          {nacimiento && <span>Nació: {nacimiento}</span>}
+          {edad != null && <span>{edad} años</span>}
+          {fallecimiento && <span>Falleció: {fallecimiento}</span>}
+          <span>{actor.EstaVivo ? "Activo" : "In memoriam"}</span>
+          {actor.EsVerificado && <span className="cinerd-verified-label">✓ Perfil verificado</span>}
+        </div>
       </div>
-      <div className="actor-profile-actions">{esAdmin && <Link to={`/actores/editar/${actor.Id}`} className="btn btn-light">Editar perfil</Link>}{esUsuario && <Link to={`/actores/${actor.Id}/reclamar`} className="btn btn-primary">Este soy yo</Link>}</div>
+      <div className="actor-profile-actions">
+        {esAdmin && <Link to={`/actores/editar/${actor.Id}`} className="btn btn-light">Editar perfil</Link>}
+        {esUsuario && !actor.EsVerificado && <Link to={`/actores/${actor.Id}/reclamar`} className="btn btn-primary">Este soy yo</Link>}
+      </div>
     </section>
 
     {redes.length > 0 && <section className="actor-social-panel">
