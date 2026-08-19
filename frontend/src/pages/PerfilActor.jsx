@@ -6,6 +6,15 @@ import { calcularEdad, calcularEdadAproximada, calcularEdadEnFecha, formatearFec
 const API_URL = "http://localhost:3000";
 const resolverImagen = (ruta) => !ruta ? null : ruta.startsWith("http") ? ruta : `${API_URL}${ruta}`;
 
+const SOCIAL_LOGOS = {
+  instagram: "https://cdn.simpleicons.org/instagram/E4405F",
+  facebook: "https://cdn.simpleicons.org/facebook/0866FF",
+  tiktok: "https://cdn.simpleicons.org/tiktok/000000",
+  youtube: "https://cdn.simpleicons.org/youtube/FF0000",
+  spotify: "https://cdn.simpleicons.org/spotify/1ED760",
+  x: "https://cdn.simpleicons.org/x/000000",
+};
+
 function PerfilActor() {
   const { id } = useParams();
   const [actor, setActor] = useState(null);
@@ -43,13 +52,13 @@ function PerfilActor() {
   const nacimiento = actor.FechaNacimiento ? formatearFechaNumerica(actor.FechaNacimiento) : actor.AnioNacimiento ? String(actor.AnioNacimiento) : null;
   const fallecimiento = actor.FechaFallecimiento ? formatearFechaNumerica(actor.FechaFallecimiento) : null;
   const redes = [
-    { nombre: "Instagram", url: actor.InstagramUrl, icono: "◎", clase: "instagram" },
-    { nombre: "Facebook", url: actor.FacebookUrl, icono: "f", clase: "facebook" },
-    { nombre: "TikTok", url: actor.TikTokUrl, icono: "♪", clase: "tiktok" },
-    { nombre: "YouTube", url: actor.YouTubeUrl, icono: "▶", clase: "youtube" },
-    { nombre: "Spotify", url: actor.SpotifyUrl, icono: "●", clase: "spotify" },
-    { nombre: "X / Twitter", url: actor.XUrl, icono: "𝕏", clase: "x" },
-    { nombre: "Sitio web", url: actor.SitioWebUrl, icono: "🌐", clase: "website" },
+    { nombre: "Instagram", url: actor.InstagramUrl, clase: "instagram", logo: SOCIAL_LOGOS.instagram },
+    { nombre: "Facebook", url: actor.FacebookUrl, clase: "facebook", logo: SOCIAL_LOGOS.facebook },
+    { nombre: "TikTok", url: actor.TikTokUrl, clase: "tiktok", logo: SOCIAL_LOGOS.tiktok },
+    { nombre: "YouTube", url: actor.YouTubeUrl, clase: "youtube", logo: SOCIAL_LOGOS.youtube },
+    { nombre: "Spotify", url: actor.SpotifyUrl, clase: "spotify", logo: SOCIAL_LOGOS.spotify },
+    { nombre: "X / Twitter", url: actor.XUrl, clase: "x", logo: SOCIAL_LOGOS.x },
+    { nombre: "Sitio web", url: actor.SitioWebUrl, clase: "website", icono: "🌐" },
   ].filter((red) => Boolean(red.url));
 
   const credito = (pelicula, tipo) => <Link to={`/peliculas/${pelicula.Id}`} className="actor-credit" key={`${tipo}-${pelicula.Id}`}>
@@ -77,7 +86,11 @@ function PerfilActor() {
 
     {redes.length > 0 && <section className="actor-social-panel">
       <div className="actor-social-copy"><span className="eyebrow">Presencia digital</span><h2>Redes sociales y enlaces oficiales</h2><p>Perfiles públicos asociados a este talento.</p></div>
-      <div className="actor-social-links">{redes.map((red)=><a key={red.nombre} href={red.url} target="_blank" rel="noreferrer noopener" className={`actor-social-link ${red.clase}`}><span className="actor-social-icon" aria-hidden="true">{red.icono}</span><span>{red.nombre}</span><span className="actor-social-arrow">↗</span></a>)}</div>
+      <div className="actor-social-links">{redes.map((red)=><a key={red.nombre} href={red.url} target="_blank" rel="noreferrer noopener" className={`actor-social-link ${red.clase}`} aria-label={`Abrir ${red.nombre} de ${nombre}`}>
+        <span className="actor-social-icon" aria-hidden="true">{red.logo ? <img src={red.logo} alt="" loading="lazy"/> : red.icono}</span>
+        <span>{red.nombre}</span>
+        <span className="actor-social-arrow">↗</span>
+      </a>)}</div>
     </section>}
   </div>;
 }
