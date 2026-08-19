@@ -11,6 +11,8 @@ function Navbar() {
   })();
 
   const esAdmin = usuario?.rol === "ADMINISTRADOR";
+  const esTalento = usuario?.rol === "TALENTO_VERIFICADO";
+  const esUsuario = usuario?.rol === "USUARIO";
 
   const obtenerClaseNav = ({ isActive }) =>
     `nav-link cine-navbar-link ${isActive ? "active fw-semibold" : ""}`;
@@ -29,6 +31,12 @@ function Navbar() {
     window.location.reload();
   };
 
+  const etiquetaRol = esAdmin
+    ? "Administrador"
+    : esTalento
+      ? "Talento verificado"
+      : "Usuario";
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm sticky-top cine-navbar">
       <div className="container">
@@ -45,9 +53,12 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="cineRdNavbar">
           <ul className="navbar-nav me-auto mb-3 mb-lg-0">
             <li className="nav-item"><NavLink className={obtenerClaseNav} to="/" end onClick={cerrarMenuMovil}>Inicio</NavLink></li>
+            {usuario && (
+              <li className="nav-item"><NavLink className={obtenerClaseNav} to="/dashboard" onClick={cerrarMenuMovil}>Dashboard</NavLink></li>
+            )}
             <li className="nav-item"><NavLink className={obtenerClaseNav} to="/peliculas" onClick={cerrarMenuMovil}>Películas</NavLink></li>
             <li className="nav-item"><NavLink className={obtenerClaseNav} to="/actores" onClick={cerrarMenuMovil}>Talentos</NavLink></li>
-            {usuario && !esAdmin && (
+            {esUsuario && (
               <li className="nav-item"><NavLink className={obtenerClaseNav} to="/verificar-perfil" onClick={cerrarMenuMovil}>Verificar mi perfil</NavLink></li>
             )}
             {esAdmin && (
@@ -69,9 +80,22 @@ function Navbar() {
                 <NavLink className="btn btn-dark btn-sm" to="/registro" onClick={cerrarMenuMovil}>Crear cuenta</NavLink>
               </>
             ) : (
-              <button type="button" className="btn btn-outline-secondary btn-sm" onClick={cerrarSesion}>
-                Salir · {usuario.nombre}
-              </button>
+              <div className="dropdown">
+                <button className="btn btn-outline-secondary btn-sm dropdown-toggle cine-account-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span className="cine-account-avatar">{usuario.nombre?.charAt(0)?.toUpperCase() || "U"}</span>
+                  <span className="cine-account-copy">
+                    <strong>{usuario.nombre}</strong>
+                    <small>{etiquetaRol}</small>
+                  </span>
+                </button>
+                <ul className="dropdown-menu dropdown-menu-end cine-account-menu">
+                  <li><NavLink className="dropdown-item" to="/dashboard" onClick={cerrarMenuMovil}>Mi dashboard</NavLink></li>
+                  {esUsuario && <li><NavLink className="dropdown-item" to="/verificar-perfil" onClick={cerrarMenuMovil}>Verificar mi perfil</NavLink></li>}
+                  {esAdmin && <li><NavLink className="dropdown-item" to="/admin/verificaciones" onClick={cerrarMenuMovil}>Gestionar verificaciones</NavLink></li>}
+                  <li><hr className="dropdown-divider" /></li>
+                  <li><button type="button" className="dropdown-item text-danger" onClick={cerrarSesion}>Cerrar sesión</button></li>
+                </ul>
+              </div>
             )}
           </div>
         </div>
