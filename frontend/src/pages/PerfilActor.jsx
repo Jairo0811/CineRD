@@ -52,13 +52,13 @@ function PerfilActor() {
   const nacimiento = actor.FechaNacimiento ? formatearFechaNumerica(actor.FechaNacimiento) : actor.AnioNacimiento ? String(actor.AnioNacimiento) : null;
   const fallecimiento = actor.FechaFallecimiento ? formatearFechaNumerica(actor.FechaFallecimiento) : null;
   const redes = [
-    { nombre: "Instagram", url: actor.InstagramUrl, clase: "instagram", logo: SOCIAL_LOGOS.instagram },
-    { nombre: "Facebook", url: actor.FacebookUrl, clase: "facebook", logo: SOCIAL_LOGOS.facebook },
-    { nombre: "TikTok", url: actor.TikTokUrl, clase: "tiktok", logo: SOCIAL_LOGOS.tiktok },
-    { nombre: "YouTube", url: actor.YouTubeUrl, clase: "youtube", logo: SOCIAL_LOGOS.youtube },
-    { nombre: "Spotify", url: actor.SpotifyUrl, clase: "spotify", logo: SOCIAL_LOGOS.spotify },
-    { nombre: "X / Twitter", url: actor.XUrl, clase: "x", logo: SOCIAL_LOGOS.x },
-    { nombre: "Sitio web", url: actor.SitioWebUrl, clase: "website", icono: "🌐" },
+    { nombre: "Instagram", descripcion: "Perfil oficial", url: actor.InstagramUrl, clase: "instagram", logo: SOCIAL_LOGOS.instagram },
+    { nombre: "Facebook", descripcion: "Página oficial", url: actor.FacebookUrl, clase: "facebook", logo: SOCIAL_LOGOS.facebook },
+    { nombre: "TikTok", descripcion: "Perfil oficial", url: actor.TikTokUrl, clase: "tiktok", logo: SOCIAL_LOGOS.tiktok },
+    { nombre: "YouTube", descripcion: "Canal oficial", url: actor.YouTubeUrl, clase: "youtube", logo: SOCIAL_LOGOS.youtube },
+    { nombre: "Spotify", descripcion: "Escuchar artista", url: actor.SpotifyUrl, clase: "spotify", logo: SOCIAL_LOGOS.spotify },
+    { nombre: "X / Twitter", descripcion: "Perfil oficial", url: actor.XUrl, clase: "x", logo: SOCIAL_LOGOS.x },
+    { nombre: "Sitio web", descripcion: "Sitio oficial", url: actor.SitioWebUrl, clase: "website", icono: "🌐" },
   ].filter((red) => Boolean(red.url));
 
   const credito = (pelicula, tipo) => <Link to={`/peliculas/${pelicula.Id}`} className="actor-credit" key={`${tipo}-${pelicula.Id}`}>
@@ -85,11 +85,14 @@ function PerfilActor() {
     </section>
 
     {redes.length > 0 && <section className="actor-social-panel">
-      <div className="actor-social-copy"><span className="eyebrow">Presencia digital</span><h2>Redes sociales y enlaces oficiales</h2><p>Perfiles públicos asociados a este talento.</p></div>
+      <div className="actor-social-copy">
+        <div className="actor-social-heading-row"><span className="eyebrow">Presencia digital</span><span className="actor-social-official">Perfiles oficiales</span></div>
+        <h2>Sigue a {nombre}</h2>
+        <p>Consulta sus canales, música y perfiles públicos oficiales.</p>
+      </div>
       <div className="actor-social-links">{redes.map((red)=><a key={red.nombre} href={red.url} target="_blank" rel="noreferrer noopener" className={`actor-social-link ${red.clase}`} aria-label={`Abrir ${red.nombre} de ${nombre}`}>
         <span className="actor-social-icon" aria-hidden="true">{red.logo ? <img src={red.logo} alt="" loading="lazy"/> : red.icono}</span>
-        <span>{red.nombre}</span>
-        <span className="actor-social-arrow">↗</span>
+        <span className="actor-social-link-copy"><strong>{red.nombre}</strong><small>{red.descripcion}</small></span>
       </a>)}</div>
     </section>}
   </div>;
