@@ -13,6 +13,7 @@ import "./styles/admin-dashboard.css";
 import "./styles/talent-dashboard.css";
 import "./styles/user-dashboard.css";
 import "./styles/workspace.css";
+import "./styles/actor-profile.css";
 
 import App from "./App.jsx";
 
