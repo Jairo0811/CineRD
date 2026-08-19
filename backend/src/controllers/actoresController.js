@@ -43,16 +43,22 @@ const obtenerActores = async (req, res) => {
       SELECT A.Id,A.TMDbId,A.Nombres,A.Apellidos,A.NombreCompleto,A.NombreArtistico,A.Profesion,
              A.FechaNacimiento,A.AnioNacimiento,A.Sexo,A.EstaVivo,A.FechaFallecimiento,A.Foto,
              A.InstagramUrl,A.FacebookUrl,A.TikTokUrl,A.YouTubeUrl,A.SpotifyUrl,A.XUrl,A.SitioWebUrl,
+             CAST(CASE WHEN TV.ActorId IS NULL THEN 0 ELSE 1 END AS bit) AS EsVerificado,
              COUNT(AP.PeliculaId) AS CantidadPeliculas
       FROM Actores A
       LEFT JOIN ActoresPeliculas AP ON A.Id = AP.ActorId
+      LEFT JOIN (
+        SELECT DISTINCT ActorId
+        FROM TalentosUsuarios
+        WHERE Estado = N'ACTIVO'
+      ) TV ON TV.ActorId = A.Id
       WHERE 1 = 1`;
     if (buscar) query += ` AND (A.Nombres LIKE @Buscar OR A.Apellidos LIKE @Buscar OR A.NombreCompleto LIKE @Buscar OR A.NombreArtistico LIKE @Buscar OR A.Profesion LIKE @Buscar)`;
     if (estado === "vivo") query += ` AND A.EstaVivo = 1`;
     if (estado === "fallecido") query += ` AND A.EstaVivo = 0`;
     if (anio) query += ` AND (YEAR(A.FechaNacimiento) = @Anio OR A.AnioNacimiento = @Anio)`;
     if (profesion) query += ` AND A.Profesion LIKE @Profesion`;
-    query += ` GROUP BY A.Id,A.TMDbId,A.Nombres,A.Apellidos,A.NombreCompleto,A.NombreArtistico,A.Profesion,A.FechaNacimiento,A.AnioNacimiento,A.Sexo,A.EstaVivo,A.FechaFallecimiento,A.Foto,A.InstagramUrl,A.FacebookUrl,A.TikTokUrl,A.YouTubeUrl,A.SpotifyUrl,A.XUrl,A.SitioWebUrl`;
+    query += ` GROUP BY A.Id,A.TMDbId,A.Nombres,A.Apellidos,A.NombreCompleto,A.NombreArtistico,A.Profesion,A.FechaNacimiento,A.AnioNacimiento,A.Sexo,A.EstaVivo,A.FechaFallecimiento,A.Foto,A.InstagramUrl,A.FacebookUrl,A.TikTokUrl,A.YouTubeUrl,A.SpotifyUrl,A.XUrl,A.SitioWebUrl,TV.ActorId`;
     switch (orden) {
       case "za": query += ` ORDER BY A.NombreCompleto DESC`; break;
       case "masPeliculas": query += ` ORDER BY CantidadPeliculas DESC, A.NombreCompleto ASC`; break;
@@ -79,9 +85,14 @@ const obtenerActorPorId = async (req, res) => {
     if (!Number.isInteger(id) || id <= 0) return res.status(400).json({ mensaje: "El identificador del actor no es válido" });
     const pool = await poolPromise;
     const resultado = await pool.request().input("Id", sql.Int, id).query(`
-      SELECT Id,TMDbId,Nombres,Apellidos,NombreCompleto,NombreArtistico,Profesion,FechaNacimiento,AnioNacimiento,
-             Sexo,EstaVivo,FechaFallecimiento,Foto,InstagramUrl,FacebookUrl,TikTokUrl,YouTubeUrl,SpotifyUrl,XUrl,SitioWebUrl
-      FROM Actores WHERE Id = @Id`);
+      SELECT A.Id,A.TMDbId,A.Nombres,A.Apellidos,A.NombreCompleto,A.NombreArtistico,A.Profesion,A.FechaNacimiento,A.AnioNacimiento,
+             A.Sexo,A.EstaVivo,A.FechaFallecimiento,A.Foto,A.InstagramUrl,A.FacebookUrl,A.TikTokUrl,A.YouTubeUrl,A.SpotifyUrl,A.XUrl,A.SitioWebUrl,
+             CAST(CASE WHEN EXISTS (
+               SELECT 1 FROM dbo.TalentosUsuarios TU
+               WHERE TU.ActorId = A.Id AND TU.Estado = N'ACTIVO'
+             ) THEN 1 ELSE 0 END AS bit) AS EsVerificado
+      FROM Actores A
+      WHERE A.Id = @Id`);
     if (!resultado.recordset.length) return res.status(404).json({ mensaje: "Actor no encontrado" });
     res.json(resultado.recordset[0]);
   } catch (error) {
