@@ -10,6 +10,7 @@ import "./styles/portal.css";
 import "./styles/cinematic-public.css";
 import "./styles/catalog.css";
 import "./styles/admin-dashboard.css";
+import "./styles/talent-dashboard.css";
 
 import App from "./App.jsx";
 
