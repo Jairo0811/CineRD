@@ -81,6 +81,15 @@
 .cinematic-talent-card-copy strong,.cinematic-movie-showcase-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.88rem}
 .cinematic-talent-card-copy small,.cinematic-movie-showcase-copy small{margin-top:3px;color:#7b8495;font-size:.74rem}
 .cinematic-talent-card-copy span,.cinematic-movie-showcase-copy span{margin-top:8px;color:#063b9a;font-size:.72rem;font-weight:800}
+.birthday-showcase-section{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#fbfdff 100%)}
+.birthday-showcase-section::after{content:"";position:absolute;right:-70px;top:-90px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(215,174,85,.12),transparent 68%);pointer-events:none}
+.birthday-card .cinematic-talent-photo-wrap{background:linear-gradient(145deg,#10243d,#1b426e)}
+.birthday-date-badge{position:absolute;left:10px;bottom:10px;padding:6px 9px;border-radius:999px;background:rgba(215,174,85,.94);color:#172033;font-size:.7rem;font-weight:850;box-shadow:0 5px 16px rgba(0,0,0,.14)}
+.birthday-empty-state{display:flex;align-items:center;gap:14px;padding:18px;border:1px dashed #d9e2ee;border-radius:15px;background:#f8fafc;color:#667085}
+.birthday-empty-state>span{font-size:2rem}
+.birthday-empty-state div{display:flex;flex-direction:column}
+.birthday-empty-state strong{color:#172033;font-size:.86rem}
+.birthday-empty-state small{margin-top:3px;font-size:.74rem}
 
 .cinematic-value-grid { margin-bottom:26px; }
 .cinematic-value-card { position:relative; overflow:hidden; }
