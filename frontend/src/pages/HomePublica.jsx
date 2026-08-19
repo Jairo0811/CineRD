@@ -2,6 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 
+const API_URL = "http://localhost:3000";
+const resolverImagen = (ruta) => {
+  if (!ruta) return null;
+  if (ruta.startsWith("http://") || ruta.startsWith("https://")) return ruta;
+  return `${API_URL}${ruta}`;
+};
+
 function HomePublica() {
   const [actores, setActores] = useState([]);
   const [peliculas, setPeliculas] = useState([]);
@@ -79,54 +86,75 @@ function HomePublica() {
         </div>
       </section>
 
-      <section className="cinematic-ranking-grid">
-        <article className="cinematic-ranking-panel">
-          <div className="cinematic-section-heading">
-            <div>
-              <span className="public-eyebrow">Talentos</span>
-              <h2>Con más películas</h2>
-            </div>
-            <Link to="/actores">Ver todos →</Link>
+      <section className="cinematic-showcase-section">
+        <div className="cinematic-showcase-heading">
+          <div>
+            <span className="public-eyebrow">Talentos</span>
+            <h2>Con más películas</h2>
+            <p>Profesionales con mayor presencia dentro de la filmografía registrada en CineRD.</p>
           </div>
+          <Link to="/actores">Ver todos →</Link>
+        </div>
 
-          <div className="cinematic-ranking-list">
-            {topTalentos.map((actor, index) => (
-              <Link to={`/actores/${actor.Id}`} className="cinematic-ranking-item" key={actor.Id}>
-                <span className="cinematic-ranking-number">{String(index + 1).padStart(2, "0")}</span>
-                <div>
+        <div className="cinematic-talent-showcase">
+          {topTalentos.map((actor, index) => {
+            const foto = resolverImagen(actor.Foto);
+            return (
+              <Link to={`/actores/${actor.Id}`} className="cinematic-talent-card" key={actor.Id}>
+                <div className="cinematic-talent-photo-wrap">
+                  {foto ? (
+                    <img src={foto} alt={actor.NombreArtistico || actor.NombreCompleto} />
+                  ) : (
+                    <div className="cinematic-talent-photo-placeholder">🎭</div>
+                  )}
+                  <span className="cinematic-rank-badge">#{index + 1}</span>
+                </div>
+                <div className="cinematic-talent-card-copy">
                   <strong>{actor.NombreArtistico || actor.NombreCompleto}</strong>
                   <small>{actor.Profesion || "Talento"}</small>
+                  <span>{actor.CantidadPeliculas || 0} películas</span>
                 </div>
-                <b>{actor.CantidadPeliculas || 0}</b>
               </Link>
-            ))}
-            {!cargando && topTalentos.length === 0 && <p className="text-muted mb-0">Aún no hay datos para mostrar.</p>}
-          </div>
-        </article>
+            );
+          })}
+        </div>
+        {!cargando && topTalentos.length === 0 && <p className="text-muted mb-0">Aún no hay datos para mostrar.</p>}
+      </section>
 
-        <article className="cinematic-ranking-panel">
-          <div className="cinematic-section-heading">
-            <div>
-              <span className="public-eyebrow">Producciones</span>
-              <h2>Con mayor reparto</h2>
-            </div>
-            <Link to="/peliculas">Ver todas →</Link>
+      <section className="cinematic-showcase-section">
+        <div className="cinematic-showcase-heading">
+          <div>
+            <span className="public-eyebrow">Producciones</span>
+            <h2>Películas con mayor reparto</h2>
+            <p>Las producciones del catálogo que reúnen la mayor cantidad de talentos registrados.</p>
           </div>
+          <Link to="/peliculas">Ver todas →</Link>
+        </div>
 
-          <div className="cinematic-ranking-list">
-            {topPeliculas.map((pelicula, index) => (
-              <Link to={`/peliculas/${pelicula.Id}`} className="cinematic-ranking-item" key={pelicula.Id}>
-                <span className="cinematic-ranking-number">{String(index + 1).padStart(2, "0")}</span>
-                <div>
+        <div className="cinematic-movie-showcase">
+          {topPeliculas.map((pelicula, index) => {
+            const poster = resolverImagen(pelicula.Foto);
+            return (
+              <Link to={`/peliculas/${pelicula.Id}`} className="cinematic-movie-showcase-card" key={pelicula.Id}>
+                <div className="cinematic-movie-poster-wrap">
+                  {poster ? (
+                    <img src={poster} alt={`Póster de ${pelicula.Titulo}`} />
+                  ) : (
+                    <div className="cinematic-movie-poster-placeholder">🎬</div>
+                  )}
+                  <span className="cinematic-rank-badge">#{index + 1}</span>
+                  <span className="cinematic-cast-badge">👥 {pelicula.CantidadActores || 0}</span>
+                </div>
+                <div className="cinematic-movie-showcase-copy">
                   <strong>{pelicula.Titulo}</strong>
-                  <small>{pelicula.Genero || "Sin género"}</small>
+                  <small>{pelicula.Genero || "Cine dominicano"}</small>
+                  <span>{pelicula.CantidadActores || 0} talentos en reparto</span>
                 </div>
-                <b>{pelicula.CantidadActores || 0}</b>
               </Link>
-            ))}
-            {!cargando && topPeliculas.length === 0 && <p className="text-muted mb-0">Aún no hay datos para mostrar.</p>}
-          </div>
-        </article>
+            );
+          })}
+        </div>
+        {!cargando && topPeliculas.length === 0 && <p className="text-muted mb-0">Aún no hay datos para mostrar.</p>}
       </section>
 
       <section className="public-value-grid cinematic-value-grid">
