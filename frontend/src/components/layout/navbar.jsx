@@ -15,7 +15,7 @@ function Navbar() {
   const esUsuario = usuario?.rol === "USUARIO";
 
   const obtenerClaseNav = ({ isActive }) =>
-    `nav-link cine-navbar-link ${isActive ? "active fw-semibold" : ""}`;
+    `nav-link cine-navbar-link ${isActive ? "active" : ""}`;
 
   const cerrarMenuMovil = () => {
     const menu = document.getElementById("cineRdNavbar");
@@ -38,11 +38,11 @@ function Navbar() {
       : "Usuario";
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm sticky-top cine-navbar">
+    <nav className="navbar navbar-expand-lg navbar-dark sticky-top cine-navbar cine-navbar-cinematic">
       <div className="container">
         <NavLink className="navbar-brand cine-navbar-brand" to="/" onClick={cerrarMenuMovil}>
-          <img src="/logo.png" alt="Logo de CineRD" className="cine-navbar-logo" />
-          <span>CineRD</span>
+          <img src="/logo.png" alt="CineRD" className="cine-navbar-logo" />
+          <span className="cine-navbar-wordmark">Cine<span>RD</span></span>
         </NavLink>
 
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#cineRdNavbar"
@@ -53,35 +53,29 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="cineRdNavbar">
           <ul className="navbar-nav me-auto mb-3 mb-lg-0">
             <li className="nav-item"><NavLink className={obtenerClaseNav} to="/" end onClick={cerrarMenuMovil}>Inicio</NavLink></li>
-            {usuario && (
-              <li className="nav-item"><NavLink className={obtenerClaseNav} to="/dashboard" onClick={cerrarMenuMovil}>Dashboard</NavLink></li>
-            )}
             <li className="nav-item"><NavLink className={obtenerClaseNav} to="/peliculas" onClick={cerrarMenuMovil}>Películas</NavLink></li>
             <li className="nav-item"><NavLink className={obtenerClaseNav} to="/actores" onClick={cerrarMenuMovil}>Talentos</NavLink></li>
-            {esUsuario && (
-              <li className="nav-item"><NavLink className={obtenerClaseNav} to="/verificar-perfil" onClick={cerrarMenuMovil}>Verificar mi perfil</NavLink></li>
-            )}
-            {esAdmin && (
-              <li className="nav-item"><NavLink className={obtenerClaseNav} to="/admin/verificaciones" onClick={cerrarMenuMovil}>Verificaciones</NavLink></li>
-            )}
+            {usuario && <li className="nav-item"><NavLink className={obtenerClaseNav} to="/dashboard" onClick={cerrarMenuMovil}>Mi espacio</NavLink></li>}
+            {esUsuario && <li className="nav-item"><NavLink className={obtenerClaseNav} to="/verificar-perfil" onClick={cerrarMenuMovil}>Verificar perfil</NavLink></li>}
+            {esAdmin && <li className="nav-item"><NavLink className={obtenerClaseNav} to="/admin/verificaciones" onClick={cerrarMenuMovil}>Verificaciones</NavLink></li>}
           </ul>
 
           <div className="cine-navbar-actions">
             {esAdmin && (
-              <>
-                <NavLink className="btn btn-outline-primary btn-sm" to="/peliculas/nueva" onClick={cerrarMenuMovil}>+ Nueva película</NavLink>
-                <NavLink className="btn btn-primary btn-sm" to="/actores/nuevo" onClick={cerrarMenuMovil}>+ Nuevo talento</NavLink>
-              </>
+              <div className="cine-admin-quick-actions">
+                <NavLink className="btn cine-btn-ghost btn-sm" to="/peliculas/nueva" onClick={cerrarMenuMovil}>+ Película</NavLink>
+                <NavLink className="btn cine-btn-accent btn-sm" to="/actores/nuevo" onClick={cerrarMenuMovil}>+ Talento</NavLink>
+              </div>
             )}
 
             {!usuario ? (
               <>
-                <NavLink className="btn btn-outline-secondary btn-sm" to="/login" onClick={cerrarMenuMovil}>Ingresar</NavLink>
-                <NavLink className="btn btn-dark btn-sm" to="/registro" onClick={cerrarMenuMovil}>Crear cuenta</NavLink>
+                <NavLink className="btn cine-btn-ghost btn-sm" to="/login" onClick={cerrarMenuMovil}>Ingresar</NavLink>
+                <NavLink className="btn cine-btn-accent btn-sm" to="/registro" onClick={cerrarMenuMovil}>Crear cuenta</NavLink>
               </>
             ) : (
               <div className="dropdown">
-                <button className="btn btn-outline-secondary btn-sm dropdown-toggle cine-account-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button className="btn cine-account-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <span className="cine-account-avatar">{usuario.nombre?.charAt(0)?.toUpperCase() || "U"}</span>
                   <span className="cine-account-copy">
                     <strong>{usuario.nombre}</strong>
