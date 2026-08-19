@@ -10,7 +10,7 @@ const { autenticar, autorizar } = require("../middlewares/auth");
 
 const router = express.Router();
 
-router.post("/actor/:actorId", autenticar, autorizar("USUARIO", "TALENTO_VERIFICADO"), crearSolicitud);
+router.post("/actor/:actorId", autenticar, autorizar("USUARIO"), crearSolicitud);
 router.get("/mis-solicitudes", autenticar, misSolicitudes);
 router.get("/mi-perfil", autenticar, autorizar("TALENTO_VERIFICADO"), miPerfilTalento);
 router.get("/admin/pendientes", autenticar, autorizar("ADMINISTRADOR"), listarPendientes);
