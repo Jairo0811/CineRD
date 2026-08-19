@@ -14,6 +14,7 @@ import "./styles/talent-dashboard.css";
 import "./styles/user-dashboard.css";
 import "./styles/workspace.css";
 import "./styles/actor-profile.css";
+import "./styles/verification-badges.css";
 
 import App from "./App.jsx";
 
