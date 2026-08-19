@@ -47,6 +47,27 @@ function HomePublica() {
     [peliculas],
   );
 
+  const hoy = new Date();
+  const mesActual = hoy.getMonth();
+  const anioActual = hoy.getFullYear();
+  const nombreMesActual = new Intl.DateTimeFormat("es-DO", { month: "long" }).format(hoy);
+
+  const cumpleanerosDelMes = useMemo(
+    () => actores
+      .filter((actor) => actor.EstaVivo && actor.FechaNacimiento)
+      .map((actor) => {
+        const fecha = new Date(`${actor.FechaNacimiento.substring(0, 10)}T12:00:00`);
+        return { actor, fecha };
+      })
+      .filter(({ fecha }) => !Number.isNaN(fecha.getTime()) && fecha.getMonth() === mesActual)
+      .sort((a, b) => {
+        const porAnio = a.fecha.getFullYear() - b.fecha.getFullYear();
+        return porAnio !== 0 ? porAnio : a.fecha.getDate() - b.fecha.getDate();
+      })
+      .slice(0, 5),
+    [actores, mesActual],
+  );
+
   return (
     <div className="public-home cinematic-home">
       <section className="cinematic-hero">
@@ -119,6 +140,48 @@ function HomePublica() {
           })}
         </div>
         {!cargando && topTalentos.length === 0 && <p className="text-muted mb-0">Aún no hay datos para mostrar.</p>}
+      </section>
+
+      <section className="cinematic-showcase-section birthday-showcase-section">
+        <div className="cinematic-showcase-heading">
+          <div>
+            <span className="public-eyebrow">Efemérides · {nombreMesActual}</span>
+            <h2>Cumpleaños del mes</h2>
+            <p>Talentos que cumplen años este mes, ordenados desde el año de nacimiento más antiguo al más reciente.</p>
+          </div>
+          <Link to="/actores">Ver talentos →</Link>
+        </div>
+
+        <div className="cinematic-talent-showcase">
+          {cumpleanerosDelMes.map(({ actor, fecha }) => {
+            const foto = resolverImagen(actor.Foto);
+            const edadQueCumple = anioActual - fecha.getFullYear();
+            const fechaCumple = new Intl.DateTimeFormat("es-DO", { day: "2-digit", month: "short" }).format(fecha);
+            return (
+              <Link to={`/actores/${actor.Id}`} className="cinematic-talent-card birthday-card" key={`cumple-${actor.Id}`}>
+                <div className="cinematic-talent-photo-wrap">
+                  {foto ? (
+                    <img src={foto} alt={actor.NombreArtistico || actor.NombreCompleto} />
+                  ) : (
+                    <div className="cinematic-talent-photo-placeholder">🎂</div>
+                  )}
+                  <span className="birthday-date-badge">🎂 {fechaCumple}</span>
+                </div>
+                <div className="cinematic-talent-card-copy">
+                  <strong>{actor.NombreArtistico || actor.NombreCompleto}</strong>
+                  <small>{actor.Profesion || "Talento"}</small>
+                  <span>Nació en {fecha.getFullYear()} · cumple {edadQueCumple} años</span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+        {!cargando && cumpleanerosDelMes.length === 0 && (
+          <div className="birthday-empty-state">
+            <span>🎂</span>
+            <div><strong>Sin cumpleaños registrados este mes</strong><small>Solo aparecen talentos vivos con fecha de nacimiento completa.</small></div>
+          </div>
+        )}
       </section>
 
       <section className="cinematic-showcase-section">
