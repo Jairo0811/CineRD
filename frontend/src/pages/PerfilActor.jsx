@@ -1,373 +1,64 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../services/api";
+import { calcularEdad, calcularEdadAproximada, calcularEdadEnFecha, formatearFechaCorta, obtenerAnioFecha } from "../utils/fechas";
 
-import {
-  calcularEdad,
-  calcularEdadAproximada,
-  calcularEdadEnFecha,
-  formatearFecha,
-  formatearFechaCorta,
-  obtenerAnioFecha,
-} from "../utils/fechas";
+const API_URL = "http://localhost:3000";
+const resolverImagen = (ruta) => !ruta ? null : ruta.startsWith("http") ? ruta : `${API_URL}${ruta}`;
 
 function PerfilActor() {
   const { id } = useParams();
-
   const [actor, setActor] = useState(null);
   const [participaciones, setParticipaciones] = useState([]);
   const [dirigidas, setDirigidas] = useState([]);
   const [cargando, setCargando] = useState(true);
-
-  const API_URL = "http://localhost:3000";
+  const usuario = (()=>{ try{return JSON.parse(localStorage.getItem("cineRdUsuario")||"null");}catch{return null;} })();
+  const esAdmin = usuario?.rol === "ADMINISTRADOR";
+  const esUsuario = usuario?.rol === "USUARIO";
 
   useEffect(() => {
-    cargarPerfil();
+    const cargar = async () => {
+      try {
+        const actorResponse = await api.get(`/actores/${id}`);
+        const actorData = actorResponse.data;
+        const [p,d] = await Promise.all([
+          api.get(`/actores-peliculas/actor/${id}`),
+          api.get(`/peliculas/director/${encodeURIComponent(actorData.NombreCompleto)}`),
+        ]);
+        setActor(actorData); setParticipaciones(p.data||[]); setDirigidas(d.data||[]);
+      } catch (error) { console.error(error); }
+      finally { setCargando(false); }
+    };
+    cargar();
   }, [id]);
 
-  const cargarPerfil = async () => {
-    try {
-      setCargando(true);
+  if (cargando) return <div className="text-center py-5"><div className="spinner-border text-primary" role="status"/><p className="mt-3 text-muted">Cargando perfil...</p></div>;
+  if (!actor) return <div className="text-center py-5"><p className="text-muted">No se encontró el talento solicitado.</p><Link to="/actores" className="btn btn-primary">Volver a talentos</Link></div>;
 
-      const actorResponse = await api.get(`/actores/${id}`);
-      const actorData = actorResponse.data;
+  const edad = actor.FechaNacimiento
+    ? (!actor.EstaVivo && actor.FechaFallecimiento ? calcularEdadEnFecha(actor.FechaNacimiento,actor.FechaFallecimiento) : calcularEdad(actor.FechaNacimiento))
+    : actor.AnioNacimiento ? calcularEdadAproximada(actor.AnioNacimiento,!actor.EstaVivo&&actor.FechaFallecimiento?obtenerAnioFecha(actor.FechaFallecimiento):new Date().getFullYear()) : null;
+  const nombre = actor.NombreArtistico || actor.NombreCompleto || `${actor.Nombres||""} ${actor.Apellidos||""}`.trim();
+  const foto = resolverImagen(actor.Foto);
 
-      const [participacionesResponse, dirigidasResponse] = await Promise.all([
-        api.get(`/actores-peliculas/actor/${id}`),
-        api.get(
-          `/peliculas/director/${encodeURIComponent(actorData.NombreCompleto)}`,
-        ),
-      ]);
+  const credito = (pelicula, tipo) => <Link to={`/peliculas/${pelicula.Id}`} className="actor-credit" key={`${tipo}-${pelicula.Id}`}>
+    {pelicula.Foto ? <img src={resolverImagen(pelicula.Foto)} alt={pelicula.Titulo}/> : <span className="actor-credit-poster-empty">🎬</span>}
+    <span className="actor-credit-copy"><strong>{pelicula.Titulo}</strong><small>{tipo === "actuacion" ? `${pelicula.Personaje || "Personaje no registrado"} · ${pelicula.TipoParticipacion || "Participación"}` : pelicula.Genero || "Dirección"}</small></span>
+    <span className="actor-credit-date">{pelicula.FechaEstreno ? formatearFechaCorta(pelicula.FechaEstreno) : "Sin fecha"}</span>
+  </Link>;
 
-      setActor(actorData);
-      setParticipaciones(participacionesResponse.data || []);
-      setDirigidas(dirigidasResponse.data || []);
-    } catch (error) {
-      console.error(error);
-
-      alert(
-        error.response?.data?.mensaje || "Error al cargar el perfil del actor",
-      );
-    } finally {
-      setCargando(false);
-    }
-  };
-
-  const obtenerEdadActor = () => {
-    if (!actor) {
-      return null;
-    }
-
-    if (actor.FechaNacimiento) {
-      if (!actor.EstaVivo && actor.FechaFallecimiento) {
-        return calcularEdadEnFecha(
-          actor.FechaNacimiento,
-          actor.FechaFallecimiento,
-        );
-      }
-
-      return calcularEdad(actor.FechaNacimiento);
-    }
-
-    if (actor.AnioNacimiento) {
-      const anioFinal =
-        !actor.EstaVivo && actor.FechaFallecimiento
-          ? obtenerAnioFecha(actor.FechaFallecimiento)
-          : new Date().getFullYear();
-
-      return calcularEdadAproximada(actor.AnioNacimiento, anioFinal);
-    }
-
-    return null;
-  };
-
-  const mostrarNacimiento = () => {
-    const edad = obtenerEdadActor();
-
-    if (actor.FechaNacimiento) {
-      return (
-        <>
-          <p className="mb-1">
-            🎂 <strong>{formatearFecha(actor.FechaNacimiento)}</strong>
-          </p>
-
-          {edad !== null && <p className="text-muted mb-2">{edad} años</p>}
-        </>
-      );
-    }
-
-    if (actor.AnioNacimiento) {
-      return (
-        <>
-          <p className="mb-1">
-            🎂 Año de nacimiento: <strong>{actor.AnioNacimiento}</strong>
-          </p>
-
-          {edad !== null && (
-            <p className="text-muted mb-2">Aprox. {edad} años</p>
-          )}
-        </>
-      );
-    }
-
-    return (
-      <p className="text-muted mb-2">🎂 Fecha de nacimiento desconocida</p>
-    );
-  };
-
-  const obtenerEstadoActor = () => {
-    if (actor.EstaVivo) {
-      return "🟢 Vivo";
-    }
-
-    return actor.Sexo === "Femenino" ? "⚫ Fallecida" : "⚫ Fallecido";
-  };
-
-  const renderPoster = (pelicula) => {
-    if (pelicula.Foto) {
-      return (
-        <img
-          src={`${API_URL}${pelicula.Foto}`}
-          alt={pelicula.Titulo}
-          style={{
-            width: "55px",
-            height: "80px",
-            objectFit: "cover",
-            borderRadius: "8px",
-            boxShadow: "0 2px 8px rgba(0,0,0,.25)",
-            flexShrink: 0,
-          }}
-        />
-      );
-    }
-
-    return (
-      <div
-        style={{
-          width: "55px",
-          height: "80px",
-          borderRadius: "8px",
-          background: "#ececec",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "24px",
-          flexShrink: 0,
-        }}
-      >
-        🎬
-      </div>
-    );
-  };
-
-  if (cargando) {
-    return (
-      <div className="table-page-container text-center py-5">
-        <div className="spinner-border text-primary" role="status" />
-
-        <p className="mt-3 mb-0">Cargando perfil...</p>
-      </div>
-    );
-  }
-
-  if (!actor) {
-    return (
-      <div className="table-page-container text-center py-5">
-        <p className="text-muted">No se encontró el actor solicitado.</p>
-
-        <Link to="/actores" className="btn btn-primary">
-          Volver a Actores
-        </Link>
-      </div>
-    );
-  }
-
-  return (
-    <div className="table-page-container">
-      <Link to="/actores" className="btn btn-secondary mb-4">
-        ← Volver a Actores
-      </Link>
-
-      <div className="card shadow mb-4">
-        <div className="card-body text-center">
-          {actor.Foto ? (
-            <img
-              src={`${API_URL}${actor.Foto}`}
-              alt={actor.NombreCompleto}
-              className="actor-photo mb-3"
-            />
-          ) : (
-            <div className="actor-photo-placeholder mb-3">🎭</div>
-          )}
-
-          <h2 className="mb-2">
-            <div>{actor.Nombres || actor.NombreCompleto || "Sin nombre"}</div>
-
-            {actor.Apellidos && (
-              <div
-                className="text-secondary"
-                style={{
-                  fontSize: "0.85em",
-                  fontWeight: 600,
-                }}
-              >
-                {actor.Apellidos}
-              </div>
-            )}
-          </h2>
-
-          {actor.NombreArtistico && (
-            <p className="text-muted mb-1">🎭 {actor.NombreArtistico}</p>
-          )}
-
-          <p className="mb-1">
-            💼 <strong>{actor.Profesion || "Sin profesión definida"}</strong>
-          </p>
-
-          {mostrarNacimiento()}
-
-          {!actor.EstaVivo && actor.FechaFallecimiento && (
-            <p className="text-danger mb-2">
-              ⚰️ Falleció el{" "}
-              <strong>{formatearFecha(actor.FechaFallecimiento)}</strong>
-            </p>
-          )}
-
-          <span
-            className={`badge ${actor.EstaVivo ? "bg-success" : "bg-dark"}`}
-          >
-            {obtenerEstadoActor()}
-          </span>
-        </div>
-      </div>
-
-      <div className="row g-4 mb-4">
-        <div className="col-12 col-md-4">
-          <div className="dashboard-stat-card">
-            <span className="dashboard-stat-icon">🎭</span>
-
-            <strong className="dashboard-stat-value">
-              {participaciones.length}
-            </strong>
-
-            <span className="dashboard-stat-label">
-              Participaciones como actor/actriz
-            </span>
-          </div>
-        </div>
-
-        <div className="col-12 col-md-4">
-          <div className="dashboard-stat-card">
-            <span className="dashboard-stat-icon">🎬</span>
-
-            <strong className="dashboard-stat-value">{dirigidas.length}</strong>
-
-            <span className="dashboard-stat-label">Películas dirigidas</span>
-          </div>
-        </div>
-
-        <div className="col-12 col-md-4">
-          <div className="dashboard-stat-card">
-            <span className="dashboard-stat-icon">📽️</span>
-
-            <strong className="dashboard-stat-value">
-              {participaciones.length + dirigidas.length}
-            </strong>
-
-            <span className="dashboard-stat-label">Total de créditos</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="row g-4 align-items-start">
-        <div className="col-12 col-lg-6">
-          <div className="card shadow">
-            <div className="card-header fw-bold">
-              🎭 Participaciones como actor/actriz
-            </div>
-
-            <div className="card-body">
-              {participaciones.length === 0 ? (
-                <p className="text-muted mb-0">
-                  No tiene participaciones registradas.
-                </p>
-              ) : (
-                participaciones.map((pelicula) => (
-                  <div
-                    key={pelicula.Id}
-                    className="d-flex align-items-center gap-3 py-3 border-bottom"
-                  >
-                    {renderPoster(pelicula)}
-
-                    <div className="flex-grow-1">
-                      <strong>{pelicula.Titulo}</strong>
-
-                      <br />
-
-                      <small className="text-muted">
-                        Personaje: {pelicula.Personaje || "-"}
-                      </small>
-
-                      <br />
-
-                      <small className="text-primary">
-                        {pelicula.TipoParticipacion || "Participación"}
-                      </small>
-                    </div>
-
-                    <small className="text-muted text-end">
-                      {pelicula.FechaEstreno
-                        ? formatearFechaCorta(pelicula.FechaEstreno)
-                        : "Sin fecha"}
-                    </small>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="col-12 col-lg-6">
-          <div className="card shadow">
-            <div className="card-header fw-bold">🎬 Películas dirigidas</div>
-
-            <div className="card-body">
-              {dirigidas.length === 0 ? (
-                <p className="text-muted mb-0">
-                  No tiene películas dirigidas registradas.
-                </p>
-              ) : (
-                dirigidas.map((pelicula) => (
-                  <div
-                    key={pelicula.Id}
-                    className="d-flex align-items-center gap-3 py-3 border-bottom"
-                  >
-                    {renderPoster(pelicula)}
-
-                    <div className="flex-grow-1">
-                      <strong>{pelicula.Titulo}</strong>
-
-                      <br />
-
-                      <small className="text-muted">
-                        {pelicula.Genero || "Sin género"}
-                      </small>
-                    </div>
-
-                    <small className="text-muted text-end">
-                      {pelicula.FechaEstreno
-                        ? formatearFechaCorta(pelicula.FechaEstreno)
-                        : "Sin fecha"}
-                    </small>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="table-page-container actor-profile-page">
+    <div><Link to="/actores" className="btn btn-outline-secondary btn-sm">← Talentos</Link></div>
+    <section className="actor-profile-hero">
+      {foto ? <img src={foto} alt={nombre} className="actor-profile-photo"/> : <div className="actor-profile-photo-empty">🎭</div>}
+      <div className="actor-profile-copy"><span className="eyebrow">Talento · CineRD</span><h1>{nombre}</h1>{actor.NombreArtistico && <p className="stage-name">{actor.NombreCompleto}</p>}<div className="actor-profile-meta"><span>{actor.Profesion || "Profesión no registrada"}</span>{edad != null && <span>{edad} años</span>}<span>{actor.EstaVivo ? "Activo" : "In memoriam"}</span></div></div>
+      <div className="actor-profile-actions">{esAdmin && <Link to={`/actores/editar/${actor.Id}`} className="btn btn-light">Editar perfil</Link>}{esUsuario && <Link to={`/actores/${actor.Id}/reclamar`} className="btn btn-primary">Este soy yo</Link>}</div>
+    </section>
+    <section className="actor-profile-kpis"><article className="actor-profile-kpi"><strong>{participaciones.length}</strong><span>Participaciones como intérprete</span></article><article className="actor-profile-kpi"><strong>{dirigidas.length}</strong><span>Películas dirigidas</span></article><article className="actor-profile-kpi"><strong>{participaciones.length+dirigidas.length}</strong><span>Créditos registrados</span></article></section>
+    <section className="actor-filmography-grid">
+      <article className="actor-filmography-panel"><header className="actor-filmography-header"><span>Filmografía</span><h2>Participaciones como actor/actriz</h2></header><div className="actor-credit-list">{participaciones.length ? participaciones.map((p)=>credito(p,"actuacion")) : <div className="actor-empty">No tiene participaciones registradas.</div>}</div></article>
+      <article className="actor-filmography-panel"><header className="actor-filmography-header"><span>Dirección</span><h2>Películas dirigidas</h2></header><div className="actor-credit-list">{dirigidas.length ? dirigidas.map((p)=>credito(p,"direccion")) : <div className="actor-empty">No tiene películas dirigidas registradas.</div>}</div></article>
+    </section>
+  </div>;
 }
-
 export default PerfilActor;
