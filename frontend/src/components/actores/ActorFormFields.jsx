@@ -20,6 +20,7 @@ function ActorFormFields({ formulario, onChange, onChangeEstadoVida, onFotoChang
       <div className="col-12 col-md-6"><label className="form-label">Facebook</label><input type="url" name="FacebookUrl" className="form-control" placeholder="https://facebook.com/..." value={formulario.FacebookUrl || ""} onChange={onChange}/></div>
       <div className="col-12 col-md-6"><label className="form-label">TikTok</label><input type="url" name="TikTokUrl" className="form-control" placeholder="https://tiktok.com/@..." value={formulario.TikTokUrl || ""} onChange={onChange}/></div>
       <div className="col-12 col-md-6"><label className="form-label">YouTube</label><input type="url" name="YouTubeUrl" className="form-control" placeholder="https://youtube.com/@..." value={formulario.YouTubeUrl || ""} onChange={onChange}/></div>
+      <div className="col-12 col-md-6"><label className="form-label">Spotify</label><input type="url" name="SpotifyUrl" className="form-control" placeholder="https://open.spotify.com/artist/..." value={formulario.SpotifyUrl || ""} onChange={onChange}/></div>
       <div className="col-12 col-md-6"><label className="form-label">X / Twitter</label><input type="url" name="XUrl" className="form-control" placeholder="https://x.com/..." value={formulario.XUrl || ""} onChange={onChange}/></div>
       <div className="col-12 col-md-6"><label className="form-label">Sitio web oficial</label><input type="url" name="SitioWebUrl" className="form-control" placeholder="https://..." value={formulario.SitioWebUrl || ""} onChange={onChange}/></div>
 
