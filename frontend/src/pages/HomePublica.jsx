@@ -129,9 +129,13 @@ function HomePublica() {
                     <div className="cinematic-talent-photo-placeholder">🎭</div>
                   )}
                   <span className="cinematic-rank-badge">#{index + 1}</span>
+                  {actor.EsVerificado && <span className="cinerd-verified-card-badge">✓ Verificado</span>}
                 </div>
                 <div className="cinematic-talent-card-copy">
-                  <strong>{actor.NombreArtistico || actor.NombreCompleto}</strong>
+                  <span className="cinerd-talent-name-row">
+                    <strong>{actor.NombreArtistico || actor.NombreCompleto}</strong>
+                    {actor.EsVerificado && <span className="cinerd-verified-mark" title="Perfil verificado por CineRD" aria-label="Perfil verificado">✓</span>}
+                  </span>
                   <small>{actor.Profesion || "Talento"}</small>
                   <span>{actor.CantidadPeliculas || 0} películas</span>
                 </div>
@@ -166,9 +170,13 @@ function HomePublica() {
                     <div className="cinematic-talent-photo-placeholder">🎂</div>
                   )}
                   <span className="birthday-date-badge">🎂 {fechaCumple}</span>
+                  {actor.EsVerificado && <span className="cinerd-verified-card-badge">✓ Verificado</span>}
                 </div>
                 <div className="cinematic-talent-card-copy">
-                  <strong>{actor.NombreArtistico || actor.NombreCompleto}</strong>
+                  <span className="cinerd-talent-name-row">
+                    <strong>{actor.NombreArtistico || actor.NombreCompleto}</strong>
+                    {actor.EsVerificado && <span className="cinerd-verified-mark" title="Perfil verificado por CineRD" aria-label="Perfil verificado">✓</span>}
+                  </span>
                   <small>{actor.Profesion || "Talento"}</small>
                   <span>Nació en {fecha.getFullYear()} · cumple {edadQueCumple} años</span>
                 </div>
