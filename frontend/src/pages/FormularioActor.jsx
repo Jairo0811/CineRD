@@ -20,6 +20,7 @@ const formularioInicial = {
   FacebookUrl: "",
   TikTokUrl: "",
   YouTubeUrl: "",
+  SpotifyUrl: "",
   XUrl: "",
   SitioWebUrl: "",
 };
@@ -57,6 +58,7 @@ function FormularioActor() {
         FacebookUrl: actor.FacebookUrl || "",
         TikTokUrl: actor.TikTokUrl || "",
         YouTubeUrl: actor.YouTubeUrl || "",
+        SpotifyUrl: actor.SpotifyUrl || "",
         XUrl: actor.XUrl || "",
         SitioWebUrl: actor.SitioWebUrl || "",
       });
@@ -114,6 +116,7 @@ function FormularioActor() {
       FacebookUrl: formulario.FacebookUrl.trim(),
       TikTokUrl: formulario.TikTokUrl.trim(),
       YouTubeUrl: formulario.YouTubeUrl.trim(),
+      SpotifyUrl: formulario.SpotifyUrl.trim(),
       XUrl: formulario.XUrl.trim(),
       SitioWebUrl: formulario.SitioWebUrl.trim(),
     }).forEach(([clave, valor]) => datos.append(clave, valor));
