@@ -6,6 +6,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 // Debe cargarse después de Bootstrap para aplicar los estilos de CineRD.
 import "./index.css";
+import "./styles/portal.css";
 
 import App from "./App.jsx";
 
