@@ -8,6 +8,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.css";
 import "./styles/portal.css";
 import "./styles/cinematic-public.css";
+import "./styles/catalog.css";
 
 import App from "./App.jsx";
 
