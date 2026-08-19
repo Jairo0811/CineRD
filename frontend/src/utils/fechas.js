@@ -135,6 +135,20 @@ export const formatearFechaCorta = (fecha) => {
   });
 };
 
+export const formatearFechaNumerica = (fecha) => {
+  const partes = extraerPartesFecha(fecha);
+
+  if (!partes) {
+    return "";
+  }
+
+  const dia = String(partes.dia).padStart(2, "0");
+  const mes = String(partes.mes).padStart(2, "0");
+  const anio = String(partes.anio).padStart(4, "0");
+
+  return `${dia}/${mes}/${anio}`;
+};
+
 export const obtenerAnioFecha = (fecha) => {
   const partes = extraerPartesFecha(fecha);
 
