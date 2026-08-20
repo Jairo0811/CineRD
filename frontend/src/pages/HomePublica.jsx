@@ -28,7 +28,7 @@ function HomePublica() {
     cargar();
   }, []);
 
-  const topTalentos = useMemo(() => [...actores].sort((a,b)=>Number(b.CantidadPeliculas||0)-Number(a.CantidadPeliculas||0)).slice(0,5), [actores]);
+  const topTalentos = useMemo(() => [...actores].sort((a,b)=>Number(b.CantidadPeliculas||0)-Number(a.CantidadPeliculas||0)).slice(0,10), [actores]);
   const topPeliculas = useMemo(() => [...peliculas].sort((a,b)=>Number(b.CantidadActores||0)-Number(a.CantidadActores||0)).slice(0,5), [peliculas]);
 
   const hoy = new Date();
@@ -41,15 +41,13 @@ function HomePublica() {
     .filter((actor)=>actor.EstaVivo && actor.FechaNacimiento)
     .map((actor)=>({ actor, fecha:new Date(`${actor.FechaNacimiento.substring(0,10)}T12:00:00`) }))
     .filter(({fecha})=>!Number.isNaN(fecha.getTime()) && fecha.getMonth()===mesActual)
-    .sort((a,b)=>a.fecha.getFullYear()-b.fecha.getFullYear() || a.fecha.getDate()-b.fecha.getDate())
-    .slice(0,5), [actores, mesActual]);
+    .sort((a,b)=>a.fecha.getFullYear()-b.fecha.getFullYear() || a.fecha.getDate()-b.fecha.getDate()), [actores, mesActual]);
 
   const estrenosDelMes = useMemo(() => peliculas
     .filter((pelicula)=>pelicula.FechaEstreno)
     .map((pelicula)=>({ pelicula, fecha:new Date(`${pelicula.FechaEstreno.substring(0,10)}T12:00:00`) }))
     .filter(({fecha})=>!Number.isNaN(fecha.getTime()) && fecha.getMonth()===mesActual)
-    .sort((a,b)=>b.fecha.getFullYear()-a.fecha.getFullYear() || a.fecha.getDate()-b.fecha.getDate())
-    .slice(0,5), [peliculas, mesActual]);
+    .sort((a,b)=>b.fecha.getFullYear()-a.fecha.getFullYear() || a.fecha.getDate()-b.fecha.getDate()), [peliculas, mesActual]);
 
   return <div className="public-home cinematic-home">
     <section className="cinematic-hero"><div className="cinematic-flag-band" aria-hidden="true"/><div className="cinematic-hero-copy"><span className="public-eyebrow">{t("home.eyebrow")}</span><h1>{t("home.title")}</h1><p>{t("home.description")}</p><div className="public-hero-actions"><Link to="/peliculas" className="btn btn-primary btn-lg">{t("home.exploreMovies")}</Link><Link to="/actores" className="btn btn-outline-light btn-lg">{t("home.meetTalents")}</Link></div><div className="cinematic-stats" aria-label="CineRD"><div><strong>{peliculas.length}</strong><span>{t("home.movies")}</span></div><div><strong>{actores.length}</strong><span>{t("home.talents")}</span></div><div><strong>{peliculas.reduce((total,p)=>total+Number(p.CantidadActores||0),0)}</strong><span>{t("home.participations")}</span></div></div></div><div className="cinematic-hero-brand"><div className="cinematic-projector-beam"/><img src="/logo.png" alt="CineRD"/><span className="cinematic-caption">{t("home.catalogCaption")}</span></div></section>
