@@ -259,6 +259,59 @@ html[data-theme="dark"] .workspace-panel {
 }
 
 /*
+   Login/register keep the form panel intentionally light in both themes.
+   Dark mode must not inherit the global light typography/input rules here.
+*/
+html[data-theme="dark"] .cine-auth-panel {
+  background: #ffffff !important;
+  color: #101828 !important;
+}
+
+html[data-theme="dark"] .cine-auth-panel h1,
+html[data-theme="dark"] .cine-auth-panel h2,
+html[data-theme="dark"] .cine-auth-panel h3,
+html[data-theme="dark"] .cine-auth-panel h4,
+html[data-theme="dark"] .cine-auth-panel h5,
+html[data-theme="dark"] .cine-auth-panel h6,
+html[data-theme="dark"] .cine-auth-panel strong,
+html[data-theme="dark"] .cine-auth-panel label {
+  color: #101828 !important;
+}
+
+html[data-theme="dark"] .cine-auth-panel p,
+html[data-theme="dark"] .cine-auth-panel small,
+html[data-theme="dark"] .cine-auth-panel .lead-copy,
+html[data-theme="dark"] .cine-auth-panel .cine-auth-switch {
+  color: #667085 !important;
+}
+
+html[data-theme="dark"] .cine-auth-panel .cine-field input,
+html[data-theme="dark"] .cine-auth-panel .cine-field select,
+html[data-theme="dark"] .cine-auth-panel .cine-field textarea {
+  background: #f9fbfd !important;
+  border-color: #d9e1eb !important;
+  color: #172033 !important;
+}
+
+html[data-theme="dark"] .cine-auth-panel .cine-field input:focus,
+html[data-theme="dark"] .cine-auth-panel .cine-field select:focus,
+html[data-theme="dark"] .cine-auth-panel .cine-field textarea:focus {
+  background: #ffffff !important;
+  border-color: #2b78ff !important;
+  color: #172033 !important;
+  box-shadow: 0 0 0 3px rgba(43,120,255,.1);
+}
+
+html[data-theme="dark"] .cine-auth-panel .cine-field input::placeholder,
+html[data-theme="dark"] .cine-auth-panel .cine-field textarea::placeholder {
+  color: #98a2b3 !important;
+}
+
+html[data-theme="dark"] .cine-auth-panel a {
+  color: #0057b8;
+}
+
+/*
    Actor profile keeps its information cards intentionally light in both themes.
    Therefore their typography must remain dark for readable contrast.
 */
