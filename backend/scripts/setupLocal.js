@@ -14,6 +14,7 @@ const SQL_FILES = [
   path.join(REPO_ROOT, "database", "migrations", "004_actores_redes_sociales.sql"),
   path.join(REPO_ROOT, "database", "migrations", "005_verificacion_indices_activos.sql"),
   path.join(REPO_ROOT, "database", "migrations", "006_peliculas_traducciones.sql"),
+  path.join(REPO_ROOT, "database", "migrations", "007_pelicula_creditos.sql"),
 ];
 
 function getConfig(database) {
@@ -80,6 +81,16 @@ function importSnapshotIfPresent() {
     console.log("ℹ No hay snapshot versionado todavía. Se creó únicamente el esquema.");
     console.log("  En la PC principal ejecuta: npm run catalog:export");
     return;
+  }
+
+  const validator = path.join(__dirname, "validateCatalog.js");
+  const validationResult = spawnSync(process.execPath, [validator], {
+    cwd: path.resolve(__dirname, ".."),
+    stdio: "inherit",
+    env: process.env,
+  });
+  if (validationResult.status !== 0) {
+    throw new Error("El snapshot existe, pero falló la validación de integridad. No se importó ningún dato.");
   }
 
   const script = path.join(__dirname, "importCatalog.js");
