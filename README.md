@@ -104,7 +104,7 @@ Se traducen los elementos de interfaz, etiquetas, navegación, estados y textos 
 
 ### 📦 Catálogo portable para desarrollo
 
-CineRD puede versionar un snapshot reproducible del catálogo de desarrollo para que películas, talentos, repartos, traducciones y multimedia local puedan restaurarse al clonar el proyecto en otra computadora.
+CineRD puede versionar un snapshot reproducible del catálogo de desarrollo para que películas, talentos, repartos y traducciones puedan restaurarse al clonar el proyecto en otra computadora. Las fotografías, pósteres y backdrops continúan viviendo en `backend/uploads` y se sincronizan mediante Git.
 
 Por seguridad, este snapshot **no incluye usuarios, contraseñas, tokens, verificaciones ni auditoría**.
 
@@ -117,7 +117,7 @@ npm run catalog:import:replace
 npm run setup:local
 ```
 
-`catalog:export` genera `database/seeds/catalog.snapshot.json` y copia la multimedia referenciada a `database/seeds/media/`. `setup:local` crea/prepara la base, aplica todas las migraciones y restaura automáticamente el snapshot cuando está versionado en el repositorio.
+`catalog:export` genera `database/seeds/catalog.snapshot.json` y valida que la multimedia referenciada exista en `backend/uploads`. `setup:local` crea/prepara la base, aplica todas las migraciones y restaura automáticamente el snapshot cuando está versionado en el repositorio.
 
 ---
 
@@ -258,7 +258,7 @@ Este comando:
 1. crea `CRUDPeliculas` si no existe;
 2. aplica `CRUD-Peliculas.sql`;
 3. aplica las migraciones `002` a `006` en orden;
-4. restaura el snapshot del catálogo y su multimedia si están versionados.
+4. restaura el snapshot del catálogo si está versionado; las imágenes ya viajan mediante `backend/uploads`.
 
 También puedes ejecutar manualmente:
 
@@ -305,7 +305,15 @@ cd backend
 npm run catalog:export
 ```
 
-Después agrega a Git los archivos generados en `database/seeds/`, haz commit y push. En cualquier otra PC bastará con clonar/actualizar el repositorio y ejecutar:
+Después versiona el snapshot y cualquier imagen nueva:
+
+```bash
+git add database/seeds/catalog.snapshot.json backend/uploads
+git commit -m "data: update CineRD development catalog"
+git push
+```
+
+En cualquier otra PC bastará con clonar/actualizar el repositorio y ejecutar:
 
 ```bash
 cd backend
