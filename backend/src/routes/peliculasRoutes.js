@@ -7,6 +7,10 @@ const { autenticar, autorizar } = require("../middlewares/auth");
 const {
   obtenerPerfilPelicula,
 } = require("../controllers/peliculasPerfilController");
+const {
+  obtenerTraduccionesPelicula,
+  guardarTraduccionPelicula,
+} = require("../controllers/peliculasTraduccionesController");
 
 const {
   obtenerPeliculas,
@@ -20,6 +24,7 @@ const {
 router.get("/", obtenerPeliculas);
 router.get("/director/:nombre", obtenerPeliculasDirigidasPorActor);
 router.get("/:id/perfil", obtenerPerfilPelicula);
+router.get("/:id/traducciones", obtenerTraduccionesPelicula);
 router.get("/:id", obtenerPeliculaPorId);
 
 router.post(
@@ -38,6 +43,13 @@ router.put(
   upload.single("Foto"),
   procesarImagenPelicula,
   actualizarPelicula,
+);
+
+router.put(
+  "/:id/traducciones/:idioma",
+  autenticar,
+  autorizar("ADMINISTRADOR"),
+  guardarTraduccionPelicula,
 );
 
 router.delete("/:id", autenticar, autorizar("ADMINISTRADOR"), eliminarPelicula);
