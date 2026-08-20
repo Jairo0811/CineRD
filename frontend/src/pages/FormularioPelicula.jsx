@@ -1,6 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import api from "../services/api";
+import PeliculaTraduccionesPanel from "../components/peliculas/PeliculaTraduccionesPanel";
 
 const generos = [
   "Acción", "Animación", "Aventura", "Biográfica", "Ciencia ficción",
@@ -269,7 +270,9 @@ function FormularioPelicula() {
 
         {vistaPrevia&&<div className="mb-3 text-center"><p className="text-muted mb-2">Vista previa</p><img src={vistaPrevia} alt="Vista previa de la película" className="img-thumbnail" style={{width:"180px",height:"260px",objectFit:"cover"}}/></div>}
 
-        <div className="d-flex gap-2 flex-wrap"><button type="submit" className="btn btn-primary">Guardar</button><Link to="/peliculas" className="btn btn-secondary">Cancelar</Link></div>
+        {esEdicion ? <PeliculaTraduccionesPanel peliculaId={Number(id)} idiomaOriginal={formulario.IdiomaOriginal || "es"} /> : <div className="alert alert-light border mt-4 mb-0"><strong>🌐 Traducciones:</strong> guarda primero la película y luego podrás registrar su título, sinopsis y eslogan localizados desde la pantalla de edición.</div>}
+
+        <div className="d-flex gap-2 flex-wrap mt-4"><button type="submit" className="btn btn-primary">Guardar</button><Link to="/peliculas" className="btn btn-secondary">Cancelar</Link></div>
       </div>
     </form>
   </div>;
