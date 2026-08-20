@@ -6,7 +6,6 @@ require("dotenv").config();
 const REPO_ROOT = path.resolve(__dirname, "../..");
 const SNAPSHOT_DIR = path.join(REPO_ROOT, "database", "seeds");
 const SNAPSHOT_FILE = path.join(SNAPSHOT_DIR, "catalog.snapshot.json");
-const MEDIA_DIR = path.join(SNAPSHOT_DIR, "media");
 const BACKEND_ROOT = path.resolve(__dirname, "..");
 
 const TABLES = [
@@ -54,23 +53,7 @@ function normalizeUploadPath(value) {
   return clean;
 }
 
-function copyMediaFile(relativeUploadPath) {
-  const source = path.join(BACKEND_ROOT, ...relativeUploadPath.split("/"));
-  if (!fs.existsSync(source)) {
-    console.warn(`⚠ Multimedia no encontrada: ${relativeUploadPath}`);
-    return false;
-  }
-
-  const destination = path.join(MEDIA_DIR, ...relativeUploadPath.split("/"));
-  fs.mkdirSync(path.dirname(destination), { recursive: true });
-  fs.copyFileSync(source, destination);
-  return true;
-}
-
-function exportReferencedMedia(tables) {
-  fs.rmSync(MEDIA_DIR, { recursive: true, force: true });
-  fs.mkdirSync(MEDIA_DIR, { recursive: true });
-
+function auditReferencedMedia(tables) {
   const paths = new Set();
 
   for (const actor of tables.Actores || []) {
@@ -85,12 +68,17 @@ function exportReferencedMedia(tables) {
     }
   }
 
-  let copied = 0;
+  const missing = [];
   for (const mediaPath of paths) {
-    if (copyMediaFile(mediaPath)) copied += 1;
+    const source = path.join(BACKEND_ROOT, ...mediaPath.split("/"));
+    if (!fs.existsSync(source)) missing.push(mediaPath);
   }
 
-  return { referenced: paths.size, copied };
+  return {
+    referenced: paths.size,
+    availableLocally: paths.size - missing.length,
+    missing,
+  };
 }
 
 async function main() {
@@ -108,7 +96,7 @@ async function main() {
       console.log(`✓ ${table}: ${tables[table].length} registro(s)`);
     }
 
-    const media = exportReferencedMedia(tables);
+    const media = auditReferencedMedia(tables);
     const snapshot = {
       format: "CineRD.CatalogSnapshot",
       version: 1,
@@ -121,8 +109,17 @@ async function main() {
     fs.writeFileSync(SNAPSHOT_FILE, `${JSON.stringify(snapshot, null, 2)}\n`, "utf8");
 
     console.log(`\n✓ Snapshot generado: ${path.relative(REPO_ROOT, SNAPSHOT_FILE)}`);
-    console.log(`✓ Multimedia copiada: ${media.copied}/${media.referenced}`);
-    console.log("\nAhora revisa los cambios y súbelos a Git para que el catálogo viaje con el repositorio.");
+    console.log(`✓ Multimedia local disponible: ${media.availableLocally}/${media.referenced}`);
+
+    if (media.missing.length) {
+      console.warn("\n⚠ Hay archivos multimedia referenciados que no existen localmente:");
+      media.missing.forEach((item) => console.warn(`  - backend/${item}`));
+    }
+
+    console.log("\nSiguiente paso:");
+    console.log("  git add database/seeds/catalog.snapshot.json backend/uploads");
+    console.log("  git commit -m \"data: update CineRD development catalog\"");
+    console.log("  git push");
   } finally {
     await pool.close();
   }
