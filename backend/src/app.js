@@ -11,6 +11,15 @@ const verificacionRoutes = require("./routes/verificacionRoutes");
 const busquedaRoutes = require("./routes/busquedaRoutes");
 
 const app = express();
+app.disable("x-powered-by");
+
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  next();
+});
 
 app.use(cors({
   origin: process.env.FRONTEND_URL || "http://localhost:5173",
@@ -19,7 +28,7 @@ app.use(cors({
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static("uploads", { dotfiles: "deny", fallthrough: false }));
 
 app.get("/", (req, res) => {
   res.json({ mensaje: "API de CineRD funcionando correctamente" });
