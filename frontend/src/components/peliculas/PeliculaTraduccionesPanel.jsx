@@ -1,0 +1,129 @@
+import { useEffect, useMemo, useState } from "react";
+import api from "../../services/api";
+
+const PLANTILLA = {
+  Titulo: "",
+  Sinopsis: "",
+  Eslogan: "",
+  TipoFuente: "EDITORIAL",
+  FuenteReferencia: "",
+};
+
+function PeliculaTraduccionesPanel({ peliculaId, idiomaOriginal = "es" }) {
+  const [traduccion, setTraduccion] = useState(PLANTILLA);
+  const [cargando, setCargando] = useState(true);
+  const [guardando, setGuardando] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+  const idiomaDestino = useMemo(() => (idiomaOriginal?.toLowerCase() === "en" ? "es" : "en"), [idiomaOriginal]);
+  const nombreIdioma = idiomaDestino === "en" ? "Inglés" : "Español";
+
+  useEffect(() => {
+    let activo = true;
+    const cargar = async () => {
+      try {
+        setCargando(true);
+        setMensaje("");
+        const { data } = await api.get(`/peliculas/${peliculaId}/traducciones`);
+        const existente = (data || []).find((item) => item.Idioma === idiomaDestino);
+        if (activo) setTraduccion(existente ? {
+          Titulo: existente.Titulo || "",
+          Sinopsis: existente.Sinopsis || "",
+          Eslogan: existente.Eslogan || "",
+          TipoFuente: existente.TipoFuente || "EDITORIAL",
+          FuenteReferencia: existente.FuenteReferencia || "",
+        } : PLANTILLA);
+      } catch (error) {
+        console.error("Error al cargar traducciones:", error);
+        if (activo) setMensaje(error.response?.data?.mensaje || "No fue posible cargar la traducción.");
+      } finally {
+        if (activo) setCargando(false);
+      }
+    };
+    cargar();
+    return () => { activo = false; };
+  }, [peliculaId, idiomaDestino]);
+
+  const cambiar = (e) => {
+    const { name, value } = e.target;
+    setTraduccion((actual) => ({ ...actual, [name]: value }));
+  };
+
+  const guardar = async () => {
+    if (!traduccion.Titulo.trim() && !traduccion.Sinopsis.trim() && !traduccion.Eslogan.trim()) {
+      setMensaje("Registra al menos el título, la sinopsis o el eslogan traducido.");
+      return;
+    }
+
+    try {
+      setGuardando(true);
+      setMensaje("");
+      await api.put(`/peliculas/${peliculaId}/traducciones/${idiomaDestino}`, {
+        Titulo: traduccion.Titulo.trim() || null,
+        Sinopsis: traduccion.Sinopsis.trim() || null,
+        Eslogan: traduccion.Eslogan.trim() || null,
+        TipoFuente: traduccion.TipoFuente,
+        FuenteReferencia: traduccion.FuenteReferencia.trim() || null,
+      });
+      setMensaje(`Traducción en ${nombreIdioma} guardada correctamente.`);
+    } catch (error) {
+      console.error("Error al guardar traducción:", error);
+      setMensaje(error.response?.data?.mensaje || "No fue posible guardar la traducción.");
+    } finally {
+      setGuardando(false);
+    }
+  };
+
+  return <section className="movie-translation-panel mt-4">
+    <div className="movie-translation-header">
+      <div>
+        <span>🌐 Internacionalización editorial</span>
+        <h3>Versión en {nombreIdioma}</h3>
+        <p>Solo registra títulos oficiales, de distribución o traducciones editoriales revisadas. El contenido original siempre se conserva.</p>
+      </div>
+      <span className="movie-translation-language">{idiomaDestino.toUpperCase()}</span>
+    </div>
+
+    {cargando ? <div className="py-4 text-center text-muted">Cargando traducción...</div> : <div className="movie-translation-body">
+      <div className="mb-3">
+        <label className="form-label">Título localizado</label>
+        <input className="form-control" name="Titulo" value={traduccion.Titulo} onChange={cambiar} placeholder={`Título público en ${nombreIdioma}`} />
+        <div className="form-text">Si no existe un título oficial o revisado, déjalo vacío y CineRD mostrará el título original.</div>
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label">Sinopsis localizada</label>
+        <textarea className="form-control" rows="6" name="Sinopsis" value={traduccion.Sinopsis} onChange={cambiar} maxLength="5000" placeholder={`Sinopsis en ${nombreIdioma}`} />
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label">Eslogan localizado</label>
+        <input className="form-control" name="Eslogan" value={traduccion.Eslogan} onChange={cambiar} maxLength="300" placeholder="Eslogan o tagline" />
+      </div>
+
+      <div className="row g-3">
+        <div className="col-12 col-md-5">
+          <label className="form-label">Procedencia</label>
+          <select className="form-select" name="TipoFuente" value={traduccion.TipoFuente} onChange={cambiar}>
+            <option value="OFICIAL">Oficial</option>
+            <option value="DISTRIBUCION">Distribución</option>
+            <option value="EDITORIAL">Editorial CineRD</option>
+          </select>
+        </div>
+        <div className="col-12 col-md-7">
+          <label className="form-label">Fuente / referencia</label>
+          <input className="form-control" name="FuenteReferencia" value={traduccion.FuenteReferencia} onChange={cambiar} maxLength="500" placeholder="Sitio oficial, distribuidor o referencia editorial" />
+        </div>
+      </div>
+
+      {mensaje && <div className={`alert mt-3 mb-0 ${mensaje.includes("correctamente") ? "alert-success" : "alert-info"}`}>{mensaje}</div>}
+
+      <div className="mt-3 d-flex justify-content-end">
+        <button type="button" className="btn btn-outline-primary" onClick={guardar} disabled={guardando}>
+          {guardando ? "Guardando..." : `Guardar traducción ${idiomaDestino.toUpperCase()}`}
+        </button>
+      </div>
+    </div>}
+  </section>;
+}
+
+export default PeliculaTraduccionesPanel;
