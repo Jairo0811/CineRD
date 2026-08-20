@@ -9,6 +9,7 @@ import HomePublica from "./pages/HomePublica";
 import Dashboard from "./pages/Dashboard";
 import Actores from "./pages/Actores";
 import Peliculas from "./pages/Peliculas";
+import Busqueda from "./pages/Busqueda";
 import FormularioActor from "./pages/FormularioActor";
 import FormularioPelicula from "./pages/FormularioPelicula";
 import RepartoPelicula from "./pages/RepartoPelicula";
@@ -28,6 +29,7 @@ function App() {
         <main className="container py-4 app-main">
           <Routes>
             <Route path="/" element={<HomePublica />} />
+            <Route path="/buscar" element={<Busqueda />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Registro />} />
