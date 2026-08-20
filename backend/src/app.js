@@ -8,6 +8,7 @@ const actoresPeliculasRoutes = require("./routes/actoresPeliculasRoutes");
 const tmdbRoutes = require("./routes/tmdbRoutes");
 const authRoutes = require("./routes/authRoutes");
 const verificacionRoutes = require("./routes/verificacionRoutes");
+const busquedaRoutes = require("./routes/busquedaRoutes");
 
 const app = express();
 
@@ -21,9 +22,7 @@ app.use(cookieParser());
 app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
-  res.json({
-    mensaje: "API de CineRD funcionando correctamente",
-  });
+  res.json({ mensaje: "API de CineRD funcionando correctamente" });
 });
 
 app.use("/api/auth", authRoutes);
@@ -32,5 +31,6 @@ app.use("/api/actores", actoresRoutes);
 app.use("/api/peliculas", peliculasRoutes);
 app.use("/api/actores-peliculas", actoresPeliculasRoutes);
 app.use("/api/tmdb", tmdbRoutes);
+app.use("/api/busqueda", busquedaRoutes);
 
 module.exports = app;
