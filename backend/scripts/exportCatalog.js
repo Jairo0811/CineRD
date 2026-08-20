@@ -12,6 +12,7 @@ const TABLES = [
   "Actores",
   "Peliculas",
   "ActoresPeliculas",
+  "PeliculaCreditos",
   "PeliculaTraducciones",
 ];
 
@@ -36,10 +37,7 @@ async function tableExists(pool, table) {
 }
 
 async function exportTable(pool, table) {
-  if (!(await tableExists(pool, table))) {
-    return [];
-  }
-
+  if (!(await tableExists(pool, table))) return [];
   const result = await pool.request().query(`SELECT * FROM dbo.[${table}]`);
   return result.recordset;
 }
@@ -47,7 +45,6 @@ async function exportTable(pool, table) {
 function normalizeUploadPath(value) {
   if (!value || typeof value !== "string") return null;
   if (value.startsWith("http://") || value.startsWith("https://")) return null;
-
   const clean = value.replace(/\\/g, "/").replace(/^\/+/, "");
   if (!clean.startsWith("uploads/")) return null;
   return clean;
@@ -55,12 +52,10 @@ function normalizeUploadPath(value) {
 
 function auditReferencedMedia(tables) {
   const paths = new Set();
-
   for (const actor of tables.Actores || []) {
     const foto = normalizeUploadPath(actor.Foto);
     if (foto) paths.add(foto);
   }
-
   for (const movie of tables.Peliculas || []) {
     for (const candidate of [movie.Foto, movie.Backdrop]) {
       const mediaPath = normalizeUploadPath(candidate);
@@ -87,8 +82,8 @@ async function main() {
   }
 
   fs.mkdirSync(SNAPSHOT_DIR, { recursive: true });
-
   const pool = await new sql.ConnectionPool(getConfig()).connect();
+
   try {
     const tables = {};
     for (const table of TABLES) {
@@ -99,7 +94,7 @@ async function main() {
     const media = auditReferencedMedia(tables);
     const snapshot = {
       format: "CineRD.CatalogSnapshot",
-      version: 1,
+      version: 2,
       generatedAtUtc: new Date().toISOString(),
       sourceDatabase: process.env.DB_DATABASE,
       tables,
@@ -117,6 +112,7 @@ async function main() {
     }
 
     console.log("\nSiguiente paso:");
+    console.log("  npm run catalog:validate");
     console.log("  git add database/seeds/catalog.snapshot.json backend/uploads");
     console.log("  git commit -m \"data: update CineRD development catalog\"");
     console.log("  git push");
