@@ -258,6 +258,52 @@ html[data-theme="dark"] .workspace-panel {
   color: var(--cine-text-1);
 }
 
+/*
+   Actor profile keeps its information cards intentionally light in both themes.
+   Therefore their typography must remain dark for readable contrast.
+*/
+html[data-theme="dark"] .actor-profile-kpi,
+html[data-theme="dark"] .actor-filmography-panel,
+html[data-theme="dark"] .actor-social-panel,
+html[data-theme="dark"] .actor-social-link {
+  background: #ffffff !important;
+  border-color: #e0e7ef !important;
+  color: #101828 !important;
+}
+
+html[data-theme="dark"] .actor-profile-kpi strong,
+html[data-theme="dark"] .actor-filmography-panel h2,
+html[data-theme="dark"] .actor-credit,
+html[data-theme="dark"] .actor-credit strong,
+html[data-theme="dark"] .actor-social-copy h2,
+html[data-theme="dark"] .actor-social-link strong {
+  color: #101828 !important;
+}
+
+html[data-theme="dark"] .actor-profile-kpi span,
+html[data-theme="dark"] .actor-credit small,
+html[data-theme="dark"] .actor-credit-date,
+html[data-theme="dark"] .actor-empty,
+html[data-theme="dark"] .actor-social-copy p,
+html[data-theme="dark"] .actor-social-link small {
+  color: #667085 !important;
+}
+
+html[data-theme="dark"] .actor-filmography-header,
+html[data-theme="dark"] .actor-credit {
+  border-color: #edf1f5 !important;
+}
+
+html[data-theme="dark"] .actor-filmography-header > span,
+html[data-theme="dark"] .actor-social-panel .eyebrow,
+html[data-theme="dark"] .actor-social-official {
+  color: #0057b8 !important;
+}
+
+html[data-theme="dark"] .actor-credit:hover {
+  color: #0057b8 !important;
+}
+
 /* Footer */
 html[data-theme="dark"] footer,
 html[data-theme="dark"] .cine-footer {
