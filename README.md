@@ -6,7 +6,7 @@
 
 Plataforma Full Stack inspirada en IMDb para preservar, organizar y consultar información sobre películas, talentos y producciones cinematográficas de la República Dominicana.
 
-[![Version](https://img.shields.io/badge/version-2.3.0-success)](https://github.com/Jairo0811/CineRD)
+[![Version](https://img.shields.io/badge/version-2.4.0-success)](https://github.com/Jairo0811/CineRD)
 [![Status](https://img.shields.io/badge/status-en%20desarrollo-2563eb)](https://github.com/Jairo0811/CineRD)
 [![License](https://img.shields.io/badge/license-portafolio-f59e0b)](#-licencia)
 [![Last Commit](https://img.shields.io/github/last-commit/Jairo0811/CineRD)](https://github.com/Jairo0811/CineRD/commits/main)
@@ -19,7 +19,7 @@ Plataforma Full Stack inspirada en IMDb para preservar, organizar y consultar in
 
 **CineRD** es un catálogo digital del cine dominicano orientado a preservar, organizar y conectar información sobre películas, talentos, repartos y producción audiovisual de la República Dominicana.
 
-El proyecto evolucionó desde una prueba técnica de React de 2021 hacia una plataforma Full Stack con identidad visual propia, perfiles cinematográficos, autenticación, control de acceso por roles, verificación de talentos, internacionalización e integración con **TMDb**.
+El proyecto evolucionó desde una prueba técnica de React de 2021 hacia una plataforma Full Stack con identidad visual propia, perfiles cinematográficos, autenticación, control de acceso por roles, verificación de talentos, internacionalización, búsqueda global e integración con **TMDb**.
 
 La arquitectura actual mantiene **Node.js + Express** en el backend durante la etapa de catálogo. Una futura migración a **.NET** queda reservada para la evolución de CineRD hacia una plataforma de streaming.
 
@@ -38,6 +38,10 @@ La arquitectura actual mantiene **Node.js + Express** en el backend durante la e
 - Ranking de producciones con mayor reparto.
 - Efemérides con todas las películas del catálogo estrenadas durante el mes actual.
 - Integración con TMDb para acelerar el registro y enriquecer metadatos.
+- Traducciones editoriales por película para título, sinopsis y eslogan.
+- Fuente de traducción diferenciada entre `OFICIAL`, `DISTRIBUCION` y `EDITORIAL`.
+- Fallback al título y contenido original cuando no existe una traducción aprobada.
+- Créditos profesionales estructurados para dirección, producción, guion, interpretación, música, fotografía y edición.
 
 ### 🎭 Talentos
 
@@ -60,13 +64,20 @@ La arquitectura actual mantiene **Node.js + Express** en el backend durante la e
   - TikTok
   - Sitio web oficial
 
+### 🔎 Búsqueda y descubrimiento
+
+- Buscador global desde el navbar.
+- Resultados combinados de películas y talentos.
+- Coincidencias por título, director, productora, género, nombre real, nombre artístico o profesión.
+- Navegación directa desde los resultados hacia la ficha correspondiente.
+
 ### 👥 Roles y autenticación
 
 CineRD utiliza tres experiencias privadas diferenciadas:
 
 - **USUARIO:** explora el catálogo y puede solicitar la verificación de un perfil.
 - **TALENTO_VERIFICADO:** accede a su espacio profesional y puede gestionar únicamente su propio perfil según las reglas de autorización.
-- **ADMINISTRADOR:** administra películas, talentos, repartos, verificaciones y métricas globales.
+- **ADMINISTRADOR:** administra películas, talentos, repartos, verificaciones, traducciones, créditos profesionales y métricas globales.
 
 Incluye registro de usuarios, login con contraseña hasheada, JWT Access Token, middleware de autenticación/autorización y protección de rutas en backend y frontend.
 
@@ -92,7 +103,7 @@ Incluye registro de usuarios, login con contraseña hasheada, JWT Access Token, 
 
 CineRD incorpora interfaz bilingüe **Español / Inglés** mediante i18n.
 
-Se traducen los elementos de interfaz, etiquetas, navegación, estados y textos editoriales. Se preservan sin traducción automática los **nombres reales**, **nombres artísticos** y **títulos oficiales de las películas**, respetando la identidad de personas y obras.
+La interfaz, navegación, etiquetas y estados se traducen automáticamente. El contenido cinematográfico utiliza un modelo editorial: los **nombres reales y artísticos nunca se traducen**, mientras que los títulos, sinopsis y eslóganes de películas solo se localizan cuando existe una versión oficial, de distribución o editorial registrada. El contenido original siempre permanece como fuente canónica.
 
 ### 🌐 Integración con TMDb
 
@@ -115,6 +126,7 @@ El snapshot portable incluye:
 - `Actores`
 - `Peliculas`
 - `ActoresPeliculas`
+- `PeliculaCreditos`
 - `PeliculaTraducciones`
 
 La multimedia continúa almacenándose en:
@@ -145,6 +157,7 @@ Desde `backend/`:
 
 ```bash
 npm run catalog:export
+npm run catalog:validate
 npm run catalog:import
 npm run catalog:import:replace
 npm run setup:local
@@ -152,13 +165,11 @@ npm run setup:local
 
 #### `npm run catalog:export`
 
-Genera o actualiza:
+Genera o actualiza `database/seeds/catalog.snapshot.json` con el catálogo actual.
 
-```text
-database/seeds/catalog.snapshot.json
-```
+#### `npm run catalog:validate`
 
-Debe ejecutarse en la computadora que contiene el catálogo completo y actualizado.
+Comprueba formato, versión, IDs duplicados, referencias huérfanas y archivos multimedia faltantes antes de importar o versionar un snapshot.
 
 #### `npm run catalog:import`
 
@@ -166,7 +177,13 @@ Restaura el snapshot en una base vacía. Si detecta películas o talentos existe
 
 #### `npm run catalog:import:replace`
 
-Reemplaza intencionalmente el catálogo local existente por el snapshot versionado. Debe utilizarse únicamente cuando se desea descartar el catálogo local actual.
+Reemplaza intencionalmente el catálogo local existente por el snapshot versionado. Antes de eliminar los datos actuales crea automáticamente un backup local en:
+
+```text
+database/seeds/backups/
+```
+
+Ese directorio está excluido de Git.
 
 #### `npm run setup:local`
 
@@ -174,9 +191,10 @@ Automatiza una instalación nueva:
 
 1. crea `CRUDPeliculas` si no existe;
 2. ejecuta `CRUD-Peliculas.sql`;
-3. aplica las migraciones `002` a `006`;
-4. importa `database/seeds/catalog.snapshot.json` si existe;
-5. deja la base preparada para iniciar el backend.
+3. aplica las migraciones `002` a `007`;
+4. valida el snapshot si existe;
+5. importa `database/seeds/catalog.snapshot.json`;
+6. deja la base preparada para iniciar el backend.
 
 ---
 
@@ -194,7 +212,26 @@ La interfaz incluye:
 - Centro de Control administrativo.
 - **Light mode y Dark mode** con sistema de tema persistente.
 - Contraste específico para componentes claros dentro del modo oscuro.
+- Overrides globales para tablas, formularios, modales, verificaciones y utilidades Bootstrap.
 - Diseño responsive para escritorio, tablet y móvil.
+
+---
+
+## 🛡️ Seguridad
+
+La etapa de catálogo incorpora:
+
+- contraseñas hasheadas;
+- autenticación JWT;
+- autorización RBAC;
+- rate limiting para login y registro;
+- eliminación de `X-Powered-By`;
+- cabeceras defensivas `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` y `Permissions-Policy`;
+- CORS configurado por `FRONTEND_URL`;
+- límite JSON de 1 MB;
+- uploads restringidos a JPG, PNG y WEBP;
+- tamaño máximo de imagen de 8 MB;
+- exclusión de secretos y backups locales del repositorio.
 
 ---
 
@@ -242,6 +279,7 @@ La interfaz incluye:
 - Microsoft SQL Server
 - Migraciones SQL idempotentes
 - Snapshot portable del catálogo de desarrollo
+- Relaciones estructuradas de créditos profesionales
 
 ### Integraciones
 
@@ -255,12 +293,17 @@ La interfaz incluye:
 
 ```text
 CineRD/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── backend/
 │   ├── scripts/
 │   │   ├── exportCatalog.js
 │   │   ├── importCatalog.js
+│   │   ├── validateCatalog.js
 │   │   ├── setupLocal.js
 │   │   └── seedAdmin.js
+│   ├── tests/
 │   ├── uploads/
 │   │   ├── actores/
 │   │   └── peliculas/
@@ -302,19 +345,7 @@ cd CineRD
 
 ### 2. Configurar variables de entorno
 
-Crea:
-
-```text
-backend/.env
-```
-
-usando como referencia:
-
-```text
-backend/.env.example
-```
-
-Ejemplo:
+Crea `backend/.env` usando como referencia `backend/.env.example`.
 
 ```env
 PORT=3000
@@ -350,13 +381,9 @@ npm install
 
 ### 4. Preparar SQL Server y restaurar catálogo
 
-Con SQL Server disponible y `.env` correctamente configurado:
-
 ```bash
 npm run setup:local
 ```
-
-Este es el comando recomendado para una computadora nueva.
 
 Internamente ejecuta:
 
@@ -367,9 +394,8 @@ database/migrations/003_usuarios_roles_verificacion.sql
 database/migrations/004_actores_redes_sociales.sql
 database/migrations/005_verificacion_indices_activos.sql
 database/migrations/006_peliculas_traducciones.sql
+database/migrations/007_pelicula_creditos.sql
 ```
-
-y posteriormente restaura el snapshot del catálogo si está disponible.
 
 ### 5. Crear administrador inicial
 
@@ -383,11 +409,7 @@ npm run seed:admin
 npm run dev
 ```
 
-Backend:
-
-```text
-http://localhost:3000
-```
+Backend: `http://localhost:3000`
 
 ### 7. Instalar y ejecutar frontend
 
@@ -399,96 +421,43 @@ npm install
 npm run dev
 ```
 
-Frontend:
-
-```text
-http://localhost:5173
-```
+Frontend: `http://localhost:5173`
 
 ---
 
 ## 🔄 Sincronizar el catálogo entre PCs
 
-### PC principal: exportar el catálogo actual
-
-Cuando agregues o modifiques películas, talentos, repartos o traducciones y quieras llevar esos datos a otra computadora:
+### PC principal
 
 ```powershell
 cd backend
 npm run catalog:export
-```
-
-El comando genera o actualiza:
-
-```text
-database/seeds/catalog.snapshot.json
-```
-
-Después vuelve a la raíz del repositorio:
-
-```powershell
+npm run catalog:validate
 cd ..
-git status
-```
-
-Versiona el snapshot y cualquier multimedia nueva:
-
-```powershell
 git add database/seeds/catalog.snapshot.json backend/uploads
 git commit -m "data: update CineRD development catalog"
 git push origin main
 ```
 
-### Segunda PC: recibir el catálogo
-
-Actualiza el proyecto:
+### Segunda PC
 
 ```powershell
 git switch main
 git pull origin main
-```
-
-Luego:
-
-```powershell
 cd backend
 npm install
 npm run setup:local
 ```
 
-Con esto la segunda computadora obtiene:
+Con esto la segunda computadora obtiene estructura actualizada de SQL Server, talentos, películas, repartos, créditos profesionales, traducciones cinematográficas y multimedia versionada.
 
-- estructura actualizada de SQL Server;
-- talentos;
-- películas;
-- repartos;
-- traducciones cinematográficas;
-- fotografías y pósteres versionados en `backend/uploads`.
-
-### Si la segunda PC ya tiene datos
-
-`catalog:import` no sobrescribe una base que ya contenga películas o talentos.
-
-Si deseas reemplazar expresamente el catálogo local:
+Si la segunda PC ya contiene datos y deseas reemplazarlos expresamente:
 
 ```powershell
 npm run catalog:import:replace
 ```
 
-Este comando elimina el catálogo local de desarrollo y restaura el snapshot versionado, por lo que debe utilizarse con cuidado.
-
-### Mantener actualizado el snapshot
-
-Cada vez que el catálogo principal cambie significativamente:
-
-```powershell
-cd backend
-npm run catalog:export
-cd ..
-git add database/seeds/catalog.snapshot.json backend/uploads
-git commit -m "data: refresh CineRD catalog snapshot"
-git push origin main
-```
+Antes del reemplazo se genera un backup local automático.
 
 ---
 
@@ -511,9 +480,32 @@ backend/.env
 backend/node_modules/
 frontend/node_modules/
 frontend/dist/
+database/seeds/backups/
 ```
 
 Tampoco se incluyen en el snapshot cuentas de usuario, contraseñas, tokens, solicitudes de verificación ni registros de auditoría.
+
+---
+
+## 🧪 Calidad y CI
+
+Desde `backend/`:
+
+```bash
+npm test
+npm run catalog:validate
+```
+
+Desde `frontend/`:
+
+```bash
+npm run build
+```
+
+GitHub Actions ejecuta automáticamente:
+
+- `npm ci` + `npm test` para backend;
+- `npm ci` + `npm run build` para frontend.
 
 ---
 
@@ -523,8 +515,10 @@ Desde `backend/`:
 
 ```bash
 npm run dev
+npm test
 npm run seed:admin
 npm run catalog:export
+npm run catalog:validate
 npm run catalog:import
 npm run catalog:import:replace
 npm run setup:local
@@ -542,8 +536,14 @@ npm run build
 ## 🔌 Endpoints destacados
 
 ```http
+GET    /api/busqueda?q=termino
 GET    /api/peliculas
-GET    /api/peliculas/:id/perfil
+GET    /api/peliculas/:id/perfil?lang=en
+GET    /api/peliculas/:id/traducciones
+PUT    /api/peliculas/:id/traducciones/:idioma
+GET    /api/peliculas/:id/creditos
+POST   /api/peliculas/:id/creditos
+DELETE /api/peliculas/:id/creditos/:creditoId
 GET    /api/actores
 GET    /api/actores/:id
 POST   /api/auth/registro
@@ -573,12 +573,15 @@ PATCH  /api/verificaciones/admin/vinculaciones/:id/revocar
 | ✅ | Efemérides de cumpleaños y estrenos |
 | ✅ | Top 10 de talentos |
 | ✅ | Internacionalización Español / Inglés |
+| ✅ | Traducciones editoriales de películas |
 | ✅ | Light mode / Dark mode |
-| ✅ | Catálogo portable para desarrollo y demos |
+| ✅ | Buscador global |
+| ✅ | Créditos profesionales estructurados |
+| ✅ | Catálogo portable validado y con backup previo |
+| ✅ | CI básico y pruebas backend |
 | 🟡 | Galerías multimedia |
 | 🟡 | Premios y nominaciones |
 | 🟡 | Series dominicanas |
-| 🟡 | Buscador global |
 | 🟡 | Estadísticas avanzadas |
 | 🟡 | Mapa del cine dominicano |
 | 🟡 | Despliegue en la nube |
@@ -589,11 +592,11 @@ PATCH  /api/verificaciones/admin/vinculaciones/:id/revocar
 
 ## 📌 Estado del proyecto
 
-🟢 **Versión 2.3.0 — En desarrollo activo**
+🟢 **Versión 2.4.0 — Catálogo profesional en consolidación**
 
-CineRD funciona actualmente como un portal cinematográfico dominicano con catálogo público, perfiles profesionales, autenticación, RBAC, verificación de talentos, Centro de Control, efemérides, internacionalización, soporte Light/Dark y un mecanismo reproducible para transportar el catálogo de desarrollo entre equipos.
+CineRD funciona actualmente como un portal cinematográfico dominicano con catálogo público, perfiles profesionales, autenticación, RBAC, verificación de talentos, Centro de Control, efemérides, internacionalización editorial, búsqueda global, soporte Light/Dark, créditos profesionales estructurados y un mecanismo reproducible para transportar y validar el catálogo entre equipos.
 
-La prioridad actual es consolidar CineRD como **archivo y plataforma de descubrimiento del cine dominicano** antes de abordar una futura etapa de distribución/streaming.
+La prioridad sigue siendo consolidar CineRD como **archivo y plataforma de descubrimiento del cine dominicano** antes de abordar una futura etapa de distribución/streaming.
 
 ---
 
