@@ -17,8 +17,18 @@ import "./styles/user-dashboard.css";
 import "./styles/workspace.css";
 import "./styles/actor-profile.css";
 import "./styles/verification-badges.css";
+import "./styles/theme.css";
 
 import App from "./App.jsx";
+
+const temaGuardado = localStorage.getItem("cineRdTheme");
+const temaInicial = temaGuardado === "dark" || temaGuardado === "light"
+  ? temaGuardado
+  : window.matchMedia?.("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+
+document.documentElement.dataset.theme = temaInicial;
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
