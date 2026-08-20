@@ -1,7 +1,7 @@
 {
   "format": "CineRD.CatalogSnapshot",
-  "version": 1,
-  "generatedAtUtc": "2026-08-20T22:24:45.119Z",
+  "version": 2,
+  "generatedAtUtc": "2026-08-20T23:26:31.571Z",
   "sourceDatabase": "CRUDPeliculas",
   "tables": {
     "Actores": [
@@ -1492,13 +1492,13 @@
         "Nombres": "Avelino Junior",
         "Apellidos": "Figueroa Rodriguez",
         "TMDbId": 5047015,
-        "InstagramUrl": null,
+        "InstagramUrl": "https://www.instagram.com/lapizconciente/",
         "FacebookUrl": null,
         "TikTokUrl": null,
-        "YouTubeUrl": null,
+        "YouTubeUrl": "https://www.youtube.com/channel/UCrAmQDFzUURt2YQ3e1wm9kg",
         "SitioWebUrl": null,
         "XUrl": null,
-        "SpotifyUrl": null
+        "SpotifyUrl": "https://open.spotify.com/intl-es/artist/0UTsdD7VIsEB9i7a6DDx5t?si=PaD2v9yhQUia-LK7r6Xqog"
       },
       {
         "Id": 80,
@@ -1591,6 +1591,29 @@
         "SitioWebUrl": null,
         "XUrl": null,
         "SpotifyUrl": null
+      },
+      {
+        "Id": 84,
+        "NombreCompleto": "Ángel Haché",
+        "FechaNacimiento": "1943-10-02T00:00:00.000Z",
+        "Sexo": "Masculino",
+        "Foto": "/uploads/actores/1787265269542-Foto.jpeg",
+        "NombreArtistico": null,
+        "EstaVivo": false,
+        "FechaFallecimiento": "2016-04-01T00:00:00.000Z",
+        "Profesion": "Actor",
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "Ángel",
+        "Apellidos": "Haché",
+        "TMDbId": null,
+        "InstagramUrl": null,
+        "FacebookUrl": null,
+        "TikTokUrl": null,
+        "YouTubeUrl": null,
+        "SitioWebUrl": null,
+        "XUrl": null,
+        "SpotifyUrl": null
       }
     ],
     "Peliculas": [
@@ -1600,7 +1623,7 @@
         "Genero": "Comedia",
         "FechaEstreno": "2007-02-01T00:00:00.000Z",
         "Foto": "/uploads/peliculas/1783263938713-Foto.jpeg",
-        "Director": "José Enrique Pintor Carretero",
+        "Director": "José Enrique  Pintor Carretero",
         "Productora": "Premium Latin Films",
         "TMDbId": null,
         "Sinopsis": null,
@@ -1611,12 +1634,12 @@
         "Titulo": "Perico Ripiao",
         "Genero": "Comedia",
         "FechaEstreno": "2003-11-27T00:00:00.000Z",
-        "Foto": "/uploads/peliculas/1787183526209-Foto.jpeg",
-        "Director": "Ángel Muñiz",
+        "Foto": "/uploads/peliculas/1787265022657-Foto.jpeg",
+        "Director": "Ángel  Muñíz",
         "Productora": "Cigua Films",
         "TMDbId": 25000,
-        "Sinopsis": null,
-        "IdiomaOriginal": null
+        "Sinopsis": "Tres criminales convictos escapan de prisión con solo un güiro, un tambor y un acordeón. \r\n\r\nDurante su viaje, se encuentran con un grupo de personajes interesantes y se ven obligados a usar sus habilidades musicales para volver a casa.",
+        "IdiomaOriginal": "es"
       },
       {
         "Id": 6,
@@ -1656,11 +1679,11 @@
       },
       {
         "Id": 11,
-        "Titulo": "Santicló: La Vaina de la Navidad ",
+        "Titulo": "Santicló: La Vaina de la Navidad",
         "Genero": "Comedia",
         "FechaEstreno": "2008-11-13T00:00:00.000Z",
         "Foto": "/uploads/peliculas/1783276332078-Foto.jpeg",
-        "Director": "José Enrique Pintor Carretero",
+        "Director": "José Enrique  Pintor Carretero",
         "Productora": "Premium Latin Films",
         "TMDbId": null,
         "Sinopsis": null,
@@ -1792,7 +1815,7 @@
         "Genero": "Comedia",
         "FechaEstreno": "2013-10-31T00:00:00.000Z",
         "Foto": "/uploads/peliculas/1783797810292-Foto.jpeg",
-        "Director": "José Enrique Pintor",
+        "Director": "José Enrique  Pintor Carretero",
         "Productora": "Premium Latin Films",
         "TMDbId": 301625,
         "Sinopsis": null,
@@ -1864,7 +1887,7 @@
         "Genero": "Terror",
         "FechaEstreno": "2025-10-02T00:00:00.000Z",
         "Foto": "/uploads/peliculas/1783383124522-Foto.jpeg",
-        "Director": "Francisco Ernesto  Perozo Balbuena",
+        "Director": "Francisco Ernesto Perozo Balbuena",
         "Productora": "Caribbean Films",
         "TMDbId": null,
         "Sinopsis": null,
@@ -2254,6 +2277,14 @@
       },
       {
         "PeliculaId": 5,
+        "ActorId": 36,
+        "Personaje": "Colmadero",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Cameo",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 5,
         "ActorId": 38,
         "Personaje": "Manuel ",
         "EsPrincipal": true,
@@ -2286,6 +2317,14 @@
       },
       {
         "PeliculaId": 5,
+        "ActorId": 55,
+        "Personaje": "Maipiola del Cabaret",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Especial",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 5,
         "ActorId": 56,
         "Personaje": "Evangelica de la Iglesia ",
         "EsPrincipal": false,
@@ -2296,6 +2335,14 @@
         "PeliculaId": 5,
         "ActorId": 57,
         "Personaje": "General Contreras ",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Secundario",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 5,
+        "ActorId": 84,
+        "Personaje": "Facito Ortíz",
         "EsPrincipal": false,
         "TipoParticipacion": "Secundario",
         "OrdenCreditos": null
@@ -2648,8 +2695,8 @@
         "PeliculaId": 15,
         "ActorId": 18,
         "Personaje": "Ángela",
-        "EsPrincipal": false,
-        "TipoParticipacion": "Secundario",
+        "EsPrincipal": true,
+        "TipoParticipacion": "Principal",
         "OrdenCreditos": null
       },
       {
@@ -3613,11 +3660,12 @@
         "OrdenCreditos": null
       }
     ],
+    "PeliculaCreditos": [],
     "PeliculaTraducciones": []
   },
   "media": {
-    "referenced": 111,
-    "availableLocally": 111,
+    "referenced": 112,
+    "availableLocally": 112,
     "missing": []
   }
 }
