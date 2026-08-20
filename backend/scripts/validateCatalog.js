@@ -5,8 +5,6 @@ const REPO_ROOT = path.resolve(__dirname, "../..");
 const BACKEND_ROOT = path.resolve(__dirname, "..");
 const SNAPSHOT_FILE = path.join(REPO_ROOT, "database", "seeds", "catalog.snapshot.json");
 
-const requiredTables = ["Actores", "Peliculas", "ActoresPeliculas", "PeliculaTraducciones"];
-
 function fail(message) {
   console.error(`✗ ${message}`);
   process.exitCode = 1;
@@ -29,6 +27,8 @@ function main() {
   if (!Number.isInteger(snapshot.version) || snapshot.version < 1) fail("Versión de snapshot inválida.");
   if (!snapshot.tables || typeof snapshot.tables !== "object") fail("El snapshot no contiene tables.");
 
+  const requiredTables = ["Actores", "Peliculas", "ActoresPeliculas", "PeliculaTraducciones"];
+  if (snapshot.version >= 2) requiredTables.push("PeliculaCreditos");
   for (const table of requiredTables) {
     if (!Array.isArray(snapshot.tables?.[table])) fail(`Falta la colección ${table}.`);
   }
@@ -36,6 +36,7 @@ function main() {
   const actores = snapshot.tables?.Actores || [];
   const peliculas = snapshot.tables?.Peliculas || [];
   const relaciones = snapshot.tables?.ActoresPeliculas || [];
+  const creditos = snapshot.tables?.PeliculaCreditos || [];
   const traducciones = snapshot.tables?.PeliculaTraducciones || [];
   const actorIds = new Set(actores.map((x) => Number(x.Id)));
   const peliculaIds = new Set(peliculas.map((x) => Number(x.Id)));
@@ -48,6 +49,9 @@ function main() {
   let referenciasInvalidas = 0;
   for (const relacion of relaciones) {
     if (!actorIds.has(Number(relacion.ActorId)) || !peliculaIds.has(Number(relacion.PeliculaId))) referenciasInvalidas += 1;
+  }
+  for (const credito of creditos) {
+    if (!actorIds.has(Number(credito.ActorId)) || !peliculaIds.has(Number(credito.PeliculaId))) referenciasInvalidas += 1;
   }
   for (const traduccion of traducciones) {
     if (!peliculaIds.has(Number(traduccion.PeliculaId))) referenciasInvalidas += 1;
@@ -70,6 +74,7 @@ function main() {
   console.log(`✓ ${actores.length} talentos`);
   console.log(`✓ ${peliculas.length} películas`);
   console.log(`✓ ${relaciones.length} participaciones`);
+  console.log(`✓ ${creditos.length} créditos profesionales`);
   console.log(`✓ ${traducciones.length} traducciones`);
   console.log(`✓ ${media.size - missing.length}/${media.size} archivos multimedia disponibles`);
 
