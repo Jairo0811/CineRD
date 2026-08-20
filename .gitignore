@@ -6,6 +6,9 @@ backend/.env
 frontend/node_modules/
 frontend/dist/
 
+# Local catalog backups
+database/seeds/backups/
+
 # Logs
 *.log
 
