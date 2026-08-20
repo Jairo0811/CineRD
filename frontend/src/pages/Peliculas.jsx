@@ -1,201 +1,88 @@
 import { useEffect, useState } from "react";
-import api from "../services/api";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import api from "../services/api";
 
 function Peliculas() {
+  const { t, i18n } = useTranslation();
   const [peliculas, setPeliculas] = useState([]);
   const [buscar, setBuscar] = useState("");
   const [orden, setOrden] = useState("estrenoDesc");
   const [genero, setGenero] = useState("");
-
   const API_URL = "http://localhost:3000";
 
-  useEffect(() => {
-    obtenerPeliculas();
-  }, [buscar, orden, genero]);
+  const usuario = (() => { try { return JSON.parse(localStorage.getItem("cineRdUsuario") || "null"); } catch { return null; } })();
+  const esAdmin = usuario?.rol === "ADMINISTRADOR";
+
+  useEffect(() => { obtenerPeliculas(); }, [buscar, orden, genero]);
 
   const obtenerPeliculas = async () => {
     try {
-      const response = await api.get("/peliculas", {
-        params: { buscar, orden, genero },
-      });
-
-      setPeliculas(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+      const response = await api.get("/peliculas", { params: { buscar, orden, genero } });
+      setPeliculas(response.data || []);
+    } catch (error) { console.error(error); }
   };
 
   const eliminarPelicula = async (id) => {
-    const confirmar = window.confirm("¿Desea eliminar esta película?");
-    if (!confirmar) return;
-
-    try {
-      await api.delete(`/peliculas/${id}`);
-      obtenerPeliculas();
-    } catch (error) {
-      console.error(error);
-      alert(
-        error.response?.data?.mensaje ||
-          error.response?.data?.error ||
-          "Error al eliminar la película",
-      );
-    }
+    if (!esAdmin || !window.confirm(t("movies.confirmDelete"))) return;
+    try { await api.delete(`/peliculas/${id}`); await obtenerPeliculas(); }
+    catch (error) { console.error(error); alert(error.response?.data?.mensaje || error.response?.data?.error || t("movies.deleteError")); }
   };
 
   const formatearFecha = (fecha) => {
-    if (!fecha) return "Sin fecha";
-
-    const soloFecha = fecha.substring(0, 10);
-    const [year, month, day] = soloFecha.split("-");
-
-    return `${day}/${month}/${year}`;
+    if (!fecha) return t("movies.noDate");
+    const valor = new Date(`${fecha.substring(0, 10)}T12:00:00`);
+    if (Number.isNaN(valor.getTime())) return t("movies.noDate");
+    return new Intl.DateTimeFormat(i18n.language === "en" ? "en-US" : "es-DO", { day: "2-digit", month: "2-digit", year: "numeric" }).format(valor);
   };
 
+  const generoTraducido = (valor) => valor ? t(`genres.${valor}`, { defaultValue: valor }) : t("movies.dominicanCinema");
+
   return (
-    <div className="table-page-container">
-      <Link to="/" className="btn btn-secondary mb-3">
-        ← Volver al inicio
-      </Link>
-
-      <div className="d-flex justify-content-between align-items-center page-header mb-4">
-        <h2>🎬 Películas</h2>
-
-        <Link to="/peliculas/nueva" className="btn btn-primary">
-          ➕ Nueva Película
-        </Link>
-      </div>
-
-      <div className="filter-panel card shadow-sm mb-4">
-        <div className="card-body">
-          <div className="row g-3">
-            <div className="col-12 col-md-5">
-              <label className="form-label">Buscar película</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Ej: Sanky Panky, Pinky, Caribbean..."
-                value={buscar}
-                onChange={(e) => setBuscar(e.target.value)}
-              />
-            </div>
-
-            <div className="col-12 col-md-4">
-              <label className="form-label">Ordenar por</label>
-              <select
-                className="form-select"
-                value={orden}
-                onChange={(e) => setOrden(e.target.value)}
-              >
-                <option value="estrenoDesc">Estreno más reciente</option>
-                <option value="estrenoAsc">Estreno más antiguo</option>
-                <option value="az">A-Z</option>
-                <option value="za">Z-A</option>
-                <option value="masActores">Mayor reparto</option>
-                <option value="menosActores">Menor reparto</option>
-              </select>
-            </div>
-
-            <div className="col-12 col-md-3">
-              <label className="form-label">Género</label>
-              <select
-                className="form-select"
-                value={genero}
-                onChange={(e) => setGenero(e.target.value)}
-              >
-                <option value="">Todos</option>
-                <option value="Comedia">Comedia</option>
-                <option value="Drama">Drama</option>
-                <option value="Acción">Acción</option>
-                <option value="Terror">Terror</option>
-                <option value="Romance">Romance</option>
-                <option value="Documental">Documental</option>
-              </select>
-            </div>
-          </div>
+    <div className="table-page-container catalog-page">
+      <header className="catalog-hero catalog-hero-movies">
+        <div>
+          <span className="catalog-eyebrow">{t("movies.eyebrow")}</span>
+          <h1>{t("movies.title")}</h1>
+          <p>{t("movies.description")}</p>
         </div>
-      </div>
+        <div className="catalog-hero-meta"><strong>{peliculas.length}</strong><span>{t("movies.found")}</span></div>
+        {esAdmin && <Link to="/peliculas/nueva" className="btn catalog-admin-button">{t("movies.new")}</Link>}
+      </header>
 
-      <div className="row g-4">
+      <section className="catalog-filter-bar">
+        <div className="catalog-search"><span>⌕</span><input type="text" placeholder={t("movies.search")} value={buscar} onChange={(e) => setBuscar(e.target.value)} /></div>
+        <select value={orden} onChange={(e) => setOrden(e.target.value)} aria-label={t("movies.order") }>
+          <option value="estrenoDesc">{t("movies.releaseNewest")}</option><option value="estrenoAsc">{t("movies.releaseOldest")}</option><option value="az">{t("movies.titleAZ")}</option><option value="za">{t("movies.titleZA")}</option><option value="masActores">{t("movies.largestCast")}</option><option value="menosActores">{t("movies.smallestCast")}</option>
+        </select>
+        <select value={genero} onChange={(e) => setGenero(e.target.value)} aria-label={t("movies.genreFilter")}>
+          <option value="">{t("movies.allGenres")}</option>{["Comedia","Drama","Acción","Terror","Romance","Documental"].map(g=><option key={g} value={g}>{generoTraducido(g)}</option>)}
+        </select>
+      </section>
+
+      <section className="movie-catalog-grid">
         {peliculas.map((pelicula) => (
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={pelicula.Id}>
-            <div className="card h-100 shadow movie-card">
-              <div className="text-center pt-3">
-                {pelicula.Foto ? (
-                  <img
-                    src={`${API_URL}${pelicula.Foto}`}
-                    alt={pelicula.Titulo}
-                    className="movie-poster"
-                  />
-                ) : (
-                  <div className="movie-poster-placeholder">🎬</div>
-                )}
-              </div>
-
-              <div className="card-body text-center">
-                <h5 className="card-title mb-2">{pelicula.Titulo}</h5>
-
-                <p className="text-muted mb-1">🎭 {pelicula.Genero || "-"}</p>
-
-                <p className="text-muted mb-1">🎬 {pelicula.Director || "-"}</p>
-
-                <p className="text-muted mb-1">
-                  🏢 {pelicula.Productora || "-"}
-                </p>
-
-                <p className="mb-2">
-                  👥 {pelicula.CantidadActores || 0} actor(es)
-                </p>
-
-                <span className="badge bg-primary">
-                  📅 {formatearFecha(pelicula.FechaEstreno)}
-                </span>
-              </div>
-
-              <div className="card-footer bg-white border-0">
-                <Link
-                  to={`/peliculas/${pelicula.Id}`}
-                  className="btn btn-outline-primary btn-sm w-100 mb-2"
-                >
-                  🎬 Ver perfil
-                </Link>
-
-                <div className="d-flex gap-2 mb-2">
-                  <Link
-                    to={`/peliculas/editar/${pelicula.Id}`}
-                    className="btn btn-warning btn-sm w-50"
-                  >
-                    ✏️ Editar
-                  </Link>
-
-                  <button
-                    type="button"
-                    className="btn btn-danger btn-sm w-50"
-                    onClick={() => eliminarPelicula(pelicula.Id)}
-                  >
-                    🗑️ Eliminar
-                  </button>
-                </div>
-
-                <Link
-                  to={`/peliculas/${pelicula.Id}/reparto`}
-                  className="btn btn-primary btn-sm w-100"
-                >
-                  👥 Reparto
-                </Link>
+          <article className="cinerd-movie-card" key={pelicula.Id}>
+            <Link to={`/peliculas/${pelicula.Id}`} className="cinerd-poster-wrap">
+              {pelicula.Foto ? <img src={`${API_URL}${pelicula.Foto}`} alt={pelicula.Titulo} className="cinerd-poster" /> : <div className="cinerd-poster cinerd-poster-empty">🎬</div>}
+              <div className="cinerd-poster-overlay"><span>{t("movies.viewMovie")}</span></div>
+              <span className="cinerd-date-chip">{formatearFecha(pelicula.FechaEstreno)}</span>
+            </Link>
+            <div className="cinerd-movie-copy">
+              <span className="cinerd-genre">{generoTraducido(pelicula.Genero)}</span>
+              <h2><Link to={`/peliculas/${pelicula.Id}`}>{pelicula.Titulo}</Link></h2>
+              <div className="cinerd-movie-details">
+                <span>🎬 {pelicula.Director || t("movies.directorMissing")}</span>
+                <span>🏢 {pelicula.Productora || t("movies.productionCompanyMissing")}</span>
+                <span>👥 {t("movies.talentsCount", { count: pelicula.CantidadActores || 0 })}</span>
               </div>
             </div>
-          </div>
+            {esAdmin && <div className="cinerd-admin-strip"><Link to={`/peliculas/editar/${pelicula.Id}`}>{t("movies.edit")}</Link><Link to={`/peliculas/${pelicula.Id}/reparto`}>{t("movies.cast")}</Link><button type="button" onClick={() => eliminarPelicula(pelicula.Id)}>{t("movies.delete")}</button></div>}
+          </article>
         ))}
-
-        {peliculas.length === 0 && (
-          <div className="col-12 text-center text-muted mt-5">
-            No se encontraron películas.
-          </div>
-        )}
-      </div>
+      </section>
+      {peliculas.length === 0 && <div className="catalog-empty"><span>🎞️</span><h2>{t("movies.emptyTitle")}</h2><p>{t("movies.emptyDescription")}</p></div>}
     </div>
   );
 }
-
 export default Peliculas;

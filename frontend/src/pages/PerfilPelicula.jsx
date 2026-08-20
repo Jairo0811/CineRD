@@ -1,412 +1,87 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import api from "../services/api";
-import { formatearFecha } from "../utils/fechas";
 
 const API_URL = "http://localhost:3000";
-
-const resolverImagen = (ruta) => {
-  if (!ruta) return null;
-  if (ruta.startsWith("http://") || ruta.startsWith("https://")) return ruta;
-  return `${API_URL}${ruta}`;
-};
-
-const formatearDuracion = (minutos) => {
-  if (!minutos) return null;
-
-  const horas = Math.floor(minutos / 60);
-  const restantes = minutos % 60;
-
-  if (horas === 0) return `${restantes} min`;
-  return `${horas} h ${restantes} min`;
-};
-
-const formatearDinero = (valor) => {
-  if (valor === null || valor === undefined) return null;
-
-  return new Intl.NumberFormat("es-DO", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(valor);
-};
-
+const resolverImagen = (ruta) => !ruta ? null : ruta.startsWith("http") ? ruta : `${API_URL}${ruta}`;
+const formatearDuracion = (minutos) => !minutos ? null : `${Math.floor(minutos / 60) ? `${Math.floor(minutos / 60)} h ` : ""}${minutos % 60} min`;
 const obtenerYoutubeId = (url) => {
   if (!url) return null;
-
-  try {
-    const parsedUrl = new URL(url);
-
-    if (parsedUrl.hostname.includes("youtu.be")) {
-      return parsedUrl.pathname.replace("/", "");
-    }
-
-    if (parsedUrl.hostname.includes("youtube.com")) {
-      return parsedUrl.searchParams.get("v") || parsedUrl.pathname.split("/").pop();
-    }
-  } catch {
-    return null;
-  }
-
+  try { const u = new URL(url); if (u.hostname.includes("youtu.be")) return u.pathname.replace("/", ""); if (u.hostname.includes("youtube.com")) return u.searchParams.get("v") || u.pathname.split("/").pop(); } catch { return null; }
   return null;
 };
 
 function PerfilPelicula() {
   const { id } = useParams();
-
+  const { t, i18n } = useTranslation();
   const [pelicula, setPelicula] = useState(null);
   const [reparto, setReparto] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
+  const usuario = (()=>{ try{return JSON.parse(localStorage.getItem("cineRdUsuario")||"null");}catch{return null;} })();
+  const esAdmin = usuario?.rol === "ADMINISTRADOR";
+  const idiomaUi = i18n.language?.startsWith("en") ? "en" : "es";
+  const locale = idiomaUi === "en" ? "en-US" : "es-DO";
 
   useEffect(() => {
-    const cargarPerfil = async () => {
-      try {
-        setCargando(true);
-        setError("");
+    setCargando(true);
+    setError("");
+    Promise.all([
+      api.get(`/peliculas/${id}/perfil`, { params: { lang: idiomaUi } }),
+      api.get(`/actores-peliculas/pelicula/${id}`),
+    ])
+      .then(([p,r])=>{ setPelicula(p.data); setReparto(r.data||[]); })
+      .catch((e)=>{ console.error(e); setError(e.response?.data?.mensaje || t("movieProfile.loadError")); })
+      .finally(()=>setCargando(false));
+  }, [id, idiomaUi, t]);
 
-        const [peliculaResponse, repartoResponse] = await Promise.all([
-          api.get(`/peliculas/${id}/perfil`),
-          api.get(`/actores-peliculas/pelicula/${id}`),
-        ]);
+  const repartoOrdenado = useMemo(() => [...reparto].sort((a,b) => (a.OrdenCreditos ?? 9999) - (b.OrdenCreditos ?? 9999)), [reparto]);
+  const youtubeId = useMemo(()=>obtenerYoutubeId(pelicula?.TrailerUrl), [pelicula?.TrailerUrl]);
 
-        setPelicula(peliculaResponse.data);
-        setReparto(repartoResponse.data || []);
-      } catch (requestError) {
-        console.error(requestError);
-        setError(
-          requestError.response?.data?.mensaje ||
-            "No fue posible cargar el perfil de la película.",
-        );
-      } finally {
-        setCargando(false);
-      }
-    };
+  const formatearFechaLocal = (fecha) => {
+    if (!fecha) return t("movieProfile.noDate");
+    const valor = new Date(`${String(fecha).substring(0,10)}T12:00:00`);
+    return Number.isNaN(valor.getTime()) ? t("movieProfile.noDate") : new Intl.DateTimeFormat(locale,{day:"numeric",month:"long",year:"numeric"}).format(valor);
+  };
+  const formatearDinero = (valor) => valor == null ? null : new Intl.NumberFormat(locale,{style:"currency",currency:"USD",maximumFractionDigits:0}).format(valor);
+  const obtenerIdioma = (codigo) => {
+    if (!codigo) return t("languages.unknown");
+    const normalizado = codigo.toLowerCase();
+    const clave = `languages.${normalizado}`;
+    const traducido = t(clave);
+    return traducido === clave ? codigo.toUpperCase() : traducido;
+  };
 
-    cargarPerfil();
-  }, [id]);
-
-  const repartoOrdenado = useMemo(
-    () =>
-      [...reparto].sort((a, b) => {
-        const ordenCreditoA = a.OrdenCreditos ?? Number.MAX_SAFE_INTEGER;
-        const ordenCreditoB = b.OrdenCreditos ?? Number.MAX_SAFE_INTEGER;
-
-        if (ordenCreditoA !== ordenCreditoB) {
-          return ordenCreditoA - ordenCreditoB;
-        }
-
-        const prioridad = {
-          Principal: 1,
-          Secundario: 2,
-          Reparto: 3,
-          Cameo: 4,
-          Flashback: 5,
-        };
-
-        return (
-          (prioridad[a.TipoParticipacion] || 99) -
-          (prioridad[b.TipoParticipacion] || 99)
-        );
-      }),
-    [reparto],
-  );
-
-  const youtubeId = useMemo(
-    () => obtenerYoutubeId(pelicula?.TrailerUrl),
-    [pelicula?.TrailerUrl],
-  );
-
-  if (cargando) {
-    return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status" />
-        <p className="text-muted mt-3 mb-0">Cargando película...</p>
-      </div>
-    );
-  }
-
-  if (error || !pelicula) {
-    return (
-      <div className="text-center py-5">
-        <div className="alert alert-danger">{error || "Película no encontrada"}</div>
-        <Link to="/peliculas" className="btn btn-primary">
-          Volver a películas
-        </Link>
-      </div>
-    );
-  }
+  if (cargando) return <div className="text-center py-5"><div className="spinner-border text-primary" role="status"/><p className="text-muted mt-3">{t("movieProfile.loading")}</p></div>;
+  if (error || !pelicula) return <div className="text-center py-5"><div className="alert alert-danger">{error || t("movieProfile.notFound")}</div><Link to="/peliculas" className="btn btn-primary">{t("movieProfile.backToMovies")}</Link></div>;
 
   const backdrop = resolverImagen(pelicula.Backdrop);
   const poster = resolverImagen(pelicula.Foto);
+  const tituloFueLocalizado = pelicula.TraduccionAplicada && pelicula.TituloOriginal && pelicula.TituloOriginal !== pelicula.Titulo;
 
-  return (
-    <div className="table-page-container">
-      <div className="d-flex flex-wrap gap-2 mb-4">
-        <Link to="/peliculas" className="btn btn-secondary">
-          ← Volver a películas
-        </Link>
+  return <div className="table-page-container movie-profile-page">
+    <div className="d-flex flex-wrap gap-2 mb-4"><Link to="/peliculas" className="btn btn-outline-secondary">{t("movieProfile.back")}</Link>{esAdmin && <><Link to={`/peliculas/editar/${pelicula.Id}`} className="btn btn-outline-warning">{t("movieProfile.edit")}</Link><Link to={`/peliculas/${pelicula.Id}/reparto`} className="btn btn-primary">{t("movieProfile.manageCast")}</Link></>}</div>
 
-        <Link
-          to={`/peliculas/editar/${pelicula.Id}`}
-          className="btn btn-warning"
-        >
-          ✏️ Editar película
-        </Link>
-
-        <Link
-          to={`/peliculas/${pelicula.Id}/reparto`}
-          className="btn btn-primary"
-        >
-          👥 Administrar reparto
-        </Link>
-      </div>
-
-      <section className="card shadow overflow-hidden mb-4">
-        {backdrop && (
-          <div
-            style={{
-              minHeight: "300px",
-              backgroundImage: `linear-gradient(180deg, rgba(10, 15, 25, 0.08), rgba(10, 15, 25, 0.86)), url(${backdrop})`,
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-            }}
-          />
-        )}
-
-        <div className="card-body p-4 p-lg-5">
-          <div className="row g-4 align-items-center">
-            <div className="col-12 col-md-4 col-lg-3 text-center">
-              {poster ? (
-                <img
-                  src={poster}
-                  alt={`Póster de ${pelicula.Titulo}`}
-                  className="img-fluid rounded-4 shadow"
-                  style={{ maxHeight: "420px", objectFit: "cover" }}
-                />
-              ) : (
-                <div
-                  className="bg-light border rounded-4 d-grid mx-auto"
-                  style={{
-                    maxWidth: "280px",
-                    minHeight: "390px",
-                    placeItems: "center",
-                  }}
-                >
-                  <span style={{ fontSize: "4rem" }}>🎬</span>
-                </div>
-              )}
-            </div>
-
-            <div className="col-12 col-md-8 col-lg-9">
-              <span className="badge bg-primary mb-3">Cine dominicano</span>
-
-              <h1 className="display-5 fw-bold mb-2">{pelicula.Titulo}</h1>
-
-              {pelicula.Eslogan && (
-                <p className="lead text-muted fst-italic">“{pelicula.Eslogan}”</p>
-              )}
-
-              <div className="d-flex flex-wrap gap-2 mb-4">
-                <span className="badge bg-secondary">
-                  🎭 {pelicula.Genero || "Sin género"}
-                </span>
-
-                <span className="badge bg-light text-dark border">
-                  📅 {pelicula.FechaEstreno
-                    ? formatearFecha(pelicula.FechaEstreno)
-                    : "Sin fecha"}
-                </span>
-
-                {pelicula.DuracionMinutos && (
-                  <span className="badge bg-light text-dark border">
-                    ⏱️ {formatearDuracion(pelicula.DuracionMinutos)}
-                  </span>
-                )}
-
-                {pelicula.Calificacion !== null &&
-                  pelicula.Calificacion !== undefined && (
-                    <span className="badge bg-warning text-dark">
-                      ⭐ {Number(pelicula.Calificacion).toFixed(1)}/10
-                    </span>
-                  )}
-
-                <span className="badge bg-light text-dark border">
-                  👥 {reparto.length} integrante(s)
-                </span>
-
-                {pelicula.Estado && (
-                  <span className="badge bg-info text-dark">{pelicula.Estado}</span>
-                )}
-
-                {pelicula.TMDbId && (
-                  <span className="badge bg-success">TMDb #{pelicula.TMDbId}</span>
-                )}
-              </div>
-
-              <dl className="row mb-0">
-                <dt className="col-sm-3">Director</dt>
-                <dd className="col-sm-9">{pelicula.Director || "No registrado"}</dd>
-
-                <dt className="col-sm-3">Productora</dt>
-                <dd className="col-sm-9">
-                  {pelicula.Productora || "No registrada"}
-                </dd>
-
-                <dt className="col-sm-3">Idioma original</dt>
-                <dd className="col-sm-9">
-                  {pelicula.IdiomaOriginal?.toUpperCase() || "No registrado"}
-                </dd>
-
-                {pelicula.Presupuesto !== null &&
-                  pelicula.Presupuesto !== undefined && (
-                    <>
-                      <dt className="col-sm-3">Presupuesto</dt>
-                      <dd className="col-sm-9">
-                        {formatearDinero(pelicula.Presupuesto)}
-                      </dd>
-                    </>
-                  )}
-
-                {pelicula.Recaudacion !== null &&
-                  pelicula.Recaudacion !== undefined && (
-                    <>
-                      <dt className="col-sm-3">Recaudación</dt>
-                      <dd className="col-sm-9">
-                        {formatearDinero(pelicula.Recaudacion)}
-                      </dd>
-                    </>
-                  )}
-              </dl>
-            </div>
-          </div>
+    <section className="card mb-4 overflow-hidden">
+      <div style={{minHeight: backdrop ? "340px" : "90px", background: backdrop ? `linear-gradient(180deg,rgba(5,11,22,.08),rgba(5,11,22,.88)),url(${backdrop}) center/cover` : "linear-gradient(135deg,#07111f,#10345f)"}} />
+      <div className="card-body p-4 p-lg-5"><div className="row g-4 align-items-center">
+        <div className="col-12 col-md-4 col-lg-3 text-center">{poster ? <img src={poster} alt={pelicula.Titulo} className="img-fluid rounded-4 shadow" style={{maxHeight:"430px",objectFit:"cover"}}/> : <div className="bg-light border rounded-4 d-grid mx-auto" style={{maxWidth:"280px",minHeight:"390px",placeItems:"center"}}>🎬</div>}</div>
+        <div className="col-12 col-md-8 col-lg-9"><span className="badge bg-primary mb-3">{t("movieProfile.dominicanCinema")}</span><h1 className="display-5 fw-bold mb-2">{pelicula.Titulo}</h1>{tituloFueLocalizado && <p className="text-muted mb-2"><strong>{t("movieProfile.originalTitle")}:</strong> <span className="fst-italic">{pelicula.TituloOriginal}</span></p>}{pelicula.Eslogan && <p className="lead text-muted fst-italic">“{pelicula.Eslogan}”</p>}
+          <div className="d-flex flex-wrap gap-2 mb-4"><span className="badge bg-secondary">{pelicula.Genero || t("movieProfile.noGenre")}</span><span className="badge bg-light text-dark border">{formatearFechaLocal(pelicula.FechaEstreno)}</span>{pelicula.DuracionMinutos && <span className="badge bg-light text-dark border">{formatearDuracion(pelicula.DuracionMinutos)}</span>}{pelicula.Calificacion != null && <span className="badge bg-warning text-dark">★ {Number(pelicula.Calificacion).toFixed(1)}/10</span>}<span className="badge bg-light text-dark border">{t("movieProfile.talents",{count:reparto.length})}</span>{pelicula.Estado && <span className="badge bg-info text-dark">{pelicula.Estado}</span>}</div>
+          <dl className="row mb-0"><dt className="col-sm-3">{t("movieProfile.director")}</dt><dd className="col-sm-9">{pelicula.Director || t("movieProfile.notRegistered")}</dd><dt className="col-sm-3">{t("movieProfile.productionCompany")}</dt><dd className="col-sm-9">{pelicula.Productora || t("movieProfile.notRegisteredFemale")}</dd><dt className="col-sm-3">{t("movieProfile.originalLanguage")}</dt><dd className="col-sm-9">{obtenerIdioma(pelicula.IdiomaOriginal)}</dd>{pelicula.Presupuesto != null && <><dt className="col-sm-3">{t("movieProfile.budget")}</dt><dd className="col-sm-9">{formatearDinero(pelicula.Presupuesto)}</dd></>}{pelicula.Recaudacion != null && <><dt className="col-sm-3">{t("movieProfile.revenue")}</dt><dd className="col-sm-9">{formatearDinero(pelicula.Recaudacion)}</dd></>}</dl>
+          {pelicula.TraduccionAplicada && <p className="small text-muted mt-3 mb-0">{t("movieProfile.localizedNotice", { source: t(`translationSources.${pelicula.TipoFuenteTraduccion || "EDITORIAL"}`) })}</p>}
         </div>
-      </section>
+      </div></div>
+    </section>
 
-      <section className="card shadow mb-4">
-        <div className="card-body p-4">
-          <h2 className="h4 fw-bold">📖 Sinopsis</h2>
-          <p className="text-muted mb-0" style={{ whiteSpace: "pre-line" }}>
-            {pelicula.Sinopsis ||
-              "La sinopsis todavía no ha sido registrada para esta película."}
-          </p>
-        </div>
-      </section>
+    <section className="card mb-4"><div className="card-body p-4"><span className="catalog-eyebrow">{t("movieProfile.history")}</span><h2 className="h4">{t("movieProfile.synopsis")}</h2><p className="text-muted mb-0" style={{whiteSpace:"pre-line"}}>{pelicula.Sinopsis || t("movieProfile.synopsisMissing")}</p></div></section>
 
-      {(youtubeId || pelicula.TrailerUrl) && (
-        <section className="card shadow mb-4">
-          <div className="card-body p-4">
-            <h2 className="h4 fw-bold mb-3">▶️ Tráiler</h2>
+    {(youtubeId || pelicula.TrailerUrl) && <section className="card mb-4"><div className="card-body p-4"><span className="catalog-eyebrow">{t("movieProfile.audiovisual")}</span><h2 className="h4 mb-3">{t("movieProfile.trailer")}</h2>{youtubeId ? <div className="ratio ratio-16x9 rounded-4 overflow-hidden"><iframe src={`https://www.youtube.com/embed/${youtubeId}`} title={`${t("movieProfile.trailer")}: ${pelicula.Titulo}`} allowFullScreen/></div> : <a href={pelicula.TrailerUrl} target="_blank" rel="noreferrer" className="btn btn-danger">{t("movieProfile.watchTrailer")}</a>}</div></section>}
 
-            {youtubeId ? (
-              <div className="ratio ratio-16x9 rounded overflow-hidden">
-                <iframe
-                  src={`https://www.youtube.com/embed/${youtubeId}`}
-                  title={`Tráiler de ${pelicula.Titulo}`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-            ) : (
-              <a
-                href={pelicula.TrailerUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn-danger"
-              >
-                Ver tráiler
-              </a>
-            )}
-          </div>
-        </section>
-      )}
-
-      <section className="card shadow">
-        <div className="card-header bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 p-3">
-          <div>
-            <h2 className="h5 fw-bold mb-1">🎭 Reparto</h2>
-            <p className="text-muted small mb-0">
-              Talentos y personajes registrados en CineRD.
-            </p>
-          </div>
-
-          <Link
-            to={`/peliculas/${pelicula.Id}/reparto`}
-            className="btn btn-outline-primary btn-sm"
-          >
-            Gestionar reparto
-          </Link>
-        </div>
-
-        <div className="card-body">
-          {repartoOrdenado.length === 0 ? (
-            <div className="text-center py-5">
-              <div className="fs-1 mb-2">🎭</div>
-              <p className="text-muted">
-                Esta película todavía no tiene reparto registrado.
-              </p>
-              <Link
-                to={`/peliculas/${pelicula.Id}/reparto`}
-                className="btn btn-primary"
-              >
-                Agregar reparto
-              </Link>
-            </div>
-          ) : (
-            <div className="row g-3">
-              {repartoOrdenado.map((actor) => (
-                <div className="col-12 col-sm-6 col-lg-4" key={actor.Id}>
-                  <Link
-                    to={`/actores/${actor.Id}`}
-                    className="card h-100 border shadow-sm text-dark"
-                  >
-                    <div className="card-body d-flex align-items-center gap-3">
-                      {actor.Foto ? (
-                        <img
-                          src={resolverImagen(actor.Foto)}
-                          alt={actor.NombreCompleto}
-                          className="rounded-circle flex-shrink-0"
-                          style={{
-                            width: "72px",
-                            height: "72px",
-                            objectFit: "cover",
-                          }}
-                        />
-                      ) : (
-                        <div
-                          className="rounded-circle bg-light border d-grid flex-shrink-0"
-                          style={{
-                            width: "72px",
-                            height: "72px",
-                            placeItems: "center",
-                            fontSize: "1.8rem",
-                          }}
-                        >
-                          🎭
-                        </div>
-                      )}
-
-                      <div className="min-width-0">
-                        <h3 className="h6 fw-bold mb-1">
-                          {actor.NombreArtistico || actor.NombreCompleto}
-                        </h3>
-                        <p className="text-muted small mb-1">
-                          {actor.Personaje || "Personaje no registrado"}
-                        </p>
-                        <span className="badge bg-primary">
-                          {actor.TipoParticipacion || "Reparto"}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-    </div>
-  );
+    <section className="card"><div className="card-header bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 p-3"><div><span className="catalog-eyebrow">{t("movieProfile.cast")}</span><h2 className="h5 fw-bold mb-0">{t("movieProfile.talentsCharacters")}</h2></div>{esAdmin && <Link to={`/peliculas/${pelicula.Id}/reparto`} className="btn btn-outline-primary btn-sm">{t("movieProfile.manageCast")}</Link>}</div><div className="card-body">
+      {repartoOrdenado.length===0 ? <div className="text-center py-5 text-muted">{t("movieProfile.emptyCast")}</div> : <div className="row g-3">{repartoOrdenado.map((actor)=><div className="col-12 col-sm-6 col-lg-4" key={actor.Id}><Link to={`/actores/${actor.Id}`} className="card h-100 border-0 bg-light text-dark"><div className="card-body d-flex align-items-center gap-3">{actor.Foto ? <img src={resolverImagen(actor.Foto)} alt={actor.NombreCompleto} className="rounded-circle" style={{width:"72px",height:"72px",objectFit:"cover"}}/> : <div className="rounded-circle bg-white d-grid" style={{width:"72px",height:"72px",placeItems:"center"}}>🎭</div>}<div><h3 className="h6 fw-bold mb-1">{actor.NombreArtistico || actor.NombreCompleto}</h3><p className="text-muted small mb-1">{actor.Personaje || t("movieProfile.characterMissing")}</p><span className="badge bg-primary">{actor.TipoParticipacion || t("movieProfile.castRole")}</span></div></div></Link></div>)}</div>}
+    </div></section>
+  </div>;
 }
-
 export default PerfilPelicula;

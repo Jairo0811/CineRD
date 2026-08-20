@@ -1,28 +1,26 @@
+import { useTranslation } from "react-i18next";
+
 function Footer() {
+  const { t } = useTranslation();
   const anioActual = new Date().getFullYear();
 
   return (
     <footer className="cine-footer">
       <div className="container">
         <div className="cine-footer-content">
-          <img
-            src="/logo.png"
-            alt="Logo de CineRD"
-            className="cine-footer-logo"
-          />
+          <img src="/logo.png" alt="CineRD" className="cine-footer-logo" />
 
           <p className="cine-footer-description">
-            Catálogo digital del Cine Dominicano
+            {t("footer.description")}
           </p>
 
           <p className="cine-footer-copy">
-            © {anioActual} CineRD | Todos los derechos reservados.
+            © {anioActual} CineRD | {t("footer.rights")}
           </p>
         </div>
 
         <div className="cine-footer-attribution">
-          Este producto utiliza la API de TMDb, pero no está respaldado ni
-          certificado por TMDb.
+          {t("footer.tmdb")}
         </div>
       </div>
     </footer>

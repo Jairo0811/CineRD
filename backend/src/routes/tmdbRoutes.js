@@ -8,19 +8,15 @@ const {
   obtenerRepartoTmdb,
   vincularActorConTmdb,
 } = require("../controllers/tmdbController");
+const { autenticar, autorizar } = require("../middlewares/auth");
 
 const router = express.Router();
 
-// Películas
 router.get("/peliculas/buscar", buscarPeliculasTmdb);
 router.get("/peliculas/:tmdbId/reparto", obtenerRepartoTmdb);
 router.get("/peliculas/:tmdbId", obtenerPeliculaTmdb);
-
-// Personas
 router.get("/personas/buscar", buscarPersonasTmdb);
 router.get("/personas/:tmdbId", obtenerPersonaTmdb);
-
-// Vinculación CineRD ↔ TMDb
-router.patch("/actores/:actorId/vincular", vincularActorConTmdb);
+router.patch("/actores/:actorId/vincular", autenticar, autorizar("ADMINISTRADOR"), vincularActorConTmdb);
 
 module.exports = router;

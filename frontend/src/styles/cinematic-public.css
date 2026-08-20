@@ -1,0 +1,105 @@
+.cinematic-home {
+  --rd-blue: #063b9a;
+  --rd-blue-bright: #2b78ff;
+  --rd-red: #ce1126;
+  --rd-navy: #050b16;
+  --rd-navy-soft: #0b1729;
+  --rd-cream: #f7f3ea;
+  --cinema-gold: #d7ae55;
+}
+
+.cine-navbar-cinematic {
+  min-height: 72px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: rgba(5,11,22,.96) !important;
+  box-shadow: 0 12px 34px rgba(0,0,0,.18);
+  backdrop-filter: blur(18px);
+}
+.cine-navbar-cinematic .cine-navbar-brand { color:#fff; }
+.cine-navbar-cinematic .cine-navbar-logo { width:44px; height:44px; filter:drop-shadow(0 5px 12px rgba(0,0,0,.3)); }
+.cine-navbar-wordmark { font-size:1.2rem; font-weight:900; letter-spacing:-.04em; }
+.cine-navbar-wordmark span { color:#ef3340; }
+.cine-navbar-cinematic .cine-navbar-link { position:relative; color:rgba(255,255,255,.68); font-size:.91rem; font-weight:650; }
+.cine-navbar-cinematic .cine-navbar-link:hover,.cine-navbar-cinematic .cine-navbar-link.active { background:rgba(255,255,255,.06); color:#fff !important; }
+.cine-navbar-cinematic .cine-navbar-link.active::after { content:""; position:absolute; left:12px; right:12px; bottom:3px; height:2px; border-radius:2px; background:#ce1126; }
+.cine-navbar-actions,.cine-admin-quick-actions { display:flex; align-items:center; gap:8px; }
+.cine-btn-ghost { border:1px solid rgba(255,255,255,.22); color:#fff; background:transparent; }
+.cine-btn-ghost:hover { border-color:rgba(255,255,255,.42); background:rgba(255,255,255,.08); color:#fff; }
+.cine-btn-accent { border:1px solid #ce1126; background:#ce1126; color:#fff; }
+.cine-btn-accent:hover { border-color:#e7273d; background:#e7273d; color:#fff; }
+.cine-navbar-cinematic .cine-account-button { border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.06); color:#fff; }
+.cine-navbar-cinematic .cine-account-copy small { color:rgba(255,255,255,.58); }
+
+.cinematic-hero {
+  position:relative; display:grid; grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr); gap:42px; overflow:hidden;
+  min-height:590px; padding:clamp(36px,6vw,72px); border-radius:28px;
+  background:radial-gradient(circle at 80% 22%,rgba(215,174,85,.2),transparent 23%),radial-gradient(circle at 15% 90%,rgba(206,17,38,.22),transparent 28%),linear-gradient(135deg,#050b16 0%,#0b2345 56%,#063b9a 100%);
+  box-shadow:0 30px 80px rgba(4,18,41,.24); color:#fff;
+}
+.cinematic-hero::before { content:""; position:absolute; inset:0; opacity:.08; background-image:linear-gradient(rgba(255,255,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.16) 1px,transparent 1px); background-size:46px 46px; mask-image:linear-gradient(to bottom,black,transparent 90%); }
+.cinematic-flag-band { position:absolute; top:0; left:0; width:100%; height:7px; background:linear-gradient(90deg,#063b9a 0 34%,#fff 34% 38%,#ce1126 38% 66%,#fff 66% 70%,#063b9a 70% 100%); }
+.cinematic-hero-copy,.cinematic-hero-brand { position:relative; z-index:1; }
+.cinematic-hero-copy { display:flex; flex-direction:column; justify-content:center; }
+.cinematic-hero .public-eyebrow { color:#9fc5ff; }
+.cinematic-hero h1 { max-width:900px; margin:14px 0 18px; font-size:clamp(2.6rem,6vw,5.25rem); font-weight:900; line-height:.98; letter-spacing:-.05em; }
+.cinematic-hero p { max-width:750px; margin-bottom:28px; color:rgba(255,255,255,.72); font-size:clamp(1rem,1.5vw,1.15rem); line-height:1.75; }
+.cinematic-hero .public-hero-actions { display:flex; flex-wrap:wrap; gap:12px; }
+.cinematic-hero .btn { padding:.75rem 1.1rem; }
+.cinematic-hero .btn-primary { border-color:#ce1126; background:#ce1126; }
+.cinematic-hero .btn-primary:hover { border-color:#e7273d; background:#e7273d; }
+.cinematic-stats { display:flex; flex-wrap:wrap; gap:28px; margin-top:36px; padding-top:24px; border-top:1px solid rgba(255,255,255,.14); }
+.cinematic-stats div { display:flex; min-width:110px; flex-direction:column; }
+.cinematic-stats strong { font-size:2rem; line-height:1; }
+.cinematic-stats span { margin-top:7px; color:rgba(255,255,255,.55); font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; }
+.cinematic-hero-brand { display:flex; align-items:center; justify-content:center; flex-direction:column; }
+.cinematic-hero-brand img { position:relative; z-index:2; width:min(100%,380px); filter:drop-shadow(0 18px 38px rgba(0,0,0,.4)); }
+.cinematic-projector-beam { position:absolute; width:520px; height:520px; border-radius:50%; background:radial-gradient(circle,rgba(255,244,204,.22),rgba(255,244,204,.06) 40%,transparent 68%); filter:blur(4px); }
+.cinematic-caption { margin-top:20px; color:rgba(255,255,255,.55); font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+.cinematic-manifesto { display:flex; align-items:center; gap:24px; padding:28px 32px; margin:26px 0; border-left:5px solid #ce1126; border-radius:18px; background:#f7f3ea; }
+.cinematic-manifesto>span { font-size:2.6rem; }
+.cinematic-manifesto small { color:#063b9a; font-weight:800; letter-spacing:.12em; }
+.cinematic-manifesto h2 { max-width:1000px; margin:5px 0 0; font-size:clamp(1.25rem,2.4vw,2rem); font-weight:800; }
+
+.cinematic-showcase-section{margin-bottom:26px;padding:24px 26px 26px;border:1px solid #e2e7ef;border-radius:22px;background:#fff;box-shadow:0 14px 38px rgba(8,25,56,.08)}
+.cinematic-showcase-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px}
+.cinematic-showcase-heading h2{margin:5px 0 4px;font-size:1.55rem;font-weight:850}
+.cinematic-showcase-heading p{max-width:720px;margin:0;color:#7b8495;font-size:.86rem}
+.cinematic-showcase-heading>a{color:#063b9a;font-size:.85rem;font-weight:700;white-space:nowrap}
+.cinematic-talent-showcase,.cinematic-movie-showcase{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.cinematic-talent-card,.cinematic-movie-showcase-card{overflow:hidden;border:1px solid #e7ebf0;border-radius:16px;background:#fff;color:#111827;box-shadow:0 6px 18px rgba(8,25,56,.05);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.cinematic-talent-card:hover,.cinematic-movie-showcase-card:hover{transform:translateY(-4px);border-color:#bfd2ee;box-shadow:0 14px 26px rgba(8,25,56,.11);color:#063b9a}
+.cinematic-talent-photo-wrap,.cinematic-movie-poster-wrap{position:relative;overflow:hidden;background:linear-gradient(145deg,#0b1729,#17365f)}
+.cinematic-talent-photo-wrap{height:190px}
+.cinematic-movie-poster-wrap{aspect-ratio:2/3}
+.cinematic-talent-photo-wrap img,.cinematic-movie-poster-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+.cinematic-talent-photo-wrap img{object-position:center top}
+.cinematic-talent-card:hover img,.cinematic-movie-showcase-card:hover img{transform:scale(1.035)}
+.cinematic-talent-photo-placeholder,.cinematic-movie-poster-placeholder{display:grid;width:100%;height:100%;place-items:center;color:#fff;font-size:2.7rem}
+.cinematic-rank-badge{position:absolute;left:10px;top:10px;display:grid;min-width:32px;height:32px;place-items:center;padding:0 8px;border-radius:999px;background:rgba(5,11,22,.82);color:#fff;font-size:.72rem;font-weight:850;backdrop-filter:blur(8px)}
+.cinematic-cast-badge{position:absolute;right:10px;bottom:10px;padding:6px 9px;border-radius:999px;background:rgba(206,17,38,.88);color:#fff;font-size:.7rem;font-weight:800;backdrop-filter:blur(8px)}
+.cinematic-talent-card-copy,.cinematic-movie-showcase-copy{display:flex;min-width:0;flex-direction:column;padding:12px 13px 14px}
+.cinematic-talent-card-copy strong,.cinematic-movie-showcase-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.88rem}
+.cinematic-talent-card-copy small,.cinematic-movie-showcase-copy small{margin-top:3px;color:#7b8495;font-size:.74rem}
+.cinematic-talent-card-copy span,.cinematic-movie-showcase-copy span{margin-top:8px;color:#063b9a;font-size:.72rem;font-weight:800}
+.birthday-showcase-section{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#fbfdff 100%)}
+.birthday-showcase-section::after{content:"";position:absolute;right:-70px;top:-90px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(215,174,85,.12),transparent 68%);pointer-events:none}
+.birthday-card .cinematic-talent-photo-wrap{background:linear-gradient(145deg,#10243d,#1b426e)}
+.birthday-date-badge{position:absolute;left:10px;bottom:10px;padding:6px 9px;border-radius:999px;background:rgba(215,174,85,.94);color:#172033;font-size:.7rem;font-weight:850;box-shadow:0 5px 16px rgba(0,0,0,.14)}
+.birthday-empty-state{display:flex;align-items:center;gap:14px;padding:18px;border:1px dashed #d9e2ee;border-radius:15px;background:#f8fafc;color:#667085}
+.birthday-empty-state>span{font-size:2rem}
+.birthday-empty-state div{display:flex;flex-direction:column}
+.birthday-empty-state strong{color:#172033;font-size:.86rem}
+.birthday-empty-state small{margin-top:3px;font-size:.74rem}
+
+.cinematic-value-grid { margin-bottom:26px; }
+.cinematic-value-card { position:relative; overflow:hidden; }
+.cinematic-value-card::after { content:""; position:absolute; right:-36px; bottom:-36px; width:120px; height:120px; border-radius:50%; background:rgba(7,59,154,.06); }
+.verified-card::after { background:rgba(206,17,38,.07); }
+.cinematic-cta { border:0; background:radial-gradient(circle at top right,rgba(206,17,38,.34),transparent 30%),linear-gradient(135deg,#050b16,#0b2e62); color:#fff; }
+.cinematic-cta p { color:rgba(255,255,255,.68); }
+.cinematic-cta .public-eyebrow { color:#9dc5ff; }
+
+@media(max-width:1199.98px){.cinematic-talent-showcase,.cinematic-movie-showcase{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:991.98px){.cinematic-hero{grid-template-columns:1fr;min-height:auto}.cinematic-hero-brand{min-height:260px}.cine-navbar-actions,.cine-admin-quick-actions{align-items:stretch;flex-direction:column}.cine-navbar-cinematic .cine-navbar-link.active::after{display:none}}
+@media(max-width:767.98px){.cinematic-talent-showcase,.cinematic-movie-showcase{grid-template-columns:repeat(2,minmax(0,1fr))}.cinematic-showcase-heading{align-items:flex-start;flex-direction:column}}
+@media(max-width:575.98px){.cinematic-hero{padding:34px 22px;border-radius:20px}.cinematic-hero h1{font-size:clamp(2.25rem,13vw,3.35rem)}.cinematic-stats{gap:18px}.cinematic-manifesto{align-items:flex-start;padding:22px}.cinematic-showcase-section{padding:20px}.cinematic-talent-photo-wrap{height:220px}}
