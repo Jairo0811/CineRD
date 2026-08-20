@@ -18,6 +18,7 @@ import "./styles/workspace.css";
 import "./styles/actor-profile.css";
 import "./styles/verification-badges.css";
 import "./styles/theme.css";
+import "./styles/theme-overrides.css";
 
 import App from "./App.jsx";
 
