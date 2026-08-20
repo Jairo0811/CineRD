@@ -21,14 +21,20 @@ function PerfilPelicula() {
   const [error, setError] = useState("");
   const usuario = (()=>{ try{return JSON.parse(localStorage.getItem("cineRdUsuario")||"null");}catch{return null;} })();
   const esAdmin = usuario?.rol === "ADMINISTRADOR";
-  const locale = i18n.language?.startsWith("en") ? "en-US" : "es-DO";
+  const idiomaUi = i18n.language?.startsWith("en") ? "en" : "es";
+  const locale = idiomaUi === "en" ? "en-US" : "es-DO";
 
   useEffect(() => {
-    Promise.all([api.get(`/peliculas/${id}/perfil`), api.get(`/actores-peliculas/pelicula/${id}`)])
+    setCargando(true);
+    setError("");
+    Promise.all([
+      api.get(`/peliculas/${id}/perfil`, { params: { lang: idiomaUi } }),
+      api.get(`/actores-peliculas/pelicula/${id}`),
+    ])
       .then(([p,r])=>{ setPelicula(p.data); setReparto(r.data||[]); })
       .catch((e)=>{ console.error(e); setError(e.response?.data?.mensaje || t("movieProfile.loadError")); })
       .finally(()=>setCargando(false));
-  }, [id, t]);
+  }, [id, idiomaUi, t]);
 
   const repartoOrdenado = useMemo(() => [...reparto].sort((a,b) => (a.OrdenCreditos ?? 9999) - (b.OrdenCreditos ?? 9999)), [reparto]);
   const youtubeId = useMemo(()=>obtenerYoutubeId(pelicula?.TrailerUrl), [pelicula?.TrailerUrl]);
@@ -52,6 +58,7 @@ function PerfilPelicula() {
 
   const backdrop = resolverImagen(pelicula.Backdrop);
   const poster = resolverImagen(pelicula.Foto);
+  const tituloFueLocalizado = pelicula.TraduccionAplicada && pelicula.TituloOriginal && pelicula.TituloOriginal !== pelicula.Titulo;
 
   return <div className="table-page-container movie-profile-page">
     <div className="d-flex flex-wrap gap-2 mb-4"><Link to="/peliculas" className="btn btn-outline-secondary">{t("movieProfile.back")}</Link>{esAdmin && <><Link to={`/peliculas/editar/${pelicula.Id}`} className="btn btn-outline-warning">{t("movieProfile.edit")}</Link><Link to={`/peliculas/${pelicula.Id}/reparto`} className="btn btn-primary">{t("movieProfile.manageCast")}</Link></>}</div>
@@ -60,9 +67,10 @@ function PerfilPelicula() {
       <div style={{minHeight: backdrop ? "340px" : "90px", background: backdrop ? `linear-gradient(180deg,rgba(5,11,22,.08),rgba(5,11,22,.88)),url(${backdrop}) center/cover` : "linear-gradient(135deg,#07111f,#10345f)"}} />
       <div className="card-body p-4 p-lg-5"><div className="row g-4 align-items-center">
         <div className="col-12 col-md-4 col-lg-3 text-center">{poster ? <img src={poster} alt={pelicula.Titulo} className="img-fluid rounded-4 shadow" style={{maxHeight:"430px",objectFit:"cover"}}/> : <div className="bg-light border rounded-4 d-grid mx-auto" style={{maxWidth:"280px",minHeight:"390px",placeItems:"center"}}>🎬</div>}</div>
-        <div className="col-12 col-md-8 col-lg-9"><span className="badge bg-primary mb-3">{t("movieProfile.dominicanCinema")}</span><h1 className="display-5 fw-bold mb-2">{pelicula.Titulo}</h1>{pelicula.Eslogan && <p className="lead text-muted fst-italic">“{pelicula.Eslogan}”</p>}
+        <div className="col-12 col-md-8 col-lg-9"><span className="badge bg-primary mb-3">{t("movieProfile.dominicanCinema")}</span><h1 className="display-5 fw-bold mb-2">{pelicula.Titulo}</h1>{tituloFueLocalizado && <p className="text-muted mb-2"><strong>{t("movieProfile.originalTitle")}:</strong> <span className="fst-italic">{pelicula.TituloOriginal}</span></p>}{pelicula.Eslogan && <p className="lead text-muted fst-italic">“{pelicula.Eslogan}”</p>}
           <div className="d-flex flex-wrap gap-2 mb-4"><span className="badge bg-secondary">{pelicula.Genero || t("movieProfile.noGenre")}</span><span className="badge bg-light text-dark border">{formatearFechaLocal(pelicula.FechaEstreno)}</span>{pelicula.DuracionMinutos && <span className="badge bg-light text-dark border">{formatearDuracion(pelicula.DuracionMinutos)}</span>}{pelicula.Calificacion != null && <span className="badge bg-warning text-dark">★ {Number(pelicula.Calificacion).toFixed(1)}/10</span>}<span className="badge bg-light text-dark border">{t("movieProfile.talents",{count:reparto.length})}</span>{pelicula.Estado && <span className="badge bg-info text-dark">{pelicula.Estado}</span>}</div>
           <dl className="row mb-0"><dt className="col-sm-3">{t("movieProfile.director")}</dt><dd className="col-sm-9">{pelicula.Director || t("movieProfile.notRegistered")}</dd><dt className="col-sm-3">{t("movieProfile.productionCompany")}</dt><dd className="col-sm-9">{pelicula.Productora || t("movieProfile.notRegisteredFemale")}</dd><dt className="col-sm-3">{t("movieProfile.originalLanguage")}</dt><dd className="col-sm-9">{obtenerIdioma(pelicula.IdiomaOriginal)}</dd>{pelicula.Presupuesto != null && <><dt className="col-sm-3">{t("movieProfile.budget")}</dt><dd className="col-sm-9">{formatearDinero(pelicula.Presupuesto)}</dd></>}{pelicula.Recaudacion != null && <><dt className="col-sm-3">{t("movieProfile.revenue")}</dt><dd className="col-sm-9">{formatearDinero(pelicula.Recaudacion)}</dd></>}</dl>
+          {pelicula.TraduccionAplicada && <p className="small text-muted mt-3 mb-0">{t("movieProfile.localizedNotice", { source: t(`translationSources.${pelicula.TipoFuenteTraduccion || "EDITORIAL"}`) })}</p>}
         </div>
       </div></div>
     </section>
