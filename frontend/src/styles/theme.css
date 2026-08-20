@@ -1,0 +1,304 @@
+/* =========================================================
+   CINERD THEME SYSTEM
+   ========================================================= */
+
+:root {
+  color-scheme: light;
+  --cine-bg: #f5f7fb;
+  --cine-surface-1: #ffffff;
+  --cine-surface-2: #f8fafc;
+  --cine-surface-3: #eef4fb;
+  --cine-text-1: #101828;
+  --cine-text-2: #475467;
+  --cine-text-3: #667085;
+  --cine-line: #dfe7f1;
+  --cine-line-soft: #edf1f5;
+  --cine-shadow-theme: 0 12px 32px rgba(15, 23, 42, 0.07);
+  --cine-input-bg: #ffffff;
+  --cine-nav-menu: #ffffff;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cine-background: #070d18;
+  --cine-surface: #101827;
+  --cine-border: #263449;
+  --cine-text: #f4f7fb;
+  --cine-muted: #a9b5c7;
+
+  --cine-bg: #070d18;
+  --cine-surface-1: #101827;
+  --cine-surface-2: #131e2f;
+  --cine-surface-3: #18263a;
+  --cine-text-1: #f7f9fc;
+  --cine-text-2: #c6d0df;
+  --cine-text-3: #93a4ba;
+  --cine-line: #28374c;
+  --cine-line-soft: #202d40;
+  --cine-shadow-theme: 0 16px 38px rgba(0, 0, 0, 0.24);
+  --cine-input-bg: #0d1726;
+  --cine-nav-menu: #101827;
+}
+
+html[data-theme="dark"] body,
+html[data-theme="dark"] #root,
+html[data-theme="dark"] .app-layout,
+html[data-theme="dark"] .app-main {
+  background: var(--cine-bg);
+  color: var(--cine-text-1);
+}
+
+html[data-theme="dark"] body {
+  transition: background-color .2s ease, color .2s ease;
+}
+
+/* Generic Bootstrap and application surfaces */
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .modal-content,
+html[data-theme="dark"] .dropdown-menu,
+html[data-theme="dark"] .list-group-item,
+html[data-theme="dark"] .public-value-card,
+html[data-theme="dark"] .cinematic-showcase-section,
+html[data-theme="dark"] .cinematic-talent-card,
+html[data-theme="dark"] .cinematic-movie-showcase-card,
+html[data-theme="dark"] .cinerd-talent-card,
+html[data-theme="dark"] .cinerd-movie-card,
+html[data-theme="dark"] .catalog-filter-bar,
+html[data-theme="dark"] .admin-dashboard-panel,
+html[data-theme="dark"] .admin-kpi,
+html[data-theme="dark"] .portal-card,
+html[data-theme="dark"] .workspace-card,
+html[data-theme="dark"] .actor-profile-panel,
+html[data-theme="dark"] .actor-profile-stat,
+html[data-theme="dark"] .talent-dashboard-card,
+html[data-theme="dark"] .user-dashboard-card,
+html[data-theme="dark"] .verification-card {
+  background: var(--cine-surface-1) !important;
+  border-color: var(--cine-line) !important;
+  color: var(--cine-text-1);
+  box-shadow: var(--cine-shadow-theme);
+}
+
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-select,
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  background-color: var(--cine-input-bg);
+  border-color: var(--cine-line);
+  color: var(--cine-text-1);
+}
+
+html[data-theme="dark"] .form-control::placeholder,
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+  color: #73839a;
+}
+
+html[data-theme="dark"] .form-control:focus,
+html[data-theme="dark"] .form-select:focus,
+html[data-theme="dark"] input:focus,
+html[data-theme="dark"] select:focus,
+html[data-theme="dark"] textarea:focus {
+  background-color: #111d2e;
+  border-color: #4c92ff;
+  color: var(--cine-text-1);
+  box-shadow: 0 0 0 .2rem rgba(76, 146, 255, .15);
+}
+
+html[data-theme="dark"] .dropdown-menu,
+html[data-theme="dark"] .cine-account-menu {
+  background: var(--cine-nav-menu) !important;
+  border-color: var(--cine-line) !important;
+}
+
+html[data-theme="dark"] .dropdown-item {
+  color: var(--cine-text-2);
+}
+
+html[data-theme="dark"] .dropdown-item:hover,
+html[data-theme="dark"] .dropdown-item:focus {
+  background: var(--cine-surface-3);
+  color: #fff;
+}
+
+html[data-theme="dark"] .dropdown-divider,
+html[data-theme="dark"] hr {
+  border-color: var(--cine-line);
+}
+
+/* Text hierarchy */
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6,
+html[data-theme="dark"] strong,
+html[data-theme="dark"] label,
+html[data-theme="dark"] .cinerd-talent-copy h2 a,
+html[data-theme="dark"] .cinerd-movie-copy h2 a,
+html[data-theme="dark"] .cinematic-talent-card-copy strong,
+html[data-theme="dark"] .cinematic-movie-showcase-copy strong,
+html[data-theme="dark"] .admin-dashboard-panel-header h2,
+html[data-theme="dark"] .admin-ranking-copy strong,
+html[data-theme="dark"] .admin-recent-copy strong {
+  color: var(--cine-text-1) !important;
+}
+
+html[data-theme="dark"] p,
+html[data-theme="dark"] small,
+html[data-theme="dark"] .text-muted,
+html[data-theme="dark"] .form-text,
+html[data-theme="dark"] .cinerd-talent-facts,
+html[data-theme="dark"] .cinerd-movie-details,
+html[data-theme="dark"] .admin-kpi-label,
+html[data-theme="dark"] .admin-ranking-copy small,
+html[data-theme="dark"] .admin-recent-copy small {
+  color: var(--cine-text-3) !important;
+}
+
+/* Public home */
+html[data-theme="dark"] .cinematic-home,
+html[data-theme="dark"] .public-home {
+  color: var(--cine-text-1);
+}
+
+html[data-theme="dark"] .cinematic-manifesto {
+  background: linear-gradient(135deg, #171b22, #111827) !important;
+  border-color: #3b4658 !important;
+}
+
+html[data-theme="dark"] .birthday-showcase-section {
+  background: linear-gradient(135deg, #101827, #171711) !important;
+}
+
+html[data-theme="dark"] .cinematic-talent-card-copy,
+html[data-theme="dark"] .cinematic-movie-showcase-copy {
+  background: var(--cine-surface-1);
+}
+
+html[data-theme="dark"] .cinematic-value-card,
+html[data-theme="dark"] .birthday-empty-state {
+  background: var(--cine-surface-1) !important;
+  border-color: var(--cine-line) !important;
+}
+
+/* Catalog */
+html[data-theme="dark"] .catalog-page {
+  color: var(--cine-text-1);
+}
+
+html[data-theme="dark"] .catalog-filter-bar {
+  background: var(--cine-surface-1) !important;
+}
+
+html[data-theme="dark"] .cinerd-admin-strip {
+  background: #0c1522;
+  border-color: var(--cine-line);
+}
+
+html[data-theme="dark"] .cinerd-profile-link {
+  border-color: #35506f;
+}
+
+/* Admin center */
+html[data-theme="dark"] .admin-dashboard {
+  color: var(--cine-text-1);
+}
+
+html[data-theme="dark"] .admin-dashboard-action:not(.primary) {
+  background: var(--cine-surface-1);
+  border-color: var(--cine-line);
+  color: var(--cine-text-1);
+  box-shadow: var(--cine-shadow-theme);
+}
+
+html[data-theme="dark"] .admin-dashboard-action:not(.primary):hover {
+  background: var(--cine-surface-2);
+  border-color: #3f6592;
+  color: #8bbcff;
+}
+
+html[data-theme="dark"] .admin-dashboard-action-icon,
+html[data-theme="dark"] .admin-kpi-icon,
+html[data-theme="dark"] .admin-ranking-position,
+html[data-theme="dark"] .admin-ranking-placeholder,
+html[data-theme="dark"] .admin-recent-placeholder {
+  background: var(--cine-surface-3);
+}
+
+html[data-theme="dark"] .admin-kpi:after {
+  background: rgba(63, 101, 146, .08);
+}
+
+html[data-theme="dark"] .admin-kpi-value,
+html[data-theme="dark"] .admin-ranking-total {
+  color: var(--cine-text-1);
+}
+
+html[data-theme="dark"] .admin-ranking-total {
+  background: var(--cine-surface-3);
+}
+
+html[data-theme="dark"] .admin-dashboard-panel-header,
+html[data-theme="dark"] .admin-ranking-item,
+html[data-theme="dark"] .admin-recent-item {
+  border-color: var(--cine-line-soft);
+}
+
+/* Auth, forms and profile pages */
+html[data-theme="dark"] .form-page-container .card,
+html[data-theme="dark"] .auth-card,
+html[data-theme="dark"] .profile-card,
+html[data-theme="dark"] .verification-shell,
+html[data-theme="dark"] .workspace-panel {
+  background: var(--cine-surface-1) !important;
+  border-color: var(--cine-line) !important;
+  color: var(--cine-text-1);
+}
+
+/* Footer */
+html[data-theme="dark"] footer,
+html[data-theme="dark"] .cine-footer {
+  background: #080f1a !important;
+  border-color: var(--cine-line) !important;
+  color: var(--cine-text-2) !important;
+}
+
+/* Theme toggle */
+.cine-theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 9px;
+  background: rgba(255,255,255,.04);
+  color: #fff;
+  line-height: 1;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+
+.cine-theme-toggle:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.1);
+  border-color: rgba(255,255,255,.38);
+}
+
+.cine-theme-toggle:focus-visible {
+  outline: 2px solid #6ea8fe;
+  outline-offset: 2px;
+}
+
+.cine-theme-toggle-icon {
+  font-size: 1rem;
+}
+
+@media (max-width: 991.98px) {
+  .cine-theme-toggle {
+    width: 100%;
+    min-height: 36px;
+  }
+}
