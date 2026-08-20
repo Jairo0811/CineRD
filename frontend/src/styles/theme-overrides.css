@@ -1,0 +1,216 @@
+/* =========================================================
+   CINERD DARK MODE - COMPONENT OVERRIDES
+   Loaded after theme.css to resolve light Bootstrap utility
+   classes and legacy surfaces that remain intentionally light.
+   ========================================================= */
+
+html[data-theme="dark"] .bg-white,
+html[data-theme="dark"] .card-header.bg-white {
+  background-color: var(--cine-surface-1) !important;
+  border-color: var(--cine-line) !important;
+}
+
+html[data-theme="dark"] .bg-light:not(.actor-profile-kpi):not(.actor-filmography-panel):not(.actor-social-panel):not(.actor-social-link) {
+  background-color: var(--cine-surface-2) !important;
+  color: var(--cine-text-1) !important;
+}
+
+html[data-theme="dark"] .border,
+html[data-theme="dark"] .border-top,
+html[data-theme="dark"] .border-bottom,
+html[data-theme="dark"] .border-start,
+html[data-theme="dark"] .border-end {
+  border-color: var(--cine-line) !important;
+}
+
+html[data-theme="dark"] .table {
+  --bs-table-bg: var(--cine-surface-1);
+  --bs-table-color: var(--cine-text-1);
+  --bs-table-border-color: var(--cine-line);
+  --bs-table-striped-bg: var(--cine-surface-2);
+  --bs-table-striped-color: var(--cine-text-1);
+  --bs-table-hover-bg: var(--cine-surface-3);
+  --bs-table-hover-color: #ffffff;
+}
+
+html[data-theme="dark"] .pagination .page-link {
+  background: var(--cine-surface-1);
+  border-color: var(--cine-line);
+  color: var(--cine-text-2);
+}
+
+html[data-theme="dark"] .pagination .page-item.active .page-link,
+html[data-theme="dark"] .pagination .page-link:hover {
+  background: #1768c7;
+  border-color: #1768c7;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .alert-light {
+  background: var(--cine-surface-2);
+  border-color: var(--cine-line);
+  color: var(--cine-text-2);
+}
+
+html[data-theme="dark"] .alert-info {
+  background: #10273a;
+  border-color: #22577a;
+  color: #c8e8ff;
+}
+
+html[data-theme="dark"] .alert-success {
+  background: #102c23;
+  border-color: #245f4a;
+  color: #cbf4df;
+}
+
+html[data-theme="dark"] .alert-warning {
+  background: #302712;
+  border-color: #6f5a20;
+  color: #ffe8a3;
+}
+
+html[data-theme="dark"] .alert-danger {
+  background: #35171c;
+  border-color: #74313b;
+  color: #ffd2d8;
+}
+
+html[data-theme="dark"] .modal-header,
+html[data-theme="dark"] .modal-footer,
+html[data-theme="dark"] .offcanvas,
+html[data-theme="dark"] .offcanvas-header,
+html[data-theme="dark"] .offcanvas-body {
+  background: var(--cine-surface-1);
+  border-color: var(--cine-line);
+  color: var(--cine-text-1);
+}
+
+html[data-theme="dark"] .btn-close {
+  filter: invert(1) grayscale(100%) brightness(180%);
+}
+
+html[data-theme="dark"] .form-page-container .card-header,
+html[data-theme="dark"] .movie-profile-page .card-header {
+  background: var(--cine-surface-1) !important;
+  border-color: var(--cine-line) !important;
+  color: var(--cine-text-1);
+}
+
+html[data-theme="dark"] .form-page-container .img-thumbnail {
+  background: var(--cine-surface-2);
+  border-color: var(--cine-line);
+}
+
+html[data-theme="dark"] .verification-search,
+html[data-theme="dark"] .verification-card,
+html[data-theme="dark"] .claim-summary,
+html[data-theme="dark"] .claim-form,
+html[data-theme="dark"] .admin-review-card,
+html[data-theme="dark"] .admin-review-empty,
+html[data-theme="dark"] .verified-link-card {
+  background: var(--cine-surface-1) !important;
+  border-color: var(--cine-line) !important;
+  color: var(--cine-text-1) !important;
+}
+
+html[data-theme="dark"] .claim-summary-body,
+html[data-theme="dark"] .verified-link-account {
+  background: var(--cine-surface-2) !important;
+  border-color: var(--cine-line) !important;
+}
+
+html[data-theme="dark"] .admin-review-evidence {
+  background: var(--cine-surface-2);
+  color: var(--cine-text-2);
+}
+
+html[data-theme="dark"] .verified-link-footer,
+html[data-theme="dark"] .verified-link-account {
+  border-color: var(--cine-line) !important;
+}
+
+html[data-theme="dark"] .movie-profile-page > .card,
+html[data-theme="dark"] .movie-profile-page > .d-flex:first-child {
+  background: var(--cine-surface-1) !important;
+  border-color: var(--cine-line) !important;
+  color: var(--cine-text-1) !important;
+}
+
+/* Translation administration */
+.movie-translation-panel {
+  overflow: hidden;
+  border: 1px solid #cfdced;
+  border-radius: 18px;
+  background: #f8fbff;
+}
+
+.movie-translation-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.2rem;
+  border-bottom: 1px solid #dce6f2;
+  background: linear-gradient(135deg,#f8fbff,#edf5ff);
+}
+
+.movie-translation-header > div > span {
+  color: #0057b8;
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.movie-translation-header h3 {
+  margin: .25rem 0 .25rem;
+  color: #101828;
+  font-size: 1.05rem;
+  font-weight: 850;
+}
+
+.movie-translation-header p {
+  max-width: 680px;
+  margin: 0;
+  color: #667085;
+  font-size: .8rem;
+}
+
+.movie-translation-language {
+  display: grid;
+  min-width: 48px;
+  height: 34px;
+  place-items: center;
+  border-radius: 999px;
+  background: #0057b8;
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 850;
+}
+
+.movie-translation-body {
+  padding: 1.2rem;
+}
+
+html[data-theme="dark"] .movie-translation-panel {
+  background: var(--cine-surface-1);
+  border-color: var(--cine-line);
+}
+
+html[data-theme="dark"] .movie-translation-header {
+  background: linear-gradient(135deg,#111c2c,#13243a);
+  border-color: var(--cine-line);
+}
+
+html[data-theme="dark"] .movie-translation-header h3 {
+  color: var(--cine-text-1);
+}
+
+html[data-theme="dark"] .movie-translation-header p {
+  color: var(--cine-text-3) !important;
+}
+
+html[data-theme="dark"] .movie-translation-header > div > span {
+  color: #78adff;
+}
