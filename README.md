@@ -102,6 +102,23 @@ Se traducen los elementos de interfaz, etiquetas, navegación, estados y textos 
 - Identificación mediante `TMDbId`.
 - Detección de coincidencias y duplicados.
 
+### 📦 Catálogo portable para desarrollo
+
+CineRD puede versionar un snapshot reproducible del catálogo de desarrollo para que películas, talentos, repartos, traducciones y multimedia local puedan restaurarse al clonar el proyecto en otra computadora.
+
+Por seguridad, este snapshot **no incluye usuarios, contraseñas, tokens, verificaciones ni auditoría**.
+
+Comandos disponibles desde `backend/`:
+
+```bash
+npm run catalog:export
+npm run catalog:import
+npm run catalog:import:replace
+npm run setup:local
+```
+
+`catalog:export` genera `database/seeds/catalog.snapshot.json` y copia la multimedia referenciada a `database/seeds/media/`. `setup:local` crea/prepara la base, aplica todas las migraciones y restaura automáticamente el snapshot cuando está versionado en el repositorio.
+
 ---
 
 ## 🎨 Experiencia visual
@@ -165,6 +182,7 @@ La interfaz incluye:
 
 - Microsoft SQL Server
 - Migraciones SQL idempotentes
+- Snapshot portable del catálogo de desarrollo
 
 ### Integraciones
 
@@ -179,6 +197,10 @@ La interfaz incluye:
 ```text
 CineRD/
 ├── backend/
+│   ├── scripts/
+│   │   ├── exportCatalog.js
+│   │   ├── importCatalog.js
+│   │   └── setupLocal.js
 │   └── src/
 │       ├── config/
 │       ├── controllers/
@@ -196,7 +218,8 @@ CineRD/
 │       ├── styles/
 │       └── utils/
 ├── database/
-│   └── migrations/
+│   ├── migrations/
+│   └── seeds/
 └── README.md
 ```
 
@@ -211,36 +234,56 @@ git clone https://github.com/Jairo0811/CineRD.git
 cd CineRD
 ```
 
-### 2. Base de datos
+### 2. Variables de entorno
 
-Ejecuta el script base y luego las migraciones en orden:
+Crea `backend/.env` con base en `.env.example` y configura SQL Server, TMDb, JWT y las credenciales iniciales del administrador.
+
+### 3. Dependencias del backend
+
+```bash
+cd backend
+npm install
+```
+
+### 4. Preparación automática de SQL Server y catálogo
+
+Con SQL Server disponible y `backend/.env` configurado:
+
+```bash
+npm run setup:local
+```
+
+Este comando:
+
+1. crea `CRUDPeliculas` si no existe;
+2. aplica `CRUD-Peliculas.sql`;
+3. aplica las migraciones `002` a `006` en orden;
+4. restaura el snapshot del catálogo y su multimedia si están versionados.
+
+También puedes ejecutar manualmente:
 
 ```text
 CRUD-Peliculas.sql
 database/migrations/002_peliculas_metadatos.sql
 database/migrations/003_usuarios_roles_verificacion.sql
 database/migrations/004_actores_redes_sociales.sql
+database/migrations/005_verificacion_indices_activos.sql
+database/migrations/006_peliculas_traducciones.sql
 ```
 
-### 3. Variables de entorno
-
-Crea `backend/.env` con base en `.env.example` y configura SQL Server, TMDb, JWT y las credenciales iniciales del administrador.
-
-### 4. Dependencias y administrador inicial
+### 5. Crear administrador inicial
 
 ```bash
-cd backend
-npm install
 npm run seed:admin
 ```
 
-### 5. Backend
+### 6. Backend
 
 ```bash
 npm run dev
 ```
 
-### 6. Frontend
+### 7. Frontend
 
 En otra terminal:
 
@@ -252,6 +295,25 @@ npm run dev
 
 Frontend: `http://localhost:5173`  
 Backend: `http://localhost:3000`
+
+### 🔄 Llevar tu catálogo actual a otra PC
+
+En la computadora que ya contiene tus películas y talentos:
+
+```bash
+cd backend
+npm run catalog:export
+```
+
+Después agrega a Git los archivos generados en `database/seeds/`, haz commit y push. En cualquier otra PC bastará con clonar/actualizar el repositorio y ejecutar:
+
+```bash
+cd backend
+npm install
+npm run setup:local
+```
+
+La documentación detallada está en [`database/seeds/README.md`](database/seeds/README.md).
 
 ---
 
@@ -290,6 +352,7 @@ PATCH  /api/verificaciones/admin/vinculaciones/:id/revocar
 | ✅ | Top 10 de talentos |
 | ✅ | Internacionalización Español / Inglés |
 | ✅ | Light mode / Dark mode |
+| ✅ | Catálogo portable para desarrollo y demos |
 | 🟡 | Galerías multimedia |
 | 🟡 | Premios y nominaciones |
 | 🟡 | Series dominicanas |
@@ -306,7 +369,7 @@ PATCH  /api/verificaciones/admin/vinculaciones/:id/revocar
 
 🟢 **Versión 2.3.0 — En desarrollo activo**
 
-CineRD funciona actualmente como un portal cinematográfico dominicano con catálogo público, perfiles profesionales, autenticación, RBAC, verificación de talentos, Centro de Control, efemérides, internacionalización y soporte Light/Dark.
+CineRD funciona actualmente como un portal cinematográfico dominicano con catálogo público, perfiles profesionales, autenticación, RBAC, verificación de talentos, Centro de Control, efemérides, internacionalización, soporte Light/Dark y un mecanismo reproducible para transportar el catálogo de desarrollo entre equipos.
 
 La prioridad actual es consolidar CineRD como **archivo y plataforma de descubrimiento del cine dominicano** antes de abordar una futura etapa de distribución/streaming.
 
