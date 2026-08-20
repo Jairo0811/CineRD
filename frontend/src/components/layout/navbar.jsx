@@ -1,9 +1,12 @@
+import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 function Navbar() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const [tema, setTema] = useState(() => document.documentElement.dataset.theme || "light");
+
   const usuario = (() => {
     try {
       return JSON.parse(localStorage.getItem("cineRdUsuario") || "null");
@@ -16,6 +19,11 @@ function Navbar() {
   const esTalento = usuario?.rol === "TALENTO_VERIFICADO";
   const esUsuario = usuario?.rol === "USUARIO";
   const idiomaActual = i18n.language?.startsWith("en") ? "en" : "es";
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = tema;
+    localStorage.setItem("cineRdTheme", tema);
+  }, [tema]);
 
   const obtenerClaseNav = ({ isActive }) =>
     `nav-link cine-navbar-link ${isActive ? "active" : ""}`;
@@ -37,6 +45,14 @@ function Navbar() {
   const cambiarIdioma = (idioma) => {
     i18n.changeLanguage(idioma);
   };
+
+  const alternarTema = () => {
+    setTema((actual) => actual === "dark" ? "light" : "dark");
+  };
+
+  const etiquetaTema = tema === "dark"
+    ? (idiomaActual === "en" ? "Use light mode" : "Usar modo claro")
+    : (idiomaActual === "en" ? "Use dark mode" : "Usar modo oscuro");
 
   const etiquetaRol = esAdmin
     ? t("nav.admin")
@@ -68,6 +84,16 @@ function Navbar() {
           </ul>
 
           <div className="cine-navbar-actions">
+            <button
+              type="button"
+              className="cine-theme-toggle"
+              onClick={alternarTema}
+              aria-label={etiquetaTema}
+              title={etiquetaTema}
+            >
+              <span className="cine-theme-toggle-icon" aria-hidden="true">{tema === "dark" ? "☀️" : "🌙"}</span>
+            </button>
+
             <div className="dropdown">
               <button className="btn cine-btn-ghost btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label={t("nav.language")}>
                 {idiomaActual === "es" ? "🇩🇴 ES" : "🇺🇸 EN"}
