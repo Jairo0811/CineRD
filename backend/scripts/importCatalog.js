@@ -31,7 +31,7 @@ function getConfig(database = process.env.DB_DATABASE) {
 }
 
 function quoteIdentifier(value) {
-  return `[${String(value).replace(/]/g, "]] ").replace(/\] \]/g, "]]" )}]`;
+  return `[${String(value).replace(/]/g, "]]" )}]`;
 }
 
 function toSqlLiteral(value) {
@@ -41,7 +41,6 @@ function toSqlLiteral(value) {
     if (!Number.isFinite(value)) throw new Error(`Valor numérico inválido: ${value}`);
     return String(value);
   }
-  if (value instanceof Date) return `N'${value.toISOString().replace(/'/g, "''")}'`;
 
   return `N'${String(value).replace(/'/g, "''")}'`;
 }
@@ -54,18 +53,16 @@ async function tableExists(transaction, table) {
   return Boolean(result.recordset[0]?.Existe);
 }
 
-async function tableHasIdentity(transaction, table) {
+async function getIdentityColumn(transaction, table) {
   const request = new sql.Request(transaction);
   const result = await request
     .input("table", sql.NVarChar, table)
     .query(`
-      SELECT CASE WHEN EXISTS (
-        SELECT 1
-        FROM sys.identity_columns
-        WHERE object_id = OBJECT_ID(N'dbo.' + @table)
-      ) THEN 1 ELSE 0 END AS TieneIdentity
+      SELECT TOP 1 c.name AS Nombre
+      FROM sys.identity_columns c
+      WHERE c.object_id = OBJECT_ID(N'dbo.' + @table)
     `);
-  return Boolean(result.recordset[0]?.TieneIdentity);
+  return result.recordset[0]?.Nombre || null;
 }
 
 async function countRows(pool, table) {
@@ -73,14 +70,15 @@ async function countRows(pool, table) {
     .input("table", sql.NVarChar, table)
     .query("SELECT CASE WHEN OBJECT_ID(N'dbo.' + @table, N'U') IS NULL THEN 0 ELSE 1 END AS Existe");
   if (!exists.recordset[0]?.Existe) return 0;
-  const result = await pool.request().query(`SELECT COUNT_BIG(1) AS Total FROM dbo.[${table}]`);
+
+  const result = await pool.request().query(`SELECT COUNT_BIG(1) AS Total FROM dbo.${quoteIdentifier(table)}`);
   return Number(result.recordset[0]?.Total || 0);
 }
 
 async function deleteExistingCatalog(transaction) {
   for (const table of DELETE_ORDER) {
     if (!(await tableExists(transaction, table))) continue;
-    await new sql.Request(transaction).query(`DELETE FROM dbo.[${table}]`);
+    await new sql.Request(transaction).query(`DELETE FROM dbo.${quoteIdentifier(table)}`);
   }
 }
 
@@ -88,30 +86,26 @@ async function insertRows(transaction, table, rows) {
   if (!rows.length || !(await tableExists(transaction, table))) return;
 
   const columns = Object.keys(rows[0]);
-  const hasIdentity = await tableHasIdentity(transaction, table);
-  const identityColumn = hasIdentity
-    ? (await new sql.Request(transaction).query(`
-        SELECT TOP 1 c.name AS Nombre
-        FROM sys.identity_columns c
-        WHERE c.object_id = OBJECT_ID(N'dbo.[${table}]')
-      `)).recordset[0]?.Nombre
-    : null;
-
+  const identityColumn = await getIdentityColumn(transaction, table);
   const shouldEnableIdentity = identityColumn && columns.includes(identityColumn);
+  const qualifiedTable = `dbo.${quoteIdentifier(table)}`;
+
   if (shouldEnableIdentity) {
-    await new sql.Request(transaction).query(`SET IDENTITY_INSERT dbo.[${table}] ON`);
+    await new sql.Request(transaction).query(`SET IDENTITY_INSERT ${qualifiedTable} ON`);
   }
 
   try {
     for (const row of rows) {
       const rowColumns = Object.keys(row);
-      const names = rowColumns.map((column) => `[${column.replace(/]/g, "]]" )}]`).join(", ");
+      const names = rowColumns.map(quoteIdentifier).join(", ");
       const values = rowColumns.map((column) => toSqlLiteral(row[column])).join(", ");
-      await new sql.Request(transaction).query(`INSERT INTO dbo.[${table}] (${names}) VALUES (${values})`);
+      await new sql.Request(transaction).query(
+        `INSERT INTO ${qualifiedTable} (${names}) VALUES (${values})`
+      );
     }
   } finally {
     if (shouldEnableIdentity) {
-      await new sql.Request(transaction).query(`SET IDENTITY_INSERT dbo.[${table}] OFF`);
+      await new sql.Request(transaction).query(`SET IDENTITY_INSERT ${qualifiedTable} OFF`);
     }
   }
 }
@@ -142,7 +136,10 @@ function restoreMedia() {
 
 async function main() {
   if (!fs.existsSync(SNAPSHOT_FILE)) {
-    throw new Error("No existe database/seeds/catalog.snapshot.json. Ejecuta primero npm run catalog:export en la PC que tiene el catálogo completo.");
+    throw new Error(
+      "No existe database/seeds/catalog.snapshot.json. " +
+      "Ejecuta primero npm run catalog:export en la PC que tiene el catálogo completo."
+    );
   }
 
   if (!process.env.DB_SERVER || !process.env.DB_DATABASE) {
