@@ -44,7 +44,16 @@ const obtenerActores = async (req, res) => {
              A.FechaNacimiento,A.AnioNacimiento,A.Sexo,A.EstaVivo,A.FechaFallecimiento,A.Foto,
              A.InstagramUrl,A.FacebookUrl,A.TikTokUrl,A.YouTubeUrl,A.SpotifyUrl,A.XUrl,A.SitioWebUrl,
              CAST(CASE WHEN TV.ActorId IS NULL THEN 0 ELSE 1 END AS bit) AS EsVerificado,
-             COUNT(AP.PeliculaId) AS CantidadPeliculas
+             COUNT(AP.PeliculaId) AS CantidadPeliculas,
+             (
+               SELECT COUNT(*)
+               FROM Peliculas PD
+               WHERE LOWER(LTRIM(RTRIM(PD.Director))) = LOWER(LTRIM(RTRIM(A.NombreCompleto)))
+                  OR (
+                    A.NombreArtistico IS NOT NULL
+                    AND LOWER(LTRIM(RTRIM(PD.Director))) = LOWER(LTRIM(RTRIM(A.NombreArtistico)))
+                  )
+             ) AS CantidadPeliculasDirigidas
       FROM Actores A
       LEFT JOIN ActoresPeliculas AP ON A.Id = AP.ActorId
       LEFT JOIN (
@@ -179,13 +188,13 @@ const eliminarActor = async (req, res) => {
     const id = Number(req.params.id);
     if (!Number.isInteger(id) || id <= 0) return res.status(400).json({ mensaje: "El identificador del actor no es válido" });
     await transaction.begin();
-    await new sql.Request(transaction).input("ActorId", sql.Int, id).query(`DELETE FROM ActoresPeliculas WHERE ActorId = @ActorId`);
-    const resultado = await new sql.Request(transaction).input("Id", sql.Int, id).query(`DELETE FROM Actores OUTPUT DELETED.* WHERE Id = @Id`);
+    await new sql.Request(transaction).input("ActorId",sql.Int,id).query(`DELETE FROM ActoresPeliculas WHERE ActorId=@ActorId`);
+    const resultado = await new sql.Request(transaction).input("Id",sql.Int,id).query(`DELETE FROM Actores OUTPUT DELETED.* WHERE Id=@Id`);
     if (!resultado.recordset.length) { await transaction.rollback(); return res.status(404).json({ mensaje: "Actor no encontrado" }); }
     await transaction.commit();
     res.json({ mensaje: "Actor eliminado correctamente", actor: resultado.recordset[0] });
   } catch (error) {
-    try { await transaction.rollback(); } catch (rollbackError) { console.error("Error al revertir la transacción:", rollbackError); }
+    if (transaction._aborted !== true) { try { await transaction.rollback(); } catch {} }
     console.error("Error al eliminar el actor:", error);
     res.status(500).json({ mensaje: "Error al eliminar el actor", error: error.message });
   }
