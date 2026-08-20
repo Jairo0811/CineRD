@@ -102,13 +102,46 @@ Se traducen los elementos de interfaz, etiquetas, navegación, estados y textos 
 - Identificación mediante `TMDbId`.
 - Detección de coincidencias y duplicados.
 
-### 📦 Catálogo portable para desarrollo
+---
 
-CineRD puede versionar un snapshot reproducible del catálogo de desarrollo para que películas, talentos, repartos y traducciones puedan restaurarse al clonar el proyecto en otra computadora. Las fotografías, pósteres y backdrops continúan viviendo en `backend/uploads` y se sincronizan mediante Git.
+## 📦 Catálogo portable para desarrollo
 
-Por seguridad, este snapshot **no incluye usuarios, contraseñas, tokens, verificaciones ni auditoría**.
+CineRD incorpora un mecanismo reproducible para transportar el catálogo de desarrollo entre computadoras sin copiar manualmente la base de datos ni versionar información sensible.
 
-Comandos disponibles desde `backend/`:
+### Qué se exporta
+
+El snapshot portable incluye:
+
+- `Actores`
+- `Peliculas`
+- `ActoresPeliculas`
+- `PeliculaTraducciones`
+
+La multimedia continúa almacenándose en:
+
+```text
+backend/uploads/actores/
+backend/uploads/peliculas/
+```
+
+El exportador valida que las fotografías, pósteres y backdrops referenciados por la base existan realmente en `backend/uploads`. Git se encarga de transportar esos archivos junto con el repositorio.
+
+### Qué NO se exporta
+
+Por seguridad, el snapshot no incluye:
+
+- `Usuarios`
+- contraseñas
+- `RefreshTokens`
+- `SolicitudesVerificacion`
+- `TalentosUsuarios`
+- `AuditLogs`
+- secretos del archivo `.env`
+- JWT o claves privadas
+
+### Comandos disponibles
+
+Desde `backend/`:
 
 ```bash
 npm run catalog:export
@@ -117,7 +150,33 @@ npm run catalog:import:replace
 npm run setup:local
 ```
 
-`catalog:export` genera `database/seeds/catalog.snapshot.json` y valida que la multimedia referenciada exista en `backend/uploads`. `setup:local` crea/prepara la base, aplica todas las migraciones y restaura automáticamente el snapshot cuando está versionado en el repositorio.
+#### `npm run catalog:export`
+
+Genera o actualiza:
+
+```text
+database/seeds/catalog.snapshot.json
+```
+
+Debe ejecutarse en la computadora que contiene el catálogo completo y actualizado.
+
+#### `npm run catalog:import`
+
+Restaura el snapshot en una base vacía. Si detecta películas o talentos existentes, se detiene para evitar sobrescribir información accidentalmente.
+
+#### `npm run catalog:import:replace`
+
+Reemplaza intencionalmente el catálogo local existente por el snapshot versionado. Debe utilizarse únicamente cuando se desea descartar el catálogo local actual.
+
+#### `npm run setup:local`
+
+Automatiza una instalación nueva:
+
+1. crea `CRUDPeliculas` si no existe;
+2. ejecuta `CRUD-Peliculas.sql`;
+3. aplica las migraciones `002` a `006`;
+4. importa `database/seeds/catalog.snapshot.json` si existe;
+5. deja la base preparada para iniciar el backend.
 
 ---
 
@@ -200,19 +259,23 @@ CineRD/
 │   ├── scripts/
 │   │   ├── exportCatalog.js
 │   │   ├── importCatalog.js
-│   │   └── setupLocal.js
+│   │   ├── setupLocal.js
+│   │   └── seedAdmin.js
+│   ├── uploads/
+│   │   ├── actores/
+│   │   └── peliculas/
 │   └── src/
 │       ├── config/
 │       ├── controllers/
 │       ├── middlewares/
 │       ├── routes/
 │       ├── services/
-│       ├── utils/
-│       └── uploads/
+│       └── utils/
 ├── frontend/
 │   └── src/
 │       ├── assets/
 │       ├── components/
+│       ├── i18n/
 │       ├── pages/
 │       ├── services/
 │       ├── styles/
@@ -220,47 +283,82 @@ CineRD/
 ├── database/
 │   ├── migrations/
 │   └── seeds/
+│       ├── catalog.snapshot.json
+│       └── README.md
+├── CRUD-Peliculas.sql
 └── README.md
 ```
 
 ---
 
-## ⚙️ Instalación
+## ⚙️ Instalación completa
 
-### 1. Clonar
+### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/Jairo0811/CineRD.git
 cd CineRD
 ```
 
-### 2. Variables de entorno
+### 2. Configurar variables de entorno
 
-Crea `backend/.env` con base en `.env.example` y configura SQL Server, TMDb, JWT y las credenciales iniciales del administrador.
+Crea:
 
-### 3. Dependencias del backend
+```text
+backend/.env
+```
+
+usando como referencia:
+
+```text
+backend/.env.example
+```
+
+Ejemplo:
+
+```env
+PORT=3000
+FRONTEND_URL=http://localhost:5173
+
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
+DB_SERVER=localhost
+DB_DATABASE=CRUDPeliculas
+DB_ENCRYPT=false
+DB_TRUST_CERT=true
+
+TMDB_ACCESS_TOKEN=your_tmdb_read_access_token
+TMDB_BASE_URL=https://api.themoviedb.org/3
+TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p
+
+JWT_ACCESS_SECRET=change_this_for_a_long_random_secret
+JWT_ACCESS_EXPIRES_IN=15m
+
+SEED_ADMIN_NAME=Administrador CineRD
+SEED_ADMIN_EMAIL=admin@example.com
+SEED_ADMIN_PASSWORD=change_this_password
+```
+
+> Nunca subas `backend/.env` al repositorio.
+
+### 3. Instalar dependencias del backend
 
 ```bash
 cd backend
 npm install
 ```
 
-### 4. Preparación automática de SQL Server y catálogo
+### 4. Preparar SQL Server y restaurar catálogo
 
-Con SQL Server disponible y `backend/.env` configurado:
+Con SQL Server disponible y `.env` correctamente configurado:
 
 ```bash
 npm run setup:local
 ```
 
-Este comando:
+Este es el comando recomendado para una computadora nueva.
 
-1. crea `CRUDPeliculas` si no existe;
-2. aplica `CRUD-Peliculas.sql`;
-3. aplica las migraciones `002` a `006` en orden;
-4. restaura el snapshot del catálogo si está versionado; las imágenes ya viajan mediante `backend/uploads`.
-
-También puedes ejecutar manualmente:
+Internamente ejecuta:
 
 ```text
 CRUD-Peliculas.sql
@@ -271,19 +369,27 @@ database/migrations/005_verificacion_indices_activos.sql
 database/migrations/006_peliculas_traducciones.sql
 ```
 
+y posteriormente restaura el snapshot del catálogo si está disponible.
+
 ### 5. Crear administrador inicial
 
 ```bash
 npm run seed:admin
 ```
 
-### 6. Backend
+### 6. Ejecutar backend
 
 ```bash
 npm run dev
 ```
 
-### 7. Frontend
+Backend:
+
+```text
+http://localhost:3000
+```
+
+### 7. Instalar y ejecutar frontend
 
 En otra terminal:
 
@@ -293,35 +399,143 @@ npm install
 npm run dev
 ```
 
-Frontend: `http://localhost:5173`  
-Backend: `http://localhost:3000`
+Frontend:
 
-### 🔄 Llevar tu catálogo actual a otra PC
+```text
+http://localhost:5173
+```
 
-En la computadora que ya contiene tus películas y talentos:
+---
 
-```bash
+## 🔄 Sincronizar el catálogo entre PCs
+
+### PC principal: exportar el catálogo actual
+
+Cuando agregues o modifiques películas, talentos, repartos o traducciones y quieras llevar esos datos a otra computadora:
+
+```powershell
 cd backend
 npm run catalog:export
 ```
 
-Después versiona el snapshot y cualquier imagen nueva:
+El comando genera o actualiza:
 
-```bash
-git add database/seeds/catalog.snapshot.json backend/uploads
-git commit -m "data: update CineRD development catalog"
-git push
+```text
+database/seeds/catalog.snapshot.json
 ```
 
-En cualquier otra PC bastará con clonar/actualizar el repositorio y ejecutar:
+Después vuelve a la raíz del repositorio:
 
-```bash
+```powershell
+cd ..
+git status
+```
+
+Versiona el snapshot y cualquier multimedia nueva:
+
+```powershell
+git add database/seeds/catalog.snapshot.json backend/uploads
+git commit -m "data: update CineRD development catalog"
+git push origin main
+```
+
+### Segunda PC: recibir el catálogo
+
+Actualiza el proyecto:
+
+```powershell
+git switch main
+git pull origin main
+```
+
+Luego:
+
+```powershell
 cd backend
 npm install
 npm run setup:local
 ```
 
-La documentación detallada está en [`database/seeds/README.md`](database/seeds/README.md).
+Con esto la segunda computadora obtiene:
+
+- estructura actualizada de SQL Server;
+- talentos;
+- películas;
+- repartos;
+- traducciones cinematográficas;
+- fotografías y pósteres versionados en `backend/uploads`.
+
+### Si la segunda PC ya tiene datos
+
+`catalog:import` no sobrescribe una base que ya contenga películas o talentos.
+
+Si deseas reemplazar expresamente el catálogo local:
+
+```powershell
+npm run catalog:import:replace
+```
+
+Este comando elimina el catálogo local de desarrollo y restaura el snapshot versionado, por lo que debe utilizarse con cuidado.
+
+### Mantener actualizado el snapshot
+
+Cada vez que el catálogo principal cambie significativamente:
+
+```powershell
+cd backend
+npm run catalog:export
+cd ..
+git add database/seeds/catalog.snapshot.json backend/uploads
+git commit -m "data: refresh CineRD catalog snapshot"
+git push origin main
+```
+
+---
+
+## 🛡️ Qué se versiona y qué no
+
+### Sí se versiona
+
+```text
+database/seeds/catalog.snapshot.json
+backend/uploads/actores/
+backend/uploads/peliculas/
+database/migrations/
+CRUD-Peliculas.sql
+```
+
+### No se versiona
+
+```text
+backend/.env
+backend/node_modules/
+frontend/node_modules/
+frontend/dist/
+```
+
+Tampoco se incluyen en el snapshot cuentas de usuario, contraseñas, tokens, solicitudes de verificación ni registros de auditoría.
+
+---
+
+## 🧪 Comandos de desarrollo
+
+Desde `backend/`:
+
+```bash
+npm run dev
+npm run seed:admin
+npm run catalog:export
+npm run catalog:import
+npm run catalog:import:replace
+npm run setup:local
+```
+
+Desde `frontend/`:
+
+```bash
+npm run dev
+npm run build
+```
 
 ---
 
