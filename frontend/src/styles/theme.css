@@ -220,6 +220,28 @@ html[data-theme="dark"] .admin-dashboard-action:not(.primary):hover {
   color: #8bbcff;
 }
 
+html[data-theme="dark"] .admin-dashboard-overview article {
+  background: linear-gradient(180deg, #101827, #131e2f) !important;
+  border-color: var(--cine-line) !important;
+  box-shadow: var(--cine-shadow-theme);
+}
+
+html[data-theme="dark"] .admin-dashboard-overview article:after {
+  background: rgba(76, 146, 255, .08);
+}
+
+html[data-theme="dark"] .admin-dashboard-overview span {
+  color: #78adff;
+}
+
+html[data-theme="dark"] .admin-dashboard-overview strong {
+  color: var(--cine-text-1) !important;
+}
+
+html[data-theme="dark"] .admin-dashboard-overview small {
+  color: var(--cine-text-3) !important;
+}
+
 html[data-theme="dark"] .admin-dashboard-action-icon,
 html[data-theme="dark"] .admin-kpi-icon,
 html[data-theme="dark"] .admin-ranking-position,
