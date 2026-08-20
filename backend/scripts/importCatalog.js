@@ -5,8 +5,6 @@ require("dotenv").config();
 
 const REPO_ROOT = path.resolve(__dirname, "../..");
 const SNAPSHOT_FILE = path.join(REPO_ROOT, "database", "seeds", "catalog.snapshot.json");
-const MEDIA_DIR = path.join(REPO_ROOT, "database", "seeds", "media");
-const BACKEND_ROOT = path.resolve(__dirname, "..");
 
 const INSERT_ORDER = [
   "Actores",
@@ -110,30 +108,6 @@ async function insertRows(transaction, table, rows) {
   }
 }
 
-function restoreMedia() {
-  if (!fs.existsSync(MEDIA_DIR)) return { copied: 0 };
-
-  let copied = 0;
-  const walk = (directory) => {
-    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
-      const source = path.join(directory, entry.name);
-      if (entry.isDirectory()) {
-        walk(source);
-        continue;
-      }
-
-      const relative = path.relative(MEDIA_DIR, source);
-      const destination = path.join(BACKEND_ROOT, relative);
-      fs.mkdirSync(path.dirname(destination), { recursive: true });
-      fs.copyFileSync(source, destination);
-      copied += 1;
-    }
-  };
-
-  walk(MEDIA_DIR);
-  return { copied };
-}
-
 async function main() {
   if (!fs.existsSync(SNAPSHOT_FILE)) {
     throw new Error(
@@ -183,9 +157,13 @@ async function main() {
       throw error;
     }
 
-    const media = restoreMedia();
-    console.log(`✓ Multimedia restaurada: ${media.copied} archivo(s)`);
+    const missingMedia = snapshot.media?.missing || [];
+    if (missingMedia.length) {
+      console.warn(`⚠ El snapshot reporta ${missingMedia.length} archivo(s) multimedia faltante(s) en la PC de origen.`);
+    }
+
     console.log("\n✓ Catálogo de CineRD restaurado correctamente.");
+    console.log("✓ Las imágenes se sirven desde backend/uploads, que debe estar sincronizado mediante Git.");
   } finally {
     await pool.close();
   }
