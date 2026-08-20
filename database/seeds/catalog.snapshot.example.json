@@ -1,0 +1,17 @@
+{
+  "format": "CineRD.CatalogSnapshot",
+  "version": 1,
+  "generatedAtUtc": "2026-08-20T00:00:00.000Z",
+  "sourceDatabase": "CRUDPeliculas",
+  "tables": {
+    "Actores": [],
+    "Peliculas": [],
+    "ActoresPeliculas": [],
+    "PeliculaTraducciones": []
+  },
+  "media": {
+    "referenced": 0,
+    "availableLocally": 0,
+    "missing": []
+  }
+}

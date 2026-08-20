@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "seed:admin": "node scripts/seedAdmin.js"
+    "seed:admin": "node scripts/seedAdmin.js",
+    "catalog:export": "node scripts/exportCatalog.js",
+    "catalog:import": "node scripts/importCatalog.js",
+    "catalog:import:replace": "node scripts/importCatalog.js --replace",
+    "setup:local": "node scripts/setupLocal.js"
   },
   "keywords": [],
   "author": "",

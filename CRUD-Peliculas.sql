@@ -177,6 +177,13 @@ BEGIN
 END
 GO
 
+IF COL_LENGTH(N'dbo.ActoresPeliculas', N'OrdenCreditos') IS NULL
+BEGIN
+    ALTER TABLE dbo.ActoresPeliculas
+    ADD OrdenCreditos INT NULL;
+END
+GO
+
 /* =========================================================
    Limpieza de géneros existentes
    ========================================================= */
@@ -242,11 +249,8 @@ SELECT
     ActorId,
     Personaje,
     EsPrincipal,
-    TipoParticipacion
+    TipoParticipacion,
+    OrdenCreditos
 FROM dbo.ActoresPeliculas
 ORDER BY PeliculaId, ActorId;
 GO
-
-
-ALTER TABLE ActoresPeliculas
-ADD OrdenCreditos INT NULL;
