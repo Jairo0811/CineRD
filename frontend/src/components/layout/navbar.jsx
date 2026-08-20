@@ -60,6 +60,8 @@ function Navbar() {
       ? t("nav.verifiedTalent")
       : t("nav.user");
 
+  const etiquetaBusqueda = idiomaActual === "en" ? "Search" : "Buscar";
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark sticky-top cine-navbar cine-navbar-cinematic">
       <div className="container">
@@ -84,6 +86,8 @@ function Navbar() {
           </ul>
 
           <div className="cine-navbar-actions">
+            <NavLink className="btn cine-btn-ghost btn-sm" to="/buscar" onClick={cerrarMenuMovil} aria-label={etiquetaBusqueda} title={etiquetaBusqueda}>🔎</NavLink>
+
             <button
               type="button"
               className="cine-theme-toggle"
