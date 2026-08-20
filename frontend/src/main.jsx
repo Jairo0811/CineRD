@@ -20,6 +20,7 @@ import "./styles/verification-badges.css";
 import "./styles/theme.css";
 import "./styles/theme-overrides.css";
 import "./styles/search.css";
+import "./styles/movie-credits.css";
 
 import App from "./App.jsx";
 
