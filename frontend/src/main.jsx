@@ -19,6 +19,7 @@ import "./styles/actor-profile.css";
 import "./styles/verification-badges.css";
 import "./styles/theme.css";
 import "./styles/theme-overrides.css";
+import "./styles/search.css";
 
 import App from "./App.jsx";
 
