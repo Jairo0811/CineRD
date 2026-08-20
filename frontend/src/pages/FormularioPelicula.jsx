@@ -2,6 +2,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import api from "../services/api";
 import PeliculaTraduccionesPanel from "../components/peliculas/PeliculaTraduccionesPanel";
+import PeliculaCreditosPanel from "../components/peliculas/PeliculaCreditosPanel";
 
 const generos = [
   "Acción", "Animación", "Aventura", "Biográfica", "Ciencia ficción",
@@ -253,24 +254,20 @@ function FormularioPelicula() {
         </div>
 
         <div className="mb-3"><label className="form-label">Título</label><input type="text" name="Titulo" className="form-control" value={formulario.Titulo} onChange={manejarCambio} required/></div>
-
         <div className="mb-3"><label className="form-label">Género</label><select name="Genero" className="form-select" value={formulario.Genero} onChange={manejarCambio} required><option value="">Seleccione un género</option>{generos.map((genero)=><option key={genero} value={genero}>{genero}</option>)}</select></div>
-
         <div className="mb-3"><label className="form-label">Director</label><select name="Director" className="form-select" value={formulario.Director} onChange={manejarCambio}><option value="">Seleccione un director</option>{directorImportadoNoRegistrado&&<option value={formulario.Director}>{formulario.Director} — Importado desde TMDb</option>}{directores.map((director)=><option key={director.Id} value={director.NombreCompleto}>{director.NombreCompleto}{director.NombreArtistico?` (${director.NombreArtistico})`:""}</option>)}</select>{directorImportadoNoRegistrado&&<small className="text-muted">Este director todavía no está registrado como talento en CineRD.</small>}</div>
-
         <div className="mb-3"><label className="form-label">Productora</label><input type="text" name="Productora" className="form-control" value={formulario.Productora} onChange={manejarCambio}/></div>
-
         <div className="mb-3"><label className="form-label">Fecha de estreno</label><input type="date" name="FechaEstreno" className="form-control" value={formulario.FechaEstreno} onChange={manejarCambio} required/></div>
-
         <div className="mb-3"><label className="form-label">Sinopsis</label><textarea name="Sinopsis" className="form-control" rows="5" maxLength="5000" value={formulario.Sinopsis} onChange={manejarCambio} placeholder="Resumen argumental de la película..."/><div className="form-text">Se muestra en la ficha pública de la película. Puedes editar la información importada desde TMDb.</div></div>
-
         <div className="mb-3"><label className="form-label">Idioma original</label><select name="IdiomaOriginal" className="form-select" value={formulario.IdiomaOriginal} onChange={manejarCambio}><option value="">Seleccione el idioma original</option>{IDIOMAS.map(([codigo,nombre])=><option key={codigo} value={codigo}>{nombre} ({codigo})</option>)}</select><div className="form-text">TMDb utiliza códigos ISO como es, en o fr.</div></div>
-
         <div className="mb-3"><label className="form-label">Portada de la película</label><input type="file" name="Foto" className="form-control" accept="image/jpeg,image/png,image/webp" onChange={manejarFoto}/><small className="text-muted">Puedes reemplazar manualmente la portada obtenida desde TMDb.</small></div>
 
         {vistaPrevia&&<div className="mb-3 text-center"><p className="text-muted mb-2">Vista previa</p><img src={vistaPrevia} alt="Vista previa de la película" className="img-thumbnail" style={{width:"180px",height:"260px",objectFit:"cover"}}/></div>}
 
-        {esEdicion ? <PeliculaTraduccionesPanel peliculaId={Number(id)} idiomaOriginal={formulario.IdiomaOriginal || "es"} /> : <div className="alert alert-light border mt-4 mb-0"><strong>🌐 Traducciones:</strong> guarda primero la película y luego podrás registrar su título, sinopsis y eslogan localizados desde la pantalla de edición.</div>}
+        {esEdicion ? <>
+          <PeliculaTraduccionesPanel peliculaId={Number(id)} idiomaOriginal={formulario.IdiomaOriginal || "es"} />
+          <PeliculaCreditosPanel peliculaId={Number(id)} />
+        </> : <div className="alert alert-light border mt-4 mb-0"><strong>🌐 Datos avanzados:</strong> guarda primero la película y luego podrás registrar traducciones y créditos profesionales estructurados desde la pantalla de edición.</div>}
 
         <div className="d-flex gap-2 flex-wrap mt-4"><button type="submit" className="btn btn-primary">Guardar</button><Link to="/peliculas" className="btn btn-secondary">Cancelar</Link></div>
       </div>
