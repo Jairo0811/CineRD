@@ -71,6 +71,8 @@ function Navbar() {
       : t("nav.user");
 
   const etiquetaBusqueda = idiomaActual === "en" ? "Search" : "Buscar";
+  const etiquetaCreditos = idiomaActual === "en" ? "Credit claims" : "Créditos";
+  const etiquetaReclamarCredito = idiomaActual === "en" ? "Claim a credit" : "Reclamar crédito";
   const banderaActual = idiomaActual === "es" ? banderaDo : banderaUs;
 
   const estiloBandera = {
@@ -148,11 +150,18 @@ function Navbar() {
               </li>
             )}
             {esAdmin && (
-              <li className="nav-item">
-                <NavLink className={obtenerClaseNav} to="/admin/verificaciones" onClick={cerrarMenuMovil}>
-                  {t("nav.verifications")}
-                </NavLink>
-              </li>
+              <>
+                <li className="nav-item">
+                  <NavLink className={obtenerClaseNav} to="/admin/verificaciones" onClick={cerrarMenuMovil}>
+                    {t("nav.verifications")}
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className={obtenerClaseNav} to="/admin/solicitudes-creditos" onClick={cerrarMenuMovil}>
+                    {etiquetaCreditos}
+                  </NavLink>
+                </li>
+              </>
             )}
           </ul>
 
@@ -254,6 +263,13 @@ function Navbar() {
                       {t("nav.dashboard")}
                     </NavLink>
                   </li>
+                  {esTalento && (
+                    <li>
+                      <NavLink className="dropdown-item" to="/mi-perfil/reclamar-credito" onClick={cerrarMenuMovil}>
+                        {etiquetaReclamarCredito}
+                      </NavLink>
+                    </li>
+                  )}
                   {esUsuario && (
                     <li>
                       <NavLink className="dropdown-item" to="/verificar-perfil" onClick={cerrarMenuMovil}>
@@ -262,11 +278,18 @@ function Navbar() {
                     </li>
                   )}
                   {esAdmin && (
-                    <li>
-                      <NavLink className="dropdown-item" to="/admin/verificaciones" onClick={cerrarMenuMovil}>
-                        {t("nav.manageVerifications")}
-                      </NavLink>
-                    </li>
+                    <>
+                      <li>
+                        <NavLink className="dropdown-item" to="/admin/verificaciones" onClick={cerrarMenuMovil}>
+                          {t("nav.manageVerifications")}
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink className="dropdown-item" to="/admin/solicitudes-creditos" onClick={cerrarMenuMovil}>
+                          {etiquetaCreditos}
+                        </NavLink>
+                      </li>
+                    </>
                   )}
                   <li><hr className="dropdown-divider" /></li>
                   <li>
