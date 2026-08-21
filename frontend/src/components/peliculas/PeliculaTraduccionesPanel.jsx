@@ -9,13 +9,9 @@ const PLANTILLA = {
   FuenteReferencia: "",
 };
 
-function PeliculaTraduccionesPanel({
-  peliculaId,
-  idiomaOriginal = "es",
-  tituloOriginal = "",
-  sinopsisOriginal = "",
-}) {
+function PeliculaTraduccionesPanel({ peliculaId, idiomaOriginal = "es" }) {
   const [traduccion, setTraduccion] = useState(PLANTILLA);
+  const [contenidoOriginal, setContenidoOriginal] = useState({ Titulo: "", Sinopsis: "" });
   const [cargando, setCargando] = useState(true);
   const [guardando, setGuardando] = useState(false);
   const [mensaje, setMensaje] = useState("");
@@ -29,9 +25,17 @@ function PeliculaTraduccionesPanel({
       try {
         setCargando(true);
         setMensaje("");
-        const { data } = await api.get(`/peliculas/${peliculaId}/traducciones`);
-        const existente = (data || []).find((item) => item.Idioma === idiomaDestino);
-        if (activo) setTraduccion(existente ? {
+        const [{ data: traducciones }, { data: pelicula }] = await Promise.all([
+          api.get(`/peliculas/${peliculaId}/traducciones`),
+          api.get(`/peliculas/${peliculaId}`),
+        ]);
+        const existente = (traducciones || []).find((item) => item.Idioma === idiomaDestino);
+        if (!activo) return;
+        setContenidoOriginal({
+          Titulo: pelicula?.Titulo || "",
+          Sinopsis: pelicula?.Sinopsis || "",
+        });
+        setTraduccion(existente ? {
           Titulo: existente.Titulo || "",
           Sinopsis: existente.Sinopsis || "",
           Eslogan: existente.Eslogan || "",
@@ -101,11 +105,11 @@ function PeliculaTraduccionesPanel({
           </div>
           <div className="mb-3">
             <label className="form-label">Título original</label>
-            <input className="form-control" value={tituloOriginal || "Sin título registrado"} readOnly />
+            <input className="form-control" value={contenidoOriginal.Titulo || "Sin título registrado"} readOnly />
           </div>
           <div>
             <label className="form-label">Sinopsis original</label>
-            <textarea className="form-control" rows="4" value={sinopsisOriginal || "Sin sinopsis registrada"} readOnly />
+            <textarea className="form-control" rows="4" value={contenidoOriginal.Sinopsis || "Sin sinopsis registrada"} readOnly />
           </div>
         </div>
       </div>
