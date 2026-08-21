@@ -119,7 +119,7 @@ function PerfilActor() {
         <div className="actor-profile-meta"><span>{profesionTraducida}</span>{nacimiento && <span>{t("talentProfile.born")}: {nacimiento}</span>}{edad != null && <span>{t("talentProfile.age", { age: edad })}</span>}{fallecimiento && <span>{t("talentProfile.died")}: {fallecimiento}</span>}<span>{actor.EstaVivo ? t("talentProfile.active") : t("talentProfile.inMemoriam")}</span>{actor.EsVerificado && <span className="cinerd-verified-label">✓ {t("talentProfile.verifiedProfile")}</span>}</div>
       </div>
       <div className="actor-profile-actions">
-        <a href="#filmografia" className="btn btn-outline-light">🎬 {t("talentProfile.viewFilmography")}</a>
+        <a href="#filmografia" className="btn btn-outline-light">🎬 {t("talents.viewFilmography")}</a>
         {esAdmin && <Link to={`/actores/editar/${actor.Id}`} className="btn btn-light">{t("talentProfile.edit")}</Link>}
         {esUsuario && !actor.EsVerificado && <Link to={`/actores/${actor.Id}/reclamar`} className="btn btn-primary">{t("talentProfile.thisIsMe")}</Link>}
         {esMiPerfil && <Link to="/mi-perfil/reclamar-credito" className="btn btn-primary">➕ Reclamar participación</Link>}
