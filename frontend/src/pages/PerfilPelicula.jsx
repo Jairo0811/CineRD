@@ -12,15 +12,28 @@ const obtenerYoutubeId = (url) => {
   return null;
 };
 
+const ETIQUETAS_CREDITO = {
+  DIRECTOR: "Dirección",
+  ACTOR: "Interpretación",
+  PRODUCTOR: "Producción",
+  GUIONISTA: "Guion",
+  COMPOSITOR: "Música",
+  FOTOGRAFIA: "Fotografía",
+  EDICION: "Edición",
+  OTRO: "Otro crédito",
+};
+
 function PerfilPelicula() {
   const { id } = useParams();
   const { t, i18n } = useTranslation();
   const [pelicula, setPelicula] = useState(null);
   const [reparto, setReparto] = useState([]);
+  const [creditos, setCreditos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
   const usuario = (()=>{ try{return JSON.parse(localStorage.getItem("cineRdUsuario")||"null");}catch{return null;} })();
   const esAdmin = usuario?.rol === "ADMINISTRADOR";
+  const esTalentoVerificado = usuario?.rol === "TALENTO_VERIFICADO";
   const idiomaUi = i18n.language?.startsWith("en") ? "en" : "es";
   const locale = idiomaUi === "en" ? "en-US" : "es-DO";
 
@@ -30,13 +43,15 @@ function PerfilPelicula() {
     Promise.all([
       api.get(`/peliculas/${id}/perfil`, { params: { lang: idiomaUi } }),
       api.get(`/actores-peliculas/pelicula/${id}`),
+      api.get(`/peliculas/${id}/creditos`),
     ])
-      .then(([p,r])=>{ setPelicula(p.data); setReparto(r.data||[]); })
+      .then(([p,r,c])=>{ setPelicula(p.data); setReparto(r.data||[]); setCreditos(c.data||[]); })
       .catch((e)=>{ console.error(e); setError(e.response?.data?.mensaje || t("movieProfile.loadError")); })
       .finally(()=>setCargando(false));
   }, [id, idiomaUi, t]);
 
   const repartoOrdenado = useMemo(() => [...reparto].sort((a,b) => (a.OrdenCreditos ?? 9999) - (b.OrdenCreditos ?? 9999)), [reparto]);
+  const creditosOrdenados = useMemo(() => [...creditos].sort((a,b)=>(a.Orden ?? 9999)-(b.Orden ?? 9999)), [creditos]);
   const youtubeId = useMemo(()=>obtenerYoutubeId(pelicula?.TrailerUrl), [pelicula?.TrailerUrl]);
 
   const formatearFechaLocal = (fecha) => {
@@ -61,7 +76,7 @@ function PerfilPelicula() {
   const tituloFueLocalizado = pelicula.TraduccionAplicada && pelicula.TituloOriginal && pelicula.TituloOriginal !== pelicula.Titulo;
 
   return <div className="table-page-container movie-profile-page">
-    <div className="d-flex flex-wrap gap-2 mb-4"><Link to="/peliculas" className="btn btn-outline-secondary">{t("movieProfile.back")}</Link>{esAdmin && <><Link to={`/peliculas/editar/${pelicula.Id}`} className="btn btn-outline-warning">{t("movieProfile.edit")}</Link><Link to={`/peliculas/${pelicula.Id}/reparto`} className="btn btn-primary">{t("movieProfile.manageCast")}</Link></>}</div>
+    <div className="d-flex flex-wrap gap-2 mb-4"><Link to="/peliculas" className="btn btn-outline-secondary">{t("movieProfile.back")}</Link>{esAdmin && <><Link to={`/peliculas/editar/${pelicula.Id}`} className="btn btn-outline-warning">{t("movieProfile.edit")}</Link><Link to={`/peliculas/${pelicula.Id}/reparto`} className="btn btn-primary">{t("movieProfile.manageCast")}</Link></>}{esTalentoVerificado && <Link to={`/mi-perfil/reclamar-credito?pelicula=${pelicula.Id}`} className="btn btn-outline-primary">➕ Reclamar participación</Link>}</div>
 
     <section className="card mb-4 overflow-hidden">
       <div style={{minHeight: backdrop ? "340px" : "90px", background: backdrop ? `linear-gradient(180deg,rgba(5,11,22,.08),rgba(5,11,22,.88)),url(${backdrop}) center/cover` : "linear-gradient(135deg,#07111f,#10345f)"}} />
@@ -78,6 +93,8 @@ function PerfilPelicula() {
     <section className="card mb-4"><div className="card-body p-4"><span className="catalog-eyebrow">{t("movieProfile.history")}</span><h2 className="h4">{t("movieProfile.synopsis")}</h2><p className="text-muted mb-0" style={{whiteSpace:"pre-line"}}>{pelicula.Sinopsis || t("movieProfile.synopsisMissing")}</p></div></section>
 
     {(youtubeId || pelicula.TrailerUrl) && <section className="card mb-4"><div className="card-body p-4"><span className="catalog-eyebrow">{t("movieProfile.audiovisual")}</span><h2 className="h4 mb-3">{t("movieProfile.trailer")}</h2>{youtubeId ? <div className="ratio ratio-16x9 rounded-4 overflow-hidden"><iframe src={`https://www.youtube.com/embed/${youtubeId}`} title={`${t("movieProfile.trailer")}: ${pelicula.Titulo}`} allowFullScreen/></div> : <a href={pelicula.TrailerUrl} target="_blank" rel="noreferrer" className="btn btn-danger">{t("movieProfile.watchTrailer")}</a>}</div></section>}
+
+    {creditosOrdenados.length > 0 && <section className="card mb-4"><div className="card-body p-4"><span className="catalog-eyebrow">CRÉDITOS</span><h2 className="h4 mb-3">Créditos profesionales</h2><div className="row g-3">{creditosOrdenados.map((credito)=><div className="col-12 col-md-6 col-lg-4" key={credito.Id}><Link to={`/actores/${credito.ActorId}`} className="card h-100 text-decoration-none"><div className="card-body d-flex gap-3 align-items-center">{credito.Foto ? <img src={resolverImagen(credito.Foto)} alt={credito.NombreArtistico || credito.NombreCompleto} className="rounded-circle" style={{width:64,height:64,objectFit:"cover"}}/> : <div className="rounded-circle bg-light d-grid" style={{width:64,height:64,placeItems:"center"}}>🎭</div>}<div><strong className="d-block text-dark">{credito.NombreArtistico || credito.NombreCompleto}</strong><span className="small text-muted">{ETIQUETAS_CREDITO[credito.TipoCredito] || credito.TipoCredito}{credito.Personaje ? ` · ${credito.Personaje}` : ""}</span>{Boolean(credito.CreditoVerificado) && <span className="badge bg-success d-block mt-2">✓ {credito.FuenteCredito === "RECLAMACION_TALENTO" ? "Participación verificada" : "Crédito verificado"}</span>}</div></div></Link></div>)}</div><p className="small text-muted mt-3 mb-0">Una “participación verificada” indica que CineRD revisó evidencia. No implica necesariamente que el nombre figure en los créditos oficiales de la obra.</p></div></section>}
 
     <section className="card"><div className="card-header bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 p-3"><div><span className="catalog-eyebrow">{t("movieProfile.cast")}</span><h2 className="h5 fw-bold mb-0">{t("movieProfile.talentsCharacters")}</h2></div>{esAdmin && <Link to={`/peliculas/${pelicula.Id}/reparto`} className="btn btn-outline-primary btn-sm">{t("movieProfile.manageCast")}</Link>}</div><div className="card-body">
       {repartoOrdenado.length===0 ? <div className="text-center py-5 text-muted">{t("movieProfile.emptyCast")}</div> : <div className="row g-3">{repartoOrdenado.map((actor)=><div className="col-12 col-sm-6 col-lg-4" key={actor.Id}><Link to={`/actores/${actor.Id}`} className="card h-100 border-0 bg-light text-dark"><div className="card-body d-flex align-items-center gap-3">{actor.Foto ? <img src={resolverImagen(actor.Foto)} alt={actor.NombreCompleto} className="rounded-circle" style={{width:"72px",height:"72px",objectFit:"cover"}}/> : <div className="rounded-circle bg-white d-grid" style={{width:"72px",height:"72px",placeItems:"center"}}>🎭</div>}<div><h3 className="h6 fw-bold mb-1">{actor.NombreArtistico || actor.NombreCompleto}</h3><p className="text-muted small mb-1">{actor.Personaje || t("movieProfile.characterMissing")}</p><span className="badge bg-primary">{actor.TipoParticipacion || t("movieProfile.castRole")}</span></div></div></Link></div>)}</div>}
