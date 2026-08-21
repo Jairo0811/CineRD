@@ -9,6 +9,7 @@ const tmdbRoutes = require("./routes/tmdbRoutes");
 const authRoutes = require("./routes/authRoutes");
 const verificacionRoutes = require("./routes/verificacionRoutes");
 const busquedaRoutes = require("./routes/busquedaRoutes");
+const solicitudesCreditoRoutes = require("./routes/solicitudesCreditoRoutes");
 
 const app = express();
 app.disable("x-powered-by");
@@ -36,6 +37,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/verificaciones", verificacionRoutes);
+app.use("/api/solicitudes-creditos", solicitudesCreditoRoutes);
 app.use("/api/actores", actoresRoutes);
 app.use("/api/peliculas", peliculasRoutes);
 app.use("/api/actores-peliculas", actoresPeliculasRoutes);
