@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="frontend/src/assets/logo.png" alt="Logo de CineRD" width="720" />
+<img src="frontend/src/branding/cinerd-logo.png" alt="Logo de CineRD" width="720" />
 
 ### La base de datos del cine dominicano
 
@@ -19,7 +19,7 @@ Plataforma Full Stack inspirada en IMDb para preservar, organizar y consultar in
 
 **CineRD** es un catálogo digital del cine dominicano orientado a preservar, organizar y conectar información sobre películas, talentos, repartos y producción audiovisual de la República Dominicana.
 
-El proyecto evolucionó desde una prueba técnica de React de 2021 hacia una plataforma Full Stack con identidad visual propia, perfiles cinematográficos, autenticación, control de acceso por roles, verificación de talentos, internacionalización, búsqueda global e integración con **TMDb**.
+El proyecto evolucionó desde una prueba técnica de React de 2021 hacia una plataforma Full Stack con identidad visual propia, perfiles cinematográficos, autenticación, control de acceso por roles, verificación de talentos, internacionalización editorial, búsqueda global, navegación contextual e integración con **TMDb**.
 
 La arquitectura actual mantiene **Node.js + Express** en el backend durante la etapa de catálogo. Una futura migración a **.NET** queda reservada para la evolución de CineRD hacia una plataforma de streaming.
 
@@ -35,13 +35,15 @@ La arquitectura actual mantiene **Node.js + Express** en el backend durante la e
 - Sinopsis, eslogan, duración, calificación, estado e idioma original.
 - Presupuesto, recaudación y tráiler.
 - Reparto completo y orden de créditos.
+- Créditos profesionales estructurados para dirección, producción, guion, interpretación, música, fotografía y edición.
+- Navegación directa desde cada crédito hacia el perfil del talento relacionado.
+- Indicadores de créditos y participaciones verificadas por evidencia.
 - Ranking de producciones con mayor reparto.
 - Efemérides con todas las películas del catálogo estrenadas durante el mes actual.
 - Integración con TMDb para acelerar el registro y enriquecer metadatos.
 - Traducciones editoriales por película para título, sinopsis y eslogan.
 - Fuente de traducción diferenciada entre `OFICIAL`, `DISTRIBUCION` y `EDITORIAL`.
 - Fallback al título y contenido original cuando no existe una traducción aprobada.
-- Créditos profesionales estructurados para dirección, producción, guion, interpretación, música, fotografía y edición.
 
 ### 🎭 Talentos
 
@@ -52,6 +54,9 @@ La arquitectura actual mantiene **Node.js + Express** en el backend durante la e
 - Edad calculada automáticamente.
 - Perfil artístico individual.
 - Filmografía como intérprete y películas dirigidas diferenciadas.
+- Créditos profesionales estructurados visibles en el perfil.
+- Acceso rápido `🎬 Ver filmografía` sin regresar al catálogo general.
+- Navegación contextual **Talento → Película** y **Película → Talento**.
 - Indicador público de talento verificado.
 - Top 10 de talentos con mayor presencia en el catálogo.
 - Efemérides de cumpleaños del mes, ordenadas desde el año de nacimiento más antiguo al más reciente.
@@ -63,6 +68,54 @@ La arquitectura actual mantiene **Node.js + Express** en el backend durante la e
   - Spotify
   - TikTok
   - Sitio web oficial
+
+### 🧾 Reclamación y verificación de créditos
+
+Los talentos verificados pueden solicitar la incorporación de una participación que no esté registrada en CineRD.
+
+**Regla de integridad:** una participación no se incorpora al catálogo únicamente por declaración de la persona interesada. Cada reclamación debe incluir evidencia verificable.
+
+El flujo permite registrar:
+
+- película;
+- tipo de participación;
+- personaje o función;
+- indicación de si aparece en los créditos oficiales;
+- minuto inicial y final de la escena (`HH:MM:SS`);
+- descripción de la escena;
+- tipo de evidencia;
+- archivo privado JPG, PNG, WEBP o PDF de hasta 10 MB;
+- URL externa verificable;
+- descripción de la evidencia.
+
+Tipos de evidencia contemplados:
+
+- captura de escena;
+- clip o referencia temporal;
+- créditos oficiales;
+- hoja de llamado / call sheet;
+- contrato o documento de producción;
+- fotografía de rodaje / backstage;
+- publicación oficial;
+- perfil profesional verificable;
+- otra evidencia documentada.
+
+Estados de revisión:
+
+- `PENDIENTE`
+- `EN_REVISION`
+- `REQUIERE_MAS_EVIDENCIA`
+- `APROBADO`
+- `RECHAZADO`
+
+El administrador puede revisar la evidencia, solicitar información adicional, aprobar o rechazar la reclamación. Cuando se aprueba, CineRD crea o actualiza el crédito profesional y conserva la trazabilidad mediante `SolicitudCreditoId`, `FuenteCredito` y `AuditLogs`.
+
+CineRD diferencia entre:
+
+- **Crédito oficial verificado:** existe evidencia de que la producción acreditó formalmente a la persona.
+- **Participación verificada:** CineRD confirmó mediante evidencia que la persona participó, aunque no figure necesariamente en los créditos oficiales de la obra.
+
+Los archivos aportados como evidencia se almacenan fuera de `/uploads` y **no son públicos automáticamente**. Solo el solicitante correspondiente y los administradores autorizados pueden acceder a ellos.
 
 ### 🔎 Búsqueda y descubrimiento
 
@@ -76,8 +129,8 @@ La arquitectura actual mantiene **Node.js + Express** en el backend durante la e
 CineRD utiliza tres experiencias privadas diferenciadas:
 
 - **USUARIO:** explora el catálogo y puede solicitar la verificación de un perfil.
-- **TALENTO_VERIFICADO:** accede a su espacio profesional y puede gestionar únicamente su propio perfil según las reglas de autorización.
-- **ADMINISTRADOR:** administra películas, talentos, repartos, verificaciones, traducciones, créditos profesionales y métricas globales.
+- **TALENTO_VERIFICADO:** accede a su espacio profesional, gestiona únicamente su propio perfil y puede reclamar participaciones aportando evidencia.
+- **ADMINISTRADOR:** administra películas, talentos, repartos, verificaciones, traducciones, créditos profesionales, reclamaciones de crédito y métricas globales.
 
 Incluye registro de usuarios, login con contraseña hasheada, JWT Access Token, middleware de autenticación/autorización y protección de rutas en backend y frontend.
 
@@ -93,17 +146,30 @@ Incluye registro de usuarios, login con contraseña hasheada, JWT Access Token, 
 - Auditoría mediante `AuditLogs`.
 - Protección contra vinculaciones profesionales duplicadas.
 
+> La identidad verificada no equivale automáticamente a un crédito verificado. Cada participación reclamada requiere evidencia propia.
+
 ### 📊 Dashboards por rol
 
 - **Administrador:** Centro de Control con KPIs, Top 10 de talentos, películas con mayor reparto, distribución por género, estrenos documentados por año y actividad reciente.
-- **Talento verificado:** espacio profesional conectado con su identidad, filmografía y estado de verificación.
+- **Talento verificado:** espacio profesional conectado con su identidad, filmografía, estado de verificación y acceso rápido para reclamar participaciones faltantes.
 - **Usuario:** Mi CineRD con exploración y seguimiento de solicitudes.
 
-### 🌐 Internacionalización
+### 🌐 Internacionalización editorial
 
 CineRD incorpora interfaz bilingüe **Español / Inglés** mediante i18n.
 
-La interfaz, navegación, etiquetas y estados se traducen automáticamente. El contenido cinematográfico utiliza un modelo editorial: los **nombres reales y artísticos nunca se traducen**, mientras que los títulos, sinopsis y eslóganes de películas solo se localizan cuando existe una versión oficial, de distribución o editorial registrada. El contenido original siempre permanece como fuente canónica.
+El navbar utiliza selector visual con banderas 🇩🇴 / 🇺🇸 (`DO ES` / `US EN`) y un logotipo horizontal específico para navegación (`frontend/src/branding/cinerd-navbar.png`).
+
+La interfaz, navegación, etiquetas y estados se traducen automáticamente. El contenido cinematográfico utiliza un modelo editorial:
+
+- los nombres reales y artísticos nunca se traducen;
+- el contenido original permanece como fuente canónica;
+- títulos, sinopsis y eslóganes solo se localizan cuando existe una versión registrada;
+- la procedencia puede ser `OFICIAL`, `DISTRIBUCION` o `EDITORIAL`;
+- las traducciones editoriales revisadas muestran `✓ Revisada por CineRD`;
+- si no existe título localizado aprobado se mantiene el título original;
+- cuando el título público está localizado, la ficha puede mostrar también el título original;
+- el perfil de la película vuelve a consultar el contenido según el idioma seleccionado mediante `?lang=es|en`.
 
 ### 🌐 Integración con TMDb
 
@@ -129,14 +195,14 @@ El snapshot portable incluye:
 - `PeliculaCreditos`
 - `PeliculaTraducciones`
 
-La multimedia continúa almacenándose en:
+La multimedia pública del catálogo continúa almacenándose en:
 
 ```text
 backend/uploads/actores/
 backend/uploads/peliculas/
 ```
 
-El exportador valida que las fotografías, pósteres y backdrops referenciados por la base existan realmente en `backend/uploads`. Git se encarga de transportar esos archivos junto con el repositorio.
+El exportador valida que las fotografías, pósteres y backdrops referenciados por la base existan realmente en `backend/uploads`.
 
 ### Qué NO se exporta
 
@@ -147,7 +213,10 @@ Por seguridad, el snapshot no incluye:
 - `RefreshTokens`
 - `SolicitudesVerificacion`
 - `TalentosUsuarios`
+- `SolicitudesCredito`
+- `SolicitudCreditoEvidencias`
 - `AuditLogs`
+- evidencias privadas de créditos
 - secretos del archivo `.env`
 - JWT o claves privadas
 
@@ -191,7 +260,7 @@ Automatiza una instalación nueva:
 
 1. crea `CRUDPeliculas` si no existe;
 2. ejecuta `CRUD-Peliculas.sql`;
-3. aplica las migraciones `002` a `007`;
+3. aplica las migraciones `002` a `008`;
 4. valida el snapshot si existe;
 5. importa `database/seeds/catalog.snapshot.json`;
 6. deja la base preparada para iniciar el backend.
@@ -209,7 +278,11 @@ La interfaz incluye:
 - Directorio visual de talentos.
 - Perfiles editoriales de películas y talentos.
 - Navbar dinámico según sesión y rol.
+- Logo horizontal específico para el navbar.
+- Selector de idioma con banderas de República Dominicana y Estados Unidos.
+- Navegación contextual entre talentos y películas.
 - Centro de Control administrativo.
+- Panel administrativo de reclamaciones de crédito.
 - **Light mode y Dark mode** con sistema de tema persistente.
 - Contraste específico para componentes claros dentro del modo oscuro.
 - Overrides globales para tablas, formularios, modales, verificaciones y utilidades Bootstrap.
@@ -229,9 +302,15 @@ La etapa de catálogo incorpora:
 - cabeceras defensivas `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` y `Permissions-Policy`;
 - CORS configurado por `FRONTEND_URL`;
 - límite JSON de 1 MB;
-- uploads restringidos a JPG, PNG y WEBP;
-- tamaño máximo de imagen de 8 MB;
-- exclusión de secretos y backups locales del repositorio.
+- uploads públicos restringidos a JPG, PNG y WEBP;
+- tamaño máximo de imagen pública de 8 MB;
+- evidencias de crédito restringidas a JPG, PNG, WEBP o PDF y máximo 10 MB;
+- almacenamiento privado de evidencias fuera de `/uploads`;
+- acceso a evidencia protegido por autenticación y autorización;
+- prevención de reclamaciones activas duplicadas por talento, película y tipo de participación;
+- URL de evidencia limitada a protocolos HTTP/HTTPS;
+- trazabilidad administrativa mediante `AuditLogs`;
+- exclusión de secretos, evidencias privadas y backups locales del repositorio.
 
 ---
 
@@ -280,6 +359,7 @@ La etapa de catálogo incorpora:
 - Migraciones SQL idempotentes
 - Snapshot portable del catálogo de desarrollo
 - Relaciones estructuradas de créditos profesionales
+- Flujo auditable de reclamaciones y evidencias
 
 ### Integraciones
 
@@ -297,6 +377,8 @@ CineRD/
 │   └── workflows/
 │       └── ci.yml
 ├── backend/
+│   ├── private/                  # local, ignorado por Git
+│   │   └── evidencias-creditos/
 │   ├── scripts/
 │   │   ├── exportCatalog.js
 │   │   ├── importCatalog.js
@@ -317,6 +399,7 @@ CineRD/
 ├── frontend/
 │   └── src/
 │       ├── assets/
+│       ├── branding/
 │       ├── components/
 │       ├── i18n/
 │       ├── pages/
@@ -325,6 +408,7 @@ CineRD/
 │       └── utils/
 ├── database/
 │   ├── migrations/
+│   │   └── 008_solicitudes_creditos.sql
 │   └── seeds/
 │       ├── catalog.snapshot.json
 │       └── README.md
@@ -395,6 +479,7 @@ database/migrations/004_actores_redes_sociales.sql
 database/migrations/005_verificacion_indices_activos.sql
 database/migrations/006_peliculas_traducciones.sql
 database/migrations/007_pelicula_creditos.sql
+database/migrations/008_solicitudes_creditos.sql
 ```
 
 ### 5. Crear administrador inicial
@@ -451,6 +536,8 @@ npm run setup:local
 
 Con esto la segunda computadora obtiene estructura actualizada de SQL Server, talentos, películas, repartos, créditos profesionales, traducciones cinematográficas y multimedia versionada.
 
+Las solicitudes de crédito y sus evidencias privadas **no forman parte del snapshot portable**.
+
 Si la segunda PC ya contiene datos y deseas reemplazarlos expresamente:
 
 ```powershell
@@ -477,13 +564,14 @@ CRUD-Peliculas.sql
 
 ```text
 backend/.env
+backend/private/
 backend/node_modules/
 frontend/node_modules/
 frontend/dist/
 database/seeds/backups/
 ```
 
-Tampoco se incluyen en el snapshot cuentas de usuario, contraseñas, tokens, solicitudes de verificación ni registros de auditoría.
+Tampoco se incluyen en el snapshot cuentas de usuario, contraseñas, tokens, solicitudes de verificación, reclamaciones de créditos, evidencias privadas ni registros de auditoría.
 
 ---
 
@@ -542,6 +630,7 @@ GET    /api/peliculas/:id/perfil?lang=en
 GET    /api/peliculas/:id/traducciones
 PUT    /api/peliculas/:id/traducciones/:idioma
 GET    /api/peliculas/:id/creditos
+GET    /api/peliculas/creditos/actor/:actorId
 POST   /api/peliculas/:id/creditos
 DELETE /api/peliculas/:id/creditos/:creditoId
 GET    /api/actores
@@ -554,6 +643,11 @@ GET    /api/verificaciones/admin/pendientes
 GET    /api/verificaciones/admin/vinculaciones
 PATCH  /api/verificaciones/admin/:id/revisar
 PATCH  /api/verificaciones/admin/vinculaciones/:id/revocar
+POST   /api/solicitudes-creditos
+GET    /api/solicitudes-creditos/mias
+GET    /api/solicitudes-creditos/admin
+GET    /api/solicitudes-creditos/evidencias/:evidenciaId/archivo
+PATCH  /api/solicitudes-creditos/:id/revision
 ```
 
 ---
@@ -574,9 +668,14 @@ PATCH  /api/verificaciones/admin/vinculaciones/:id/revocar
 | ✅ | Top 10 de talentos |
 | ✅ | Internacionalización Español / Inglés |
 | ✅ | Traducciones editoriales de películas |
+| ✅ | Selector de idioma con banderas y branding de navbar |
 | ✅ | Light mode / Dark mode |
 | ✅ | Buscador global |
 | ✅ | Créditos profesionales estructurados |
+| ✅ | Navegación contextual Talento ↔ Película |
+| ✅ | Reclamación de participaciones con evidencia |
+| ✅ | Revisión administrativa y trazabilidad de créditos |
+| ✅ | Evidencias privadas protegidas |
 | ✅ | Catálogo portable validado y con backup previo |
 | ✅ | CI básico y pruebas backend |
 | 🟡 | Galerías multimedia |
@@ -594,7 +693,7 @@ PATCH  /api/verificaciones/admin/vinculaciones/:id/revocar
 
 🟢 **Versión 2.4.0 — Catálogo profesional en consolidación**
 
-CineRD funciona actualmente como un portal cinematográfico dominicano con catálogo público, perfiles profesionales, autenticación, RBAC, verificación de talentos, Centro de Control, efemérides, internacionalización editorial, búsqueda global, soporte Light/Dark, créditos profesionales estructurados y un mecanismo reproducible para transportar y validar el catálogo entre equipos.
+CineRD funciona actualmente como un portal cinematográfico dominicano con catálogo público, perfiles profesionales, autenticación, RBAC, verificación de talentos, Centro de Control, efemérides, internacionalización editorial, búsqueda global, soporte Light/Dark, créditos profesionales estructurados, navegación contextual entre películas y talentos y un flujo auditable para reclamar participaciones faltantes mediante evidencia.
 
 La prioridad sigue siendo consolidar CineRD como **archivo y plataforma de descubrimiento del cine dominicano** antes de abordar una futura etapa de distribución/streaming.
 
