@@ -7,18 +7,20 @@ async function tablaDisponible(pool) {
   return Boolean(r.recordset[0]?.Existe);
 }
 
+async function obtenerColumnasVerificacion(pool) {
+  const r = await pool.request().query("SELECT CASE WHEN COL_LENGTH(N'dbo.PeliculaCreditos', N'CreditoVerificado') IS NULL THEN 0 ELSE 1 END AS Existe");
+  return Boolean(r.recordset[0]?.Existe)
+    ? ", PC.CreditoVerificado, PC.FuenteCredito, PC.SolicitudCreditoId"
+    : ", CAST(0 AS bit) AS CreditoVerificado, CAST(NULL AS nvarchar(40)) AS FuenteCredito, CAST(NULL AS int) AS SolicitudCreditoId";
+}
+
 const obtenerCreditosPelicula = async (req, res) => {
   try {
     const peliculaId = Number(req.params.id);
     if (!Number.isInteger(peliculaId) || peliculaId <= 0) return res.status(400).json({ mensaje: "Película no válida" });
     const pool = await poolPromise;
     if (!(await tablaDisponible(pool))) return res.json([]);
-
-    const tieneVerificacion = await pool.request().query("SELECT CASE WHEN COL_LENGTH(N'dbo.PeliculaCreditos', N'CreditoVerificado') IS NULL THEN 0 ELSE 1 END AS Existe");
-    const extendido = Boolean(tieneVerificacion.recordset[0]?.Existe);
-    const columnasVerificacion = extendido
-      ? ", PC.CreditoVerificado, PC.FuenteCredito, PC.SolicitudCreditoId"
-      : ", CAST(0 AS bit) AS CreditoVerificado, CAST(NULL AS nvarchar(40)) AS FuenteCredito, CAST(NULL AS int) AS SolicitudCreditoId";
+    const columnasVerificacion = await obtenerColumnasVerificacion(pool);
 
     const resultado = await pool.request().input("PeliculaId", sql.Int, peliculaId).query(`
       SELECT PC.Id, PC.PeliculaId, PC.ActorId, PC.TipoCredito, PC.Personaje, PC.Orden, PC.EsPrincipal, PC.Fuente
@@ -34,6 +36,29 @@ const obtenerCreditosPelicula = async (req, res) => {
   } catch (error) {
     console.error("Error al obtener créditos:", error);
     res.status(500).json({ mensaje: "Error al obtener créditos profesionales", error: error.message });
+  }
+};
+
+const obtenerCreditosActor = async (req, res) => {
+  try {
+    const actorId = Number(req.params.actorId);
+    if (!Number.isInteger(actorId) || actorId <= 0) return res.status(400).json({ mensaje: "Talento no válido" });
+    const pool = await poolPromise;
+    if (!(await tablaDisponible(pool))) return res.json([]);
+    const columnasVerificacion = await obtenerColumnasVerificacion(pool);
+    const resultado = await pool.request().input("ActorId", sql.Int, actorId).query(`
+      SELECT PC.Id, PC.PeliculaId AS Id, PC.ActorId, PC.TipoCredito, PC.Personaje, PC.Orden, PC.EsPrincipal, PC.Fuente
+             ${columnasVerificacion},
+             P.Titulo, P.Foto, P.Genero, P.FechaEstreno
+      FROM dbo.PeliculaCreditos PC
+      INNER JOIN dbo.Peliculas P ON P.Id = PC.PeliculaId
+      WHERE PC.ActorId=@ActorId
+      ORDER BY P.FechaEstreno DESC, P.Titulo ASC
+    `);
+    return res.json(resultado.recordset);
+  } catch (error) {
+    console.error("Error al obtener créditos del talento:", error);
+    return res.status(500).json({ mensaje: "Error al obtener créditos del talento", error: error.message });
   }
 };
 
@@ -93,4 +118,4 @@ const eliminarCreditoPelicula = async (req, res) => {
   }
 };
 
-module.exports = { obtenerCreditosPelicula, guardarCreditoPelicula, eliminarCreditoPelicula };
+module.exports = { obtenerCreditosPelicula, obtenerCreditosActor, guardarCreditoPelicula, eliminarCreditoPelicula };
