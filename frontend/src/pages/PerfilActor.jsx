@@ -22,10 +22,12 @@ function PerfilActor() {
   const [actor, setActor] = useState(null);
   const [participaciones, setParticipaciones] = useState([]);
   const [dirigidas, setDirigidas] = useState([]);
+  const [perfilPropioId, setPerfilPropioId] = useState(null);
   const [cargando, setCargando] = useState(true);
   const usuario = (()=>{ try{return JSON.parse(localStorage.getItem("cineRdUsuario")||"null");}catch{return null;} })();
   const esAdmin = usuario?.rol === "ADMINISTRADOR";
   const esUsuario = usuario?.rol === "USUARIO";
+  const esTalentoVerificado = usuario?.rol === "TALENTO_VERIFICADO";
 
   useEffect(() => {
     const cargar = async () => {
@@ -42,6 +44,13 @@ function PerfilActor() {
     };
     cargar();
   }, [id]);
+
+  useEffect(() => {
+    if (!esTalentoVerificado) return;
+    api.get("/verificaciones/mi-perfil")
+      .then((response) => setPerfilPropioId(Number(response.data?.Id) || null))
+      .catch(() => setPerfilPropioId(null));
+  }, [esTalentoVerificado]);
 
   const locale = i18n.language === "en" ? "en-US" : "es-DO";
   const formatearFecha = (fecha, corta = false) => {
@@ -62,6 +71,7 @@ function PerfilActor() {
   const nacimiento = actor.FechaNacimiento ? formatearFecha(actor.FechaNacimiento) : actor.AnioNacimiento ? String(actor.AnioNacimiento) : null;
   const fallecimiento = actor.FechaFallecimiento ? formatearFecha(actor.FechaFallecimiento) : null;
   const profesionTraducida = actor.Profesion ? t(`professions.${actor.Profesion}`, { defaultValue: actor.Profesion }) : t("talentProfile.professionMissing");
+  const esMiPerfil = esTalentoVerificado && perfilPropioId === Number(actor.Id);
 
   const redes = [
     { nombre: "Facebook", descripcion: t("talentProfile.social.facebook"), url: actor.FacebookUrl, clase: "facebook", logo: SOCIAL_LOGOS.facebook },
@@ -89,14 +99,19 @@ function PerfilActor() {
         {actor.NombreArtistico && <p className="stage-name">{actor.NombreCompleto}</p>}
         <div className="actor-profile-meta"><span>{profesionTraducida}</span>{nacimiento && <span>{t("talentProfile.born")}: {nacimiento}</span>}{edad != null && <span>{t("talentProfile.age", { age: edad })}</span>}{fallecimiento && <span>{t("talentProfile.died")}: {fallecimiento}</span>}<span>{actor.EstaVivo ? t("talentProfile.active") : t("talentProfile.inMemoriam")}</span>{actor.EsVerificado && <span className="cinerd-verified-label">✓ {t("talentProfile.verifiedProfile")}</span>}</div>
       </div>
-      <div className="actor-profile-actions">{esAdmin && <Link to={`/actores/editar/${actor.Id}`} className="btn btn-light">{t("talentProfile.edit")}</Link>}{esUsuario && !actor.EsVerificado && <Link to={`/actores/${actor.Id}/reclamar`} className="btn btn-primary">{t("talentProfile.thisIsMe")}</Link>}</div>
+      <div className="actor-profile-actions">
+        <a href="#filmografia" className="btn btn-outline-light">🎬 {t("talentProfile.viewFilmography")}</a>
+        {esAdmin && <Link to={`/actores/editar/${actor.Id}`} className="btn btn-light">{t("talentProfile.edit")}</Link>}
+        {esUsuario && !actor.EsVerificado && <Link to={`/actores/${actor.Id}/reclamar`} className="btn btn-primary">{t("talentProfile.thisIsMe")}</Link>}
+        {esMiPerfil && <Link to="/mi-perfil/reclamar-credito" className="btn btn-primary">➕ Reclamar participación</Link>}
+      </div>
     </section>
 
     {redes.length > 0 && <section className="actor-social-panel"><div className="actor-social-copy"><div className="actor-social-heading-row"><span className="eyebrow">{t("talentProfile.digitalPresence")}</span><span className="actor-social-official">{t("talentProfile.officialProfiles")}</span></div><h2>{t("talentProfile.follow", { name: nombre })}</h2><p>{t("talentProfile.socialDescription")}</p></div><div className="actor-social-links">{redes.map(red=><a key={red.nombre} href={red.url} target="_blank" rel="noreferrer noopener" className={`actor-social-link ${red.clase}`} aria-label={t("talentProfile.openSocial", { network:red.nombre, name:nombre })}><span className="actor-social-icon" aria-hidden="true">{red.logo ? <img src={red.logo} alt="" loading="lazy"/> : red.icono}</span><span className="actor-social-link-copy"><strong>{red.nombre}</strong><small>{red.descripcion}</small></span></a>)}</div></section>}
 
     <section className="actor-profile-kpis"><article className="actor-profile-kpi"><strong>{participaciones.length}</strong><span>{t("talentProfile.actingCredits")}</span></article><article className="actor-profile-kpi"><strong>{dirigidas.length}</strong><span>{t("talentProfile.directedMovies")}</span></article><article className="actor-profile-kpi"><strong>{participaciones.length+dirigidas.length}</strong><span>{t("talentProfile.registeredCredits")}</span></article></section>
 
-    <section className="actor-filmography-grid"><article className="actor-filmography-panel"><header className="actor-filmography-header"><span>{t("talentProfile.filmography")}</span><h2>{t("talentProfile.actingTitle")}</h2></header><div className="actor-credit-list">{participaciones.length ? participaciones.map((p)=>credito(p,"actuacion")) : <div className="actor-empty">{t("talentProfile.noActingCredits")}</div>}</div></article><article className="actor-filmography-panel"><header className="actor-filmography-header"><span>{t("talentProfile.direction")}</span><h2>{t("talentProfile.directionTitle")}</h2></header><div className="actor-credit-list">{dirigidas.length ? dirigidas.map((p)=>credito(p,"direccion")) : <div className="actor-empty">{t("talentProfile.noDirectedMovies")}</div>}</div></article></section>
+    <section id="filmografia" className="actor-filmography-grid"><article className="actor-filmography-panel"><header className="actor-filmography-header"><span>{t("talentProfile.filmography")}</span><h2>{t("talentProfile.actingTitle")}</h2></header><div className="actor-credit-list">{participaciones.length ? participaciones.map((p)=>credito(p,"actuacion")) : <div className="actor-empty">{t("talentProfile.noActingCredits")}</div>}</div></article><article className="actor-filmography-panel"><header className="actor-filmography-header"><span>{t("talentProfile.direction")}</span><h2>{t("talentProfile.directionTitle")}</h2></header><div className="actor-credit-list">{dirigidas.length ? dirigidas.map((p)=>credito(p,"direccion")) : <div className="actor-empty">{t("talentProfile.noDirectedMovies")}</div>}</div></article></section>
   </div>;
 }
 export default PerfilActor;
