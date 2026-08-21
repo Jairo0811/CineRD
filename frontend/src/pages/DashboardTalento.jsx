@@ -43,6 +43,7 @@ function DashboardTalento({ usuario }) {
     <section className="talent-dashboard-grid">
       <Link to={perfil?.Id ? `/actores/${perfil.Id}` : "/actores"} className="talent-action-card highlight"><span className="talent-action-icon">👤</span><div><h2>Ver mi perfil público</h2><p>Consulta cómo aparece tu identidad profesional y filmografía ante los visitantes.</p></div></Link>
       {perfil?.Id && <Link to={`/actores/editar/${perfil.Id}`} className="talent-action-card"><span className="talent-action-icon">✎</span><div><h2>Editar mi información</h2><p>Actualiza los campos de tu perfil permitidos por las reglas de autorización.</p></div></Link>}
+      <Link to="/mi-perfil/reclamar-credito" className="talent-action-card"><span className="talent-action-icon">🎬</span><div><h2>Reclamar participación</h2><p>¿Falta una película en tu trayectoria? Solicita el crédito aportando evidencia verificable.</p></div></Link>
       <Link to="/peliculas" className="talent-action-card"><span className="talent-action-icon">🎞️</span><div><h2>Explorar filmografías</h2><p>Consulta producciones, repartos y conexiones profesionales del catálogo.</p></div></Link>
     </section>
     <section className="talent-profile-panel">
