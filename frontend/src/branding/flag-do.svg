@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20" role="img" aria-label="República Dominicana">
+  <rect width="30" height="20" rx="2" fill="#fff"/>
+  <rect width="12" height="8" x="0" y="0" fill="#002D62"/>
+  <rect width="12" height="8" x="18" y="0" fill="#CE1126"/>
+  <rect width="12" height="8" x="0" y="12" fill="#CE1126"/>
+  <rect width="12" height="8" x="18" y="12" fill="#002D62"/>
+  <circle cx="15" cy="10" r="2.1" fill="#fff" stroke="#0B6E4F" stroke-width=".45"/>
+  <circle cx="15" cy="10" r=".7" fill="#CE1126"/>
+</svg>
