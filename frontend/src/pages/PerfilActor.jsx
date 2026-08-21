@@ -16,12 +16,24 @@ const SOCIAL_LOGOS = {
   x: "https://cdn.simpleicons.org/x/000000",
 };
 
+const ETIQUETAS_CREDITO = {
+  ACTOR: "Interpretación",
+  DIRECTOR: "Dirección",
+  PRODUCTOR: "Producción",
+  GUIONISTA: "Guion",
+  COMPOSITOR: "Música",
+  FOTOGRAFIA: "Fotografía",
+  EDICION: "Edición",
+  OTRO: "Otro crédito",
+};
+
 function PerfilActor() {
   const { id } = useParams();
   const { t, i18n } = useTranslation();
   const [actor, setActor] = useState(null);
   const [participaciones, setParticipaciones] = useState([]);
   const [dirigidas, setDirigidas] = useState([]);
+  const [creditos, setCreditos] = useState([]);
   const [perfilPropioId, setPerfilPropioId] = useState(null);
   const [cargando, setCargando] = useState(true);
   const usuario = (()=>{ try{return JSON.parse(localStorage.getItem("cineRdUsuario")||"null");}catch{return null;} })();
@@ -34,11 +46,12 @@ function PerfilActor() {
       try {
         const actorResponse = await api.get(`/actores/${id}`);
         const actorData = actorResponse.data;
-        const [p,d] = await Promise.all([
+        const [p,d,c] = await Promise.all([
           api.get(`/actores-peliculas/actor/${id}`),
           api.get(`/peliculas/director/${encodeURIComponent(actorData.NombreCompleto)}`),
+          api.get(`/peliculas/creditos/actor/${id}`),
         ]);
-        setActor(actorData); setParticipaciones(p.data||[]); setDirigidas(d.data||[]);
+        setActor(actorData); setParticipaciones(p.data||[]); setDirigidas(d.data||[]); setCreditos(c.data||[]);
       } catch (error) { console.error(error); }
       finally { setCargando(false); }
     };
@@ -83,10 +96,16 @@ function PerfilActor() {
     { nombre: t("talentProfile.social.websiteName"), descripcion: t("talentProfile.social.website"), url: actor.SitioWebUrl, clase: "website", icono: "🌐" },
   ].filter((red) => Boolean(red.url));
 
-  const credito = (pelicula, tipo) => <Link to={`/peliculas/${pelicula.Id}`} className="actor-credit" key={`${tipo}-${pelicula.Id}`}>
+  const creditoLegacy = (pelicula, tipo) => <Link to={`/peliculas/${pelicula.Id}`} className="actor-credit" key={`${tipo}-${pelicula.Id}`}>
     {pelicula.Foto ? <img src={resolverImagen(pelicula.Foto)} alt={pelicula.Titulo}/> : <span className="actor-credit-poster-empty">🎬</span>}
     <span className="actor-credit-copy"><strong>{pelicula.Titulo}</strong><small>{tipo === "actuacion" ? `${pelicula.Personaje || t("talentProfile.characterMissing")} · ${pelicula.TipoParticipacion || t("talentProfile.participation")}` : pelicula.Genero ? t(`genres.${pelicula.Genero}`, { defaultValue: pelicula.Genero }) : t("talentProfile.direction")}</small></span>
     <span className="actor-credit-date">{pelicula.FechaEstreno ? formatearFecha(pelicula.FechaEstreno, true) : t("talentProfile.noDate")}</span>
+  </Link>;
+
+  const creditoProfesional = (credito) => <Link to={`/peliculas/${credito.Id}`} className="actor-credit" key={`prof-${credito.TipoCredito}-${credito.Id}`}>
+    {credito.Foto ? <img src={resolverImagen(credito.Foto)} alt={credito.Titulo}/> : <span className="actor-credit-poster-empty">🎬</span>}
+    <span className="actor-credit-copy"><strong>{credito.Titulo}</strong><small>{ETIQUETAS_CREDITO[credito.TipoCredito] || credito.TipoCredito}{credito.Personaje ? ` · ${credito.Personaje}` : ""}</small>{Boolean(credito.CreditoVerificado) && <span className="badge bg-success mt-1">✓ Participación verificada</span>}</span>
+    <span className="actor-credit-date">{credito.FechaEstreno ? formatearFecha(credito.FechaEstreno, true) : t("talentProfile.noDate")}</span>
   </Link>;
 
   return <div className="table-page-container actor-profile-page">
@@ -109,9 +128,11 @@ function PerfilActor() {
 
     {redes.length > 0 && <section className="actor-social-panel"><div className="actor-social-copy"><div className="actor-social-heading-row"><span className="eyebrow">{t("talentProfile.digitalPresence")}</span><span className="actor-social-official">{t("talentProfile.officialProfiles")}</span></div><h2>{t("talentProfile.follow", { name: nombre })}</h2><p>{t("talentProfile.socialDescription")}</p></div><div className="actor-social-links">{redes.map(red=><a key={red.nombre} href={red.url} target="_blank" rel="noreferrer noopener" className={`actor-social-link ${red.clase}`} aria-label={t("talentProfile.openSocial", { network:red.nombre, name:nombre })}><span className="actor-social-icon" aria-hidden="true">{red.logo ? <img src={red.logo} alt="" loading="lazy"/> : red.icono}</span><span className="actor-social-link-copy"><strong>{red.nombre}</strong><small>{red.descripcion}</small></span></a>)}</div></section>}
 
-    <section className="actor-profile-kpis"><article className="actor-profile-kpi"><strong>{participaciones.length}</strong><span>{t("talentProfile.actingCredits")}</span></article><article className="actor-profile-kpi"><strong>{dirigidas.length}</strong><span>{t("talentProfile.directedMovies")}</span></article><article className="actor-profile-kpi"><strong>{participaciones.length+dirigidas.length}</strong><span>{t("talentProfile.registeredCredits")}</span></article></section>
+    <section className="actor-profile-kpis"><article className="actor-profile-kpi"><strong>{participaciones.length}</strong><span>{t("talentProfile.actingCredits")}</span></article><article className="actor-profile-kpi"><strong>{dirigidas.length}</strong><span>{t("talentProfile.directedMovies")}</span></article><article className="actor-profile-kpi"><strong>{creditos.length}</strong><span>Créditos profesionales</span></article></section>
 
-    <section id="filmografia" className="actor-filmography-grid"><article className="actor-filmography-panel"><header className="actor-filmography-header"><span>{t("talentProfile.filmography")}</span><h2>{t("talentProfile.actingTitle")}</h2></header><div className="actor-credit-list">{participaciones.length ? participaciones.map((p)=>credito(p,"actuacion")) : <div className="actor-empty">{t("talentProfile.noActingCredits")}</div>}</div></article><article className="actor-filmography-panel"><header className="actor-filmography-header"><span>{t("talentProfile.direction")}</span><h2>{t("talentProfile.directionTitle")}</h2></header><div className="actor-credit-list">{dirigidas.length ? dirigidas.map((p)=>credito(p,"direccion")) : <div className="actor-empty">{t("talentProfile.noDirectedMovies")}</div>}</div></article></section>
+    <section id="filmografia" className="actor-filmography-grid"><article className="actor-filmography-panel"><header className="actor-filmography-header"><span>{t("talentProfile.filmography")}</span><h2>{t("talentProfile.actingTitle")}</h2></header><div className="actor-credit-list">{participaciones.length ? participaciones.map((p)=>creditoLegacy(p,"actuacion")) : <div className="actor-empty">{t("talentProfile.noActingCredits")}</div>}</div></article><article className="actor-filmography-panel"><header className="actor-filmography-header"><span>{t("talentProfile.direction")}</span><h2>{t("talentProfile.directionTitle")}</h2></header><div className="actor-credit-list">{dirigidas.length ? dirigidas.map((p)=>creditoLegacy(p,"direccion")) : <div className="actor-empty">{t("talentProfile.noDirectedMovies")}</div>}</div></article></section>
+
+    {creditos.length > 0 && <section className="actor-filmography-panel mt-4"><header className="actor-filmography-header"><span>CRÉDITOS ESTRUCTURADOS</span><h2>Créditos profesionales registrados</h2></header><div className="actor-credit-list">{creditos.map(creditoProfesional)}</div></section>}
   </div>;
 }
 export default PerfilActor;
