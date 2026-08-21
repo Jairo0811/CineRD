@@ -76,9 +76,17 @@ function Navbar() {
   const estiloBandera = {
     width: "22px",
     height: "15px",
+    maxWidth: "22px",
     objectFit: "cover",
     borderRadius: "2px",
     flexShrink: 0,
+    display: "block",
+  };
+
+  const estiloOpcionIdioma = {
+    display: "flex",
+    alignItems: "center",
+    gap: "9px",
   };
 
   return (
@@ -178,8 +186,9 @@ function Navbar() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
                 aria-label={t("nav.language")}
+                style={{ display: "inline-flex", alignItems: "center", gap: "7px" }}
               >
-                <img src={banderaActual} alt="" aria-hidden="true" className="cine-language-flag-image" />
+                <img src={banderaActual} alt="" aria-hidden="true" style={estiloBandera} />
                 <span>{idiomaActual === "es" ? "DO ES" : "US EN"}</span>
               </button>
               <ul className="dropdown-menu dropdown-menu-end cine-account-menu">
@@ -188,8 +197,9 @@ function Navbar() {
                     type="button"
                     className={`dropdown-item cine-language-option ${idiomaActual === "es" ? "active" : ""}`}
                     onClick={() => cambiarIdioma("es")}
+                    style={estiloOpcionIdioma}
                   >
-                    <img src={banderaDo} alt="" aria-hidden="true" className="cine-language-flag-image" />
+                    <img src={banderaDo} alt="" aria-hidden="true" style={estiloBandera} />
                     <span>Español</span>
                   </button>
                 </li>
@@ -198,8 +208,9 @@ function Navbar() {
                     type="button"
                     className={`dropdown-item cine-language-option ${idiomaActual === "en" ? "active" : ""}`}
                     onClick={() => cambiarIdioma("en")}
+                    style={estiloOpcionIdioma}
                   >
-                    <img src={banderaUs} alt="" aria-hidden="true" className="cine-language-flag-image" />
+                    <img src={banderaUs} alt="" aria-hidden="true" style={estiloBandera} />
                     <span>English</span>
                   </button>
                 </li>
