@@ -14,8 +14,15 @@ const obtenerCreditosPelicula = async (req, res) => {
     const pool = await poolPromise;
     if (!(await tablaDisponible(pool))) return res.json([]);
 
+    const tieneVerificacion = await pool.request().query("SELECT CASE WHEN COL_LENGTH(N'dbo.PeliculaCreditos', N'CreditoVerificado') IS NULL THEN 0 ELSE 1 END AS Existe");
+    const extendido = Boolean(tieneVerificacion.recordset[0]?.Existe);
+    const columnasVerificacion = extendido
+      ? ", PC.CreditoVerificado, PC.FuenteCredito, PC.SolicitudCreditoId"
+      : ", CAST(0 AS bit) AS CreditoVerificado, CAST(NULL AS nvarchar(40)) AS FuenteCredito, CAST(NULL AS int) AS SolicitudCreditoId";
+
     const resultado = await pool.request().input("PeliculaId", sql.Int, peliculaId).query(`
-      SELECT PC.Id, PC.PeliculaId, PC.ActorId, PC.TipoCredito, PC.Personaje, PC.Orden, PC.EsPrincipal, PC.Fuente,
+      SELECT PC.Id, PC.PeliculaId, PC.ActorId, PC.TipoCredito, PC.Personaje, PC.Orden, PC.EsPrincipal, PC.Fuente
+             ${columnasVerificacion},
              A.NombreCompleto, A.NombreArtistico, A.Profesion, A.Foto
       FROM dbo.PeliculaCreditos PC
       INNER JOIN dbo.Actores A ON A.Id = PC.ActorId
