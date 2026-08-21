@@ -6,7 +6,7 @@ const { procesarImagenPelicula } = require("../middlewares/procesarImagen");
 const { autenticar, autorizar } = require("../middlewares/auth");
 const { obtenerPerfilPelicula } = require("../controllers/peliculasPerfilController");
 const { obtenerTraduccionesPelicula, guardarTraduccionPelicula } = require("../controllers/peliculasTraduccionesController");
-const { obtenerCreditosPelicula, guardarCreditoPelicula, eliminarCreditoPelicula } = require("../controllers/peliculaCreditosController");
+const { obtenerCreditosPelicula, obtenerCreditosActor, guardarCreditoPelicula, eliminarCreditoPelicula } = require("../controllers/peliculaCreditosController");
 
 const {
   obtenerPeliculas,
@@ -19,6 +19,7 @@ const {
 
 router.get("/", obtenerPeliculas);
 router.get("/director/:nombre", obtenerPeliculasDirigidasPorActor);
+router.get("/creditos/actor/:actorId", obtenerCreditosActor);
 router.get("/:id/perfil", obtenerPerfilPelicula);
 router.get("/:id/traducciones", obtenerTraduccionesPelicula);
 router.get("/:id/creditos", obtenerCreditosPelicula);
