@@ -162,6 +162,23 @@ main.container {
   object-fit: contain;
 }
 
+.cine-navbar-logo-horizontal {
+  display: block;
+  width: auto;
+  height: 54px;
+  max-width: 220px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.cine-navbar-brand {
+  flex-shrink: 0;
+}
+
+.cine-navbar-link {
+  white-space: nowrap;
+}
+
 .cine-navbar-link {
   width: auto;
   margin-inline: 2px;
@@ -637,7 +654,33 @@ a.dashboard-list-item:hover {
    TABLET
    ========================================================= */
 
+@media (max-width: 1199.98px) and (min-width: 992px) {
+  .cine-navbar-logo-horizontal {
+    height: 46px;
+    max-width: 185px;
+  }
+
+  .cine-navbar-brand {
+    margin-right: 14px;
+  }
+
+  .cine-navbar-link {
+    margin-inline: 0;
+    padding-inline: 8px !important;
+    font-size: 0.9rem;
+  }
+
+  .cine-navbar-actions {
+    gap: 6px;
+  }
+}
+
 @media (max-width: 991.98px) {
+
+  .cine-navbar-logo-horizontal {
+  height: 46px;
+  max-width: 190px;
+}
 
   .cine-footer-content {
     grid-template-columns: 1fr;
@@ -691,6 +734,11 @@ a.dashboard-list-item:hover {
    ========================================================= */
 
 @media (max-width: 575.98px) {
+
+  .cine-navbar-logo-horizontal {
+  height: 40px;
+  max-width: 165px;
+}
   main.container {
     max-width: 100%;
     padding-top: 16px !important;

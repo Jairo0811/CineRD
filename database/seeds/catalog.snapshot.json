@@ -1,7 +1,7 @@
 {
   "format": "CineRD.CatalogSnapshot",
   "version": 2,
-  "generatedAtUtc": "2026-08-20T23:26:31.571Z",
+  "generatedAtUtc": "2026-08-20T23:27:06.296Z",
   "sourceDatabase": "CRUDPeliculas",
   "tables": {
     "Actores": [
