@@ -1,6 +1,7 @@
 # Backend
 backend/node_modules/
 backend/.env
+backend/private/
 
 # Frontend
 frontend/node_modules/
