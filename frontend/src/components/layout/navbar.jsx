@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import banderaDo from "../../branding/flag-do.svg";
+import banderaUs from "../../branding/flag-us.svg";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -61,6 +63,15 @@ function Navbar() {
       : t("nav.user");
 
   const etiquetaBusqueda = idiomaActual === "en" ? "Search" : "Buscar";
+  const banderaActual = idiomaActual === "es" ? banderaDo : banderaUs;
+
+  const estiloBandera = {
+    width: "22px",
+    height: "15px",
+    objectFit: "cover",
+    borderRadius: "2px",
+    flexShrink: 0,
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark sticky-top cine-navbar cine-navbar-cinematic">
@@ -99,12 +110,40 @@ function Navbar() {
             </button>
 
             <div className="dropdown">
-              <button className="btn cine-btn-ghost btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label={t("nav.language")}>
-                {idiomaActual === "es" ? "🇩🇴 ES" : "🇺🇸 EN"}
+              <button
+                className="btn cine-btn-ghost btn-sm dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                aria-label={t("nav.language")}
+                style={{ display: "inline-flex", alignItems: "center", gap: "7px" }}
+              >
+                <img src={banderaActual} alt="" aria-hidden="true" style={estiloBandera} />
+                <span>{idiomaActual === "es" ? "DO ES" : "US EN"}</span>
               </button>
               <ul className="dropdown-menu dropdown-menu-end cine-account-menu">
-                <li><button type="button" className={`dropdown-item ${idiomaActual === "es" ? "active" : ""}`} onClick={() => cambiarIdioma("es")}>🇩🇴 Español</button></li>
-                <li><button type="button" className={`dropdown-item ${idiomaActual === "en" ? "active" : ""}`} onClick={() => cambiarIdioma("en")}>🇺🇸 English</button></li>
+                <li>
+                  <button
+                    type="button"
+                    className={`dropdown-item ${idiomaActual === "es" ? "active" : ""}`}
+                    onClick={() => cambiarIdioma("es")}
+                    style={{ display: "flex", alignItems: "center", gap: "9px" }}
+                  >
+                    <img src={banderaDo} alt="" aria-hidden="true" style={estiloBandera} />
+                    <span>Español</span>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    className={`dropdown-item ${idiomaActual === "en" ? "active" : ""}`}
+                    onClick={() => cambiarIdioma("en")}
+                    style={{ display: "flex", alignItems: "center", gap: "9px" }}
+                  >
+                    <img src={banderaUs} alt="" aria-hidden="true" style={estiloBandera} />
+                    <span>English</span>
+                  </button>
+                </li>
               </ul>
             </div>
 
