@@ -9,13 +9,19 @@ const PLANTILLA = {
   FuenteReferencia: "",
 };
 
-function PeliculaTraduccionesPanel({ peliculaId, idiomaOriginal = "es" }) {
+function PeliculaTraduccionesPanel({
+  peliculaId,
+  idiomaOriginal = "es",
+  tituloOriginal = "",
+  sinopsisOriginal = "",
+}) {
   const [traduccion, setTraduccion] = useState(PLANTILLA);
   const [cargando, setCargando] = useState(true);
   const [guardando, setGuardando] = useState(false);
   const [mensaje, setMensaje] = useState("");
   const idiomaDestino = useMemo(() => (idiomaOriginal?.toLowerCase() === "en" ? "es" : "en"), [idiomaOriginal]);
   const nombreIdioma = idiomaDestino === "en" ? "Inglés" : "Español";
+  const nombreIdiomaOriginal = idiomaOriginal?.toLowerCase() === "en" ? "Inglés" : "Español";
 
   useEffect(() => {
     let activo = true;
@@ -77,13 +83,43 @@ function PeliculaTraduccionesPanel({ peliculaId, idiomaOriginal = "es" }) {
     <div className="movie-translation-header">
       <div>
         <span>🌐 Internacionalización editorial</span>
-        <h3>Versión en {nombreIdioma}</h3>
-        <p>Solo registra títulos oficiales, de distribución o traducciones editoriales revisadas. El contenido original siempre se conserva.</p>
+        <h3>Contenido original y versión en {nombreIdioma}</h3>
+        <p>El contenido original se conserva como referencia canónica. Solo registra títulos oficiales, de distribución o traducciones editoriales revisadas.</p>
       </div>
       <span className="movie-translation-language">{idiomaDestino.toUpperCase()}</span>
     </div>
 
     {cargando ? <div className="py-4 text-center text-muted">Cargando traducción...</div> : <div className="movie-translation-body">
+      <div className="card border mb-4">
+        <div className="card-body">
+          <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <div>
+              <span className="catalog-eyebrow">CONTENIDO ORIGINAL</span>
+              <h4 className="h6 fw-bold mb-0">{nombreIdiomaOriginal} · {String(idiomaOriginal || "es").toUpperCase()}</h4>
+            </div>
+            <span className="badge bg-secondary">Canónico</span>
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Título original</label>
+            <input className="form-control" value={tituloOriginal || "Sin título registrado"} readOnly />
+          </div>
+          <div>
+            <label className="form-label">Sinopsis original</label>
+            <textarea className="form-control" rows="4" value={sinopsisOriginal || "Sin sinopsis registrada"} readOnly />
+          </div>
+        </div>
+      </div>
+
+      <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <div>
+          <span className="catalog-eyebrow">VERSIÓN INTERNACIONAL</span>
+          <h4 className="h6 fw-bold mb-0">{nombreIdioma} · {idiomaDestino.toUpperCase()}</h4>
+        </div>
+        {traduccion.Sinopsis.trim() || traduccion.Titulo.trim() || traduccion.Eslogan.trim()
+          ? <span className="badge bg-success">✓ Traducción registrada</span>
+          : <span className="badge bg-light text-dark border">Pendiente</span>}
+      </div>
+
       <div className="mb-3">
         <label className="form-label">Título localizado</label>
         <input className="form-control" name="Titulo" value={traduccion.Titulo} onChange={cambiar} placeholder={`Título público en ${nombreIdioma}`} />
@@ -114,6 +150,10 @@ function PeliculaTraduccionesPanel({ peliculaId, idiomaOriginal = "es" }) {
           <input className="form-control" name="FuenteReferencia" value={traduccion.FuenteReferencia} onChange={cambiar} maxLength="500" placeholder="Sitio oficial, distribuidor o referencia editorial" />
         </div>
       </div>
+
+      {traduccion.TipoFuente === "EDITORIAL" && <div className="alert alert-primary mt-3 mb-0">
+        <strong>✓ Revisión editorial CineRD.</strong> Esta versión se presentará públicamente como una traducción revisada por CineRD, no como un título oficial de distribución.
+      </div>}
 
       {mensaje && <div className={`alert mt-3 mb-0 ${mensaje.includes("correctamente") ? "alert-success" : "alert-info"}`}>{mensaje}</div>}
 
