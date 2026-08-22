@@ -137,6 +137,121 @@ html[data-theme="dark"] .movie-profile-page > .d-flex:first-child {
   color: var(--cine-text-1) !important;
 }
 
+/* Credit claims administration */
+.credit-claims-filter {
+  max-width: 280px;
+}
+
+.credit-claims-review-note {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1.15rem 1.25rem;
+  border-radius: 12px;
+  background: #eef3f9;
+  color: #1a2433;
+}
+
+.credit-claims-review-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: #1768c7;
+  color: #ffffff;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.credit-claims-empty {
+  min-height: 340px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: .8rem;
+  padding: 3rem 1.5rem;
+  border-radius: 16px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.credit-claims-empty-icon {
+  display: grid;
+  width: 88px;
+  height: 88px;
+  place-items: center;
+  border: 3px solid #8aa2bf;
+  border-radius: 50%;
+  color: #8aa2bf;
+  font-size: 2rem;
+}
+
+.credit-claims-empty h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.credit-claims-empty p {
+  max-width: 520px;
+  margin: 0;
+  color: #667085;
+}
+
+html[data-theme="dark"] .credit-claims-admin-page {
+  color: var(--cine-text-1);
+}
+
+html[data-theme="dark"] .credit-claims-admin-page .text-muted {
+  color: var(--cine-text-3) !important;
+}
+
+html[data-theme="dark"] .credit-claims-filter {
+  background: #0b1422;
+  border-color: #2b3b52;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .credit-claims-review-note {
+  background: #070c14;
+  border-color: #273447 !important;
+  color: #f3f6fb;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.01);
+}
+
+html[data-theme="dark"] .credit-claims-review-note strong {
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .credit-claims-review-icon {
+  background: #123fa8;
+  color: #dce9ff;
+}
+
+html[data-theme="dark"] .credit-claims-empty {
+  background: #050a11;
+  border-color: #2b3748 !important;
+  color: #ffffff;
+  box-shadow: inset 0 0 70px rgba(22,104,199,.025);
+}
+
+html[data-theme="dark"] .credit-claims-empty-icon {
+  border-color: #51647d;
+  color: #9ab1cf;
+  background: #09111c;
+}
+
+html[data-theme="dark"] .credit-claims-empty h2 {
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .credit-claims-empty p {
+  color: #a8b6c9;
+}
+
 /* Translation administration */
 .movie-translation-panel {
   overflow: hidden;
