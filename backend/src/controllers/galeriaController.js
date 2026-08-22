@@ -14,6 +14,7 @@ const TIPOS_IMAGEN = new Set([
 const TIPOS_VIDEO = new Set(["TRAILER"]);
 const TIPOS_MUSICA = new Set(["TEMA_OFICIAL", "CANCION_ORIGINAL", "BANDA_SONORA", "SCORE"]);
 const TIPOS_PERMITIDOS = new Set([...TIPOS_IMAGEN, ...TIPOS_VIDEO, ...TIPOS_MUSICA]);
+const PROVEEDORES_MUSICA = new Set(["SPOTIFY", "YOUTUBE"]);
 
 const limpiar = (valor) => (typeof valor === "string" ? valor.trim() : valor);
 const enteroOpcional = (valor) => (valor === "" || valor == null ? null : Number(valor));
@@ -55,14 +56,21 @@ const normalizarSpotifyUrl = (valor) => {
     if (host !== "open.spotify.com") return null;
 
     const partes = url.pathname.split("/").filter(Boolean);
-    const tipo = partes[0];
-    const id = partes[1];
+    const offset = partes[0]?.toLowerCase().startsWith("intl-") ? 1 : 0;
+    const tipo = partes[offset];
+    const id = partes[offset + 1];
     if (!["track", "album", "playlist"].includes(tipo) || !id) return null;
 
     return `https://open.spotify.com/${tipo}/${id}`;
   } catch {
     return null;
   }
+};
+
+const normalizarMusicaUrl = (valor, proveedor) => {
+  if (proveedor === "YOUTUBE") return normalizarYoutubeUrl(valor);
+  if (proveedor === "SPOTIFY") return normalizarSpotifyUrl(valor);
+  return null;
 };
 
 const borrarArchivoGaleria = (archivo) => {
@@ -152,9 +160,10 @@ const crearElementoGaleria = async (req, res) => {
   const EsDestacada = booleano(req.body.EsDestacada);
   const esVideo = TIPOS_VIDEO.has(Tipo);
   const esMusica = TIPOS_MUSICA.has(Tipo);
+  const proveedorMusica = String(req.body.Proveedor || "SPOTIFY").toUpperCase();
+  const Proveedor = esMusica ? proveedorMusica : esVideo ? "YOUTUBE" : null;
   const VideoUrl = esVideo ? normalizarYoutubeUrl(req.body.VideoUrl) : null;
-  const AudioUrl = esMusica ? normalizarSpotifyUrl(req.body.AudioUrl) : null;
-  const Proveedor = esMusica ? "SPOTIFY" : esVideo ? "YOUTUBE" : null;
+  const AudioUrl = esMusica ? normalizarMusicaUrl(req.body.AudioUrl, proveedorMusica) : null;
 
   if (!validarEntidad({ PeliculaId, ActorId })) {
     if (req.file?.filename) borrarArchivoGaleria(`/uploads/galerias/${req.file.filename}`);
@@ -176,9 +185,15 @@ const crearElementoGaleria = async (req, res) => {
     return res.status(400).json({ mensaje: "Indica una URL válida de YouTube para el trailer" });
   }
 
+  if (esMusica && !PROVEEDORES_MUSICA.has(proveedorMusica)) {
+    if (req.file?.filename) borrarArchivoGaleria(`/uploads/galerias/${req.file.filename}`);
+    return res.status(400).json({ mensaje: "Proveedor musical inválido" });
+  }
+
   if (esMusica && !AudioUrl) {
     if (req.file?.filename) borrarArchivoGaleria(`/uploads/galerias/${req.file.filename}`);
-    return res.status(400).json({ mensaje: "Indica una URL válida de Spotify (canción, álbum o playlist)" });
+    const origen = proveedorMusica === "YOUTUBE" ? "YouTube" : "Spotify";
+    return res.status(400).json({ mensaje: `Indica una URL válida de ${origen} para la música` });
   }
 
   if (!esVideo && !esMusica && !req.file?.filename) {
@@ -267,9 +282,10 @@ const actualizarElementoGaleria = async (req, res) => {
   const EsDestacada = booleano(req.body.EsDestacada);
   const esVideo = TIPOS_VIDEO.has(Tipo);
   const esMusica = TIPOS_MUSICA.has(Tipo);
+  const proveedorMusica = String(req.body.Proveedor || "SPOTIFY").toUpperCase();
+  const Proveedor = esMusica ? proveedorMusica : esVideo ? "YOUTUBE" : null;
   const VideoUrl = esVideo ? normalizarYoutubeUrl(req.body.VideoUrl) : null;
-  const AudioUrl = esMusica ? normalizarSpotifyUrl(req.body.AudioUrl) : null;
-  const Proveedor = esMusica ? "SPOTIFY" : esVideo ? "YOUTUBE" : null;
+  const AudioUrl = esMusica ? normalizarMusicaUrl(req.body.AudioUrl, proveedorMusica) : null;
 
   if (!validarEntidad({ PeliculaId, ActorId })) {
     if (req.file?.filename) borrarArchivoGaleria(`/uploads/galerias/${req.file.filename}`);
@@ -291,9 +307,15 @@ const actualizarElementoGaleria = async (req, res) => {
     return res.status(400).json({ mensaje: "Indica una URL válida de YouTube para el trailer" });
   }
 
+  if (esMusica && !PROVEEDORES_MUSICA.has(proveedorMusica)) {
+    if (req.file?.filename) borrarArchivoGaleria(`/uploads/galerias/${req.file.filename}`);
+    return res.status(400).json({ mensaje: "Proveedor musical inválido" });
+  }
+
   if (esMusica && !AudioUrl) {
     if (req.file?.filename) borrarArchivoGaleria(`/uploads/galerias/${req.file.filename}`);
-    return res.status(400).json({ mensaje: "Indica una URL válida de Spotify (canción, álbum o playlist)" });
+    const origen = proveedorMusica === "YOUTUBE" ? "YouTube" : "Spotify";
+    return res.status(400).json({ mensaje: `Indica una URL válida de ${origen} para la música` });
   }
 
   try {
