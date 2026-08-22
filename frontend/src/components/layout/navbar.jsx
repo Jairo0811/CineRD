@@ -72,6 +72,7 @@ function Navbar() {
 
   const etiquetaBusqueda = idiomaActual === "en" ? "Search" : "Buscar";
   const etiquetaCreditos = idiomaActual === "en" ? "Credit claims" : "Créditos";
+  const etiquetaPremios = idiomaActual === "en" ? "Awards" : "Premios";
   const etiquetaReclamarCredito = idiomaActual === "en" ? "Claim a credit" : "Reclamar crédito";
   const banderaActual = idiomaActual === "es" ? banderaDo : banderaUs;
 
@@ -159,6 +160,11 @@ function Navbar() {
                 <li className="nav-item">
                   <NavLink className={obtenerClaseNav} to="/admin/solicitudes-creditos" onClick={cerrarMenuMovil}>
                     {etiquetaCreditos}
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className={obtenerClaseNav} to="/admin/premios" onClick={cerrarMenuMovil}>
+                    {etiquetaPremios}
                   </NavLink>
                 </li>
               </>
@@ -287,6 +293,11 @@ function Navbar() {
                       <li>
                         <NavLink className="dropdown-item" to="/admin/solicitudes-creditos" onClick={cerrarMenuMovil}>
                           {etiquetaCreditos}
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink className="dropdown-item" to="/admin/premios" onClick={cerrarMenuMovil}>
+                          🏆 {etiquetaPremios}
                         </NavLink>
                       </li>
                     </>
