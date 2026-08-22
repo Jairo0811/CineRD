@@ -146,6 +146,95 @@ html[data-theme="dark"] .user-action.highlight span {
   color: #dbeaff !important;
 }
 
+/* Talent dashboard: true dark surfaces and readable hierarchy. */
+html[data-theme="dark"] .talent-dashboard {
+  color: #e8eef8;
+}
+
+html[data-theme="dark"] .talent-kpi,
+html[data-theme="dark"] .talent-action-card:not(.highlight),
+html[data-theme="dark"] .talent-panel {
+  background: linear-gradient(180deg, #101a29 0%, #0c1522 100%) !important;
+  border-color: #26364d !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .22);
+  color: #e8eef8 !important;
+}
+
+html[data-theme="dark"] .talent-kpi strong,
+html[data-theme="dark"] .talent-action-card:not(.highlight) h2,
+html[data-theme="dark"] .talent-panel h2,
+html[data-theme="dark"] .talent-fact strong {
+  color: #f7f9fc !important;
+}
+
+html[data-theme="dark"] .talent-kpi span,
+html[data-theme="dark"] .talent-action-card:not(.highlight) p,
+html[data-theme="dark"] .talent-fact small {
+  color: #9fb0c6 !important;
+}
+
+html[data-theme="dark"] .talent-action-card:not(.highlight):hover {
+  border-color: #4b82c9 !important;
+  background: linear-gradient(180deg, #132238 0%, #0e1a2b 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, .3);
+}
+
+html[data-theme="dark"] .talent-action-icon {
+  background: #182943 !important;
+  color: #8fc0ff !important;
+}
+
+html[data-theme="dark"] .talent-action-card.highlight {
+  background: linear-gradient(135deg, #1768c7, #0d4f9e) !important;
+  border-color: #2d7bd5 !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] .talent-action-card.highlight h2 {
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] .talent-action-card.highlight p {
+  color: #d9e8ff !important;
+}
+
+html[data-theme="dark"] .talent-panel-header,
+html[data-theme="dark"] .talent-fact {
+  border-color: #223149 !important;
+}
+
+html[data-theme="dark"] .talent-panel-header span {
+  color: #78adf3 !important;
+}
+
+html[data-theme="dark"] .talent-trust-badge {
+  background: linear-gradient(135deg, rgba(25, 135, 84, .18), rgba(18, 74, 56, .22)) !important;
+  border: 1px solid rgba(83, 190, 133, .2);
+}
+
+html[data-theme="dark"] .talent-trust-badge strong {
+  color: #9ce7bd !important;
+}
+
+html[data-theme="dark"] .talent-trust-badge p {
+  color: #a9c5b6 !important;
+}
+
+html[data-theme="dark"] .talent-hero {
+  border: 1px solid #203a5b;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(31, 103, 199, .32), transparent 32%),
+    linear-gradient(135deg, #08111d, #102a4b 62%, #163c6d) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .32);
+}
+
+html[data-theme="dark"] .talent-avatar,
+html[data-theme="dark"] .talent-avatar-placeholder {
+  border-color: #516985;
+  background: #12233a;
+}
+
 /* Keep semantic/link colors where they communicate an action or status. */
 html[data-theme="dark"] :is(
   .actor-profile-kpi,
