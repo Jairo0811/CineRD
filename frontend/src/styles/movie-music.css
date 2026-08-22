@@ -1,0 +1,125 @@
+.movie-music-section {
+  overflow: hidden;
+}
+
+.movie-music-section .movie-music-header {
+  margin-bottom: 1.25rem;
+}
+
+.movie-music-section .movie-music-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.movie-music-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--cine-line, #d9e2ec);
+  border-radius: 1rem;
+  background: var(--cine-surface, #ffffff);
+}
+
+.movie-music-card.is-featured {
+  border-color: rgba(255, 193, 7, .55);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, .08);
+}
+
+.movie-music-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: .85rem;
+  padding: 1rem 1rem .85rem;
+}
+
+.movie-music-card__title {
+  margin: .55rem 0 .2rem;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.movie-music-card__artist {
+  margin: 0;
+  color: var(--cine-text-2, #667085);
+  font-size: .875rem;
+}
+
+.movie-music-card__player {
+  padding: 0 1rem 1rem;
+}
+
+.movie-music-card__player iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: .85rem;
+  background: #121212;
+}
+
+.movie-music-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: 0 1rem 1rem;
+}
+
+.movie-music-card__description {
+  margin: 0;
+  color: var(--cine-text-2, #667085);
+  font-size: .875rem;
+  line-height: 1.5;
+}
+
+.movie-music-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.movie-music-spotify-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  white-space: nowrap;
+}
+
+html[data-theme="dark"] .movie-music-card {
+  background: linear-gradient(180deg, #101a29 0%, #0c1522 100%);
+  border-color: #2a3b52;
+}
+
+html[data-theme="dark"] .movie-music-card.is-featured {
+  border-color: rgba(255, 193, 7, .5);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, .28);
+}
+
+html[data-theme="dark"] .movie-music-card__title {
+  color: #f7f9fc;
+}
+
+html[data-theme="dark"] .movie-music-card__artist,
+html[data-theme="dark"] .movie-music-card__description {
+  color: #9fb0c6;
+}
+
+@media (max-width: 575.98px) {
+  .movie-music-card__meta,
+  .movie-music-card__player,
+  .movie-music-card__footer {
+    padding-left: .85rem;
+    padding-right: .85rem;
+  }
+
+  .movie-music-card__footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .movie-music-card__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
