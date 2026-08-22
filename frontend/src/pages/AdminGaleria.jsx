@@ -10,8 +10,14 @@ const TIPOS = [
   ["PRENSA", "Prensa"],
   ["EVENTO", "Evento"],
   ["TRAILER", "Trailer de YouTube"],
+  ["TEMA_OFICIAL", "Tema oficial · Spotify"],
+  ["CANCION_ORIGINAL", "Canción original · Spotify"],
+  ["BANDA_SONORA", "Banda sonora / OST · Spotify"],
+  ["SCORE", "Score · Spotify"],
   ["OTRO", "Otro"],
 ];
+
+const TIPOS_MUSICA = new Set(["TEMA_OFICIAL", "CANCION_ORIGINAL", "BANDA_SONORA", "SCORE"]);
 
 const estadoInicial = {
   entidad: "pelicula",
@@ -19,8 +25,10 @@ const estadoInicial = {
   ActorId: "",
   Tipo: "PROMOCIONAL",
   Titulo: "",
+  Artista: "",
   Descripcion: "",
   VideoUrl: "",
+  AudioUrl: "",
   FuenteUrl: "",
   Orden: "",
   EsDestacada: false,
@@ -49,6 +57,20 @@ const obtenerYoutubeId = (valor) => {
 const obtenerThumbnailYoutube = (url) => {
   const id = obtenerYoutubeId(url);
   return id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : "";
+};
+
+const obtenerSpotifyEmbed = (valor) => {
+  if (!valor) return null;
+  try {
+    const url = new URL(valor);
+    const host = url.hostname.toLowerCase().replace(/^www\./, "");
+    if (host !== "open.spotify.com") return null;
+    const partes = url.pathname.split("/").filter(Boolean);
+    if (!["track", "album", "playlist"].includes(partes[0]) || !partes[1]) return null;
+    return `https://open.spotify.com/embed/${partes[0]}/${partes[1]}?utm_source=generator`;
+  } catch {
+    return null;
+  }
 };
 
 function AdminGaleria() {
@@ -87,10 +109,13 @@ function AdminGaleria() {
     if (filtro === "peliculas") return items.filter((x) => x.PeliculaId);
     if (filtro === "talentos") return items.filter((x) => x.ActorId);
     if (filtro === "trailers") return items.filter((x) => x.Tipo === "TRAILER");
+    if (filtro === "musica") return items.filter((x) => TIPOS_MUSICA.has(x.Tipo));
     return items;
   }, [items, filtro]);
 
   const esTrailer = form.Tipo === "TRAILER";
+  const esMusica = TIPOS_MUSICA.has(form.Tipo);
+  const esContenidoExterno = esTrailer || esMusica;
 
   const cambiar = (campo, valor) => setForm((actual) => ({ ...actual, [campo]: valor }));
 
@@ -104,14 +129,23 @@ function AdminGaleria() {
   };
 
   const cambiarTipo = (tipo) => {
+    const externo = tipo === "TRAILER" || TIPOS_MUSICA.has(tipo);
     setForm((actual) => ({
       ...actual,
       Tipo: tipo,
-      entidad: tipo === "TRAILER" ? "pelicula" : actual.entidad,
-      ActorId: tipo === "TRAILER" ? "" : actual.ActorId,
-      Imagen: tipo === "TRAILER" ? null : actual.Imagen,
+      entidad: externo ? "pelicula" : actual.entidad,
+      ActorId: externo ? "" : actual.ActorId,
+      Imagen: externo ? null : actual.Imagen,
       VideoUrl: tipo === "TRAILER" ? actual.VideoUrl : "",
+      AudioUrl: TIPOS_MUSICA.has(tipo) ? actual.AudioUrl : "",
+      Artista: TIPOS_MUSICA.has(tipo) ? actual.Artista : "",
     }));
+  };
+
+  const seleccionarFiltro = (nuevoFiltro) => {
+    setFiltro(nuevoFiltro);
+    if (nuevoFiltro === "trailers") cambiarTipo("TRAILER");
+    if (nuevoFiltro === "musica" && !TIPOS_MUSICA.has(form.Tipo)) cambiarTipo("TEMA_OFICIAL");
   };
 
   const resetear = () => {
@@ -128,8 +162,10 @@ function AdminGaleria() {
       ActorId: item.ActorId ? String(item.ActorId) : "",
       Tipo: item.Tipo,
       Titulo: item.Titulo || "",
+      Artista: item.Artista || "",
       Descripcion: item.Descripcion || "",
       VideoUrl: item.VideoUrl || "",
+      AudioUrl: item.AudioUrl || "",
       FuenteUrl: item.FuenteUrl || "",
       Orden: item.Orden ?? "",
       EsDestacada: Boolean(item.EsDestacada),
@@ -144,8 +180,10 @@ function AdminGaleria() {
     data.append("ActorId", form.entidad === "talento" ? form.ActorId : "");
     data.append("Tipo", form.Tipo);
     data.append("Titulo", form.Titulo);
+    data.append("Artista", form.Artista);
     data.append("Descripcion", form.Descripcion);
     data.append("VideoUrl", form.VideoUrl);
+    data.append("AudioUrl", form.AudioUrl);
     data.append("FuenteUrl", form.FuenteUrl);
     data.append("Orden", form.Orden);
     data.append("EsDestacada", String(form.EsDestacada));
@@ -156,6 +194,7 @@ function AdminGaleria() {
   const guardar = async (e) => {
     e.preventDefault();
     const entidadId = form.entidad === "pelicula" ? form.PeliculaId : form.ActorId;
+
     if (!entidadId) {
       setError("Selecciona una película o talento");
       return;
@@ -164,7 +203,11 @@ function AdminGaleria() {
       setError("Pega una URL válida de YouTube para el trailer");
       return;
     }
-    if (!esTrailer && !editandoId && !form.Imagen) {
+    if (esMusica && !obtenerSpotifyEmbed(form.AudioUrl)) {
+      setError("Pega una URL válida de Spotify de una canción, álbum o playlist");
+      return;
+    }
+    if (!esContenidoExterno && !editandoId && !form.Imagen) {
       setError("Selecciona una imagen");
       return;
     }
@@ -189,8 +232,13 @@ function AdminGaleria() {
   };
 
   const eliminar = async (item) => {
-    const etiqueta = item.Tipo === "TRAILER" ? "este trailer" : "esta imagen";
+    const etiqueta = item.Tipo === "TRAILER"
+      ? "este trailer"
+      : TIPOS_MUSICA.has(item.Tipo)
+        ? "este contenido musical"
+        : "esta imagen";
     if (!window.confirm(`¿Eliminar ${etiqueta} de la galería?`)) return;
+
     try {
       await api.delete(`/galeria/${item.Id}`);
       await cargar();
@@ -200,12 +248,18 @@ function AdminGaleria() {
     }
   };
 
+  const placeholderTitulo = esTrailer
+    ? "Trailer oficial"
+    : esMusica
+      ? "Título de la canción o banda sonora"
+      : "Título opcional";
+
   return (
     <div className="table-page-container">
       <header className="mb-4">
         <span className="catalog-eyebrow">FASE 8 · CATÁLOGO</span>
         <h1 className="display-6 fw-bold">Galerías multimedia</h1>
-        <p className="text-muted mb-0">Administra imágenes de películas y talentos, además de trailers enlazados directamente desde YouTube.</p>
+        <p className="text-muted mb-0">Administra imágenes, trailers de YouTube y música oficial enlazada desde Spotify.</p>
       </header>
 
       {error && <div className="alert alert-danger">{error}</div>}
@@ -216,11 +270,11 @@ function AdminGaleria() {
           <form onSubmit={guardar} className="row g-3">
             <div className="col-12 col-md-3">
               <label className="form-label">Entidad</label>
-              <select className="form-select" value={form.entidad} onChange={(e)=>cambiarEntidad(e.target.value)} disabled={esTrailer}>
+              <select className="form-select" value={form.entidad} onChange={(e)=>cambiarEntidad(e.target.value)} disabled={esContenidoExterno}>
                 <option value="pelicula">Película</option>
                 <option value="talento">Talento</option>
               </select>
-              {esTrailer && <div className="form-text">Los trailers se asocian únicamente a películas.</div>}
+              {esContenidoExterno && <div className="form-text">Este tipo de contenido se asocia únicamente a películas.</div>}
             </div>
 
             <div className="col-12 col-md-5">
@@ -245,15 +299,28 @@ function AdminGaleria() {
               </select>
             </div>
 
-            <div className="col-12 col-md-6">
+            <div className={esMusica ? "col-12 col-md-4" : "col-12 col-md-6"}>
               <label className="form-label">Título</label>
-              <input className="form-control" maxLength={180} value={form.Titulo} onChange={(e)=>cambiar("Titulo",e.target.value)} placeholder={esTrailer ? "Trailer oficial" : "Título opcional"} />
+              <input className="form-control" maxLength={180} value={form.Titulo} onChange={(e)=>cambiar("Titulo",e.target.value)} placeholder={placeholderTitulo} />
             </div>
+
+            {esMusica && (
+              <div className="col-12 col-md-4">
+                <label className="form-label">Artista / compositor</label>
+                <input className="form-control" maxLength={180} value={form.Artista} onChange={(e)=>cambiar("Artista",e.target.value)} placeholder="Nombre del artista" />
+              </div>
+            )}
 
             {esTrailer ? (
               <div className="col-12 col-md-4">
                 <label className="form-label">URL de YouTube</label>
                 <input className="form-control" type="url" maxLength={500} value={form.VideoUrl} onChange={(e)=>cambiar("VideoUrl",e.target.value)} placeholder="https://www.youtube.com/watch?v=..." required />
+              </div>
+            ) : esMusica ? (
+              <div className="col-12 col-md-4">
+                <label className="form-label">URL de Spotify</label>
+                <input className="form-control" type="url" maxLength={500} value={form.AudioUrl} onChange={(e)=>cambiar("AudioUrl",e.target.value)} placeholder="https://open.spotify.com/track/..." required />
+                <div className="form-text">Acepta canción, álbum o playlist.</div>
               </div>
             ) : (
               <div className="col-12 col-md-4">
@@ -271,9 +338,10 @@ function AdminGaleria() {
               <label className="form-label">Descripción</label>
               <textarea className="form-control" rows="2" maxLength={700} value={form.Descripcion} onChange={(e)=>cambiar("Descripcion",e.target.value)} />
             </div>
+
             <div className="col-12 col-md-4">
               <label className="form-label">Fuente / referencia URL</label>
-              <input className="form-control" type="url" maxLength={500} value={form.FuenteUrl} onChange={(e)=>cambiar("FuenteUrl",e.target.value)} placeholder={esTrailer ? "Opcional: página oficial de la película" : "https://..."} />
+              <input className="form-control" type="url" maxLength={500} value={form.FuenteUrl} onChange={(e)=>cambiar("FuenteUrl",e.target.value)} placeholder="https://..." />
             </div>
 
             {esTrailer && form.VideoUrl && obtenerYoutubeId(form.VideoUrl) && (
@@ -284,10 +352,26 @@ function AdminGaleria() {
               </div>
             )}
 
+            {esMusica && form.AudioUrl && obtenerSpotifyEmbed(form.AudioUrl) && (
+              <div className="col-12">
+                <iframe
+                  src={obtenerSpotifyEmbed(form.AudioUrl)}
+                  title="Vista previa de Spotify"
+                  width="100%"
+                  height="152"
+                  style={{maxWidth:"720px",border:0,borderRadius:"12px"}}
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                />
+              </div>
+            )}
+
             <div className="col-12 d-flex flex-wrap gap-3 align-items-center">
               <div className="form-check">
                 <input className="form-check-input" type="checkbox" id="galeriaDestacada" checked={form.EsDestacada} onChange={(e)=>cambiar("EsDestacada",e.target.checked)} />
-                <label className="form-check-label" htmlFor="galeriaDestacada">{esTrailer ? "Trailer principal de la película" : "Imagen destacada"}</label>
+                <label className="form-check-label" htmlFor="galeriaDestacada">
+                  {esTrailer ? "Trailer principal de la película" : esMusica ? "Música destacada de la película" : "Imagen destacada"}
+                </label>
               </div>
               <button className="btn btn-primary" disabled={guardando}>{guardando ? "Guardando..." : editandoId ? "Guardar cambios" : "Agregar a galería"}</button>
               {editandoId && <button className="btn btn-outline-secondary" type="button" onClick={resetear}>Cancelar</button>}
@@ -297,11 +381,12 @@ function AdminGaleria() {
       </section>
 
       <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-        <div className="btn-group" role="group" aria-label="Filtrar galería">
-          <button className={`btn btn-sm ${filtro==="todos"?"btn-primary":"btn-outline-primary"}`} onClick={()=>setFiltro("todos")}>Todo</button>
-          <button className={`btn btn-sm ${filtro==="peliculas"?"btn-primary":"btn-outline-primary"}`} onClick={()=>setFiltro("peliculas")}>Películas</button>
-          <button className={`btn btn-sm ${filtro==="talentos"?"btn-primary":"btn-outline-primary"}`} onClick={()=>setFiltro("talentos")}>Talentos</button>
-          <button className={`btn btn-sm ${filtro==="trailers"?"btn-primary":"btn-outline-primary"}`} onClick={()=>setFiltro("trailers")}>Trailers</button>
+        <div className="btn-group flex-wrap" role="group" aria-label="Filtrar galería">
+          <button className={`btn btn-sm ${filtro==="todos"?"btn-primary":"btn-outline-primary"}`} onClick={()=>seleccionarFiltro("todos")}>Todo</button>
+          <button className={`btn btn-sm ${filtro==="peliculas"?"btn-primary":"btn-outline-primary"}`} onClick={()=>seleccionarFiltro("peliculas")}>Películas</button>
+          <button className={`btn btn-sm ${filtro==="talentos"?"btn-primary":"btn-outline-primary"}`} onClick={()=>seleccionarFiltro("talentos")}>Talentos</button>
+          <button className={`btn btn-sm ${filtro==="trailers"?"btn-primary":"btn-outline-primary"}`} onClick={()=>seleccionarFiltro("trailers")}>Trailers</button>
+          <button className={`btn btn-sm ${filtro==="musica"?"btn-primary":"btn-outline-primary"}`} onClick={()=>seleccionarFiltro("musica")}>Música</button>
         </div>
         <span className="text-muted small">{itemsFiltrados.length} elementos</span>
       </div>
@@ -310,20 +395,34 @@ function AdminGaleria() {
         <div className="row g-3">
           {itemsFiltrados.map((item)=>{
             const trailer = item.Tipo === "TRAILER";
+            const musica = TIPOS_MUSICA.has(item.Tipo);
             const miniatura = trailer ? obtenerThumbnailYoutube(item.VideoUrl) : resolverImagen(item.Archivo);
+            const spotifyEmbed = musica ? obtenerSpotifyEmbed(item.AudioUrl) : null;
+
             return <div className="col-12 col-sm-6 col-lg-4 col-xl-3" key={item.Id}>
               <article className="card h-100 overflow-hidden">
-                {miniatura ? <img src={miniatura} alt={item.Titulo || item.Pelicula || item.Talento || "Galería CineRD"} style={{width:"100%",aspectRatio:"4/3",objectFit:"cover"}} /> : <div className="d-grid bg-light" style={{aspectRatio:"4/3",placeItems:"center",fontSize:"2rem"}}>🎞️</div>}
+                {musica ? (
+                  <div className="p-3 pb-0">
+                    {spotifyEmbed ? <iframe src={spotifyEmbed} title={item.Titulo || "Spotify"} width="100%" height="152" style={{border:0,borderRadius:"12px"}} allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" /> : <div className="d-grid bg-dark text-white rounded-3" style={{height:"152px",placeItems:"center",fontSize:"2rem"}}>🎵</div>}
+                  </div>
+                ) : miniatura ? (
+                  <img src={miniatura} alt={item.Titulo || item.Pelicula || item.Talento || "Galería CineRD"} style={{width:"100%",aspectRatio:"4/3",objectFit:"cover"}} />
+                ) : (
+                  <div className="d-grid bg-light" style={{aspectRatio:"4/3",placeItems:"center",fontSize:"2rem"}}>🎞️</div>
+                )}
+
                 <div className="card-body">
                   <div className="d-flex justify-content-between gap-2 align-items-start mb-2">
-                    <span className={`badge ${trailer ? "bg-danger" : "bg-secondary"}`}>{TIPOS.find(([v])=>v===item.Tipo)?.[1] || item.Tipo}</span>
-                    {item.EsDestacada && <span title={trailer ? "Trailer principal" : "Destacada"}>⭐</span>}
+                    <span className={`badge ${trailer ? "bg-danger" : musica ? "bg-success" : "bg-secondary"}`}>{TIPOS.find(([v])=>v===item.Tipo)?.[1] || item.Tipo}</span>
+                    {item.EsDestacada && <span title={trailer ? "Trailer principal" : musica ? "Música destacada" : "Destacada"}>⭐</span>}
                   </div>
                   <strong className="d-block">{item.Titulo || item.Pelicula || item.Talento}</strong>
+                  {musica && item.Artista && <small className="d-block mb-1">🎤 {item.Artista}</small>}
                   <small className="text-muted d-block mb-2">{item.Pelicula ? `🎬 ${item.Pelicula}` : `🎭 ${item.Talento}`}</small>
                   {item.Descripcion && <p className="small text-muted mb-3">{item.Descripcion}</p>}
                   <div className="d-flex flex-wrap gap-2">
                     {trailer && <a className="btn btn-sm btn-danger" href={item.VideoUrl} target="_blank" rel="noreferrer noopener">YouTube ↗</a>}
+                    {musica && <a className="btn btn-sm btn-success" href={item.AudioUrl} target="_blank" rel="noreferrer noopener">Spotify ↗</a>}
                     <button className="btn btn-sm btn-outline-primary" onClick={()=>editar(item)}>Editar</button>
                     <button className="btn btn-sm btn-outline-danger" onClick={()=>eliminar(item)}>Eliminar</button>
                   </div>
