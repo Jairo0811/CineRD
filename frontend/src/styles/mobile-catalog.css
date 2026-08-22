@@ -1,0 +1,108 @@
+/* Mobile-only catalog refinements. Desktop/tablet layouts stay untouched. */
+@media (max-width: 575.98px) {
+  .talent-catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .cinerd-talent-card {
+    border-radius: 14px;
+    min-width: 0;
+  }
+
+  .cinerd-talent-visual {
+    height: auto !important;
+    aspect-ratio: 4 / 5;
+  }
+
+  .cinerd-talent-copy {
+    padding: 11px 10px 10px !important;
+  }
+
+  .cinerd-genre {
+    display: block;
+    overflow: hidden;
+    font-size: .58rem !important;
+    letter-spacing: .07em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cinerd-talent-name-row {
+    min-width: 0;
+  }
+
+  .cinerd-talent-copy h2 {
+    margin: 5px 0 7px !important;
+    font-size: .92rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .cinerd-talent-copy h2 a {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .cinerd-talent-copy > small {
+    display: none !important;
+  }
+
+  .cinerd-talent-facts {
+    gap: 3px !important;
+    font-size: .72rem !important;
+  }
+
+  /* Keep movie/directed counts; birthday details live in the profile on mobile. */
+  .cinerd-talent-facts > span:last-child {
+    display: none;
+  }
+
+  .cinerd-profile-link {
+    margin-top: 9px !important;
+    padding-top: 9px !important;
+    font-size: .7rem !important;
+  }
+
+  .cinerd-status-dot {
+    left: 7px !important;
+    bottom: 7px !important;
+    padding: 4px 6px !important;
+    font-size: .56rem !important;
+  }
+
+  .cinerd-verified-card-badge {
+    max-width: calc(100% - 14px);
+    overflow: hidden;
+    padding: 4px 6px !important;
+    font-size: .54rem !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cinerd-admin-strip {
+    gap: 4px !important;
+    padding: 7px !important;
+  }
+
+  .cinerd-admin-strip a,
+  .cinerd-admin-strip button {
+    padding: 6px 4px !important;
+    font-size: .62rem !important;
+  }
+}
+
+@media (max-width: 359.98px) {
+  .talent-catalog-grid {
+    gap: 8px !important;
+  }
+
+  .cinerd-talent-copy {
+    padding-inline: 8px !important;
+  }
+
+  .cinerd-profile-link {
+    font-size: .64rem !important;
+  }
+}
