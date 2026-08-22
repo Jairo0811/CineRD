@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import api from "../services/api";
+import { API_URL } from "../config/api";
+import { manejarErrorFotoTalento, obtenerFotoTalento } from "../utils/talentoPlaceholder";
 
-const API_URL = "http://localhost:3000";
 const resolverImagen = (ruta) => !ruta ? null : ruta.startsWith("http") ? ruta : `${API_URL}${ruta}`;
 
 function Busqueda() {
@@ -74,7 +75,7 @@ function Busqueda() {
       {resultados.talentos.length > 0 && <section className="global-search-section">
         <h2>{copy.talents}</h2>
         <div className="global-search-grid">{resultados.talentos.map((a)=><Link key={a.Id} to={`/actores/${a.Id}`} className="global-search-result">
-          {resolverImagen(a.Foto) ? <img src={resolverImagen(a.Foto)} alt={a.NombreArtistico || a.NombreCompleto} /> : <div className="global-search-placeholder">🎭</div>}
+          <img src={obtenerFotoTalento(a)} alt={a.NombreArtistico || a.NombreCompleto} onError={(e)=>manejarErrorFotoTalento(e,a.Sexo)} />
           <div><strong>{a.NombreArtistico || a.NombreCompleto}</strong><span>{a.Profesion || "Talento"}</span></div>
         </Link>)}</div>
       </section>}
