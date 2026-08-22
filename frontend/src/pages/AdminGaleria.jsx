@@ -10,10 +10,10 @@ const TIPOS = [
   ["PRENSA", "Prensa"],
   ["EVENTO", "Evento"],
   ["TRAILER", "Trailer de YouTube"],
-  ["TEMA_OFICIAL", "Tema oficial · Spotify"],
-  ["CANCION_ORIGINAL", "Canción original · Spotify"],
-  ["BANDA_SONORA", "Banda sonora / OST · Spotify"],
-  ["SCORE", "Score · Spotify"],
+  ["TEMA_OFICIAL", "Tema oficial"],
+  ["CANCION_ORIGINAL", "Canción original"],
+  ["BANDA_SONORA", "Banda sonora / OST"],
+  ["SCORE", "Score"],
   ["OTRO", "Otro"],
 ];
 
@@ -24,6 +24,7 @@ const estadoInicial = {
   PeliculaId: "",
   ActorId: "",
   Tipo: "PROMOCIONAL",
+  Proveedor: "SPOTIFY",
   Titulo: "",
   Artista: "",
   Descripcion: "",
@@ -70,8 +71,8 @@ const obtenerSpotifyRecurso = (valor) => {
     const offset = partes[0]?.toLowerCase().startsWith("intl-") ? 1 : 0;
     const tipo = partes[offset];
     const id = partes[offset + 1];
-
     if (!["track", "album", "playlist"].includes(tipo) || !id) return null;
+
     return { tipo, id };
   } catch {
     return null;
@@ -133,6 +134,8 @@ function AdminGaleria() {
   const esTrailer = form.Tipo === "TRAILER";
   const esMusica = TIPOS_MUSICA.has(form.Tipo);
   const esContenidoExterno = esTrailer || esMusica;
+  const musicaYoutube = esMusica && form.Proveedor === "YOUTUBE";
+  const musicaSpotify = esMusica && form.Proveedor === "SPOTIFY";
 
   const cambiar = (campo, valor) => setForm((actual) => ({ ...actual, [campo]: valor }));
 
@@ -156,7 +159,12 @@ function AdminGaleria() {
       VideoUrl: tipo === "TRAILER" ? actual.VideoUrl : "",
       AudioUrl: TIPOS_MUSICA.has(tipo) ? actual.AudioUrl : "",
       Artista: TIPOS_MUSICA.has(tipo) ? actual.Artista : "",
+      Proveedor: TIPOS_MUSICA.has(tipo) ? actual.Proveedor || "SPOTIFY" : "SPOTIFY",
     }));
+  };
+
+  const cambiarProveedor = (proveedor) => {
+    setForm((actual) => ({ ...actual, Proveedor: proveedor, AudioUrl: "" }));
   };
 
   const seleccionarFiltro = (nuevoFiltro) => {
@@ -178,6 +186,7 @@ function AdminGaleria() {
       PeliculaId: item.PeliculaId ? String(item.PeliculaId) : "",
       ActorId: item.ActorId ? String(item.ActorId) : "",
       Tipo: item.Tipo,
+      Proveedor: item.Proveedor || "SPOTIFY",
       Titulo: item.Titulo || "",
       Artista: item.Artista || "",
       Descripcion: item.Descripcion || "",
@@ -196,11 +205,15 @@ function AdminGaleria() {
     data.append("PeliculaId", form.entidad === "pelicula" ? form.PeliculaId : "");
     data.append("ActorId", form.entidad === "talento" ? form.ActorId : "");
     data.append("Tipo", form.Tipo);
+    data.append("Proveedor", esMusica ? form.Proveedor : "");
     data.append("Titulo", form.Titulo);
     data.append("Artista", form.Artista);
     data.append("Descripcion", form.Descripcion);
     data.append("VideoUrl", form.VideoUrl);
-    data.append("AudioUrl", esMusica ? (normalizarSpotifyUrl(form.AudioUrl) || form.AudioUrl) : "");
+    data.append(
+      "AudioUrl",
+      musicaSpotify ? (normalizarSpotifyUrl(form.AudioUrl) || form.AudioUrl) : esMusica ? form.AudioUrl : "",
+    );
     data.append("FuenteUrl", form.FuenteUrl);
     data.append("Orden", form.Orden);
     data.append("EsDestacada", String(form.EsDestacada));
@@ -220,8 +233,12 @@ function AdminGaleria() {
       setError("Pega una URL válida de YouTube para el trailer");
       return;
     }
-    if (esMusica && !normalizarSpotifyUrl(form.AudioUrl)) {
+    if (musicaSpotify && !normalizarSpotifyUrl(form.AudioUrl)) {
       setError("Pega una URL válida de Spotify de una canción, álbum o playlist");
+      return;
+    }
+    if (musicaYoutube && !obtenerYoutubeId(form.AudioUrl)) {
+      setError("Pega una URL válida de YouTube para la canción");
       return;
     }
     if (!esContenidoExterno && !editandoId && !form.Imagen) {
@@ -276,7 +293,7 @@ function AdminGaleria() {
       <header className="mb-4">
         <span className="catalog-eyebrow">FASE 8 · CATÁLOGO</span>
         <h1 className="display-6 fw-bold">Galerías multimedia</h1>
-        <p className="text-muted mb-0">Administra imágenes, trailers de YouTube y música oficial enlazada desde Spotify.</p>
+        <p className="text-muted mb-0">Administra imágenes, trailers de YouTube y música oficial enlazada desde Spotify o YouTube.</p>
       </header>
 
       {error && <div className="alert alert-danger">{error}</div>}
@@ -316,13 +333,23 @@ function AdminGaleria() {
               </select>
             </div>
 
-            <div className={esMusica ? "col-12 col-md-4" : "col-12 col-md-6"}>
+            {esMusica && (
+              <div className="col-12 col-md-3">
+                <label className="form-label">Proveedor musical</label>
+                <select className="form-select" value={form.Proveedor} onChange={(e)=>cambiarProveedor(e.target.value)}>
+                  <option value="SPOTIFY">Spotify</option>
+                  <option value="YOUTUBE">YouTube</option>
+                </select>
+              </div>
+            )}
+
+            <div className={esMusica ? "col-12 col-md-3" : "col-12 col-md-6"}>
               <label className="form-label">Título</label>
               <input className="form-control" maxLength={180} value={form.Titulo} onChange={(e)=>cambiar("Titulo",e.target.value)} placeholder={placeholderTitulo} />
             </div>
 
             {esMusica && (
-              <div className="col-12 col-md-4">
+              <div className="col-12 col-md-3">
                 <label className="form-label">Artista / compositor</label>
                 <input className="form-control" maxLength={180} value={form.Artista} onChange={(e)=>cambiar("Artista",e.target.value)} placeholder="Nombre del artista" />
               </div>
@@ -334,10 +361,20 @@ function AdminGaleria() {
                 <input className="form-control" type="url" maxLength={500} value={form.VideoUrl} onChange={(e)=>cambiar("VideoUrl",e.target.value)} placeholder="https://www.youtube.com/watch?v=..." required />
               </div>
             ) : esMusica ? (
-              <div className="col-12 col-md-4">
-                <label className="form-label">URL de Spotify</label>
-                <input className="form-control" type="url" maxLength={500} value={form.AudioUrl} onChange={(e)=>cambiar("AudioUrl",e.target.value)} placeholder="https://open.spotify.com/track/..." required />
-                <div className="form-text">Acepta canción, álbum o playlist, incluyendo enlaces regionales de Spotify.</div>
+              <div className="col-12 col-md-3">
+                <label className="form-label">URL de {musicaYoutube ? "YouTube" : "Spotify"}</label>
+                <input
+                  className="form-control"
+                  type="url"
+                  maxLength={500}
+                  value={form.AudioUrl}
+                  onChange={(e)=>cambiar("AudioUrl",e.target.value)}
+                  placeholder={musicaYoutube ? "https://www.youtube.com/watch?v=..." : "https://open.spotify.com/track/..."}
+                  required
+                />
+                <div className="form-text">
+                  {musicaYoutube ? "Se mostrará como video musical compacto." : "Acepta canción, álbum o playlist."}
+                </div>
               </div>
             ) : (
               <div className="col-12 col-md-4">
@@ -369,17 +406,26 @@ function AdminGaleria() {
               </div>
             )}
 
-            {esMusica && form.AudioUrl && obtenerSpotifyEmbed(form.AudioUrl) && (
+            {musicaSpotify && form.AudioUrl && obtenerSpotifyEmbed(form.AudioUrl) && (
               <div className="col-12">
                 <iframe
                   src={obtenerSpotifyEmbed(form.AudioUrl)}
                   title="Vista previa de Spotify"
                   width="100%"
-                  height="152"
+                  height="352"
                   style={{maxWidth:"720px",border:0,borderRadius:"12px"}}
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  allowFullScreen
                   loading="lazy"
                 />
+              </div>
+            )}
+
+            {musicaYoutube && form.AudioUrl && obtenerYoutubeId(form.AudioUrl) && (
+              <div className="col-12">
+                <div className="ratio ratio-16x9 rounded-3 overflow-hidden border" style={{maxWidth:"560px"}}>
+                  <iframe src={`https://www.youtube.com/embed/${obtenerYoutubeId(form.AudioUrl)}`} title="Vista previa de canción en YouTube" allowFullScreen />
+                </div>
               </div>
             )}
 
@@ -413,33 +459,42 @@ function AdminGaleria() {
           {itemsFiltrados.map((item)=>{
             const trailer = item.Tipo === "TRAILER";
             const musica = TIPOS_MUSICA.has(item.Tipo);
+            const musicaEsYoutube = musica && item.Proveedor === "YOUTUBE";
             const miniatura = trailer ? obtenerThumbnailYoutube(item.VideoUrl) : resolverImagen(item.Archivo);
-            const spotifyEmbed = musica ? obtenerSpotifyEmbed(item.AudioUrl) : null;
+            const spotifyEmbed = musica && item.Proveedor !== "YOUTUBE" ? obtenerSpotifyEmbed(item.AudioUrl) : null;
+            const youtubeMusicaId = musicaEsYoutube ? obtenerYoutubeId(item.AudioUrl) : null;
 
             return <div className="col-12 col-sm-6 col-lg-4 col-xl-3" key={item.Id}>
               <article className="card h-100 overflow-hidden">
-                {musica ? (
+                {spotifyEmbed ? (
                   <div className="p-3 pb-0">
-                    {spotifyEmbed ? <iframe src={spotifyEmbed} title={item.Titulo || "Spotify"} width="100%" height="152" style={{border:0,borderRadius:"12px"}} allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" /> : <div className="d-grid bg-dark text-white rounded-3" style={{height:"152px",placeItems:"center",fontSize:"2rem"}}>🎵</div>}
+                    <iframe src={spotifyEmbed} title={item.Titulo || "Spotify"} width="100%" height="152" style={{border:0,borderRadius:"12px"}} allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" />
+                  </div>
+                ) : youtubeMusicaId ? (
+                  <div className="p-3 pb-0">
+                    <div className="ratio ratio-16x9 rounded-3 overflow-hidden">
+                      <iframe src={`https://www.youtube.com/embed/${youtubeMusicaId}`} title={item.Titulo || "YouTube"} allowFullScreen />
+                    </div>
                   </div>
                 ) : miniatura ? (
                   <img src={miniatura} alt={item.Titulo || item.Pelicula || item.Talento || "Galería CineRD"} style={{width:"100%",aspectRatio:"4/3",objectFit:"cover"}} />
                 ) : (
-                  <div className="d-grid bg-light" style={{aspectRatio:"4/3",placeItems:"center",fontSize:"2rem"}}>🎞️</div>
+                  <div className="d-grid bg-light" style={{aspectRatio:"4/3",placeItems:"center",fontSize:"2rem"}}>{musica ? "🎵" : "🎞️"}</div>
                 )}
 
                 <div className="card-body">
                   <div className="d-flex justify-content-between gap-2 align-items-start mb-2">
-                    <span className={`badge ${trailer ? "bg-danger" : musica ? "bg-success" : "bg-secondary"}`}>{TIPOS.find(([v])=>v===item.Tipo)?.[1] || item.Tipo}</span>
+                    <span className={`badge ${trailer || musicaEsYoutube ? "bg-danger" : musica ? "bg-success" : "bg-secondary"}`}>{TIPOS.find(([v])=>v===item.Tipo)?.[1] || item.Tipo}</span>
                     {item.EsDestacada && <span title={trailer ? "Trailer principal" : musica ? "Música destacada" : "Destacada"}>⭐</span>}
                   </div>
                   <strong className="d-block">{item.Titulo || item.Pelicula || item.Talento}</strong>
                   {musica && item.Artista && <small className="d-block mb-1">🎤 {item.Artista}</small>}
+                  {musica && <small className="text-muted d-block mb-1">{item.Proveedor === "YOUTUBE" ? "YouTube" : "Spotify"}</small>}
                   <small className="text-muted d-block mb-2">{item.Pelicula ? `🎬 ${item.Pelicula}` : `🎭 ${item.Talento}`}</small>
                   {item.Descripcion && <p className="small text-muted mb-3">{item.Descripcion}</p>}
                   <div className="d-flex flex-wrap gap-2">
                     {trailer && <a className="btn btn-sm btn-danger" href={item.VideoUrl} target="_blank" rel="noreferrer noopener">YouTube ↗</a>}
-                    {musica && <a className="btn btn-sm btn-success" href={item.AudioUrl} target="_blank" rel="noreferrer noopener">Spotify ↗</a>}
+                    {musica && <a className={`btn btn-sm ${musicaEsYoutube ? "btn-danger" : "btn-success"}`} href={item.AudioUrl} target="_blank" rel="noreferrer noopener">{musicaEsYoutube ? "YouTube ↗" : "Spotify ↗"}</a>}
                     <button className="btn btn-sm btn-outline-primary" onClick={()=>editar(item)}>Editar</button>
                     <button className="btn btn-sm btn-outline-danger" onClick={()=>eliminar(item)}>Eliminar</button>
                   </div>
