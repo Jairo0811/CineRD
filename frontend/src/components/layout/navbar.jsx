@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import banderaDo from "../../branding/flag-do.svg";
 import banderaUs from "../../branding/flag-us.svg";
@@ -7,6 +7,7 @@ import cineRdNavbarLogo from "../../branding/cinerd-navbar.png";
 
 function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t, i18n } = useTranslation();
   const [tema, setTema] = useState(
     () => document.documentElement.dataset.theme || "light",
@@ -74,8 +75,11 @@ function Navbar() {
   const etiquetaCreditos = idiomaActual === "en" ? "Credit claims" : "Créditos";
   const etiquetaPremios = idiomaActual === "en" ? "Awards" : "Premios";
   const etiquetaGaleria = idiomaActual === "en" ? "Gallery" : "Galería";
+  const etiquetaEditorial = idiomaActual === "en" ? "Editorial" : "Editorial";
+  const etiquetaCrear = idiomaActual === "en" ? "Create" : "Crear";
   const etiquetaReclamarCredito = idiomaActual === "en" ? "Claim a credit" : "Reclamar crédito";
   const banderaActual = idiomaActual === "es" ? banderaDo : banderaUs;
+  const editorialActivo = location.pathname.startsWith("/admin/");
 
   const estiloBandera = {
     width: "22px",
@@ -152,28 +156,38 @@ function Navbar() {
               </li>
             )}
             {esAdmin && (
-              <>
-                <li className="nav-item">
-                  <NavLink className={obtenerClaseNav} to="/admin/verificaciones" onClick={cerrarMenuMovil}>
-                    {t("nav.verifications")}
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className={obtenerClaseNav} to="/admin/solicitudes-creditos" onClick={cerrarMenuMovil}>
-                    {etiquetaCreditos}
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className={obtenerClaseNav} to="/admin/premios" onClick={cerrarMenuMovil}>
-                    {etiquetaPremios}
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className={obtenerClaseNav} to="/admin/galeria" onClick={cerrarMenuMovil}>
-                    {etiquetaGaleria}
-                  </NavLink>
-                </li>
-              </>
+              <li className="nav-item dropdown">
+                <button
+                  className={`nav-link cine-navbar-link dropdown-toggle ${editorialActivo ? "active" : ""}`}
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  {etiquetaEditorial}
+                </button>
+                <ul className="dropdown-menu cine-account-menu">
+                  <li>
+                    <NavLink className="dropdown-item" to="/admin/verificaciones" onClick={cerrarMenuMovil}>
+                      ✓ {t("nav.verifications")}
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/admin/solicitudes-creditos" onClick={cerrarMenuMovil}>
+                      🎬 {etiquetaCreditos}
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/admin/premios" onClick={cerrarMenuMovil}>
+                      🏆 {etiquetaPremios}
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/admin/galeria" onClick={cerrarMenuMovil}>
+                      🖼️ {etiquetaGaleria}
+                    </NavLink>
+                  </li>
+                </ul>
+              </li>
             )}
           </ul>
 
@@ -239,13 +253,27 @@ function Navbar() {
             </div>
 
             {esAdmin && (
-              <div className="cine-admin-quick-actions">
-                <NavLink className="btn cine-btn-ghost btn-sm" to="/peliculas/nueva" onClick={cerrarMenuMovil}>
-                  {t("nav.newMovie")}
-                </NavLink>
-                <NavLink className="btn cine-btn-accent btn-sm" to="/actores/nuevo" onClick={cerrarMenuMovil}>
-                  {t("nav.newTalent")}
-                </NavLink>
+              <div className="dropdown">
+                <button
+                  className="btn cine-btn-accent btn-sm dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  + {etiquetaCrear}
+                </button>
+                <ul className="dropdown-menu dropdown-menu-end cine-account-menu">
+                  <li>
+                    <NavLink className="dropdown-item" to="/peliculas/nueva" onClick={cerrarMenuMovil}>
+                      🎬 {t("nav.newMovie")}
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/actores/nuevo" onClick={cerrarMenuMovil}>
+                      🎭 {t("nav.newTalent")}
+                    </NavLink>
+                  </li>
+                </ul>
               </div>
             )}
 
@@ -291,24 +319,10 @@ function Navbar() {
                   )}
                   {esAdmin && (
                     <>
+                      <li><hr className="dropdown-divider" /></li>
                       <li>
                         <NavLink className="dropdown-item" to="/admin/verificaciones" onClick={cerrarMenuMovil}>
-                          {t("nav.manageVerifications")}
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink className="dropdown-item" to="/admin/solicitudes-creditos" onClick={cerrarMenuMovil}>
-                          {etiquetaCreditos}
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink className="dropdown-item" to="/admin/premios" onClick={cerrarMenuMovil}>
-                          🏆 {etiquetaPremios}
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink className="dropdown-item" to="/admin/galeria" onClick={cerrarMenuMovil}>
-                          🖼️ {etiquetaGaleria}
+                          {etiquetaEditorial}
                         </NavLink>
                       </li>
                     </>
