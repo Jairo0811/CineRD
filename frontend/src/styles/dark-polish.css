@@ -51,10 +51,14 @@ html[data-theme="dark"] :is(
   .actor-filmography-panel,
   .actor-social-panel,
   .auth-form-panel,
+  .user-stat,
+  .user-action:not(.highlight),
+  .user-panel,
+  .user-discovery-card,
   .bg-white,
   .bg-light
 ) {
-  color: #101828;
+  color: #101828 !important;
 }
 
 html[data-theme="dark"] :is(
@@ -62,6 +66,10 @@ html[data-theme="dark"] :is(
   .actor-filmography-panel,
   .actor-social-panel,
   .auth-form-panel,
+  .user-stat,
+  .user-action:not(.highlight),
+  .user-panel,
+  .user-discovery-card,
   .bg-white,
   .bg-light
 ) :is(
@@ -69,7 +77,7 @@ html[data-theme="dark"] :is(
   p, span, label, small, strong,
   dt, dd, li, th, td
 ) {
-  color: inherit;
+  color: inherit !important;
 }
 
 /* Secondary copy on a light surface remains dark, not washed-out gray. */
@@ -78,10 +86,64 @@ html[data-theme="dark"] :is(
   .actor-filmography-panel,
   .actor-social-panel,
   .auth-form-panel,
+  .user-stat,
+  .user-action:not(.highlight),
+  .user-panel,
+  .user-discovery-card,
   .bg-white,
   .bg-light
 ) :is(.text-muted, .text-secondary) {
   color: #344054 !important;
+}
+
+/* User dashboard: preserve light-mode typography on white cards. */
+html[data-theme="dark"] .user-stat,
+html[data-theme="dark"] .user-action:not(.highlight),
+html[data-theme="dark"] .user-panel,
+html[data-theme="dark"] .user-discovery-card {
+  background: #ffffff !important;
+  border-color: #e0e7ef !important;
+}
+
+html[data-theme="dark"] .user-stat strong,
+html[data-theme="dark"] .user-action:not(.highlight) h2,
+html[data-theme="dark"] .user-panel h2,
+html[data-theme="dark"] .user-discovery-card strong,
+html[data-theme="dark"] .user-status-copy strong {
+  color: #101828 !important;
+}
+
+html[data-theme="dark"] .user-stat span,
+html[data-theme="dark"] .user-action:not(.highlight) p,
+html[data-theme="dark"] .user-discovery-card small,
+html[data-theme="dark"] .user-status-copy small,
+html[data-theme="dark"] .user-empty-state {
+  color: #475467 !important;
+}
+
+html[data-theme="dark"] .user-panel-header,
+html[data-theme="dark"] .user-status-item,
+html[data-theme="dark"] .user-discovery-card {
+  border-color: #edf1f5 !important;
+}
+
+html[data-theme="dark"] .user-panel-header span,
+html[data-theme="dark"] .user-panel-header a,
+html[data-theme="dark"] .user-discovery-card:hover {
+  color: #0057b8 !important;
+}
+
+/* Highlight action remains intentionally blue with light text. */
+html[data-theme="dark"] .user-action.highlight,
+html[data-theme="dark"] .user-action.highlight h2,
+html[data-theme="dark"] .user-action.highlight strong {
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] .user-action.highlight p,
+html[data-theme="dark"] .user-action.highlight small,
+html[data-theme="dark"] .user-action.highlight span {
+  color: #dbeaff !important;
 }
 
 /* Keep semantic/link colors where they communicate an action or status. */
@@ -90,6 +152,10 @@ html[data-theme="dark"] :is(
   .actor-filmography-panel,
   .actor-social-panel,
   .auth-form-panel,
+  .user-stat,
+  .user-action:not(.highlight),
+  .user-panel,
+  .user-discovery-card,
   .bg-white,
   .bg-light
 ) :is(a, .text-primary) {
@@ -101,6 +167,10 @@ html[data-theme="dark"] :is(
   .actor-filmography-panel,
   .actor-social-panel,
   .auth-form-panel,
+  .user-stat,
+  .user-action:not(.highlight),
+  .user-panel,
+  .user-discovery-card,
   .bg-white,
   .bg-light
 ) .text-danger {
@@ -112,6 +182,10 @@ html[data-theme="dark"] :is(
   .actor-filmography-panel,
   .actor-social-panel,
   .auth-form-panel,
+  .user-stat,
+  .user-action:not(.highlight),
+  .user-panel,
+  .user-discovery-card,
   .bg-white,
   .bg-light
 ) .text-success {
