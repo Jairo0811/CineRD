@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import api from "../services/api";
 
 function Login() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const sesionExpirada = searchParams.get("session") === "expired";
   const [formulario, setFormulario] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(false);
@@ -35,6 +37,7 @@ function Login() {
     <div className="cine-auth-panel"><div className="cine-auth-panel-inner">
       <h2>Bienvenido de nuevo</h2>
       <p className="lead-copy">Inicia sesión para acceder a tu espacio personalizado.</p>
+      {sesionExpirada && !error && <div className="alert alert-warning">Tu sesión expiró por seguridad. Inicia sesión nuevamente para continuar.</div>}
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={enviar}>
         <div className="cine-field"><label>Correo electrónico</label><input type="email" autoComplete="email" required value={formulario.email} onChange={(e)=>setFormulario({...formulario,email:e.target.value})}/></div>
