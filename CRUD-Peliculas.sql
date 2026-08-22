@@ -73,13 +73,17 @@ BEGIN
 END
 GO
 
-/* Migrar la profesión antigua, si existe */
+/* Migrar la profesión antigua, si existe.
+   Se usa SQL dinámico para evitar que SQL Server intente resolver
+   ProfesionPrincipal durante la compilación cuando esa columna ya no existe. */
 IF COL_LENGTH(N'dbo.Actores', N'ProfesionPrincipal') IS NOT NULL
 BEGIN
-    UPDATE dbo.Actores
-    SET Profesion = ProfesionPrincipal
-    WHERE Profesion IS NULL
-      AND ProfesionPrincipal IS NOT NULL;
+    EXEC sys.sp_executesql N'
+        UPDATE dbo.Actores
+        SET Profesion = ProfesionPrincipal
+        WHERE Profesion IS NULL
+          AND ProfesionPrincipal IS NOT NULL;
+    ';
 END
 GO
 
