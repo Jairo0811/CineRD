@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import api from "../services/api";
+import { API_URL } from "../config/api";
 
-const API_URL = "http://localhost:3000";
 const resolverImagen = (ruta) => {
   if (!ruta) return null;
   if (ruta.startsWith("http://") || ruta.startsWith("https://")) return ruta;
