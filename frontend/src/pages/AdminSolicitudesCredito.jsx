@@ -58,20 +58,24 @@ function AdminSolicitudesCredito() {
     }
   };
 
-  return <div className="table-page-container">
+  return <div className="table-page-container credit-claims-admin-page">
     <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
       <div><span className="catalog-eyebrow">CONTROL EDITORIAL</span><h1 className="h2 mb-1">Reclamaciones de créditos</h1><p className="text-muted mb-0">Revisa evidencia antes de incorporar una participación a la filmografía.</p></div>
-      <select className="form-select" style={{maxWidth:280}} value={estado} onChange={(e)=>setEstado(e.target.value)}>{ESTADOS.map(e=><option key={e || "TODAS"} value={e}>{e || "Todos los estados"}</option>)}</select>
+      <select className="form-select credit-claims-filter" value={estado} onChange={(e)=>setEstado(e.target.value)}>{ESTADOS.map(e=><option key={e || "TODAS"} value={e}>{e || "Todos los estados"}</option>)}</select>
     </div>
 
-    <div className="alert alert-secondary border"><strong>Criterio de revisión:</strong> identidad verificada no equivale a crédito verificado. Cada participación debe sostenerse con evidencia propia.</div>
+    <div className="credit-claims-review-note border"><span className="credit-claims-review-icon" aria-hidden="true">i</span><div><strong>Criterio de revisión:</strong> identidad verificada no equivale a crédito verificado. Cada participación debe sostenerse con evidencia propia.</div></div>
     {mensaje && <div className="alert alert-info">{mensaje}</div>}
     {errorCarga && <div className="alert alert-danger">{errorCarga}</div>}
 
     {cargando ? (
       <div className="text-center py-5"><div className="spinner-border text-primary"/></div>
     ) : errorCarga ? null : solicitudes.length === 0 ? (
-      <div className="card"><div className="card-body text-center py-5 text-muted">No hay reclamaciones para este filtro.</div></div>
+      <div className="credit-claims-empty border">
+        <div className="credit-claims-empty-icon" aria-hidden="true">▣</div>
+        <h2>Sin reclamaciones pendientes</h2>
+        <p>Cuando un talento verificado envíe una solicitud, aparecerá aquí para revisión.</p>
+      </div>
     ) : (
       <div className="d-grid gap-3">
         {solicitudes.map((s)=><article className="card" key={s.Id}><div className="card-body p-4">
