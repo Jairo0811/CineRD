@@ -57,6 +57,26 @@
   background: #121212;
 }
 
+.movie-music-card__player.is-youtube {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.movie-music-youtube-frame {
+  width: min(100%, 560px);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: .85rem;
+  background: #000;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .12);
+}
+
+.movie-music-youtube-frame iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
 .movie-music-card__footer {
   display: flex;
   flex-wrap: wrap;
@@ -105,12 +125,20 @@ html[data-theme="dark"] .movie-music-card__description {
   color: #9fb0c6;
 }
 
+html[data-theme="dark"] .movie-music-youtube-frame {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .32);
+}
+
 @media (max-width: 575.98px) {
   .movie-music-card__meta,
   .movie-music-card__player,
   .movie-music-card__footer {
     padding-left: .85rem;
     padding-right: .85rem;
+  }
+
+  .movie-music-youtube-frame {
+    width: 100%;
   }
 
   .movie-music-card__footer {
