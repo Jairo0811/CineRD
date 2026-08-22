@@ -22,8 +22,38 @@ app.use((req, res, next) => {
   next();
 });
 
+const origenesConfigurados = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL || "http://localhost:5173")
+  .split(",")
+  .map((origen) => origen.trim())
+  .filter(Boolean);
+
+const esOrigenLocalPermitido = (origin) => {
+  if (!origin) return true;
+
+  try {
+    const url = new URL(origin);
+    const esHttp = url.protocol === "http:" || url.protocol === "https:";
+    const esPuertoFrontend = url.port === "5173" || url.port === "";
+    const esLocalhost = url.hostname === "localhost" || url.hostname === "127.0.0.1";
+    const esIPv4Privada =
+      /^10\./.test(url.hostname) ||
+      /^192\.168\./.test(url.hostname) ||
+      /^172\.(1[6-9]|2\d|3[0-1])\./.test(url.hostname);
+
+    return esHttp && esPuertoFrontend && (esLocalhost || esIPv4Privada);
+  } catch {
+    return false;
+  }
+};
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  origin(origin, callback) {
+    if (origenesConfigurados.includes(origin) || esOrigenLocalPermitido(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Origen no permitido por CORS"));
+  },
   credentials: true,
 }));
 app.use(express.json({ limit: "1mb" }));
