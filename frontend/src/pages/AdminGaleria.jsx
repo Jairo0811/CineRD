@@ -59,18 +59,35 @@ const obtenerThumbnailYoutube = (url) => {
   return id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : "";
 };
 
-const obtenerSpotifyEmbed = (valor) => {
+const obtenerSpotifyRecurso = (valor) => {
   if (!valor) return null;
   try {
     const url = new URL(valor);
     const host = url.hostname.toLowerCase().replace(/^www\./, "");
     if (host !== "open.spotify.com") return null;
+
     const partes = url.pathname.split("/").filter(Boolean);
-    if (!["track", "album", "playlist"].includes(partes[0]) || !partes[1]) return null;
-    return `https://open.spotify.com/embed/${partes[0]}/${partes[1]}?utm_source=generator`;
+    const offset = partes[0]?.toLowerCase().startsWith("intl-") ? 1 : 0;
+    const tipo = partes[offset];
+    const id = partes[offset + 1];
+
+    if (!["track", "album", "playlist"].includes(tipo) || !id) return null;
+    return { tipo, id };
   } catch {
     return null;
   }
+};
+
+const normalizarSpotifyUrl = (valor) => {
+  const recurso = obtenerSpotifyRecurso(valor);
+  return recurso ? `https://open.spotify.com/${recurso.tipo}/${recurso.id}` : null;
+};
+
+const obtenerSpotifyEmbed = (valor) => {
+  const recurso = obtenerSpotifyRecurso(valor);
+  return recurso
+    ? `https://open.spotify.com/embed/${recurso.tipo}/${recurso.id}?utm_source=generator`
+    : null;
 };
 
 function AdminGaleria() {
@@ -183,7 +200,7 @@ function AdminGaleria() {
     data.append("Artista", form.Artista);
     data.append("Descripcion", form.Descripcion);
     data.append("VideoUrl", form.VideoUrl);
-    data.append("AudioUrl", form.AudioUrl);
+    data.append("AudioUrl", esMusica ? (normalizarSpotifyUrl(form.AudioUrl) || form.AudioUrl) : "");
     data.append("FuenteUrl", form.FuenteUrl);
     data.append("Orden", form.Orden);
     data.append("EsDestacada", String(form.EsDestacada));
@@ -203,7 +220,7 @@ function AdminGaleria() {
       setError("Pega una URL válida de YouTube para el trailer");
       return;
     }
-    if (esMusica && !obtenerSpotifyEmbed(form.AudioUrl)) {
+    if (esMusica && !normalizarSpotifyUrl(form.AudioUrl)) {
       setError("Pega una URL válida de Spotify de una canción, álbum o playlist");
       return;
     }
@@ -320,7 +337,7 @@ function AdminGaleria() {
               <div className="col-12 col-md-4">
                 <label className="form-label">URL de Spotify</label>
                 <input className="form-control" type="url" maxLength={500} value={form.AudioUrl} onChange={(e)=>cambiar("AudioUrl",e.target.value)} placeholder="https://open.spotify.com/track/..." required />
-                <div className="form-text">Acepta canción, álbum o playlist.</div>
+                <div className="form-text">Acepta canción, álbum o playlist, incluyendo enlaces regionales de Spotify.</div>
               </div>
             ) : (
               <div className="col-12 col-md-4">
