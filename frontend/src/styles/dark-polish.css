@@ -1,0 +1,241 @@
+/* =========================================================
+   CINERD DARK MODE - FINAL POLISH
+   Loaded last. This layer only improves dark mode consistency.
+   It intentionally preserves light surfaces explicitly defined
+   elsewhere (auth form panel and actor profile information cards).
+   ========================================================= */
+
+html[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at 12% -8%, rgba(28, 91, 170, .08), transparent 30rem),
+    var(--cine-bg);
+}
+
+/* General hierarchy and separators */
+html[data-theme="dark"] .table-page-container,
+html[data-theme="dark"] .form-page-container,
+html[data-theme="dark"] .dashboard-container {
+  color: var(--cine-text-1);
+}
+
+html[data-theme="dark"] .card:not(.actor-profile-kpi):not(.actor-filmography-panel):not(.actor-social-panel) {
+  border-color: var(--cine-line);
+}
+
+html[data-theme="dark"] .card-header,
+html[data-theme="dark"] .card-footer {
+  border-color: var(--cine-line-soft);
+}
+
+html[data-theme="dark"] .alert-secondary {
+  background: #0b1421;
+  border-color: #2a3b52;
+  color: #d5deea;
+}
+
+html[data-theme="dark"] .alert-secondary strong {
+  color: #ffffff !important;
+}
+
+/* Inputs */
+html[data-theme="dark"] .form-control:disabled,
+html[data-theme="dark"] .form-select:disabled,
+html[data-theme="dark"] input:disabled,
+html[data-theme="dark"] textarea:disabled {
+  background: #0a121e;
+  border-color: #223147;
+  color: #7f90a7;
+  opacity: 1;
+}
+
+html[data-theme="dark"] .form-check-input {
+  background-color: #0d1726;
+  border-color: #41536c;
+}
+
+html[data-theme="dark"] .form-check-input:checked {
+  background-color: #1768c7;
+  border-color: #1768c7;
+}
+
+html[data-theme="dark"] .input-group-text {
+  background: var(--cine-surface-2);
+  border-color: var(--cine-line);
+  color: var(--cine-text-2);
+}
+
+/* Buttons that otherwise become too bright or invisible */
+html[data-theme="dark"] .btn-light {
+  background: #f7f9fc;
+  border-color: #f7f9fc;
+  color: #101828;
+}
+
+html[data-theme="dark"] .btn-light:hover,
+html[data-theme="dark"] .btn-light:focus {
+  background: #e8edf4;
+  border-color: #e8edf4;
+  color: #101828;
+}
+
+html[data-theme="dark"] .btn-outline-dark {
+  border-color: #50617a;
+  color: #d7e0ec;
+}
+
+html[data-theme="dark"] .btn-outline-dark:hover,
+html[data-theme="dark"] .btn-outline-dark:focus {
+  background: #1b2a3f;
+  border-color: #6f88a9;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .btn-outline-secondary {
+  border-color: #4b5d76;
+  color: #c5d0df;
+}
+
+html[data-theme="dark"] .btn-outline-secondary:hover,
+html[data-theme="dark"] .btn-outline-secondary:focus {
+  background: #1a283b;
+  border-color: #6e84a2;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .btn-outline-primary {
+  border-color: #4b8de4;
+  color: #8fc0ff;
+}
+
+html[data-theme="dark"] .btn-outline-primary:hover,
+html[data-theme="dark"] .btn-outline-primary:focus {
+  background: #1768c7;
+  border-color: #1768c7;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .btn-outline-danger {
+  border-color: #a84554;
+  color: #ff9eaa;
+}
+
+html[data-theme="dark"] .btn-outline-danger:hover,
+html[data-theme="dark"] .btn-outline-danger:focus {
+  background: #7c2633;
+  border-color: #9f3444;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .btn-outline-warning {
+  border-color: #8c7026;
+  color: #ffd976;
+}
+
+html[data-theme="dark"] .btn-outline-warning:hover,
+html[data-theme="dark"] .btn-outline-warning:focus {
+  background: #5d4817;
+  border-color: #9a7929;
+  color: #fff4cf;
+}
+
+/* Tables */
+html[data-theme="dark"] .table > :not(caption) > * > * {
+  border-bottom-color: var(--cine-line-soft);
+}
+
+html[data-theme="dark"] .table thead th {
+  background: #0d1725;
+  color: #dce5f0;
+  border-bottom-color: #314157;
+}
+
+html[data-theme="dark"] .table tbody tr:hover > * {
+  background: #152238;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .table-responsive {
+  scrollbar-color: #43556f #0c1420;
+}
+
+/* Dropdowns */
+html[data-theme="dark"] .dropdown-menu {
+  box-shadow: 0 18px 42px rgba(0, 0, 0, .34);
+}
+
+html[data-theme="dark"] .dropdown-item.active,
+html[data-theme="dark"] .dropdown-item:active {
+  background: #1768c7;
+  color: #ffffff;
+}
+
+/* Badges */
+html[data-theme="dark"] .badge.bg-secondary {
+  background-color: #27374d !important;
+  color: #dce6f3;
+}
+
+html[data-theme="dark"] .badge.bg-light {
+  background-color: #1a283b !important;
+  color: #dce6f3 !important;
+  border: 1px solid #344761;
+}
+
+/* Modal and overlays */
+html[data-theme="dark"] .modal-content {
+  border: 1px solid var(--cine-line);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, .52);
+}
+
+html[data-theme="dark"] .modal-backdrop.show {
+  opacity: .68;
+}
+
+/* Navbar mobile/collapsed menu refinement */
+@media (max-width: 991.98px) {
+  html[data-theme="dark"] .cine-navbar .navbar-collapse {
+    background: #080f1a;
+    border-color: #243249;
+    box-shadow: 0 22px 46px rgba(0, 0, 0, .42);
+  }
+
+  html[data-theme="dark"] .cine-navbar-link {
+    color: #c8d3e2 !important;
+  }
+
+  html[data-theme="dark"] .cine-navbar-link:hover,
+  html[data-theme="dark"] .cine-navbar-link.active {
+    background: #142238;
+    color: #ffffff !important;
+  }
+}
+
+/* Scrollbars for browsers that support them */
+html[data-theme="dark"] * {
+  scrollbar-width: thin;
+  scrollbar-color: #43556f #0a111c;
+}
+
+html[data-theme="dark"] *::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+html[data-theme="dark"] *::-webkit-scrollbar-track {
+  background: #0a111c;
+}
+
+html[data-theme="dark"] *::-webkit-scrollbar-thumb {
+  background: #354962;
+  border: 2px solid #0a111c;
+  border-radius: 999px;
+}
+
+html[data-theme="dark"] *::-webkit-scrollbar-thumb:hover {
+  background: #49617f;
+}
+
+/* Keyboard focus must remain clearly visible in dark mode */
+html[data-theme="dark"] :focus-visible {
+  outline-color: #79adff;
+}
