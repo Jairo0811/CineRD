@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 const actoresRoutes = require("./routes/actoresRoutes");
 const peliculasRoutes = require("./routes/peliculasRoutes");
@@ -59,7 +60,12 @@ app.use(cors({
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 
-app.use("/uploads", express.static("uploads", { dotfiles: "deny", fallthrough: false }));
+const uploadsPath = path.resolve(__dirname, "../uploads");
+app.use("/uploads", express.static(uploadsPath, {
+  dotfiles: "deny",
+  fallthrough: false,
+  index: false,
+}));
 
 app.get("/", (req, res) => {
   res.json({ mensaje: "API de CineRD funcionando correctamente" });
