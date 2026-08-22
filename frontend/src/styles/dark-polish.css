@@ -1,8 +1,13 @@
 /* =========================================================
    CINERD DARK MODE - FINAL POLISH
    Loaded last. This layer only improves dark mode consistency.
-   It intentionally preserves light surfaces explicitly defined
-   elsewhere (auth form panel and actor profile information cards).
+
+   IMPORTANT:
+   Dark mode changes the chrome/surfaces of the application, but
+   intentionally preserves the original black text hierarchy on
+   components that remain light/white. A light card must read like
+   the same card from light mode, not like dark-mode text pasted on
+   a white surface.
    ========================================================= */
 
 html[data-theme="dark"] body {
@@ -35,6 +40,82 @@ html[data-theme="dark"] .alert-secondary {
 
 html[data-theme="dark"] .alert-secondary strong {
   color: #ffffff !important;
+}
+
+/*
+ * Light surfaces intentionally stay light in dark mode.
+ * Preserve the same near-black typography they use in light mode.
+ */
+html[data-theme="dark"] :is(
+  .actor-profile-kpi,
+  .actor-filmography-panel,
+  .actor-social-panel,
+  .auth-form-panel,
+  .bg-white,
+  .bg-light
+) {
+  color: #101828;
+}
+
+html[data-theme="dark"] :is(
+  .actor-profile-kpi,
+  .actor-filmography-panel,
+  .actor-social-panel,
+  .auth-form-panel,
+  .bg-white,
+  .bg-light
+) :is(
+  h1, h2, h3, h4, h5, h6,
+  p, span, label, small, strong,
+  dt, dd, li, th, td
+) {
+  color: inherit;
+}
+
+/* Secondary copy on a light surface remains dark, not washed-out gray. */
+html[data-theme="dark"] :is(
+  .actor-profile-kpi,
+  .actor-filmography-panel,
+  .actor-social-panel,
+  .auth-form-panel,
+  .bg-white,
+  .bg-light
+) :is(.text-muted, .text-secondary) {
+  color: #344054 !important;
+}
+
+/* Keep semantic/link colors where they communicate an action or status. */
+html[data-theme="dark"] :is(
+  .actor-profile-kpi,
+  .actor-filmography-panel,
+  .actor-social-panel,
+  .auth-form-panel,
+  .bg-white,
+  .bg-light
+) :is(a, .text-primary) {
+  color: #0046a8;
+}
+
+html[data-theme="dark"] :is(
+  .actor-profile-kpi,
+  .actor-filmography-panel,
+  .actor-social-panel,
+  .auth-form-panel,
+  .bg-white,
+  .bg-light
+) .text-danger {
+  color: #b42318 !important;
+}
+
+html[data-theme="dark"] :is(
+  .actor-profile-kpi,
+  .actor-filmography-panel,
+  .actor-social-panel,
+  .auth-form-panel,
+  .bg-white,
+  .bg-light
+) .text-success {
+  color: #067647 !important;
 }
 
 /* Inputs */
