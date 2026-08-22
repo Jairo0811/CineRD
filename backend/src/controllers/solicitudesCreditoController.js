@@ -24,6 +24,36 @@ const obtenerTalentoDelUsuario = async (pool, usuarioId) => {
   return r.recordset[0] || null;
 };
 
+const creditoYaRegistrado = async (pool, actorId, peliculaId, tipoParticipacion) => {
+  const credito = await pool.request()
+    .input("ActorId", sql.Int, actorId)
+    .input("PeliculaId", sql.Int, peliculaId)
+    .input("Tipo", sql.NVarChar(40), tipoParticipacion)
+    .query(`
+      SELECT TOP 1 Id
+      FROM dbo.PeliculaCreditos
+      WHERE ActorId = @ActorId
+        AND PeliculaId = @PeliculaId
+        AND TipoCredito = @Tipo;
+    `);
+
+  if (credito.recordset.length) return true;
+
+  if (tipoParticipacion !== "ACTOR") return false;
+
+  const reparto = await pool.request()
+    .input("ActorId", sql.Int, actorId)
+    .input("PeliculaId", sql.Int, peliculaId)
+    .query(`
+      SELECT TOP 1 1 AS Existe
+      FROM dbo.ActoresPeliculas
+      WHERE ActorId = @ActorId
+        AND PeliculaId = @PeliculaId;
+    `);
+
+  return Boolean(reparto.recordset.length);
+};
+
 const normalizarUrl = (valor) => {
   if (!valor?.trim()) return null;
   try {
@@ -76,6 +106,12 @@ const crearSolicitud = async (req, res) => {
 
     const pelicula = await pool.request().input("Id", sql.Int, peliculaId).query("SELECT Id, Titulo FROM dbo.Peliculas WHERE Id=@Id");
     if (!pelicula.recordset.length) return res.status(404).json({ mensaje: "Película no encontrada" });
+
+    if (await creditoYaRegistrado(pool, talento.ActorId, peliculaId, tipoParticipacion)) {
+      return res.status(409).json({
+        mensaje: "Ese crédito ya aparece registrado en CineRD. Solo puedes reclamar participaciones que todavía no formen parte de tu filmografía.",
+      });
+    }
 
     const duplicada = await pool.request()
       .input("ActorId", sql.Int, talento.ActorId)
