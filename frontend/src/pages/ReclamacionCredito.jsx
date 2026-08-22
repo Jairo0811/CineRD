@@ -16,12 +16,23 @@ const EVIDENCIAS = [
   ["OTRO", "Otra evidencia"],
 ];
 
+const ESTADOS_ACTIVOS = new Set(["PENDIENTE", "EN_REVISION", "REQUIERE_MAS_EVIDENCIA"]);
+const etiquetaEstado = (estado) => ({
+  PENDIENTE: "Pendiente",
+  EN_REVISION: "En revisión",
+  REQUIERE_MAS_EVIDENCIA: "Requiere más evidencia",
+  APROBADO: "Aprobado",
+  RECHAZADO: "Rechazado",
+}[estado] || estado);
+
 function ReclamacionCredito() {
   const [searchParams] = useSearchParams();
   const peliculaInicial = searchParams.get("pelicula") || "";
   const [perfil, setPerfil] = useState(null);
   const [peliculas, setPeliculas] = useState([]);
   const [misSolicitudes, setMisSolicitudes] = useState([]);
+  const [creditos, setCreditos] = useState([]);
+  const [participaciones, setParticipaciones] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [guardando, setGuardando] = useState(false);
   const [mensaje, setMensaje] = useState("");
@@ -47,9 +58,20 @@ function ReclamacionCredito() {
         api.get("/peliculas"),
         api.get("/solicitudes-creditos/mias"),
       ]);
-      setPerfil(perfilR.data);
+
+      const perfilActual = perfilR.data;
+      setPerfil(perfilActual);
       setPeliculas(peliculasR.data || []);
       setMisSolicitudes(solicitudesR.data || []);
+
+      if (perfilActual?.Id) {
+        const [creditosR, participacionesR] = await Promise.all([
+          api.get(`/peliculas/creditos/actor/${perfilActual.Id}`),
+          api.get(`/actores-peliculas/actor/${perfilActual.Id}`),
+        ]);
+        setCreditos(creditosR.data || []);
+        setParticipaciones(participacionesR.data || []);
+      }
     } catch (error) {
       setMensaje(error.response?.data?.mensaje || "No fue posible preparar el formulario de reclamación.");
     } finally {
@@ -64,18 +86,48 @@ function ReclamacionCredito() {
     [peliculas],
   );
 
+  const clavesCreditos = useMemo(() => {
+    const claves = new Set(
+      creditos.map((c) => `${Number(c.Id)}:${String(c.TipoCredito || "").toUpperCase()}`),
+    );
+    participaciones.forEach((p) => claves.add(`${Number(p.Id)}:ACTOR`));
+    return claves;
+  }, [creditos, participaciones]);
+
+  const clavesSolicitudesActivas = useMemo(() => new Set(
+    misSolicitudes
+      .filter((s) => ESTADOS_ACTIVOS.has(s.Estado))
+      .map((s) => `${Number(s.PeliculaId)}:${String(s.TipoParticipacion || "").toUpperCase()}`),
+  ), [misSolicitudes]);
+
+  const claveActual = `${Number(form.PeliculaId || 0)}:${form.TipoParticipacion}`;
+  const creditoExistente = Boolean(form.PeliculaId) && clavesCreditos.has(claveActual);
+  const solicitudActiva = Boolean(form.PeliculaId) && clavesSolicitudesActivas.has(claveActual);
+  const puedeEnviar = !guardando && Boolean(form.PeliculaId) && !creditoExistente && !solicitudActiva;
+
   const cambiar = (e) => {
     const { name, value, type, checked } = e.target;
+    setMensaje("");
     setForm((actual) => ({ ...actual, [name]: type === "checkbox" ? checked : value }));
   };
 
   const enviar = async (e) => {
     e.preventDefault();
     setMensaje("");
+
+    if (creditoExistente) {
+      setMensaje("Ese crédito ya forma parte de tu filmografía en CineRD y no necesita reclamarse.");
+      return;
+    }
+    if (solicitudActiva) {
+      setMensaje("Ya tienes una reclamación activa para esta película y tipo de participación.");
+      return;
+    }
     if (!archivo && !form.UrlExterna.trim()) {
       setMensaje("Adjunta un archivo o agrega una URL verificable. Una declaración por sí sola no es suficiente.");
       return;
     }
+
     const data = new FormData();
     Object.entries(form).forEach(([key, value]) => data.append(key, String(value)));
     if (archivo) data.append("Evidencia", archivo);
@@ -103,7 +155,7 @@ function ReclamacionCredito() {
     </div>
 
     <div className="alert alert-warning border">
-      <strong>Regla de integridad:</strong> CineRD no incorpora participaciones únicamente por declaración. Si no apareces en los créditos oficiales, debes indicar la escena y aportar evidencia suficiente para revisión.
+      <strong>Regla de integridad:</strong> este formulario es únicamente para participaciones que todavía no aparecen en tu filmografía de CineRD. Si no figuras en los créditos oficiales de la obra, debes indicar la escena y aportar evidencia suficiente para revisión.
     </div>
 
     <form className="card mb-4" onSubmit={enviar}><div className="card-body p-4">
@@ -113,6 +165,10 @@ function ReclamacionCredito() {
         <div className="col-md-6"><label className="form-label">Tipo de participación</label><select className="form-select" name="TipoParticipacion" value={form.TipoParticipacion} onChange={cambiar}>{TIPOS.map(([v,l])=><option key={v} value={v}>{l}</option>)}</select></div>
         <div className="col-md-6"><label className="form-label">Personaje o función</label><input className="form-control" name="PersonajeFuncion" value={form.PersonajeFuncion} onChange={cambiar} maxLength="200"/></div>
       </div>
+
+      {creditoExistente && <div className="alert alert-success mt-3 mb-0"><strong>✓ Crédito ya registrado.</strong> Esta participación ya forma parte de tu filmografía y no requiere reclamación.</div>}
+      {!creditoExistente && solicitudActiva && <div className="alert alert-info mt-3 mb-0"><strong>Solicitud en curso.</strong> Ya existe una reclamación activa para esta película y tipo de participación.</div>}
+
       <div className="form-check my-3"><input className="form-check-input" type="checkbox" id="acreditado" name="EstaAcreditado" checked={form.EstaAcreditado} onChange={cambiar}/><label className="form-check-label" htmlFor="acreditado">Mi nombre aparece en los créditos oficiales de la película</label></div>
       <div className="row g-3">
         <div className="col-md-3"><label className="form-label">Minuto inicial</label><input className="form-control" name="MinutoInicio" value={form.MinutoInicio} onChange={cambiar} placeholder="00:42:18" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}"/></div>
@@ -128,10 +184,10 @@ function ReclamacionCredito() {
         <div className="col-12"><label className="form-label">Descripción de la evidencia</label><textarea className="form-control" rows="3" name="DescripcionEvidencia" value={form.DescripcionEvidencia} onChange={cambiar} maxLength="1000"/></div>
       </div>
       {mensaje && <div className="alert alert-info mt-3 mb-0">{mensaje}</div>}
-      <div className="mt-4 d-flex justify-content-end"><button className="btn btn-primary" disabled={guardando}>{guardando ? "Enviando..." : "Enviar para revisión"}</button></div>
+      <div className="mt-4 d-flex justify-content-end"><button className="btn btn-primary" disabled={!puedeEnviar}>{guardando ? "Enviando..." : creditoExistente ? "Crédito ya registrado" : solicitudActiva ? "Solicitud en revisión" : "Enviar para revisión"}</button></div>
     </div></form>
 
-    <section className="card"><div className="card-body p-4"><h2 className="h5 mb-3">Mis reclamaciones</h2>{misSolicitudes.length === 0 ? <p className="text-muted mb-0">Todavía no has enviado reclamaciones de crédito.</p> : <div className="table-responsive"><table className="table align-middle"><thead><tr><th>Película</th><th>Participación</th><th>Estado</th><th>Fecha</th><th>Observación</th></tr></thead><tbody>{misSolicitudes.map(s=><tr key={s.Id}><td><Link to={`/peliculas/${s.PeliculaId}`}>{s.Titulo}</Link></td><td>{s.TipoParticipacion}</td><td><span className="badge bg-secondary">{s.Estado}</span></td><td>{new Date(s.FechaSolicitud).toLocaleDateString("es-DO")}</td><td>{s.ComentarioAdmin || "—"}</td></tr>)}</tbody></table></div>}</div></section>
+    <section className="card"><div className="card-body p-4"><h2 className="h5 mb-3">Mis reclamaciones</h2>{misSolicitudes.length === 0 ? <p className="text-muted mb-0">Todavía no has enviado reclamaciones de crédito.</p> : <div className="table-responsive"><table className="table align-middle"><thead><tr><th>Película</th><th>Participación</th><th>Estado</th><th>Fecha</th><th>Observación</th></tr></thead><tbody>{misSolicitudes.map(s=><tr key={s.Id}><td><Link to={`/peliculas/${s.PeliculaId}`}>{s.Titulo}</Link></td><td>{s.TipoParticipacion}</td><td><span className={`badge ${s.Estado === "APROBADO" ? "bg-success" : s.Estado === "RECHAZADO" ? "bg-danger" : "bg-secondary"}`}>{etiquetaEstado(s.Estado)}</span></td><td>{new Date(s.FechaSolicitud).toLocaleDateString("es-DO")}</td><td>{s.ComentarioAdmin || "—"}</td></tr>)}</tbody></table></div>}</div></section>
   </div>;
 }
 
