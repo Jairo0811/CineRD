@@ -35,7 +35,11 @@ const obtenerSpotifyRecurso = (valor) => {
   }
 };
 
-const obtenerAlturaEmbed = (tipo) => (tipo === "track" ? 152 : 352);
+const obtenerAlturaEmbed = (spotifyTipo, tipoContenido) => {
+  if (spotifyTipo === "track") return 352;
+  if (["BANDA_SONORA", "SCORE"].includes(tipoContenido)) return 452;
+  return 352;
+};
 
 function MusicaPelicula({ peliculaId }) {
   const [items, setItems] = useState([]);
@@ -100,8 +104,9 @@ function MusicaPelicula({ peliculaId }) {
                     <iframe
                       src={spotify.embed}
                       title={`${tipo}: ${item.Titulo || "Spotify"}`}
-                      height={obtenerAlturaEmbed(spotify.tipo)}
+                      height={obtenerAlturaEmbed(spotify.tipo, item.Tipo)}
                       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                      allowFullScreen
                       loading="lazy"
                     />
                   ) : (
