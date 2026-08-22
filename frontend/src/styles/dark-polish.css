@@ -483,3 +483,46 @@ html[data-theme="dark"] *::-webkit-scrollbar-thumb:hover {
 html[data-theme="dark"] :focus-visible {
   outline-color: #79adff;
 }
+
+/* Movie profile cast: keep the whole cast block truly dark and readable. */
+html[data-theme="dark"] .movie-profile-page .card-header.bg-white {
+  background: linear-gradient(180deg, #0f1928, #0c1522) !important;
+  border-bottom-color: #25364e !important;
+  color: #f7f9fc !important;
+}
+
+html[data-theme="dark"] .movie-profile-page .card-header.bg-white h2 {
+  color: #f7f9fc !important;
+}
+
+html[data-theme="dark"] .movie-profile-page .card-header.bg-white .catalog-eyebrow {
+  color: #8dbdff !important;
+}
+
+html[data-theme="dark"] .movie-profile-page a.card.bg-light {
+  background: linear-gradient(180deg, #142033, #101a2a) !important;
+  border: 1px solid #263a55 !important;
+  color: #f7f9fc !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .16);
+}
+
+html[data-theme="dark"] .movie-profile-page a.card.bg-light:hover,
+html[data-theme="dark"] .movie-profile-page a.card.bg-light:focus-visible {
+  background: linear-gradient(180deg, #182944, #132139) !important;
+  border-color: #4775ad !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+html[data-theme="dark"] .movie-profile-page a.card.bg-light h3,
+html[data-theme="dark"] .movie-profile-page a.card.bg-light strong {
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] .movie-profile-page a.card.bg-light .text-muted {
+  color: #aebdd0 !important;
+}
+
+html[data-theme="dark"] .movie-profile-page a.card.bg-light .badge.bg-primary {
+  color: #ffffff !important;
+}
