@@ -1,7 +1,7 @@
-import placeholderMasculino from "../assets/placeholders/talento-masculino.png";
-import placeholderFemenino from "../assets/placeholders/talento-femenino.png";
+import placeholderMasculino from "../assets/talento-masculino.png";
+import placeholderFemenino from "../assets/talento-femenino.png";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+import { API_URL } from "../config/api";
 
 function normalizarSexo(sexo) {
   return String(sexo || "")
