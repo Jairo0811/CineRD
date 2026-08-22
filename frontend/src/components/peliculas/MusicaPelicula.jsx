@@ -9,6 +9,23 @@ const TIPOS = {
   SCORE: "Score",
 };
 
+const obtenerYoutubeId = (valor) => {
+  if (!valor) return null;
+  try {
+    const url = new URL(valor);
+    const host = url.hostname.toLowerCase().replace(/^www\./, "");
+    if (host === "youtu.be") return url.pathname.split("/").filter(Boolean)[0] || null;
+    if (host === "youtube.com" || host === "m.youtube.com") {
+      if (url.pathname === "/watch") return url.searchParams.get("v");
+      const partes = url.pathname.split("/").filter(Boolean);
+      if (["embed", "shorts", "live"].includes(partes[0])) return partes[1] || null;
+    }
+  } catch {
+    return null;
+  }
+  return null;
+};
+
 const obtenerSpotifyRecurso = (valor) => {
   if (!valor) return null;
 
@@ -35,7 +52,7 @@ const obtenerSpotifyRecurso = (valor) => {
   }
 };
 
-const obtenerAlturaEmbed = (spotifyTipo, tipoContenido) => {
+const obtenerAlturaSpotify = (spotifyTipo, tipoContenido) => {
   if (spotifyTipo === "track") return 352;
   if (["BANDA_SONORA", "SCORE"].includes(tipoContenido)) return 452;
   return 352;
@@ -79,8 +96,11 @@ function MusicaPelicula({ peliculaId }) {
 
         <div className="movie-music-grid">
           {ordenados.map((item) => {
-            const spotify = obtenerSpotifyRecurso(item.AudioUrl);
             const tipo = TIPOS[item.Tipo] || item.Tipo;
+            const proveedor = String(item.Proveedor || "SPOTIFY").toUpperCase();
+            const spotify = proveedor === "SPOTIFY" ? obtenerSpotifyRecurso(item.AudioUrl) : null;
+            const youtubeId = proveedor === "YOUTUBE" ? obtenerYoutubeId(item.AudioUrl) : null;
+            const urlExterna = spotify?.url || item.AudioUrl;
 
             return (
               <article
@@ -89,7 +109,12 @@ function MusicaPelicula({ peliculaId }) {
               >
                 <div className="movie-music-card__meta">
                   <div>
-                    <span className="badge bg-success">{tipo}</span>
+                    <div className="d-flex flex-wrap gap-2 align-items-center">
+                      <span className="badge bg-success">{tipo}</span>
+                      <span className={`badge ${proveedor === "YOUTUBE" ? "bg-danger" : "bg-dark"}`}>
+                        {proveedor === "YOUTUBE" ? "YouTube" : "Spotify"}
+                      </span>
+                    </div>
                     <h3 className="movie-music-card__title">{item.Titulo || "Música oficial"}</h3>
                     {item.Artista && <p className="movie-music-card__artist">{item.Artista}</p>}
                   </div>
@@ -99,19 +124,29 @@ function MusicaPelicula({ peliculaId }) {
                   )}
                 </div>
 
-                <div className="movie-music-card__player">
+                <div className={`movie-music-card__player ${proveedor === "YOUTUBE" ? "is-youtube" : "is-spotify"}`}>
                   {spotify ? (
                     <iframe
                       src={spotify.embed}
                       title={`${tipo}: ${item.Titulo || "Spotify"}`}
-                      height={obtenerAlturaEmbed(spotify.tipo, item.Tipo)}
+                      height={obtenerAlturaSpotify(spotify.tipo, item.Tipo)}
                       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                       allowFullScreen
                       loading="lazy"
                     />
+                  ) : youtubeId ? (
+                    <div className="movie-music-youtube-frame">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${youtubeId}`}
+                        title={`${tipo}: ${item.Titulo || "YouTube"}`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        loading="lazy"
+                      />
+                    </div>
                   ) : (
                     <div className="alert alert-secondary mb-0">
-                      No fue posible generar la vista previa de Spotify para este enlace.
+                      No fue posible generar la vista previa para este enlace musical.
                     </div>
                   )}
                 </div>
@@ -125,13 +160,12 @@ function MusicaPelicula({ peliculaId }) {
 
                   <div className="movie-music-card__actions">
                     <a
-                      className="btn btn-success btn-sm movie-music-spotify-btn"
-                      href={spotify?.url || item.AudioUrl}
+                      className={`btn btn-sm ${proveedor === "YOUTUBE" ? "btn-danger" : "btn-success movie-music-spotify-btn"}`}
+                      href={urlExterna}
                       target="_blank"
                       rel="noreferrer noopener"
                     >
-                      <span aria-hidden="true">●</span>
-                      Abrir en Spotify ↗
+                      {proveedor === "YOUTUBE" ? "YouTube ↗" : "Abrir en Spotify ↗"}
                     </a>
 
                     {item.FuenteUrl && (
