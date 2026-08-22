@@ -22,6 +22,7 @@ import ReclamarPerfil from "./pages/ReclamarPerfil";
 import AdminVerificaciones from "./pages/AdminVerificaciones";
 import ReclamacionCredito from "./pages/ReclamacionCredito";
 import AdminSolicitudesCredito from "./pages/AdminSolicitudesCredito";
+import AdminPremios from "./pages/AdminPremios";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
             <Route path="/mi-perfil/reclamar-credito" element={<ProtectedRoute roles={["TALENTO_VERIFICADO"]}><ReclamacionCredito /></ProtectedRoute>} />
             <Route path="/admin/verificaciones" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminVerificaciones /></ProtectedRoute>} />
             <Route path="/admin/solicitudes-creditos" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminSolicitudesCredito /></ProtectedRoute>} />
+            <Route path="/admin/premios" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminPremios /></ProtectedRoute>} />
           </Routes>
         </main>
         <Footer />
