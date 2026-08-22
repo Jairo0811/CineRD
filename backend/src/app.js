@@ -11,6 +11,7 @@ const authRoutes = require("./routes/authRoutes");
 const verificacionRoutes = require("./routes/verificacionRoutes");
 const busquedaRoutes = require("./routes/busquedaRoutes");
 const solicitudesCreditoRoutes = require("./routes/solicitudesCreditoRoutes");
+const premiosRoutes = require("./routes/premiosRoutes");
 
 const app = express();
 app.disable("x-powered-by");
@@ -79,5 +80,6 @@ app.use("/api/peliculas", peliculasRoutes);
 app.use("/api/actores-peliculas", actoresPeliculasRoutes);
 app.use("/api/tmdb", tmdbRoutes);
 app.use("/api/busqueda", busquedaRoutes);
+app.use("/api/premios", premiosRoutes);
 
 module.exports = app;
