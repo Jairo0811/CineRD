@@ -1,24 +1,10 @@
 /* Talent card hierarchy shared across breakpoints. */
 .cinerd-talent-real-name {
   display: block;
-  position: relative;
-  margin-top: 12px;
-  padding-top: 13px;
+  margin-top: 8px;
   color: var(--cine-muted);
   font-size: .88rem;
   line-height: 1.35;
-}
-
-.cinerd-talent-real-name::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 34px;
-  height: 2px;
-  border-radius: 999px;
-  background: var(--cine-primary);
-  opacity: .9;
 }
 
 .cinerd-talent-real-name + .cinerd-talent-facts {
@@ -75,17 +61,11 @@
   .cinerd-talent-copy > .cinerd-talent-real-name {
     display: -webkit-box !important;
     overflow: hidden;
-    margin-top: 9px;
-    padding-top: 10px;
+    margin-top: 7px;
     font-size: .67rem !important;
     line-height: 1.25;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-  }
-
-  .cinerd-talent-real-name::before {
-    width: 24px;
-    height: 1.5px;
   }
 
   .cinerd-talent-real-name + .cinerd-talent-facts {
