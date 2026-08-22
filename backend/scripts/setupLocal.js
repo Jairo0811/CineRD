@@ -77,11 +77,40 @@ async function applySchema() {
   }
 }
 
-function importSnapshotIfPresent() {
+async function getCatalogCounts() {
+  const pool = await new sql.ConnectionPool(getConfig(DATABASE_NAME)).connect();
+  try {
+    const result = await pool.request().query(`
+      SELECT
+        (SELECT COUNT(*) FROM dbo.Actores) AS Talentos,
+        (SELECT COUNT(*) FROM dbo.Peliculas) AS Peliculas;
+    `);
+
+    const row = result.recordset[0] || {};
+    return {
+      talentos: Number(row.Talentos || 0),
+      peliculas: Number(row.Peliculas || 0),
+    };
+  } finally {
+    await pool.close();
+  }
+}
+
+async function importSnapshotIfPresent() {
   const snapshot = path.join(REPO_ROOT, "database", "seeds", "catalog.snapshot.json");
   if (!fs.existsSync(snapshot)) {
     console.log("ℹ No hay snapshot versionado todavía. Se creó únicamente el esquema.");
     console.log("  En la PC principal ejecuta: npm run catalog:export");
+    return;
+  }
+
+  const counts = await getCatalogCounts();
+  if (counts.talentos > 0 || counts.peliculas > 0) {
+    console.log(
+      `ℹ Catálogo local existente detectado (${counts.talentos} talentos, ${counts.peliculas} películas).`,
+    );
+    console.log("  Se omite la importación del snapshot para preservar los datos locales.");
+    console.log("  Usa npm run catalog:import:replace únicamente si deseas reemplazarlos explícitamente.");
     return;
   }
 
@@ -115,7 +144,7 @@ async function main() {
   console.log("🎬 Preparando CineRD local...\n");
   await ensureDatabase();
   await applySchema();
-  importSnapshotIfPresent();
+  await importSnapshotIfPresent();
   console.log("\n✓ CineRD local quedó preparado.");
 }
 
