@@ -1,7 +1,7 @@
 /* Talent card hierarchy shared across breakpoints. */
 .cinerd-talent-real-name {
   display: block;
-  margin-top: 8px;
+  margin-top: 12px;
   color: var(--cine-muted);
   font-size: .88rem;
   line-height: 1.35;
@@ -61,7 +61,7 @@
   .cinerd-talent-copy > .cinerd-talent-real-name {
     display: -webkit-box !important;
     overflow: hidden;
-    margin-top: 7px;
+    margin-top: 9px;
     font-size: .67rem !important;
     line-height: 1.25;
     -webkit-box-orient: vertical;
