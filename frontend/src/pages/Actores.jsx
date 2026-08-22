@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import api from "../services/api";
+import { API_URL } from "../config/api";
 import { calcularEdad, calcularEdadAproximada, calcularEdadEnFecha, obtenerAnioFecha } from "../utils/fechas";
 
 function Actores() {
   const { t } = useTranslation();
   const [actores, setActores] = useState([]);
   const [buscar, setBuscar] = useState(""); const [orden, setOrden] = useState("az"); const [estado, setEstado] = useState(""); const [anio, setAnio] = useState(""); const [profesion, setProfesion] = useState(""); const [cargando, setCargando] = useState(false);
-  const API_URL = "http://localhost:3000";
   const usuario = (() => { try { return JSON.parse(localStorage.getItem("cineRdUsuario") || "null"); } catch { return null; } })();
   const esAdmin = usuario?.rol === "ADMINISTRADOR";
 
