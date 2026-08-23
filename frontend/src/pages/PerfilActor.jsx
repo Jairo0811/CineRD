@@ -17,7 +17,7 @@ const SOCIAL_LOGOS = {
   x: "https://cdn.simpleicons.org/x/000000",
 };
 
-const ETIQUETAS_CREDITO = { ACTOR:"Interpretación", DIRECTOR:"Dirección", PRODUCTOR:"Producción", GUIONISTA:"Guion", COMPOSITOR:"Música", FOTOGRAFIA:"Fotografía", EDICION:"Edición", OTRO:"Otro crédito" };
+const ETIQUETAS_CREDITO = { ACTOR:"Interpretación", DIRECTOR:"Dirección", DIRECTOR_CASTING:"Director de casting", PRODUCTOR:"Producción", GUIONISTA:"Guion", COMPOSITOR:"Música", FOTOGRAFIA:"Fotografía", EDICION:"Edición", OTRO:"Otro crédito" };
 
 function PerfilActor() {
   const { id } = useParams(); const { t, i18n } = useTranslation();
