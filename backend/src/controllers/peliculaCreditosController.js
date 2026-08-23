@@ -102,18 +102,22 @@ const guardarCreditoPelicula = async (req, res) => {
     const orden = Number.isFinite(Number(req.body.Orden)) ? Number(req.body.Orden) : null;
     const principal = req.body.EsPrincipal === true || req.body.EsPrincipal === "true";
     const fuente = req.body.Fuente?.toString().trim() || null;
+    const creditoVerificado = req.body.CreditoVerificado === true || req.body.CreditoVerificado === "true";
+    const fuenteCredito = req.body.FuenteCredito?.toString().trim() || null;
 
     let resultado;
     if (existente.recordset.length) {
       resultado = await pool.request().input("Id", sql.Int, existente.recordset[0].Id)
         .input("Personaje", sql.NVarChar(200), personaje).input("Orden", sql.Int, orden)
         .input("EsPrincipal", sql.Bit, principal).input("Fuente", sql.NVarChar(300), fuente)
-        .query(`UPDATE dbo.PeliculaCreditos SET Personaje=@Personaje, Orden=@Orden, EsPrincipal=@EsPrincipal, Fuente=@Fuente, FechaActualizacion=SYSUTCDATETIME() OUTPUT INSERTED.* WHERE Id=@Id`);
+        .input("CreditoVerificado", sql.Bit, creditoVerificado).input("FuenteCredito", sql.NVarChar(40), fuenteCredito)
+        .query(`UPDATE dbo.PeliculaCreditos SET Personaje=@Personaje, Orden=@Orden, EsPrincipal=@EsPrincipal, Fuente=@Fuente, CreditoVerificado=@CreditoVerificado, FuenteCredito=@FuenteCredito, FechaActualizacion=SYSUTCDATETIME() OUTPUT INSERTED.* WHERE Id=@Id`);
     } else {
       resultado = await pool.request().input("PeliculaId", sql.Int, peliculaId).input("ActorId", sql.Int, actorId)
         .input("TipoCredito", sql.NVarChar(40), tipo).input("Personaje", sql.NVarChar(200), personaje).input("Orden", sql.Int, orden)
         .input("EsPrincipal", sql.Bit, principal).input("Fuente", sql.NVarChar(300), fuente)
-        .query(`INSERT INTO dbo.PeliculaCreditos(PeliculaId,ActorId,TipoCredito,Personaje,Orden,EsPrincipal,Fuente) OUTPUT INSERTED.* VALUES(@PeliculaId,@ActorId,@TipoCredito,@Personaje,@Orden,@EsPrincipal,@Fuente)`);
+        .input("CreditoVerificado", sql.Bit, creditoVerificado).input("FuenteCredito", sql.NVarChar(40), fuenteCredito)
+        .query(`INSERT INTO dbo.PeliculaCreditos(PeliculaId,ActorId,TipoCredito,Personaje,Orden,EsPrincipal,Fuente,CreditoVerificado,FuenteCredito) OUTPUT INSERTED.* VALUES(@PeliculaId,@ActorId,@TipoCredito,@Personaje,@Orden,@EsPrincipal,@Fuente,@CreditoVerificado,@FuenteCredito)`);
     }
 
     res.json({ mensaje: "Crédito guardado correctamente", credito: resultado.recordset[0] });
