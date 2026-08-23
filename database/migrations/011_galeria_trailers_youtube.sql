@@ -20,29 +20,37 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID(N'dbo.CK_GaleriaMultimedia_Tipo', N'C') IS NOT NULL
+/*
+  Esta migración puede reejecutarse sobre una base más nueva mediante setup:local.
+  Si AudioUrl ya existe, la base ya alcanzó la fase de música (012+), por lo que
+  no debemos reinstalar constraints antiguos que desconozcan esos tipos.
+*/
+IF COL_LENGTH(N'dbo.GaleriaMultimedia', N'AudioUrl') IS NULL
 BEGIN
-    ALTER TABLE dbo.GaleriaMultimedia DROP CONSTRAINT CK_GaleriaMultimedia_Tipo;
+    IF OBJECT_ID(N'dbo.CK_GaleriaMultimedia_Tipo', N'C') IS NOT NULL
+    BEGIN
+        ALTER TABLE dbo.GaleriaMultimedia DROP CONSTRAINT CK_GaleriaMultimedia_Tipo;
+    END;
+
+    ALTER TABLE dbo.GaleriaMultimedia ADD CONSTRAINT CK_GaleriaMultimedia_Tipo CHECK
+    (
+        Tipo IN
+        (
+            N'FOTO_RODAJE',
+            N'POSTER_ALTERNATIVO',
+            N'BACKDROP',
+            N'PROMOCIONAL',
+            N'PRENSA',
+            N'EVENTO',
+            N'TRAILER',
+            N'OTRO'
+        )
+    );
 END
 GO
 
-ALTER TABLE dbo.GaleriaMultimedia ADD CONSTRAINT CK_GaleriaMultimedia_Tipo CHECK
-(
-    Tipo IN
-    (
-        N'FOTO_RODAJE',
-        N'POSTER_ALTERNATIVO',
-        N'BACKDROP',
-        N'PROMOCIONAL',
-        N'PRENSA',
-        N'EVENTO',
-        N'TRAILER',
-        N'OTRO'
-    )
-);
-GO
-
-IF OBJECT_ID(N'dbo.CK_GaleriaMultimedia_Contenido', N'C') IS NULL
+IF COL_LENGTH(N'dbo.GaleriaMultimedia', N'AudioUrl') IS NULL
+   AND OBJECT_ID(N'dbo.CK_GaleriaMultimedia_Contenido', N'C') IS NULL
 BEGIN
     ALTER TABLE dbo.GaleriaMultimedia ADD CONSTRAINT CK_GaleriaMultimedia_Contenido CHECK
     (
