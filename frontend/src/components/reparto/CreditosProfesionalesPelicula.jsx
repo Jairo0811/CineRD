@@ -71,6 +71,8 @@ function CreditosProfesionalesPelicula({ peliculaId, actores = [] }) {
         Orden: form.Orden === "" ? null : Number(form.Orden),
         EsPrincipal: form.EsPrincipal,
         Fuente: form.Fuente.trim() || null,
+        CreditoVerificado: true,
+        FuenteCredito: "CREDITOS_OFICIALES",
       });
       setForm(estadoInicial);
       await cargar();
@@ -146,7 +148,7 @@ function CreditosProfesionalesPelicula({ peliculaId, actores = [] }) {
           <div className="col-12 col-lg-8">
             <label className="form-label">Fuente</label>
             <input className="form-control" maxLength={300} value={form.Fuente} onChange={(e) => cambiar("Fuente", e.target.value)} placeholder="Ej.: CREDITOS_OFICIALES" />
-            <div className="form-text">Para créditos vistos directamente en la película, usa CREDITOS_OFICIALES.</div>
+            <div className="form-text">Los créditos registrados aquí por un administrador se consideran verificados contra la fuente indicada.</div>
           </div>
 
           <div className="col-12 col-lg-4 d-flex align-items-end">
@@ -167,6 +169,7 @@ function CreditosProfesionalesPelicula({ peliculaId, actores = [] }) {
                     <strong className="d-block">{credito.NombreArtistico || credito.NombreCompleto}</strong>
                     <span className="text-muted small">{ETIQUETAS[credito.TipoCredito] || credito.TipoCredito}</span>
                     {credito.Fuente && <small className="d-block text-muted mt-1">Fuente: {credito.Fuente}</small>}
+                    {Boolean(credito.CreditoVerificado) && <span className="badge bg-success mt-2">✓ Crédito verificado</span>}
                   </div>
                   <button type="button" className="btn btn-sm btn-outline-danger align-self-start" onClick={() => eliminar(credito)}>
                     Eliminar
