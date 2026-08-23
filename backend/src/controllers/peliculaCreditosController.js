@@ -1,6 +1,16 @@
 const { sql, poolPromise } = require("../config/db");
 
-const TIPOS = new Set(["ACTOR", "DIRECTOR", "PRODUCTOR", "GUIONISTA", "COMPOSITOR", "FOTOGRAFIA", "EDICION", "OTRO"]);
+const TIPOS = new Set([
+  "ACTOR",
+  "DIRECTOR",
+  "DIRECTOR_CASTING",
+  "PRODUCTOR",
+  "GUIONISTA",
+  "COMPOSITOR",
+  "FOTOGRAFIA",
+  "EDICION",
+  "OTRO",
+]);
 
 async function tablaDisponible(pool) {
   const r = await pool.request().query("SELECT CASE WHEN OBJECT_ID(N'dbo.PeliculaCreditos', N'U') IS NULL THEN 0 ELSE 1 END AS Existe");
@@ -29,7 +39,14 @@ const obtenerCreditosPelicula = async (req, res) => {
       FROM dbo.PeliculaCreditos PC
       INNER JOIN dbo.Actores A ON A.Id = PC.ActorId
       WHERE PC.PeliculaId = @PeliculaId
-      ORDER BY CASE PC.TipoCredito WHEN N'DIRECTOR' THEN 1 WHEN N'ACTOR' THEN 2 WHEN N'PRODUCTOR' THEN 3 WHEN N'GUIONISTA' THEN 4 ELSE 9 END,
+      ORDER BY CASE PC.TipoCredito
+                 WHEN N'DIRECTOR' THEN 1
+                 WHEN N'ACTOR' THEN 2
+                 WHEN N'DIRECTOR_CASTING' THEN 3
+                 WHEN N'PRODUCTOR' THEN 4
+                 WHEN N'GUIONISTA' THEN 5
+                 ELSE 9
+               END,
                COALESCE(PC.Orden, 9999), A.NombreCompleto
     `);
     res.json(resultado.recordset);
@@ -53,7 +70,9 @@ const obtenerCreditosActor = async (req, res) => {
       FROM dbo.PeliculaCreditos PC
       INNER JOIN dbo.Peliculas P ON P.Id = PC.PeliculaId
       WHERE PC.ActorId=@ActorId
-      ORDER BY P.FechaEstreno DESC, P.Titulo ASC
+      ORDER BY P.FechaEstreno DESC, P.Titulo ASC,
+               CASE PC.TipoCredito WHEN N'DIRECTOR' THEN 1 WHEN N'DIRECTOR_CASTING' THEN 2 ELSE 9 END,
+               COALESCE(PC.Orden, 9999)
     `);
     return res.json(resultado.recordset);
   } catch (error) {
