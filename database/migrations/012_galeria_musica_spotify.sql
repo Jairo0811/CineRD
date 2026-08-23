@@ -51,6 +51,11 @@ ALTER TABLE dbo.GaleriaMultimedia ADD CONSTRAINT CK_GaleriaMultimedia_Tipo CHECK
 );
 GO
 
+/*
+  Aunque 012 introdujo Spotify originalmente, setup:local puede reejecutarla
+  después de 013. Aceptar ambos proveedores evita degradar una base que ya
+  contiene música de YouTube antes de que 013 vuelva a aplicar su constraint.
+*/
 ALTER TABLE dbo.GaleriaMultimedia ADD CONSTRAINT CK_GaleriaMultimedia_Contenido CHECK
 (
     (
@@ -67,7 +72,7 @@ ALTER TABLE dbo.GaleriaMultimedia ADD CONSTRAINT CK_GaleriaMultimedia_Contenido 
         AND PeliculaId IS NOT NULL
         AND ActorId IS NULL
         AND AudioUrl IS NOT NULL
-        AND Proveedor = N'SPOTIFY'
+        AND Proveedor IN (N'SPOTIFY', N'YOUTUBE')
         AND VideoUrl IS NULL
         AND Archivo IS NULL
     )
