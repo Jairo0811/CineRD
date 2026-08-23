@@ -21,6 +21,7 @@ const SQL_FILES = [
   path.join(REPO_ROOT, "database", "migrations", "011_galeria_trailers_youtube.sql"),
   path.join(REPO_ROOT, "database", "migrations", "012_galeria_musica_spotify.sql"),
   path.join(REPO_ROOT, "database", "migrations", "013_galeria_musica_youtube.sql"),
+  path.join(REPO_ROOT, "database", "migrations", "014_creditos_profesionales_casting.sql"),
 ];
 
 function getConfig(database) {
