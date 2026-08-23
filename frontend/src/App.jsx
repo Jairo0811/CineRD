@@ -24,6 +24,7 @@ import ReclamacionCredito from "./pages/ReclamacionCredito";
 import AdminSolicitudesCredito from "./pages/AdminSolicitudesCredito";
 import AdminPremios from "./pages/AdminPremios";
 import AdminGaleria from "./pages/AdminGaleria";
+import AdminCreditosPelicula from "./pages/AdminCreditosPelicula";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
             <Route path="/peliculas/editar/:id" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><FormularioPelicula /></ProtectedRoute>} />
             <Route path="/peliculas/:id" element={<PerfilPelicula />} />
             <Route path="/peliculas/:id/reparto" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><RepartoPelicula /></ProtectedRoute>} />
+            <Route path="/peliculas/:id/creditos" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminCreditosPelicula /></ProtectedRoute>} />
 
             <Route path="/mi-perfil/reclamar-credito" element={<ProtectedRoute roles={["TALENTO_VERIFICADO"]}><ReclamacionCredito /></ProtectedRoute>} />
             <Route path="/admin/verificaciones" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminVerificaciones /></ProtectedRoute>} />
