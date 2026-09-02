@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: cinerd-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: FRONTEND_URLS
+        value: https://cinerd.netlify.app
+      - key: DB_SERVER
+        sync: false
+      - key: DB_PORT
+        value: "1433"
+      - key: DB_DATABASE
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_ENCRYPT
+        value: "true"
+      - key: DB_TRUST_CERT
+        value: "false"
+      - key: TMDB_ACCESS_TOKEN
+        sync: false
+      - key: TMDB_BASE_URL
+        value: https://api.themoviedb.org/3
+      - key: TMDB_IMAGE_BASE_URL
+        value: https://image.tmdb.org/t/p
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_ACCESS_EXPIRES_IN
+        value: 15m
