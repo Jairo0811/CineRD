@@ -73,6 +73,10 @@ app.get("/", (req, res) => {
   res.json({ mensaje: "API de CineRD funcionando correctamente" });
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok", service: "cinerd-api" });
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/verificaciones", verificacionRoutes);
 app.use("/api/solicitudes-creditos", solicitudesCreditoRoutes);
