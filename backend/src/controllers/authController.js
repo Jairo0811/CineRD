@@ -1,13 +1,33 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const { sql, poolPromise } = require("../config/db");
+const {
+  crearAccessToken,
+  crearRefreshToken,
+  guardarRefreshToken,
+  rotarRefreshToken,
+  revocarRefreshToken,
+} = require("../services/tokenService");
 
-const crearAccessToken = (usuario) =>
-  jwt.sign(
-    { id: usuario.Id, email: usuario.Email, rol: usuario.Rol, nombre: usuario.Nombre },
-    process.env.JWT_ACCESS_SECRET,
-    { expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || "15m" },
-  );
+const REFRESH_COOKIE = "cineRdRefreshToken";
+const REFRESH_TOKEN_DAYS = Number(process.env.JWT_REFRESH_EXPIRES_DAYS || 30);
+
+const cookieOptions = () => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  maxAge: REFRESH_TOKEN_DAYS * 24 * 60 * 60 * 1000,
+  path: "/api/auth",
+});
+
+const setRefreshCookie = (res, token) => {
+  res.cookie(REFRESH_COOKIE, token, cookieOptions());
+};
+
+const clearRefreshCookie = (res) => {
+  const options = cookieOptions();
+  delete options.maxAge;
+  res.clearCookie(REFRESH_COOKIE, options);
+};
 
 const registrar = async (req, res) => {
   try {
@@ -55,6 +75,10 @@ const login = async (req, res) => {
     if (usuario.Estado !== "ACTIVO") return res.status(403).json({ mensaje: "La cuenta no está activa" });
 
     const accessToken = crearAccessToken(usuario);
+    const refreshToken = crearRefreshToken();
+    await guardarRefreshToken(usuario.Id, refreshToken);
+    setRefreshCookie(res, refreshToken);
+
     await pool.request().input("Id", sql.Int, usuario.Id)
       .query("UPDATE dbo.Usuarios SET UltimoAcceso = SYSUTCDATETIME() WHERE Id = @Id");
 
@@ -68,6 +92,39 @@ const login = async (req, res) => {
   }
 };
 
+const refresh = async (req, res) => {
+  try {
+    const tokenActual = req.cookies?.[REFRESH_COOKIE];
+    if (!tokenActual) return res.status(401).json({ mensaje: "Sesión no renovable" });
+
+    const sesion = await rotarRefreshToken(tokenActual);
+    if (!sesion) {
+      clearRefreshCookie(res);
+      return res.status(401).json({ mensaje: "Sesión expirada o revocada" });
+    }
+
+    setRefreshCookie(res, sesion.refreshToken);
+    return res.json({ accessToken: sesion.accessToken, usuario: sesion.usuario });
+  } catch (error) {
+    console.error("Error al renovar sesión:", error);
+    clearRefreshCookie(res);
+    return res.status(500).json({ mensaje: "No se pudo renovar la sesión" });
+  }
+};
+
+const logout = async (req, res) => {
+  try {
+    const token = req.cookies?.[REFRESH_COOKIE];
+    await revocarRefreshToken(token);
+    clearRefreshCookie(res);
+    return res.status(204).send();
+  } catch (error) {
+    console.error("Error al cerrar sesión:", error);
+    clearRefreshCookie(res);
+    return res.status(204).send();
+  }
+};
+
 const perfil = async (req, res) => {
   const pool = await poolPromise;
   const resultado = await pool.request().input("Id", sql.Int, req.usuario.id)
@@ -75,4 +132,4 @@ const perfil = async (req, res) => {
   return res.json(resultado.recordset[0]);
 };
 
-module.exports = { registrar, login, perfil };
+module.exports = { registrar, login, refresh, logout, perfil };
