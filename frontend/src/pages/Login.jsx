@@ -42,6 +42,7 @@ function Login() {
       <form onSubmit={enviar}>
         <div className="cine-field"><label>Correo electrónico</label><input type="email" autoComplete="email" required value={formulario.email} onChange={(e)=>setFormulario({...formulario,email:e.target.value})}/></div>
         <div className="cine-field"><label>Contraseña</label><input type="password" autoComplete="current-password" required value={formulario.password} onChange={(e)=>setFormulario({...formulario,password:e.target.value})}/></div>
+        <div className="text-end mb-3"><Link to="/recuperar-password">¿Olvidaste tu contraseña?</Link></div>
         <button className="cine-submit" disabled={cargando}>{cargando ? "Ingresando..." : "Ingresar a CineRD"}</button>
       </form>
       <p className="cine-auth-switch">¿No tienes cuenta? <Link to="/registro">Crear cuenta</Link></p>
