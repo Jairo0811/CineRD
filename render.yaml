@@ -2,12 +2,16 @@ services:
   - type: web
     name: cinerd-api
     runtime: node
-    plan: free
+    plan: starter
     rootDir: backend
     buildCommand: npm ci --omit=dev
     startCommand: npm start
-    healthCheckPath: /health
+    healthCheckPath: /ready
     autoDeploy: true
+    disk:
+      name: cinerd-storage
+      mountPath: /var/data
+      sizeGB: 5
     envVars:
       - key: NODE_ENV
         value: production
@@ -15,6 +19,12 @@ services:
         value: 0.0.0.0
       - key: FRONTEND_URLS
         value: https://cinerd.netlify.app
+      - key: PUBLIC_APP_URL
+        value: https://cinerd.netlify.app
+      - key: UPLOADS_DIR
+        value: /var/data/uploads
+      - key: PRIVATE_STORAGE_DIR
+        value: /var/data/private
       - key: DB_SERVER
         sync: false
       - key: DB_PORT
@@ -39,3 +49,9 @@ services:
         generateValue: true
       - key: JWT_ACCESS_EXPIRES_IN
         value: 15m
+      - key: JWT_REFRESH_EXPIRES_DAYS
+        value: "30"
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
