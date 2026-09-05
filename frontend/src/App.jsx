@@ -17,6 +17,9 @@ import PerfilActor from "./pages/PerfilActor";
 import PerfilPelicula from "./pages/PerfilPelicula";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
+import RecuperarPassword from "./pages/RecuperarPassword";
+import RestablecerPassword from "./pages/RestablecerPassword";
+import VerificarEmail from "./pages/VerificarEmail";
 import VerificarTalento from "./pages/VerificarTalento";
 import ReclamarPerfil from "./pages/ReclamarPerfil";
 import AdminVerificaciones from "./pages/AdminVerificaciones";
@@ -38,6 +41,9 @@ function App() {
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Registro />} />
+            <Route path="/recuperar-password" element={<RecuperarPassword />} />
+            <Route path="/restablecer-password" element={<RestablecerPassword />} />
+            <Route path="/verificar-email" element={<VerificarEmail />} />
             <Route path="/verificar-perfil" element={<ProtectedRoute roles={["USUARIO"]}><VerificarTalento /></ProtectedRoute>} />
 
             <Route path="/actores" element={<Actores />} />
