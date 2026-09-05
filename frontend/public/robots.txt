@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard
+Disallow: /mi-perfil/
+Disallow: /verificar-perfil
+Sitemap: https://cinerd.netlify.app/sitemap.xml
