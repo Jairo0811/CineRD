@@ -7,6 +7,7 @@ const {
   rotarRefreshToken,
   revocarRefreshToken,
 } = require("../services/tokenService");
+const { emitirVerificacionEmail } = require("../services/accountSecurityService");
 
 const REFRESH_COOKIE = "cineRdRefreshToken";
 const REFRESH_TOKEN_DAYS = Number(process.env.JWT_REFRESH_EXPIRES_DAYS || 30);
@@ -19,10 +20,7 @@ const cookieOptions = () => ({
   path: "/api/auth",
 });
 
-const setRefreshCookie = (res, token) => {
-  res.cookie(REFRESH_COOKIE, token, cookieOptions());
-};
-
+const setRefreshCookie = (res, token) => res.cookie(REFRESH_COOKIE, token, cookieOptions());
 const clearRefreshCookie = (res) => {
   const options = cookieOptions();
   delete options.maxAge;
@@ -40,9 +38,7 @@ const registrar = async (req, res) => {
     const emailNormalizado = email.trim().toLowerCase();
     const existente = await pool.request().input("Email", sql.NVarChar(255), emailNormalizado)
       .query("SELECT Id FROM dbo.Usuarios WHERE Email = @Email");
-    if (existente.recordset.length) {
-      return res.status(409).json({ mensaje: "Ya existe una cuenta con ese correo" });
-    }
+    if (existente.recordset.length) return res.status(409).json({ mensaje: "Ya existe una cuenta con ese correo" });
 
     const passwordHash = await bcrypt.hash(password, 12);
     const resultado = await pool.request()
@@ -50,10 +46,17 @@ const registrar = async (req, res) => {
       .input("Email", sql.NVarChar(255), emailNormalizado)
       .input("PasswordHash", sql.NVarChar(255), passwordHash)
       .query(`INSERT INTO dbo.Usuarios (Nombre, Email, PasswordHash)
-              OUTPUT INSERTED.Id, INSERTED.Nombre, INSERTED.Email, INSERTED.Rol
+              OUTPUT INSERTED.Id, INSERTED.Nombre, INSERTED.Email, INSERTED.Rol, INSERTED.EmailVerificado
               VALUES (@Nombre, @Email, @PasswordHash)`);
 
-    return res.status(201).json({ usuario: resultado.recordset[0] });
+    const usuario = resultado.recordset[0];
+    try {
+      await emitirVerificacionEmail(usuario);
+    } catch (emailError) {
+      console.error("Cuenta creada, pero falló el email de verificación:", emailError.message);
+    }
+
+    return res.status(201).json({ usuario, mensaje: "Cuenta creada. Revisa tu correo para verificarla." });
   } catch (error) {
     console.error("Error al registrar usuario:", error);
     return res.status(500).json({ mensaje: "Error al registrar usuario" });
@@ -67,11 +70,9 @@ const login = async (req, res) => {
 
     const pool = await poolPromise;
     const resultado = await pool.request().input("Email", sql.NVarChar(255), email.trim().toLowerCase())
-      .query("SELECT Id, Nombre, Email, PasswordHash, Rol, Estado FROM dbo.Usuarios WHERE Email = @Email");
+      .query("SELECT Id, Nombre, Email, PasswordHash, Rol, Estado, EmailVerificado FROM dbo.Usuarios WHERE Email = @Email");
     const usuario = resultado.recordset[0];
-    if (!usuario || !(await bcrypt.compare(password, usuario.PasswordHash))) {
-      return res.status(401).json({ mensaje: "Credenciales inválidas" });
-    }
+    if (!usuario || !(await bcrypt.compare(password, usuario.PasswordHash))) return res.status(401).json({ mensaje: "Credenciales inválidas" });
     if (usuario.Estado !== "ACTIVO") return res.status(403).json({ mensaje: "La cuenta no está activa" });
 
     const accessToken = crearAccessToken(usuario);
@@ -84,7 +85,13 @@ const login = async (req, res) => {
 
     return res.json({
       accessToken,
-      usuario: { id: usuario.Id, nombre: usuario.Nombre, email: usuario.Email, rol: usuario.Rol },
+      usuario: {
+        id: usuario.Id,
+        nombre: usuario.Nombre,
+        email: usuario.Email,
+        rol: usuario.Rol,
+        emailVerificado: Boolean(usuario.EmailVerificado),
+      },
     });
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
@@ -96,13 +103,11 @@ const refresh = async (req, res) => {
   try {
     const tokenActual = req.cookies?.[REFRESH_COOKIE];
     if (!tokenActual) return res.status(401).json({ mensaje: "Sesión no renovable" });
-
     const sesion = await rotarRefreshToken(tokenActual);
     if (!sesion) {
       clearRefreshCookie(res);
       return res.status(401).json({ mensaje: "Sesión expirada o revocada" });
     }
-
     setRefreshCookie(res, sesion.refreshToken);
     return res.json({ accessToken: sesion.accessToken, usuario: sesion.usuario });
   } catch (error) {
