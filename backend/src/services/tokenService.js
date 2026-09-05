@@ -1,25 +1,12 @@
-const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
 const { sql, poolPromise } = require("../config/db");
+const { hashToken, crearRefreshToken, crearAccessToken: crearAccessTokenBase } = require("../utils/tokenUtils");
 
 const ACCESS_TOKEN_EXPIRES_IN = process.env.JWT_ACCESS_EXPIRES_IN || "15m";
 const REFRESH_TOKEN_DAYS = Number(process.env.JWT_REFRESH_EXPIRES_DAYS || 30);
 
-const hashToken = (token) => crypto.createHash("sha256").update(token).digest("hex");
-
-const crearAccessToken = (usuario) =>
-  jwt.sign(
-    {
-      id: usuario.Id ?? usuario.id,
-      email: usuario.Email ?? usuario.email,
-      rol: usuario.Rol ?? usuario.rol,
-      nombre: usuario.Nombre ?? usuario.nombre,
-    },
-    process.env.JWT_ACCESS_SECRET,
-    { expiresIn: ACCESS_TOKEN_EXPIRES_IN },
-  );
-
-const crearRefreshToken = () => crypto.randomBytes(48).toString("base64url");
+const crearAccessToken = (usuario) => crearAccessTokenBase(usuario, {
+  expiresIn: ACCESS_TOKEN_EXPIRES_IN,
+});
 
 const guardarRefreshToken = async (usuarioId, token) => {
   const pool = await poolPromise;
@@ -98,9 +85,7 @@ const rotarRefreshToken = async (tokenActual) => {
       },
     };
   } catch (error) {
-    if (transaction._aborted !== true) {
-      try { await transaction.rollback(); } catch { /* noop */ }
-    }
+    try { await transaction.rollback(); } catch { /* transaction already closed */ }
     throw error;
   }
 };
