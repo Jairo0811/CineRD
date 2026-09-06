@@ -23,6 +23,7 @@ import "./styles/theme-overrides.css";
 import "./styles/search.css";
 import "./styles/movie-credits.css";
 import "./styles/dark-polish.css";
+import "./styles/adsense.css";
 
 import App from "./App.jsx";
 
