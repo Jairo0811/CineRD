@@ -4,6 +4,7 @@ import Navbar from "./components/layout/navbar";
 import Footer from "./components/layout/footer";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import ActorEditRoute from "./components/auth/ActorEditRoute";
+import AdSenseArea from "./components/ads/AdSenseArea";
 
 import HomePublica from "./pages/HomePublica";
 import Dashboard from "./pages/Dashboard";
@@ -35,6 +36,7 @@ function App() {
       <div className="app-layout">
         <Navbar />
         <main className="container py-4 app-main">
+          <AdSenseArea />
           <Routes>
             <Route path="/" element={<HomePublica />} />
             <Route path="/buscar" element={<Busqueda />} />
