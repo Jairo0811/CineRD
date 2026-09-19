@@ -29,6 +29,7 @@ import AdminSolicitudesCredito from "./pages/AdminSolicitudesCredito";
 import AdminPremios from "./pages/AdminPremios";
 import AdminGaleria from "./pages/AdminGaleria";
 import AdminCreditosPelicula from "./pages/AdminCreditosPelicula";
+import CineRDPro from "./pages/CineRDPro";
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
             <Route path="/peliculas/:id/creditos" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminCreditosPelicula /></ProtectedRoute>} />
 
             <Route path="/mi-perfil/reclamar-credito" element={<ProtectedRoute roles={["TALENTO_VERIFICADO"]}><ReclamacionCredito /></ProtectedRoute>} />
+            <Route path="/mi-perfil/pro" element={<ProtectedRoute roles={["TALENTO_VERIFICADO"]}><CineRDPro /></ProtectedRoute>} />
             <Route path="/admin/verificaciones" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminVerificaciones /></ProtectedRoute>} />
             <Route path="/admin/solicitudes-creditos" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminSolicitudesCredito /></ProtectedRoute>} />
             <Route path="/admin/premios" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminPremios /></ProtectedRoute>} />
