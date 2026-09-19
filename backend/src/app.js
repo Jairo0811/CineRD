@@ -12,6 +12,7 @@ const busquedaRoutes = require("./routes/busquedaRoutes");
 const solicitudesCreditoRoutes = require("./routes/solicitudesCreditoRoutes");
 const premiosRoutes = require("./routes/premiosRoutes");
 const galeriaRoutes = require("./routes/galeriaRoutes");
+const cinerdProRoutes = require("./routes/cinerdProRoutes");
 const { uploadsDir } = require("./config/storage");
 const { poolPromise } = require("./config/db");
 const { requestContext, errorHandler } = require("./middlewares/observability");
@@ -79,6 +80,7 @@ app.use("/api/tmdb", tmdbRoutes);
 app.use("/api/busqueda", busquedaRoutes);
 app.use("/api/premios", premiosRoutes);
 app.use("/api/galeria", galeriaRoutes);
+app.use("/api/cinerd-pro", cinerdProRoutes);
 app.use(errorHandler);
 
 module.exports = app;
