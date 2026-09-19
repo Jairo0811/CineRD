@@ -13,7 +13,7 @@ import {
 const formularioParticipacionInicial = {
   ActorId: "",
   Personaje: "",
-  TipoParticipacion: "Principal",
+  TipoParticipacion: "Reparto",
 };
 
 const formularioNuevoTalentoInicial = {
