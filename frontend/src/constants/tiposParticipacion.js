@@ -1,10 +1,11 @@
-export const TIPOS_PARTICIPACION = [
+const TIPOS_PARTICIPACION_BASE = [
   "Principal",
   "Secundario",
   "Reparto",
   "Cameo",
   "Especial",
   "Actor invitado",
+  "Debut cinematográfico",
   "Flashback",
   "Flashforward",
   "Versión joven",
@@ -21,6 +22,10 @@ export const TIPOS_PARTICIPACION = [
   "Doble de riesgo",
 ];
 
+export const TIPOS_PARTICIPACION = [...TIPOS_PARTICIPACION_BASE].sort((a, b) =>
+  a.localeCompare(b, "es", { sensitivity: "base" }),
+);
+
 export const obtenerTextoParticipacion = (tipo) => {
   const textos = {
     Principal: "⭐ Principal",
@@ -29,6 +34,7 @@ export const obtenerTextoParticipacion = (tipo) => {
     Cameo: "🎬 Cameo",
     Especial: "🌟 Especial",
     "Actor invitado": "🎟️ Actor invitado",
+    "Debut cinematográfico": "🎞️ Debut cinematográfico",
     Flashback: "🔙 Flashback",
     Flashforward: "⏩ Flashforward",
     "Versión joven": "👦 Versión joven",
@@ -59,7 +65,7 @@ export const obtenerClaseParticipacion = (tipo) => {
     return "bg-secondary";
   }
 
-  if (["Cameo", "Actor invitado"].includes(tipo)) {
+  if (["Cameo", "Actor invitado", "Debut cinematográfico"].includes(tipo)) {
     return "bg-light text-primary border border-primary";
   }
 
