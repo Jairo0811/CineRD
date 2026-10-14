@@ -1,0 +1,618 @@
+name: Apply CineRD 2.5.2 hardening v2
+
+on:
+  push:
+    branches:
+      - feature/2.5.2-security-session-hardening
+
+permissions:
+  contents: write
+
+jobs:
+  harden:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Apply source hardening
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          import json
+
+          def write(path, content):
+              p = Path(path)
+              p.parent.mkdir(parents=True, exist_ok=True)
+              p.write_text(content, encoding='utf-8')
+
+          write('backend/src/middlewares/sanitizeErrors.js', r'''function sanitizeErrorResponses(req, res, next) {
+            const originalJson = res.json.bind(res);
+
+            res.json = (body) => {
+              if (res.statusCode >= 500 && body && typeof body === "object" && !Array.isArray(body)) {
+                const sanitized = { ...body };
+                delete sanitized.error;
+                if (!sanitized.requestId && req.requestId) sanitized.requestId = req.requestId;
+                return originalJson(sanitized);
+              }
+
+              return originalJson(body);
+            };
+
+            next();
+          }
+
+          module.exports = { sanitizeErrorResponses };
+          ''')
+
+          app_path = Path('backend/src/app.js')
+          app = app_path.read_text(encoding='utf-8')
+          if 'sanitizeErrorResponses' not in app:
+              app = app.replace(
+                  'const { requestContext, errorHandler } = require("./middlewares/observability");',
+                  'const { requestContext, errorHandler } = require("./middlewares/observability");\nconst { sanitizeErrorResponses } = require("./middlewares/sanitizeErrors");',
+              )
+              app = app.replace('app.use(requestContext);', 'app.use(requestContext);\napp.use(sanitizeErrorResponses);')
+          app_path.write_text(app, encoding='utf-8')
+
+          write('backend/tests/sanitizeErrors.test.js', r'''const test = require("node:test");
+          const assert = require("node:assert/strict");
+          const { sanitizeErrorResponses } = require("../src/middlewares/sanitizeErrors");
+
+          function responseMock(statusCode = 500) {
+            return {
+              statusCode,
+              body: null,
+              json(body) { this.body = body; return this; },
+            };
+          }
+
+          test("elimina detalles internos de respuestas 5xx y agrega requestId", () => {
+            const req = { requestId: "req-123" };
+            const res = responseMock(500);
+            sanitizeErrorResponses(req, res, () => {});
+            res.json({ mensaje: "Error interno", error: "SQL password leaked" });
+            assert.deepEqual(res.body, { mensaje: "Error interno", requestId: "req-123" });
+          });
+
+          test("no altera respuestas 4xx", () => {
+            const req = { requestId: "req-123" };
+            const res = responseMock(400);
+            sanitizeErrorResponses(req, res, () => {});
+            res.json({ mensaje: "Solicitud inválida", error: "detalle útil" });
+            assert.deepEqual(res.body, { mensaje: "Solicitud inválida", error: "detalle útil" });
+          });
+          ''')
+
+          write('backend/src/middlewares/rateLimit.js', r'''const CLEANUP_INTERVAL_MS = 60 * 1000;
+
+          function createRateLimit({ windowMs = 15 * 60 * 1000, max = 20, keyGenerator } = {}) {
+            const buckets = new Map();
+            let lastCleanup = Date.now();
+
+            const purge = (now) => {
+              if (now - lastCleanup < CLEANUP_INTERVAL_MS) return;
+              lastCleanup = now;
+              for (const [key, entry] of buckets) {
+                if (entry.resetAt <= now) buckets.delete(key);
+              }
+            };
+
+            const middleware = (req, res, next) => {
+              const now = Date.now();
+              purge(now);
+              const generated = keyGenerator ? keyGenerator(req) : null;
+              const key = generated || req.ip || req.socket?.remoteAddress || "unknown";
+              const current = buckets.get(key);
+
+              if (!current || current.resetAt <= now) {
+                buckets.set(key, { count: 1, resetAt: now + windowMs });
+                return next();
+              }
+
+              current.count += 1;
+              if (current.count > max) {
+                const retryAfter = Math.max(1, Math.ceil((current.resetAt - now) / 1000));
+                res.setHeader("Retry-After", String(retryAfter));
+                return res.status(429).json({ mensaje: "Demasiados intentos. Intenta nuevamente más tarde." });
+              }
+
+              return next();
+            };
+
+            middleware.size = () => buckets.size;
+            middleware.reset = () => buckets.clear();
+            return middleware;
+          }
+
+          module.exports = { createRateLimit };
+          ''')
+
+          rate_test_path = Path('backend/tests/rateLimit.test.js')
+          rate_test = rate_test_path.read_text(encoding='utf-8')
+          if 'cada limitador tiene su propio contador' not in rate_test:
+              rate_test += r'''
+
+          test("cada limitador tiene su propio contador (no se comparten entre rutas)", () => {
+            const login = createRateLimit({ windowMs: 60_000, max: 1 });
+            const refresh = createRateLimit({ windowMs: 60_000, max: 1 });
+            const req = { ip: "misma-ip" };
+            login(req, responseMock(), () => {});
+            let refreshPaso = false;
+            refresh(req, responseMock(), () => { refreshPaso = true; });
+            assert.equal(refreshPaso, true);
+          });
+
+          test("purga las entradas vencidas del almacén", () => {
+            const limiter = createRateLimit({ windowMs: 5, max: 5 });
+            const realNow = Date.now;
+            let now = realNow();
+            Date.now = () => now;
+            try {
+              limiter({ ip: "a" }, responseMock(), () => {});
+              limiter({ ip: "b" }, responseMock(), () => {});
+              assert.equal(limiter.size(), 2);
+              now += 2 * 60 * 1000;
+              limiter({ ip: "c" }, responseMock(), () => {});
+              assert.equal(limiter.size(), 1);
+            } finally {
+              Date.now = realNow;
+            }
+          });
+
+          test("acepta un keyGenerator personalizado", () => {
+            const limiter = createRateLimit({ windowMs: 60_000, max: 1, keyGenerator: (req) => req.body?.email });
+            limiter({ ip: "x", body: { email: "a@a.com" } }, responseMock(), () => {});
+            const res = responseMock();
+            limiter({ ip: "otra-ip", body: { email: "a@a.com" } }, res, () => assert.fail("No debe continuar"));
+            assert.equal(res.statusCode, 429);
+          });
+          '''
+              rate_test_path.write_text(rate_test, encoding='utf-8')
+
+          auth_path = Path('backend/src/routes/authRoutes.js')
+          auth = auth_path.read_text(encoding='utf-8')
+          auth = auth.replace(
+              'const authRateLimit = createRateLimit({ windowMs: 15 * 60 * 1000, max: 20 });',
+              'const loginRateLimit = createRateLimit({ windowMs: 15 * 60 * 1000, max: 20 });\nconst registerRateLimit = createRateLimit({ windowMs: 15 * 60 * 1000, max: 20 });',
+          )
+          auth = auth.replace('router.post("/registro", authRateLimit, registrar);', 'router.post("/registro", registerRateLimit, registrar);')
+          auth = auth.replace('router.post("/login", authRateLimit, login);', 'router.post("/login", loginRateLimit, login);')
+          auth_path.write_text(auth, encoding='utf-8')
+
+          token_path = Path('backend/src/services/tokenService.js')
+          token = token_path.read_text(encoding='utf-8')
+          if 'u.EmailVerificado' not in token:
+              token = token.replace('          u.Rol,\n          u.Estado', '          u.Rol,\n          u.Estado,\n          u.EmailVerificado')
+          if 'emailVerificado: Boolean(usuario.EmailVerificado)' not in token:
+              token = token.replace('        rol: usuario.Rol,\n      },', '        rol: usuario.Rol,\n        emailVerificado: Boolean(usuario.EmailVerificado),\n      },')
+          token_path.write_text(token, encoding='utf-8')
+
+          backend_pkg_path = Path('backend/package.json')
+          backend_pkg = json.loads(backend_pkg_path.read_text(encoding='utf-8'))
+          backend_pkg['dependencies']['mssql'] = '^12.7.6'
+          backend_pkg_path.write_text(json.dumps(backend_pkg, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          frontend_pkg_path = Path('frontend/package.json')
+          frontend_pkg = json.loads(frontend_pkg_path.read_text(encoding='utf-8'))
+          frontend_pkg['scripts']['test'] = 'vitest run'
+          frontend_pkg['dependencies'].pop('dotenv', None)
+          frontend_pkg['devDependencies'].update({
+              '@testing-library/dom': '^10.4.2',
+              '@testing-library/react': '^16.3.3',
+              'jsdom': '^30.1.2',
+              'vite': '^6.4.4',
+              'vitest': '^5.0.4',
+          })
+          frontend_pkg_path.write_text(json.dumps(frontend_pkg, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          write('frontend/src/components/ui/PageLoader.jsx', r'''function PageLoader() {
+            return (
+              <div className="text-center py-5" role="status" aria-live="polite">
+                <div className="spinner-border" aria-hidden="true" />
+                <span className="visually-hidden">Cargando…</span>
+              </div>
+            );
+          }
+
+          export default PageLoader;
+          ''')
+
+          write('frontend/src/components/auth/ProtectedRoute.jsx', r'''import { useEffect, useState } from "react";
+          import { Navigate } from "react-router-dom";
+          import { limpiarSesion, renovarSesion } from "../../services/api";
+          import PageLoader from "../ui/PageLoader";
+
+          const FUERA = { estado: "fuera" };
+
+          const decodificarPayload = (token) => {
+            const partes = token.split(".");
+            if (partes.length !== 3) return null;
+            const base64 = partes[1].replace(/-/g, "+").replace(/_/g, "/");
+            const padded = base64.padEnd(Math.ceil(base64.length / 4) * 4, "=");
+            return JSON.parse(atob(padded));
+          };
+
+          function leerSesion() {
+            try {
+              const usuario = JSON.parse(localStorage.getItem("cineRdUsuario") || "null");
+              const token = localStorage.getItem("cineRdAccessToken");
+              if (!usuario || !token) return FUERA;
+              const payload = decodificarPayload(token);
+              if (!payload) { limpiarSesion(); return FUERA; }
+              const expiraEn = Number(payload.exp || 0) * 1000;
+              if (!expiraEn) { limpiarSesion(); return FUERA; }
+              if (Date.now() >= expiraEn) return { estado: "renovar" };
+              return { estado: "ok", usuario };
+            } catch {
+              limpiarSesion();
+              return FUERA;
+            }
+          }
+
+          function ProtectedRoute({ children, roles = [] }) {
+            const [sesion, setSesion] = useState(leerSesion);
+
+            useEffect(() => {
+              if (sesion.estado !== "renovar") return undefined;
+              let activo = true;
+              renovarSesion()
+                .then(() => {
+                  if (!activo) return;
+                  const nueva = leerSesion();
+                  setSesion(nueva.estado === "ok" ? nueva : FUERA);
+                })
+                .catch(() => {
+                  limpiarSesion();
+                  if (activo) setSesion(FUERA);
+                });
+              return () => { activo = false; };
+            }, [sesion.estado]);
+
+            if (sesion.estado === "renovar") return <PageLoader />;
+            if (sesion.estado !== "ok") return <Navigate to="/login?session=expired" replace />;
+            if (roles.length > 0 && !roles.includes(sesion.usuario.rol)) return <Navigate to="/dashboard" replace />;
+            return children;
+          }
+
+          export default ProtectedRoute;
+          ''')
+
+          write('frontend/src/components/auth/ProtectedRoute.test.jsx', r'''import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+          import { cleanup, render, screen, waitFor } from "@testing-library/react";
+          import { MemoryRouter, Route, Routes } from "react-router-dom";
+
+          vi.mock("../../services/api", () => ({
+            limpiarSesion: vi.fn(() => {
+              localStorage.removeItem("cineRdAccessToken");
+              localStorage.removeItem("cineRdUsuario");
+            }),
+            renovarSesion: vi.fn(),
+          }));
+
+          import { renovarSesion } from "../../services/api";
+          import ProtectedRoute from "./ProtectedRoute";
+
+          const base64url = (obj) => btoa(JSON.stringify(obj)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+          const crearToken = (exp) => `${base64url({ alg: "HS256", typ: "JWT" })}.${base64url({ exp })}.firma`;
+          const ahora = () => Math.floor(Date.now() / 1000);
+          const guardarSesion = ({ exp, rol = "ADMINISTRADOR" }) => {
+            localStorage.setItem("cineRdAccessToken", crearToken(exp));
+            localStorage.setItem("cineRdUsuario", JSON.stringify({ id: 1, nombre: "Test", rol }));
+          };
+          const renderizar = (roles) => render(
+            <MemoryRouter initialEntries={["/privada"]}>
+              <Routes>
+                <Route path="/privada" element={<ProtectedRoute roles={roles}><p>contenido privado</p></ProtectedRoute>} />
+                <Route path="/login" element={<p>pantalla login</p>} />
+                <Route path="/dashboard" element={<p>pantalla dashboard</p>} />
+              </Routes>
+            </MemoryRouter>,
+          );
+
+          describe("ProtectedRoute", () => {
+            beforeEach(() => { localStorage.clear(); vi.clearAllMocks(); });
+            afterEach(cleanup);
+
+            it("redirige al login cuando no hay sesión", () => {
+              renderizar();
+              expect(screen.getByText("pantalla login")).toBeTruthy();
+              expect(renovarSesion).not.toHaveBeenCalled();
+            });
+
+            it("muestra el contenido con un access token vigente", () => {
+              guardarSesion({ exp: ahora() + 600 });
+              renderizar(["ADMINISTRADOR"]);
+              expect(screen.getByText("contenido privado")).toBeTruthy();
+            });
+
+            it("redirige al dashboard si el rol no está permitido", () => {
+              guardarSesion({ exp: ahora() + 600, rol: "USUARIO" });
+              renderizar(["ADMINISTRADOR"]);
+              expect(screen.getByText("pantalla dashboard")).toBeTruthy();
+            });
+
+            it("renueva una sesión cuyo access token venció", async () => {
+              guardarSesion({ exp: ahora() - 60 });
+              renovarSesion.mockImplementation(async () => {
+                guardarSesion({ exp: ahora() + 900 });
+                return "nuevo-token";
+              });
+              renderizar(["ADMINISTRADOR"]);
+              expect(screen.queryByText("pantalla login")).toBeNull();
+              await waitFor(() => expect(screen.getByText("contenido privado")).toBeTruthy());
+              expect(renovarSesion).toHaveBeenCalledTimes(1);
+            });
+
+            it("redirige al login cuando el refresh es inválido", async () => {
+              guardarSesion({ exp: ahora() - 60 });
+              renovarSesion.mockRejectedValue(new Error("401"));
+              renderizar(["ADMINISTRADOR"]);
+              await waitFor(() => expect(screen.getByText("pantalla login")).toBeTruthy());
+              expect(localStorage.getItem("cineRdAccessToken")).toBeNull();
+            });
+
+            it("no entra en bucle si el refresh no deja una sesión válida", async () => {
+              guardarSesion({ exp: ahora() - 60 });
+              renovarSesion.mockResolvedValue("token-que-no-se-guardo");
+              renderizar(["ADMINISTRADOR"]);
+              await waitFor(() => expect(screen.getByText("pantalla login")).toBeTruthy());
+              expect(renovarSesion).toHaveBeenCalledTimes(1);
+            });
+          });
+          ''')
+
+          api_path = Path('frontend/src/services/api.js')
+          api = api_path.read_text(encoding='utf-8')
+          api = api.replace('export { limpiarSesion, guardarSesion };', 'export { limpiarSesion, guardarSesion, renovarSesion };')
+          api_path.write_text(api, encoding='utf-8')
+
+          navbar_path = Path('frontend/src/components/layout/navbar.jsx')
+          navbar = navbar_path.read_text(encoding='utf-8')
+          navbar = navbar.replace('import cineRdNavbarLogo from "../../branding/cinerd-navbar.png";', 'import cineRdNavbarLogo from "../../branding/cinerd-navbar.webp";\nimport api, { limpiarSesion } from "../../services/api";')
+          old_logout = '''  const cerrarSesion = () => {\n    localStorage.removeItem("cineRdAccessToken");\n    localStorage.removeItem("cineRdUsuario");\n    cerrarMenuMovil();\n    navigate("/");\n    window.location.reload();\n  };'''
+          new_logout = '''  const cerrarSesion = async () => {\n    try {\n      await api.post("/auth/logout");\n    } catch {\n      // Si la red falla, cerramos igualmente la sesión local.\n    }\n    limpiarSesion();\n    cerrarMenuMovil();\n    navigate("/");\n    window.location.reload();\n  };'''
+          navbar = navbar.replace(old_logout, new_logout)
+          navbar_path.write_text(navbar, encoding='utf-8')
+
+          write('frontend/src/pages/Dashboard.jsx', r'''import { Suspense, lazy } from "react";
+          import PageLoader from "../components/ui/PageLoader";
+
+          const Home = lazy(() => import("./home"));
+          const DashboardUsuario = lazy(() => import("./DashboardUsuario"));
+          const DashboardTalento = lazy(() => import("./DashboardTalento"));
+
+          function obtenerUsuario() {
+            try { return JSON.parse(localStorage.getItem("cineRdUsuario") || "null"); }
+            catch { return null; }
+          }
+
+          function PanelSegunRol({ usuario }) {
+            if (!usuario) return <DashboardUsuario usuario={null} />;
+            if (usuario.rol === "ADMINISTRADOR") return <Home />;
+            if (usuario.rol === "TALENTO_VERIFICADO") return <DashboardTalento usuario={usuario} />;
+            return <DashboardUsuario usuario={usuario} />;
+          }
+
+          function Dashboard() {
+            const usuario = obtenerUsuario();
+            return <Suspense fallback={<PageLoader />}><PanelSegunRol usuario={usuario} /></Suspense>;
+          }
+
+          export default Dashboard;
+          ''')
+
+          write('frontend/src/App.jsx', r'''import { Suspense, lazy } from "react";
+          import { BrowserRouter, Route, Routes } from "react-router-dom";
+          import Navbar from "./components/layout/navbar";
+          import Footer from "./components/layout/footer";
+          import ProtectedRoute from "./components/auth/ProtectedRoute";
+          import ActorEditRoute from "./components/auth/ActorEditRoute";
+          import AdSenseArea from "./components/ads/AdSenseArea";
+          import PageLoader from "./components/ui/PageLoader";
+          import HomePublica from "./pages/HomePublica";
+
+          const Dashboard = lazy(() => import("./pages/Dashboard"));
+          const Actores = lazy(() => import("./pages/Actores"));
+          const Peliculas = lazy(() => import("./pages/Peliculas"));
+          const Busqueda = lazy(() => import("./pages/Busqueda"));
+          const FormularioActor = lazy(() => import("./pages/FormularioActor"));
+          const FormularioPelicula = lazy(() => import("./pages/FormularioPelicula"));
+          const RepartoPelicula = lazy(() => import("./pages/RepartoPelicula"));
+          const PerfilActor = lazy(() => import("./pages/PerfilActor"));
+          const PerfilPelicula = lazy(() => import("./pages/PerfilPelicula"));
+          const Login = lazy(() => import("./pages/Login"));
+          const Registro = lazy(() => import("./pages/Registro"));
+          const RecuperarPassword = lazy(() => import("./pages/RecuperarPassword"));
+          const RestablecerPassword = lazy(() => import("./pages/RestablecerPassword"));
+          const VerificarEmail = lazy(() => import("./pages/VerificarEmail"));
+          const VerificarTalento = lazy(() => import("./pages/VerificarTalento"));
+          const ReclamarPerfil = lazy(() => import("./pages/ReclamarPerfil"));
+          const AdminVerificaciones = lazy(() => import("./pages/AdminVerificaciones"));
+          const ReclamacionCredito = lazy(() => import("./pages/ReclamacionCredito"));
+          const AdminSolicitudesCredito = lazy(() => import("./pages/AdminSolicitudesCredito"));
+          const AdminPremios = lazy(() => import("./pages/AdminPremios"));
+          const AdminGaleria = lazy(() => import("./pages/AdminGaleria"));
+          const AdminCreditosPelicula = lazy(() => import("./pages/AdminCreditosPelicula"));
+
+          function App() {
+            return (
+              <BrowserRouter>
+                <div className="app-layout">
+                  <Navbar />
+                  <main className="container py-4 app-main">
+                    <AdSenseArea />
+                    <Suspense fallback={<PageLoader />}>
+                      <Routes>
+                        <Route path="/" element={<HomePublica />} />
+                        <Route path="/buscar" element={<Busqueda />} />
+                        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/registro" element={<Registro />} />
+                        <Route path="/recuperar-password" element={<RecuperarPassword />} />
+                        <Route path="/restablecer-password" element={<RestablecerPassword />} />
+                        <Route path="/verificar-email" element={<VerificarEmail />} />
+                        <Route path="/verificar-perfil" element={<ProtectedRoute roles={["USUARIO"]}><VerificarTalento /></ProtectedRoute>} />
+                        <Route path="/actores" element={<Actores />} />
+                        <Route path="/actores/nuevo" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><FormularioActor /></ProtectedRoute>} />
+                        <Route path="/actores/editar/:id" element={<ActorEditRoute><FormularioActor /></ActorEditRoute>} />
+                        <Route path="/actores/:id" element={<PerfilActor />} />
+                        <Route path="/actores/:actorId/reclamar" element={<ProtectedRoute roles={["USUARIO"]}><ReclamarPerfil /></ProtectedRoute>} />
+                        <Route path="/peliculas" element={<Peliculas />} />
+                        <Route path="/peliculas/nueva" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><FormularioPelicula /></ProtectedRoute>} />
+                        <Route path="/peliculas/editar/:id" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><FormularioPelicula /></ProtectedRoute>} />
+                        <Route path="/peliculas/:id" element={<PerfilPelicula />} />
+                        <Route path="/peliculas/:id/reparto" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><RepartoPelicula /></ProtectedRoute>} />
+                        <Route path="/peliculas/:id/creditos" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminCreditosPelicula /></ProtectedRoute>} />
+                        <Route path="/mi-perfil/reclamar-credito" element={<ProtectedRoute roles={["TALENTO_VERIFICADO"]}><ReclamacionCredito /></ProtectedRoute>} />
+                        <Route path="/admin/verificaciones" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminVerificaciones /></ProtectedRoute>} />
+                        <Route path="/admin/solicitudes-creditos" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminSolicitudesCredito /></ProtectedRoute>} />
+                        <Route path="/admin/premios" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminPremios /></ProtectedRoute>} />
+                        <Route path="/admin/galeria" element={<ProtectedRoute roles={["ADMINISTRADOR"]}><AdminGaleria /></ProtectedRoute>} />
+                      </Routes>
+                    </Suspense>
+                  </main>
+                  <Footer />
+                </div>
+              </BrowserRouter>
+            );
+          }
+
+          export default App;
+          ''')
+
+          write('frontend/vite.config.js', r'''import { defineConfig } from "vite";
+          import react from "@vitejs/plugin-react";
+
+          export default defineConfig({
+            plugins: [react()],
+            test: { environment: "jsdom" },
+            build: {
+              rollupOptions: {
+                output: {
+                  manualChunks: { vendor: ["react", "react-dom", "react-router-dom"] },
+                },
+              },
+            },
+          });
+          ''')
+
+          placeholder_path = Path('frontend/src/utils/talentoPlaceholder.js')
+          placeholder = placeholder_path.read_text(encoding='utf-8')
+          placeholder = placeholder.replace('../assets/talento-masculino.png', '../assets/talento-masculino.webp')
+          placeholder = placeholder.replace('../assets/talento-femenino.png', '../assets/talento-femenino.webp')
+          placeholder_path.write_text(placeholder, encoding='utf-8')
+
+          index_path = Path('frontend/index.html')
+          index = index_path.read_text(encoding='utf-8')
+          if '/favicon.png' not in index:
+              index = index.replace('    <meta name="theme-color" content="#0b1530" />', '    <meta name="theme-color" content="#0b1530" />\n    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />\n    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />')
+          index_path.write_text(index, encoding='utf-8')
+
+          ci_path = Path('.github/workflows/ci.yml')
+          ci = ci_path.read_text(encoding='utf-8')
+          backend_section, frontend_section = ci.split('  frontend:', 1)
+          if 'npm audit --omit=dev --audit-level=high' not in backend_section:
+              backend_section = backend_section.replace('      - run: npm run catalog:validate', '      - run: npm run catalog:validate\n      - run: npm audit --omit=dev --audit-level=high')
+          if 'npm test' not in frontend_section:
+              frontend_section = frontend_section.replace('      - run: npm run lint\n      - run: npm run build', '      - run: npm run lint\n      - run: npm test\n      - run: npm audit --omit=dev --audit-level=high\n      - run: npm run build')
+          ci_path.write_text(backend_section + '  frontend:' + frontend_section, encoding='utf-8')
+
+          write('netlify.toml', '''[build]\n  command = "npm --prefix backend ci && npm --prefix backend test && npm --prefix backend run catalog:validate && npm --prefix frontend ci && npm --prefix frontend run lint && npm --prefix frontend test && npm --prefix frontend run build"\n  publish = "frontend/dist"\n\n[build.environment]\n  NODE_VERSION = "22"\n\n[[redirects]]\n  from = "/*"\n  to = "/index.html"\n  status = 200\n''')
+
+          for stale in ['frontend/src/App.css', 'frontend/src/assets/react.svg', 'frontend/public/vite.svg', 'frontend/public/placeholders/actor-male.png']:
+              p = Path(stale)
+              if p.exists(): p.unlink()
+          PY
+
+      - name: Remediate dependency vulnerabilities
+        shell: bash
+        run: |
+          npm --prefix backend install axios@latest express@latest multer@latest sharp@latest mssql@12.7.6 --package-lock-only --ignore-scripts
+          npm --prefix backend audit fix --package-lock-only --ignore-scripts || true
+          npm --prefix frontend install axios@latest --package-lock-only --ignore-scripts
+          npm --prefix frontend install --package-lock-only --ignore-scripts
+          npm --prefix frontend audit fix --package-lock-only --ignore-scripts || true
+
+      - name: Install backend dependencies
+        run: npm --prefix backend ci
+
+      - name: Verify mssql 12 API compatibility
+        shell: bash
+        run: |
+          node <<'NODE'
+          const sql = require('./backend/node_modules/mssql');
+          if (typeof sql.ConnectionPool !== 'function' || typeof sql.Transaction !== 'function' || typeof sql.Request !== 'function') {
+            throw new Error('mssql 12 no expone la API esperada por CineRD');
+          }
+          const pool = new sql.ConnectionPool({
+            server: 'localhost',
+            user: 'cinerd-smoke',
+            password: 'not-used',
+            database: 'cinerd-smoke',
+            options: { encrypt: false, trustServerCertificate: true },
+          });
+          const request = pool.request();
+          const transaction = new sql.Transaction(pool);
+          if (!request || !transaction) throw new Error('No fue posible construir Request/Transaction');
+          console.log('mssql API smoke test OK', require('./backend/node_modules/mssql/package.json').version);
+          NODE
+
+      - name: Generate optimized brand assets
+        shell: bash
+        run: |
+          node <<'NODE'
+          const sharp = require('./backend/node_modules/sharp');
+          const fs = require('fs');
+
+          async function main() {
+            await sharp('frontend/src/branding/cinerd-navbar.png').webp({ quality: 84 }).toFile('frontend/src/branding/cinerd-navbar.webp');
+            await sharp('frontend/src/assets/talento-masculino.png').webp({ quality: 82 }).toFile('frontend/src/assets/talento-masculino.webp');
+            await sharp('frontend/src/assets/talento-femenino.png').webp({ quality: 82 }).toFile('frontend/src/assets/talento-femenino.webp');
+            await sharp('frontend/src/branding/cinerd-isotipo.png').resize(64, 64, { fit: 'contain' }).png({ compressionLevel: 9 }).toFile('frontend/public/favicon.png');
+            await sharp('frontend/src/branding/cinerd-isotipo.png').resize(180, 180, { fit: 'contain' }).png({ compressionLevel: 9 }).toFile('frontend/public/apple-touch-icon.png');
+            await sharp('frontend/src/branding/cinerd-isotipo.png').resize(512, 512, { fit: 'contain' }).png({ compressionLevel: 9 }).toFile('frontend/public/logo.png');
+            for (const stale of ['frontend/src/branding/cinerd-navbar.png', 'frontend/src/assets/talento-masculino.png', 'frontend/src/assets/talento-femenino.png']) {
+              if (fs.existsSync(stale)) fs.unlinkSync(stale);
+            }
+          }
+          main().catch((error) => { console.error(error); process.exit(1); });
+          NODE
+
+      - name: Validate backend
+        shell: bash
+        run: |
+          npm --prefix backend test
+          npm --prefix backend run catalog:validate
+          npm --prefix backend audit --omit=dev --audit-level=high
+
+      - name: Validate frontend
+        shell: bash
+        run: |
+          npm --prefix frontend ci
+          npm --prefix frontend run lint
+          npm --prefix frontend test
+          npm --prefix frontend audit --omit=dev --audit-level=high
+          npm --prefix frontend run build
+
+      - name: Commit validated hardening
+        shell: bash
+        run: |
+          rm -f .github/workflows/apply-cinerd-2.5.2.yml .github/workflows/apply-cinerd-2.5.2-v2.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "security: harden sessions, dependencies and frontend delivery"
+          git push origin HEAD:feature/2.5.2-security-session-hardening
