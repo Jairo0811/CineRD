@@ -3,7 +3,8 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import banderaDo from "../../branding/flag-do.svg";
 import banderaUs from "../../branding/flag-us.svg";
-import cineRdNavbarLogo from "../../branding/cinerd-navbar.png";
+import cineRdNavbarLogo from "../../branding/cinerd-navbar.webp";
+import api, { limpiarSesion } from "../../services/api";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -40,9 +41,13 @@ function Navbar() {
     document.querySelector('[data-bs-target="#cineRdNavbar"]')?.click();
   };
 
-  const cerrarSesion = () => {
-    localStorage.removeItem("cineRdAccessToken");
-    localStorage.removeItem("cineRdUsuario");
+  const cerrarSesion = async () => {
+    try {
+      await api.post("/auth/logout");
+    } catch {
+      // Si la red falla, cerramos igualmente la sesión local.
+    }
+    limpiarSesion();
     cerrarMenuMovil();
     navigate("/");
     window.location.reload();

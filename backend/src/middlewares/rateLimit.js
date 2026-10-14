@@ -1,9 +1,22 @@
-const buckets = new Map();
+const CLEANUP_INTERVAL_MS = 60 * 1000;
 
-function createRateLimit({ windowMs = 15 * 60 * 1000, max = 20 } = {}) {
-  return (req, res, next) => {
-    const key = req.ip || req.socket?.remoteAddress || "unknown";
+function createRateLimit({ windowMs = 15 * 60 * 1000, max = 20, keyGenerator } = {}) {
+  const buckets = new Map();
+  let lastCleanup = Date.now();
+
+  const purge = (now) => {
+    if (now - lastCleanup < CLEANUP_INTERVAL_MS) return;
+    lastCleanup = now;
+    for (const [key, entry] of buckets) {
+      if (entry.resetAt <= now) buckets.delete(key);
+    }
+  };
+
+  const middleware = (req, res, next) => {
     const now = Date.now();
+    purge(now);
+    const generated = keyGenerator ? keyGenerator(req) : null;
+    const key = generated || req.ip || req.socket?.remoteAddress || "unknown";
     const current = buckets.get(key);
 
     if (!current || current.resetAt <= now) {
@@ -20,6 +33,10 @@ function createRateLimit({ windowMs = 15 * 60 * 1000, max = 20 } = {}) {
 
     return next();
   };
+
+  middleware.size = () => buckets.size;
+  middleware.reset = () => buckets.clear();
+  return middleware;
 }
 
 module.exports = { createRateLimit };

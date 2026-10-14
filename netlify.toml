@@ -1,6 +1,9 @@
 [build]
-  command = "npm --prefix backend ci && npm --prefix backend test && npm --prefix backend run catalog:validate && npm --prefix frontend ci && npm --prefix frontend run lint && npm --prefix frontend run build"
+  command = "npm --prefix backend ci && npm --prefix backend test && npm --prefix backend run catalog:validate && npm --prefix frontend ci && npm --prefix frontend run lint && npm --prefix frontend test && npm --prefix frontend run build"
   publish = "frontend/dist"
+
+[build.environment]
+  NODE_VERSION = "22"
 
 [[redirects]]
   from = "/*"

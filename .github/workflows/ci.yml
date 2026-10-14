@@ -22,6 +22,7 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run catalog:validate
+      - run: npm audit --omit=dev --audit-level=high
 
   frontend:
     runs-on: ubuntu-latest
@@ -37,4 +38,6 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
       - run: npm run lint
+      - run: npm test
+      - run: npm audit --omit=dev --audit-level=high
       - run: npm run build

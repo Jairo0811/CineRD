@@ -15,11 +15,13 @@ const galeriaRoutes = require("./routes/galeriaRoutes");
 const { uploadsDir } = require("./config/storage");
 const { poolPromise } = require("./config/db");
 const { requestContext, errorHandler } = require("./middlewares/observability");
+const { sanitizeErrorResponses } = require("./middlewares/sanitizeErrors");
 
 const app = express();
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
 app.use(requestContext);
+app.use(sanitizeErrorResponses);
 
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");

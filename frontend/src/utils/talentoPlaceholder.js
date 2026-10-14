@@ -1,5 +1,5 @@
-import placeholderMasculino from "../assets/talento-masculino.png";
-import placeholderFemenino from "../assets/talento-femenino.png";
+import placeholderMasculino from "../assets/talento-masculino.webp";
+import placeholderFemenino from "../assets/talento-femenino.webp";
 
 import { API_URL } from "../config/api";
 
