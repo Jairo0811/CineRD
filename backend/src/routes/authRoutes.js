@@ -10,12 +10,13 @@ const { autenticar } = require("../middlewares/auth");
 const { createRateLimit } = require("../middlewares/rateLimit");
 
 const router = express.Router();
-const authRateLimit = createRateLimit({ windowMs: 15 * 60 * 1000, max: 20 });
+const loginRateLimit = createRateLimit({ windowMs: 15 * 60 * 1000, max: 20 });
+const registerRateLimit = createRateLimit({ windowMs: 15 * 60 * 1000, max: 20 });
 const refreshRateLimit = createRateLimit({ windowMs: 5 * 60 * 1000, max: 60 });
 const recoveryRateLimit = createRateLimit({ windowMs: 15 * 60 * 1000, max: 10 });
 
-router.post("/registro", authRateLimit, registrar);
-router.post("/login", authRateLimit, login);
+router.post("/registro", registerRateLimit, registrar);
+router.post("/login", loginRateLimit, login);
 router.post("/refresh", refreshRateLimit, refresh);
 router.post("/logout", logout);
 router.get("/perfil", autenticar, perfil);

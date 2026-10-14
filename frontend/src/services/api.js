@@ -78,5 +78,5 @@ api.interceptors.response.use(
   },
 );
 
-export { limpiarSesion, guardarSesion };
+export { limpiarSesion, guardarSesion, renovarSesion };
 export default api;
