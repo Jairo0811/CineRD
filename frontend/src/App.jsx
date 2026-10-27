@@ -12,6 +12,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Actores = lazy(() => import("./pages/Actores"));
 const Peliculas = lazy(() => import("./pages/Peliculas"));
 const Busqueda = lazy(() => import("./pages/Busqueda"));
+const Historia = lazy(() => import("./pages/Historia"));
 const FormularioActor = lazy(() => import("./pages/FormularioActor"));
 const FormularioPelicula = lazy(() => import("./pages/FormularioPelicula"));
 const RepartoPelicula = lazy(() => import("./pages/RepartoPelicula"));
@@ -42,6 +43,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePublica />} />
               <Route path="/buscar" element={<Busqueda />} />
+              <Route path="/historia" element={<Historia />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/login" element={<Login />} />
               <Route path="/registro" element={<Registro />} />

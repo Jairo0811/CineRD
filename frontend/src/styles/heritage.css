@@ -1,0 +1,579 @@
+/* =========================================================
+   CINERD · IDENTIDAD «ARCHIVO DEL CINE DOMINICANO»
+   Se carga al final: define tokens, tipografía y el motivo
+   visual (papel de archivo, cinta de película, grano) sobre
+   los componentes existentes sin reescribirlos.
+   ========================================================= */
+
+:root {
+  --font-display: "Fraunces Variable", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body: "Inter Variable", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --rd-blue: #0a2f73;
+  --rd-red: #c8102e;
+  --rd-gold: #b98a2e;
+  --rd-gold-soft: #d6ad52;
+
+  /* Acentos que cambian según el tema para mantener contraste */
+  --hist-accent: #0a2f73;
+  --hist-gold: #9a6f1c;
+
+  /* Papel de archivo (modo claro) */
+  --cine-background: #f4eee1;
+  --cine-bg: #f4eee1;
+  --cine-surface-1: #fffdf8;
+  --cine-surface-2: #faf6ec;
+  --cine-surface-3: #f1eadb;
+  --cine-line: #e2d8c3;
+  --cine-line-soft: #ece4d2;
+  --cine-border: #e2d8c3;
+  --cine-text-1: #14192b;
+  --cine-text-2: #484d5c;
+  --cine-text-3: #696d79;
+  --cine-shadow-theme: 0 10px 28px rgba(60, 42, 10, 0.08);
+
+  /* Grano de película (SVG inline, sin peticiones de red) */
+  --film-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+html[data-theme="dark"] {
+  --hist-accent: #9cc0ff;
+  --hist-gold: #e2bb62;
+}
+
+html body {
+  font-family: var(--font-body);
+}
+
+/* ---------- Tipografía editorial ---------- */
+
+.cinematic-hero h1,
+.cinematic-showcase-heading h2,
+.cinematic-manifesto h2,
+.catalog-hero h1,
+.catalog-page .catalog-hero h1,
+.cinerd-movie-copy h2,
+.movie-profile-page h1,
+.movie-profile-page h2,
+.mini-timeline-heading h2,
+.cine-footer-tagline {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+}
+
+.cinematic-hero h1 {
+  font-size: clamp(2.3rem, 5.2vw, 4.1rem);
+  font-weight: 600;
+  line-height: 1.03;
+}
+
+.cinematic-showcase-heading h2,
+.cinematic-manifesto h2,
+.mini-timeline-heading h2 {
+  font-weight: 600;
+}
+
+.cinerd-movie-copy h2 {
+  font-weight: 600;
+}
+
+.public-eyebrow,
+.catalog-eyebrow {
+  letter-spacing: 0.18em;
+  font-weight: 700;
+}
+
+.cinematic-hero .public-eyebrow {
+  color: var(--rd-gold-soft);
+}
+
+/* ---------- Motivo: cinta de película ---------- */
+
+.film-perforations,
+.cine-footer-strip,
+.history-hero-strip,
+.cinematic-hero::after,
+.movie-hero-banner::after,
+.catalog-hero::after {
+  content: "";
+  display: block;
+  height: 26px;
+  background-color: rgba(3, 8, 18, 0.55);
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 12px,
+    rgba(255, 255, 255, 0.22) 12px 26px,
+    transparent 26px 38px
+  );
+  background-size: 100% 10px;
+  background-repeat: no-repeat;
+  background-position: 0 8px;
+}
+
+.cinematic-hero::after,
+.movie-hero-banner::after,
+.catalog-hero::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+/* Grano sutil sobre superficies oscuras */
+.cinematic-hero::before,
+.history-hero::before,
+.movie-hero-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--film-grain);
+  background-size: 160px;
+  background-position: 0 0;
+  opacity: 0.1;
+  mix-blend-mode: overlay;
+  mask-image: none;
+  -webkit-mask-image: none;
+  pointer-events: none;
+}
+
+/* Deja espacio para la cinta en el hero de la portada */
+.cinematic-hero {
+  padding-bottom: calc(clamp(36px, 6vw, 72px) + 14px);
+}
+
+/* ---------- Portada ---------- */
+
+.cinematic-manifesto {
+  border-left-color: var(--rd-red);
+  background: var(--cine-surface-2);
+}
+
+.cinematic-manifesto h2 {
+  font-weight: 500;
+}
+
+.cinematic-stats strong {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+/* Línea de tiempo resumida */
+.mini-timeline-section,
+.decade-explorer {
+  margin: 28px 0 8px;
+  padding: 28px clamp(18px, 3vw, 34px);
+  border: 1px solid var(--cine-line);
+  border-radius: 24px;
+  background: var(--cine-surface-1);
+  box-shadow: var(--cine-shadow-theme);
+}
+
+.mini-timeline-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+
+.mini-timeline-heading h2 {
+  margin: 4px 0 0;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+}
+
+.mini-timeline-cta {
+  color: var(--hist-accent);
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.mini-timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mini-timeline::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 8px;
+  right: 8px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--rd-blue), var(--rd-red) 60%, var(--rd-gold-soft));
+}
+
+.mini-timeline a {
+  position: relative;
+  display: block;
+  padding: 34px 14px 0 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.mini-timeline a::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 3px solid var(--rd-red);
+  border-radius: 50%;
+  background: var(--cine-surface-1);
+  box-shadow: 0 0 0 4px var(--cine-surface-1);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.mini-timeline a:hover::before,
+.mini-timeline a:focus-visible::before {
+  background: var(--rd-red);
+  transform: scale(1.2);
+}
+
+.mini-timeline-year {
+  display: block;
+  color: var(--hist-accent);
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.mini-timeline strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--cine-text-2);
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+@media (max-width: 820px) {
+  .mini-timeline {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 58%;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x proximity;
+  }
+
+  .mini-timeline li {
+    scroll-snap-align: start;
+  }
+
+  .mini-timeline::before {
+    right: auto;
+    width: calc(6 * 58% + 30px);
+  }
+}
+
+/* ---------- Cinta de décadas ---------- */
+
+.decade-explorer .decade-rail {
+  margin: 18px 0 0;
+}
+
+.decade-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 22px;
+}
+
+.decade-chip {
+  display: flex;
+  flex-direction: column;
+  min-width: 118px;
+  padding: 12px 18px;
+  border: 1px solid var(--cine-line);
+  border-radius: 14px;
+  background: var(--cine-surface-1);
+  color: var(--cine-text-1);
+  text-decoration: none;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.decade-chip:hover,
+.decade-chip:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--rd-gold);
+  box-shadow: var(--cine-shadow-theme);
+  color: var(--cine-text-1);
+}
+
+.decade-chip-year {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.decade-chip small {
+  margin-top: 2px;
+  color: var(--cine-text-3);
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+}
+
+.decade-chip.is-active,
+.decade-chip.is-active:hover {
+  border-color: transparent;
+  background: linear-gradient(135deg, #0a2f73, #0e3f94);
+  color: #fff;
+}
+
+.decade-chip.is-active small {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.decade-chip-all .decade-chip-year {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* ---------- Catálogo ---------- */
+
+.catalog-hero {
+  padding-bottom: 52px;
+  border-radius: 24px;
+}
+
+.catalog-hero h1 {
+  font-weight: 600;
+}
+
+.cinerd-poster-wrap .cinerd-date-chip {
+  padding: 4px 11px;
+  border: 1px solid rgba(243, 217, 143, 0.5);
+  background: rgba(8, 12, 22, 0.84);
+  color: #f3d98f;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.cinerd-movie-card {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.cinerd-movie-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(185, 138, 46, 0.55);
+}
+
+@media (max-width: 575px) {
+  .cinerd-poster-wrap .cinerd-date-chip {
+    padding: 3px 8px;
+    font-size: 0.74rem;
+  }
+}
+
+/* ---------- Ficha de película ---------- */
+
+.movie-hero-banner {
+  position: relative;
+  min-height: 150px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #07111f, #10345f);
+}
+
+.movie-hero-year {
+  position: absolute;
+  right: clamp(16px, 4vw, 40px);
+  bottom: -0.12em;
+  color: rgba(214, 173, 82, 0.26);
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 15vw, 9.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  user-select: none;
+}
+
+.movie-profile-page h1 {
+  font-weight: 600;
+}
+
+.decade-badge {
+  border: 1px solid #e1cd96;
+  background: #f6ecd0;
+  color: #5a4210;
+  font-weight: 700;
+}
+
+html[data-theme="dark"] .decade-badge {
+  border-color: rgba(226, 187, 98, 0.45);
+  background: rgba(226, 187, 98, 0.14);
+  color: #f0d58f;
+}
+
+.same-decade-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin: 6px 0 16px;
+}
+
+.same-decade-head a {
+  color: var(--hist-accent);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.same-decade-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(104px, 128px);
+  gap: 14px;
+  margin: 0;
+  padding: 0 0 8px;
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x proximity;
+}
+
+.same-decade-row li {
+  scroll-snap-align: start;
+}
+
+.same-decade-row a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.same-decade-row img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 10px;
+  box-shadow: var(--cine-shadow-theme);
+  object-fit: cover;
+}
+
+.same-decade-row small {
+  display: block;
+  margin-top: 6px;
+  color: var(--cine-text-3);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* ---------- Footer ---------- */
+
+html[data-theme] .cine-footer {
+  margin-top: 56px;
+  border-top: 0;
+  background: #050b16;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.cine-footer-strip {
+  margin-bottom: 8px;
+}
+
+.cine-footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr);
+  gap: 28px 40px;
+  padding: 26px 0 18px;
+}
+
+.cine-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.cine-footer-logo {
+  width: 124px;
+  max-height: 96px;
+  flex-shrink: 0;
+}
+
+.cine-footer-tagline {
+  margin: 0 0 4px;
+  color: #fff;
+  font-size: 1.55rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+html[data-theme] .cine-footer-description {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.cine-footer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.cine-footer-links strong {
+  margin-bottom: 2px;
+  color: var(--rd-gold-soft);
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.cine-footer-links a {
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cine-footer-links a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: var(--rd-red);
+  text-underline-offset: 4px;
+}
+
+html[data-theme] .cine-footer-copy,
+html[data-theme] .cine-footer-attribution {
+  color: rgba(255, 255, 255, 0.5);
+  text-align: left;
+}
+
+html[data-theme] .cine-footer-attribution {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 720px) {
+  .cine-footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cine-footer-brand {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decade-chip,
+  .cinerd-movie-card,
+  .mini-timeline a::before {
+    transition: none;
+  }
+}

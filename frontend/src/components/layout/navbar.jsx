@@ -146,6 +146,11 @@ function Navbar() {
                 {t("nav.talents")}
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink className={obtenerClaseNav} to="/historia" onClick={cerrarMenuMovil}>
+                {t("nav.history")}
+              </NavLink>
+            </li>
             {usuario && (
               <li className="nav-item">
                 <NavLink className={obtenerClaseNav} to="/dashboard" onClick={cerrarMenuMovil}>

@@ -1,0 +1,493 @@
+/* =========================================================
+   PÁGINA /historia — cronología del cine dominicano
+   ========================================================= */
+
+.history-page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-bottom: 12px;
+}
+
+/* ---------- Cabecera ---------- */
+
+.history-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(34px, 6vw, 68px) clamp(24px, 5vw, 64px) calc(clamp(34px, 5vw, 56px) + 20px);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 86% 18%, rgba(214, 173, 82, 0.24), transparent 30%),
+    radial-gradient(circle at 8% 100%, rgba(200, 16, 46, 0.26), transparent 34%),
+    linear-gradient(135deg, #050b16 0%, #0b2345 58%, #0a2f73 100%);
+  box-shadow: 0 30px 80px rgba(4, 18, 41, 0.22);
+  color: #fff;
+}
+
+.history-hero > * {
+  position: relative;
+}
+
+.history-hero .history-hero-strip {
+  position: absolute;
+  inset: auto 0 0 0;
+}
+
+.history-hero .public-eyebrow {
+  color: var(--rd-gold-soft);
+}
+
+.history-hero h1 {
+  max-width: 16ch;
+  margin: 14px 0 16px;
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 5.4vw, 4.2rem);
+  font-weight: 600;
+  line-height: 1.03;
+  letter-spacing: -0.02em;
+}
+
+.history-hero p {
+  max-width: 58ch;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.06rem;
+  line-height: 1.6;
+}
+
+.history-hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 44px;
+  margin: 30px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.history-hero-stats div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+}
+
+.history-hero-stats dt {
+  max-width: 17ch;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.history-hero-stats dd {
+  margin: 0;
+  color: var(--rd-gold-soft);
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ---------- Navegación por épocas ---------- */
+
+.history-era-nav {
+  position: sticky;
+  top: 76px;
+  z-index: 5;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  overflow-x: auto;
+  border: 1px solid var(--cine-line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--cine-surface-1) 92%, transparent);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--cine-shadow-theme);
+}
+
+.history-era-nav a {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 128px;
+  padding: 8px 14px;
+  border-radius: 11px;
+  color: var(--cine-text-1);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.history-era-nav a:hover,
+.history-era-nav a:focus-visible {
+  background: var(--cine-surface-3);
+  color: var(--cine-text-1);
+}
+
+.history-era-nav small {
+  color: var(--hist-gold);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.history-era-nav span {
+  font-size: 0.86rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+/* ---------- Épocas y línea de tiempo ---------- */
+
+.history-timeline-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.history-era {
+  scroll-margin-top: 150px;
+}
+
+.history-era-header {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 22px;
+}
+
+.history-era-range {
+  color: var(--hist-gold);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.history-era-header h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.6vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.history-era-header p {
+  max-width: 60ch;
+  margin: 0;
+  color: var(--cine-text-2);
+}
+
+.history-timeline {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history-timeline::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 131px;
+  width: 2px;
+  background: linear-gradient(var(--rd-blue), var(--rd-red));
+  opacity: 0.55;
+}
+
+.history-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  column-gap: 38px;
+  padding-bottom: 22px;
+  scroll-margin-top: 150px;
+}
+
+.history-item:last-child {
+  padding-bottom: 0;
+}
+
+.history-item::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 123px;
+  z-index: 1;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 3px solid var(--rd-red);
+  border-radius: 50%;
+  background: var(--cine-background);
+}
+
+.history-item.is-featured::before {
+  background: var(--rd-red);
+  box-shadow: 0 0 0 5px rgba(200, 16, 46, 0.2);
+}
+
+.history-item-year {
+  padding-top: 6px;
+  color: var(--hist-accent);
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.15;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.history-item-card {
+  padding: 20px 24px;
+  border: 1px solid var(--cine-line);
+  border-radius: 18px;
+  background: var(--cine-surface-1);
+  box-shadow: var(--cine-shadow-theme);
+}
+
+.history-item.is-featured .history-item-card {
+  border-left: 4px solid var(--rd-red);
+}
+
+.history-item-card h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 1.32rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.history-item-card p {
+  margin: 0;
+  color: var(--cine-text-2);
+  line-height: 1.65;
+}
+
+.history-item-archive {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--cine-line);
+}
+
+.history-item-archive small {
+  color: var(--hist-gold);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.history-film-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 8px 0 0;
+  padding: 6px 14px 6px 6px;
+  border: 1px solid var(--cine-line);
+  border-radius: 12px;
+  background: var(--cine-surface-2);
+  color: var(--cine-text-1);
+  font-size: 0.9rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.history-film-chip:hover {
+  border-color: var(--rd-gold);
+  color: var(--cine-text-1);
+  transform: translateY(-1px);
+}
+
+.history-film-chip img {
+  width: 34px;
+  height: 50px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+/* ---------- Archivo por décadas ---------- */
+
+.history-archive {
+  padding: clamp(22px, 4vw, 40px);
+  border: 1px solid var(--cine-line);
+  border-radius: 26px;
+  background: var(--cine-surface-1);
+  box-shadow: var(--cine-shadow-theme);
+}
+
+.history-archive > h2 {
+  margin: 6px 0 6px;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.history-archive > p {
+  margin: 0;
+  color: var(--cine-text-2);
+}
+
+.history-decade {
+  margin-top: 30px;
+}
+
+.history-decade-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+}
+
+.history-decade-head h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 600;
+}
+
+.history-decade-head span {
+  color: var(--cine-text-3);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.history-decade-head a {
+  margin-left: auto;
+  color: var(--hist-accent);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.history-decade-posters {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(104px, 128px);
+  gap: 14px;
+  margin: 0;
+  padding: 12px 0 8px;
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x proximity;
+}
+
+.history-decade-posters li {
+  scroll-snap-align: start;
+}
+
+.history-decade-posters a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.history-decade-posters img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 10px;
+  box-shadow: var(--cine-shadow-theme);
+  object-fit: cover;
+  transition: transform 0.15s ease;
+}
+
+.history-decade-posters a:hover img {
+  transform: translateY(-3px);
+}
+
+.history-decade-posters small {
+  display: block;
+  margin-top: 6px;
+  color: var(--cine-text-3);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.history-empty {
+  margin-top: 18px;
+  color: var(--cine-text-3);
+}
+
+/* ---------- Fuentes ---------- */
+
+.history-sources {
+  padding: 24px 28px;
+  border: 1px dashed var(--cine-line);
+  border-radius: 20px;
+  background: var(--cine-surface-2);
+}
+
+.history-sources h2 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.history-sources ul {
+  margin: 0 0 12px;
+  padding-left: 1.1rem;
+}
+
+.history-sources li {
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+.history-sources a {
+  color: var(--hist-accent);
+  text-underline-offset: 3px;
+}
+
+.history-sources p {
+  margin: 0;
+  color: var(--cine-text-3);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+/* ---------- Móvil ---------- */
+
+@media (max-width: 640px) {
+  .history-era-nav {
+    top: 66px;
+  }
+
+  .history-timeline::before {
+    left: 7px;
+  }
+
+  .history-item {
+    grid-template-columns: minmax(0, 1fr);
+    padding-left: 30px;
+  }
+
+  .history-item::before {
+    top: 4px;
+    left: 0;
+  }
+
+  .history-item-year {
+    padding: 0 0 6px;
+    font-size: 1.45rem;
+    text-align: left;
+  }
+
+  .history-item-card {
+    padding: 16px 18px;
+  }
+
+  .history-hero-stats dd {
+    font-size: 2.1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .history-film-chip,
+  .history-decade-posters img {
+    transition: none;
+  }
+}
