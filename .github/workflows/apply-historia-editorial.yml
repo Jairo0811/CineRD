@@ -47,6 +47,7 @@ jobs:
           npm --prefix backend pkg set 'overrides.@azure/msal-node=7.1.0'
           npm --prefix backend install --package-lock-only --ignore-scripts
           npm --prefix backend ci
+          npm --prefix backend audit fix --ignore-scripts
           node <<'NODE'
           const sql = require('./backend/node_modules/mssql');
           if (typeof sql.ConnectionPool !== 'function' || typeof sql.Transaction !== 'function' || typeof sql.Request !== 'function') {
