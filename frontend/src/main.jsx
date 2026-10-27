@@ -1,6 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
+import "@fontsource-variable/inter";
+import "@fontsource-variable/fraunces";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
@@ -24,6 +26,8 @@ import "./styles/search.css";
 import "./styles/movie-credits.css";
 import "./styles/dark-polish.css";
 import "./styles/adsense.css";
+import "./styles/heritage.css";
+import "./styles/historia.css";
 
 import App from "./App.jsx";
 

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import api from "../services/api";
 import { API_URL } from "../config/api";
+import { anioDe, decadaDe } from "../data/historiaCine";
+import CintaDecadas from "../components/historia/CintaDecadas";
 
 function Peliculas() {
   const { t, i18n } = useTranslation();
@@ -10,6 +12,8 @@ function Peliculas() {
   const [buscar, setBuscar] = useState("");
   const [orden, setOrden] = useState("estrenoDesc");
   const [genero, setGenero] = useState("");
+  const [params] = useSearchParams();
+  const decada = Number(params.get("decada")) || null;
 
   const usuario = (() => { try { return JSON.parse(localStorage.getItem("cineRdUsuario") || "null"); } catch { return null; } })();
   const esAdmin = usuario?.rol === "ADMINISTRADOR";
@@ -36,6 +40,10 @@ function Peliculas() {
     return new Intl.DateTimeFormat(i18n.language === "en" ? "en-US" : "es-DO", { day: "2-digit", month: "2-digit", year: "numeric" }).format(valor);
   };
 
+  const visibles = decada
+    ? peliculas.filter((pelicula) => decadaDe(anioDe(pelicula.FechaEstreno)) === decada)
+    : peliculas;
+
   const generoTraducido = (valor) => valor ? t(`genres.${valor}`, { defaultValue: valor }) : t("movies.dominicanCinema");
 
   return (
@@ -46,7 +54,7 @@ function Peliculas() {
           <h1>{t("movies.title")}</h1>
           <p>{t("movies.description")}</p>
         </div>
-        <div className="catalog-hero-meta"><strong>{peliculas.length}</strong><span>{t("movies.found")}</span></div>
+        <div className="catalog-hero-meta"><strong>{visibles.length}</strong><span>{t("movies.found")}</span></div>
         {esAdmin && <Link to="/peliculas/nueva" className="btn catalog-admin-button">{t("movies.new")}</Link>}
       </header>
 
@@ -60,13 +68,15 @@ function Peliculas() {
         </select>
       </section>
 
+      <CintaDecadas peliculas={peliculas} activa={decada} mostrarTodas />
+
       <section className="movie-catalog-grid">
-        {peliculas.map((pelicula) => (
+        {visibles.map((pelicula) => (
           <article className="cinerd-movie-card" key={pelicula.Id}>
             <Link to={`/peliculas/${pelicula.Id}`} className="cinerd-poster-wrap">
               {pelicula.Foto ? <img src={`${API_URL}${pelicula.Foto}`} alt={pelicula.Titulo} className="cinerd-poster" /> : <div className="cinerd-poster cinerd-poster-empty">🎬</div>}
               <div className="cinerd-poster-overlay"><span>{t("movies.viewMovie")}</span></div>
-              <span className="cinerd-date-chip">{formatearFecha(pelicula.FechaEstreno)}</span>
+              <span className="cinerd-date-chip" title={formatearFecha(pelicula.FechaEstreno)}>{anioDe(pelicula.FechaEstreno) ?? "—"}</span>
             </Link>
             <div className="cinerd-movie-copy">
               <span className="cinerd-genre">{generoTraducido(pelicula.Genero)}</span>
@@ -81,7 +91,7 @@ function Peliculas() {
           </article>
         ))}
       </section>
-      {peliculas.length === 0 && <div className="catalog-empty"><span>🎞️</span><h2>{t("movies.emptyTitle")}</h2><p>{t("movies.emptyDescription")}</p></div>}
+      {visibles.length === 0 && <div className="catalog-empty"><span>🎞️</span><h2>{t("movies.emptyTitle")}</h2><p>{t("movies.emptyDescription")}</p></div>}
     </div>
   );
 }
