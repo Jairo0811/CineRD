@@ -1,0 +1,2203 @@
+diff --git a/frontend/package-lock.json b/frontend/package-lock.json
+index 7492237..eb4a859 100644
+--- a/frontend/package-lock.json
++++ b/frontend/package-lock.json
+@@ -8,6 +8,8 @@
+       "name": "frontend",
+       "version": "0.0.0",
+       "dependencies": {
++        "@fontsource-variable/fraunces": "^5.3.0",
++        "@fontsource-variable/inter": "^5.3.0",
+         "axios": "^1.20.0",
+         "bootstrap": "^5.3.8",
+         "chart.js": "^4.5.1",
+@@ -1119,6 +1121,24 @@
+         }
+       }
+     },
++    "node_modules/@fontsource-variable/fraunces": {
++      "version": "5.3.0",
++      "resolved": "https://registry.npmjs.org/@fontsource-variable/fraunces/-/fraunces-5.3.0.tgz",
++      "integrity": "sha512-9BYGySn4AHEJdgp9Z28tQ3X+laJMEOITXkQarZXeloWQZDq5oOvXJ3kDA8c7MGIfpogIaZfjrQBqmda8POOCKA==",
++      "license": "OFL-1.1",
++      "funding": {
++        "url": "https://github.com/sponsors/ayuhito"
++      }
++    },
++    "node_modules/@fontsource-variable/inter": {
++      "version": "5.3.0",
++      "resolved": "https://registry.npmjs.org/@fontsource-variable/inter/-/inter-5.3.0.tgz",
++      "integrity": "sha512-OupL48va4JNofb97w6NYeF9S7W/kHNKM0Er8Dem5nqi4jeOLrVJDoE8tZEpnMJmtkvNbB1EIPPwHcdkF6b1oUA==",
++      "license": "OFL-1.1",
++      "funding": {
++        "url": "https://github.com/sponsors/ayuhito"
++      }
++    },
+     "node_modules/@humanfs/core": {
+       "version": "0.19.2",
+       "resolved": "https://registry.npmjs.org/@humanfs/core/-/core-0.19.2.tgz",
+@@ -3129,15 +3149,16 @@
+       "dev": true
+     },
+     "node_modules/follow-redirects": {
+-      "version": "1.16.0",
+-      "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.16.0.tgz",
+-      "integrity": "sha512-y5rN/uOsadFT/JfYwhxRS5R7Qce+g3zG97+JrtFZlC9klX/W5hD7iiLzScI4nZqUS7DNUdhPgw4xI8W2LuXlUw==",
++      "version": "1.16.2",
++      "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.16.2.tgz",
++      "integrity": "sha512-/kVP2U8z596Ia0gwFrwyIeo74ta5aVmSeU1FfAUMAmcEP5EP7zydmag3SLiN64NaRKef3lxsq7i/g7ltJQDGow==",
+       "funding": [
+         {
+           "type": "individual",
+           "url": "https://github.com/sponsors/RubenVerborgh"
+         }
+       ],
++      "license": "MIT",
+       "engines": {
+         "node": ">=4.0"
+       },
+@@ -5438,9 +5459,9 @@
+       }
+     },
+     "node_modules/undici": {
+-      "version": "8.12.1",
+-      "resolved": "https://registry.npmjs.org/undici/-/undici-8.12.1.tgz",
+-      "integrity": "sha512-usz3OVQBeh1LxNn0DzU0voLXMgn5CU/WUdpBsY6Ti5afNao+vTkmn4H/NxoXolc10cOqe2+YIG0Hspq2rsl64w==",
++      "version": "8.12.3",
++      "resolved": "https://registry.npmjs.org/undici/-/undici-8.12.3.tgz",
++      "integrity": "sha512-+fdndUTwBP86cVjihTp21hZHo7d6oj1c/47XPA3lL8mM0XHs+C4EkcjmgRsFnFk2f/UONGDy9ItBItmXsLOQHw==",
+       "dev": true,
+       "license": "MIT",
+       "engines": {
+@@ -6437,6 +6458,16 @@
+       "dev": true,
+       "requires": {}
+     },
++    "@fontsource-variable/fraunces": {
++      "version": "5.3.0",
++      "resolved": "https://registry.npmjs.org/@fontsource-variable/fraunces/-/fraunces-5.3.0.tgz",
++      "integrity": "sha512-9BYGySn4AHEJdgp9Z28tQ3X+laJMEOITXkQarZXeloWQZDq5oOvXJ3kDA8c7MGIfpogIaZfjrQBqmda8POOCKA=="
++    },
++    "@fontsource-variable/inter": {
++      "version": "5.3.0",
++      "resolved": "https://registry.npmjs.org/@fontsource-variable/inter/-/inter-5.3.0.tgz",
++      "integrity": "sha512-OupL48va4JNofb97w6NYeF9S7W/kHNKM0Er8Dem5nqi4jeOLrVJDoE8tZEpnMJmtkvNbB1EIPPwHcdkF6b1oUA=="
++    },
+     "@humanfs/core": {
+       "version": "0.19.2",
+       "resolved": "https://registry.npmjs.org/@humanfs/core/-/core-0.19.2.tgz",
+@@ -7782,9 +7813,9 @@
+       "dev": true
+     },
+     "follow-redirects": {
+-      "version": "1.16.0",
+-      "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.16.0.tgz",
+-      "integrity": "sha512-y5rN/uOsadFT/JfYwhxRS5R7Qce+g3zG97+JrtFZlC9klX/W5hD7iiLzScI4nZqUS7DNUdhPgw4xI8W2LuXlUw=="
++      "version": "1.16.2",
++      "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.16.2.tgz",
++      "integrity": "sha512-/kVP2U8z596Ia0gwFrwyIeo74ta5aVmSeU1FfAUMAmcEP5EP7zydmag3SLiN64NaRKef3lxsq7i/g7ltJQDGow=="
+     },
+     "for-each": {
+       "version": "0.3.5",
+@@ -9303,9 +9334,9 @@
+       }
+     },
+     "undici": {
+-      "version": "8.12.1",
+-      "resolved": "https://registry.npmjs.org/undici/-/undici-8.12.1.tgz",
+-      "integrity": "sha512-usz3OVQBeh1LxNn0DzU0voLXMgn5CU/WUdpBsY6Ti5afNao+vTkmn4H/NxoXolc10cOqe2+YIG0Hspq2rsl64w==",
++      "version": "8.12.3",
++      "resolved": "https://registry.npmjs.org/undici/-/undici-8.12.3.tgz",
++      "integrity": "sha512-+fdndUTwBP86cVjihTp21hZHo7d6oj1c/47XPA3lL8mM0XHs+C4EkcjmgRsFnFk2f/UONGDy9ItBItmXsLOQHw==",
+       "dev": true
+     },
+     "update-browserslist-db": {
+diff --git a/frontend/package.json b/frontend/package.json
+index aecfd71..f49a384 100644
+--- a/frontend/package.json
++++ b/frontend/package.json
+@@ -11,6 +11,8 @@
+     "test": "vitest run"
+   },
+   "dependencies": {
++    "@fontsource-variable/fraunces": "^5.3.0",
++    "@fontsource-variable/inter": "^5.3.0",
+     "axios": "^1.20.0",
+     "bootstrap": "^5.3.8",
+     "chart.js": "^4.5.1",
+diff --git a/frontend/public/sitemap.xml b/frontend/public/sitemap.xml
+index da78a0f..7a9e43c 100644
+--- a/frontend/public/sitemap.xml
++++ b/frontend/public/sitemap.xml
+@@ -3,5 +3,6 @@
+   <url><loc>https://cinerd.netlify.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+   <url><loc>https://cinerd.netlify.app/peliculas</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+   <url><loc>https://cinerd.netlify.app/actores</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
++  <url><loc>https://cinerd.netlify.app/historia</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+   <url><loc>https://cinerd.netlify.app/buscar</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+ </urlset>
+diff --git a/frontend/src/App.jsx b/frontend/src/App.jsx
+index 3c572d5..8e1b3fd 100644
+--- a/frontend/src/App.jsx
++++ b/frontend/src/App.jsx
+@@ -12,6 +12,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
+ const Actores = lazy(() => import("./pages/Actores"));
+ const Peliculas = lazy(() => import("./pages/Peliculas"));
+ const Busqueda = lazy(() => import("./pages/Busqueda"));
++const Historia = lazy(() => import("./pages/Historia"));
+ const FormularioActor = lazy(() => import("./pages/FormularioActor"));
+ const FormularioPelicula = lazy(() => import("./pages/FormularioPelicula"));
+ const RepartoPelicula = lazy(() => import("./pages/RepartoPelicula"));
+@@ -42,6 +43,7 @@ function App() {
+             <Routes>
+               <Route path="/" element={<HomePublica />} />
+               <Route path="/buscar" element={<Busqueda />} />
++              <Route path="/historia" element={<Historia />} />
+               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+               <Route path="/login" element={<Login />} />
+               <Route path="/registro" element={<Registro />} />
+diff --git a/frontend/src/components/historia/CintaDecadas.jsx b/frontend/src/components/historia/CintaDecadas.jsx
+new file mode 100644
+index 0000000..497b3a4
+--- /dev/null
++++ b/frontend/src/components/historia/CintaDecadas.jsx
+@@ -0,0 +1,42 @@
++import { Link } from "react-router-dom";
++import { useTranslation } from "react-i18next";
++import { agruparPorDecada } from "../../data/historiaCine";
++
++/**
++ * Cinta de décadas: cada ficha enlaza al catálogo filtrado por década.
++ * Muestra solo las décadas que tienen películas registradas.
++ */
++function CintaDecadas({ peliculas = [], activa = null, mostrarTodas = false, className = "" }) {
++  const { t } = useTranslation();
++  const grupos = agruparPorDecada(peliculas);
++
++  if (grupos.length === 0) return null;
++
++  return (
++    <nav className={`decade-rail ${className}`.trim()} aria-label={t("movies.decadeFilter")}>
++      {mostrarTodas && (
++        <Link
++          to="/peliculas"
++          className={`decade-chip decade-chip-all${activa ? "" : " is-active"}`}
++          aria-current={activa ? undefined : "true"}
++        >
++          <span className="decade-chip-year">{t("movies.allDecades")}</span>
++          <small>{t("history.films", { count: peliculas.length })}</small>
++        </Link>
++      )}
++      {grupos.map(({ decada, items }) => (
++        <Link
++          key={decada}
++          to={`/peliculas?decada=${decada}`}
++          className={`decade-chip${activa === decada ? " is-active" : ""}`}
++          aria-current={activa === decada ? "true" : undefined}
++        >
++          <span className="decade-chip-year">{decada}s</span>
++          <small>{t("history.films", { count: items.length })}</small>
++        </Link>
++      ))}
++    </nav>
++  );
++}
++
++export default CintaDecadas;
+diff --git a/frontend/src/components/historia/LineaTiempoMini.jsx b/frontend/src/components/historia/LineaTiempoMini.jsx
+new file mode 100644
+index 0000000..95cb192
+--- /dev/null
++++ b/frontend/src/components/historia/LineaTiempoMini.jsx
+@@ -0,0 +1,37 @@
++import { Link } from "react-router-dom";
++import { useTranslation } from "react-i18next";
++import { HITOS } from "../../data/historiaCine";
++
++// Seis paradas que resumen la historia; el detalle completo vive en /historia.
++const PARADAS = ["1922", "1963", "1995", "2003", "2010", "2025"];
++
++function LineaTiempoMini() {
++  const { t, i18n } = useTranslation();
++  const idioma = i18n.language?.startsWith("en") ? "en" : "es";
++  const paradas = PARADAS.map((id) => HITOS.find((h) => h.id === id)).filter(Boolean);
++
++  return (
++    <section className="mini-timeline-section" aria-labelledby="mini-timeline-title">
++      <div className="mini-timeline-heading">
++        <div>
++          <span className="public-eyebrow">{t("home.timelineEyebrow")}</span>
++          <h2 id="mini-timeline-title">{t("home.timelineTitle")}</h2>
++        </div>
++        <Link to="/historia" className="mini-timeline-cta">{t("home.timelineCta")}</Link>
++      </div>
++
++      <ol className="mini-timeline">
++        {paradas.map((hito) => (
++          <li key={hito.id}>
++            <Link to={`/historia#h-${hito.id}`}>
++              <span className="mini-timeline-year">{hito.etiquetaAnio || hito.anio}</span>
++              <strong>{hito[idioma].titulo}</strong>
++            </Link>
++          </li>
++        ))}
++      </ol>
++    </section>
++  );
++}
++
++export default LineaTiempoMini;
+diff --git a/frontend/src/components/historia/historia.components.test.jsx b/frontend/src/components/historia/historia.components.test.jsx
+new file mode 100644
+index 0000000..50757bf
+--- /dev/null
++++ b/frontend/src/components/historia/historia.components.test.jsx
+@@ -0,0 +1,54 @@
++import { afterEach, describe, expect, it, vi } from "vitest";
++import { cleanup, render, screen } from "@testing-library/react";
++import { MemoryRouter } from "react-router-dom";
++
++vi.mock("react-i18next", () => ({
++  useTranslation: () => ({
++    t: (clave, opciones = {}) => (opciones.count !== undefined ? `${clave}:${opciones.count}` : clave),
++    i18n: { language: "es" },
++  }),
++}));
++
++import CintaDecadas from "./CintaDecadas";
++import LineaTiempoMini from "./LineaTiempoMini";
++
++const envolver = (nodo) => render(<MemoryRouter>{nodo}</MemoryRouter>);
++
++describe("CintaDecadas", () => {
++  afterEach(cleanup);
++
++  const peliculas = [
++    { Id: 1, FechaEstreno: "1995-01-01" },
++    { Id: 2, FechaEstreno: "2007-01-01" },
++    { Id: 3, FechaEstreno: "2008-01-01" },
++  ];
++
++  it("enlaza cada década al catálogo filtrado y cuenta sus películas", () => {
++    envolver(<CintaDecadas peliculas={peliculas} />);
++    const enlace2000 = screen.getByText("2000s").closest("a");
++    expect(enlace2000.getAttribute("href")).toBe("/peliculas?decada=2000");
++    expect(enlace2000.textContent).toContain("history.films:2");
++  });
++
++  it("marca la década activa y muestra «todas» cuando se pide", () => {
++    envolver(<CintaDecadas peliculas={peliculas} activa={1990} mostrarTodas />);
++    expect(screen.getByText("1990s").closest("a").getAttribute("aria-current")).toBe("true");
++    expect(screen.getByText("movies.allDecades").closest("a").getAttribute("aria-current")).toBeNull();
++  });
++
++  it("no renderiza nada si no hay películas con fecha", () => {
++    const { container } = envolver(<CintaDecadas peliculas={[{ Id: 9, FechaEstreno: null }]} />);
++    expect(container.querySelector(".decade-rail")).toBeNull();
++  });
++});
++
++describe("LineaTiempoMini", () => {
++  afterEach(cleanup);
++
++  it("muestra seis paradas que enlazan a su hito en /historia", () => {
++    envolver(<LineaTiempoMini />);
++    const enlaces = screen.getAllByRole("link").filter((a) => a.getAttribute("href")?.startsWith("/historia#h-"));
++    expect(enlaces).toHaveLength(6);
++    expect(enlaces[0].getAttribute("href")).toBe("/historia#h-1922");
++  });
++});
+diff --git a/frontend/src/components/layout/footer.jsx b/frontend/src/components/layout/footer.jsx
+index 81eea98..1bda602 100644
+--- a/frontend/src/components/layout/footer.jsx
++++ b/frontend/src/components/layout/footer.jsx
+@@ -1,3 +1,4 @@
++import { Link } from "react-router-dom";
+ import { useTranslation } from "react-i18next";
+ 
+ function Footer() {
+@@ -6,19 +7,29 @@ function Footer() {
+ 
+   return (
+     <footer className="cine-footer">
++      <div className="cine-footer-strip" aria-hidden="true" />
+       <div className="container">
+-        <div className="cine-footer-content">
+-          <img src="/logo.png" alt="CineRD" className="cine-footer-logo" />
++        <div className="cine-footer-grid">
++          <div className="cine-footer-brand">
++            <img src="/logo.png" alt="CineRD" className="cine-footer-logo" />
++            <div>
++              <p className="cine-footer-tagline">{t("footer.tagline")}</p>
++              <p className="cine-footer-description">{t("footer.description")}</p>
++            </div>
++          </div>
+ 
+-          <p className="cine-footer-description">
+-            {t("footer.description")}
+-          </p>
+-
+-          <p className="cine-footer-copy">
+-            © {anioActual} CineRD | {t("footer.rights")}
+-          </p>
++          <nav className="cine-footer-links" aria-label={t("footer.explore")}>
++            <strong>{t("footer.explore")}</strong>
++            <Link to="/historia">{t("nav.history")}</Link>
++            <Link to="/peliculas">{t("nav.movies")}</Link>
++            <Link to="/actores">{t("nav.talents")}</Link>
++          </nav>
+         </div>
+ 
++        <p className="cine-footer-copy">
++          © {anioActual} CineRD | {t("footer.rights")}
++        </p>
++
+         <div className="cine-footer-attribution">
+           {t("footer.tmdb")}
+         </div>
+diff --git a/frontend/src/components/layout/navbar.jsx b/frontend/src/components/layout/navbar.jsx
+index 03120f3..658a685 100644
+--- a/frontend/src/components/layout/navbar.jsx
++++ b/frontend/src/components/layout/navbar.jsx
+@@ -146,6 +146,11 @@ function Navbar() {
+                 {t("nav.talents")}
+               </NavLink>
+             </li>
++            <li className="nav-item">
++              <NavLink className={obtenerClaseNav} to="/historia" onClick={cerrarMenuMovil}>
++                {t("nav.history")}
++              </NavLink>
++            </li>
+             {usuario && (
+               <li className="nav-item">
+                 <NavLink className={obtenerClaseNav} to="/dashboard" onClick={cerrarMenuMovil}>
+diff --git a/frontend/src/data/historiaCine.js b/frontend/src/data/historiaCine.js
+new file mode 100644
+index 0000000..589614c
+--- /dev/null
++++ b/frontend/src/data/historiaCine.js
+@@ -0,0 +1,260 @@
++/**
++ * Cronología de referencia del cine dominicano.
++ *
++ * Cada hito fue contrastado con fuentes públicas (ver FUENTES). Donde las fuentes
++ * difieren (por ejemplo, quién figura como director de la primera película o en qué
++ * sala se estrenó «La silla»), el texto se mantiene neutral en vez de elegir una versión.
++ *
++ * `catalogo` lista películas que, si existen en la base de datos de CineRD, se enlazan
++ * desde el hito. Se emparejan por título (comienzo del título normalizado) y año.
++ */
++
++export const ERAS = [
++  { id: "origenes", desde: 1900, hasta: 1929 },
++  { id: "dictadura", desde: 1930, hasta: 1961 },
++  { id: "reapertura", desde: 1962, hasta: 1994 },
++  { id: "comercial", desde: 1995, hasta: 2009 },
++  { id: "ley", desde: 2010, hasta: null },
++];
++
++export const ERAS_TEXTO = {
++  origenes: {
++    es: { nombre: "Orígenes", resumen: "Del cinematógrafo a la primera ficción dominicana." },
++    en: { nombre: "Origins", resumen: "From the cinematograph to the first Dominican fiction film." },
++  },
++  dictadura: {
++    es: { nombre: "Cine bajo la dictadura", resumen: "Una pantalla controlada: el cine como propaganda." },
++    en: { nombre: "Cinema under the dictatorship", resumen: "A controlled screen: film as propaganda." },
++  },
++  reapertura: {
++    es: { nombre: "Reapertura", resumen: "El cine vuelve a mirar al país tras la caída del régimen." },
++    en: { nombre: "Reopening", resumen: "Film looks at the country again after the regime falls." },
++  },
++  comercial: {
++    es: { nombre: "Cine comercial", resumen: "Taquilla, comedias populares y el «año cero»." },
++    en: { nombre: "Commercial cinema", resumen: "Box office, popular comedies and the “year zero”." },
++  },
++  ley: {
++    es: { nombre: "Ley de Cine y expansión", resumen: "Incentivos, institucionalidad y una industria en crecimiento." },
++    en: { nombre: "Film Law and expansion", resumen: "Incentives, institutions and a growing industry." },
++  },
++};
++
++export const HITOS = [
++  {
++    id: "1900",
++    anio: 1900,
++    era: "origenes",
++    es: {
++      titulo: "Llega el cinematógrafo",
++      texto: "Se presentan las primeras proyecciones de cine en el país, pocos años después de las exhibiciones de los hermanos Lumière.",
++    },
++    en: {
++      titulo: "The cinematograph arrives",
++      texto: "The first film screenings are held in the country, only a few years after the Lumière brothers' exhibitions.",
++    },
++  },
++  {
++    id: "1915",
++    anio: 1915,
++    era: "origenes",
++    es: {
++      titulo: "Primer registro filmado conocido",
++      texto: "El documental «La excursión de José de Diego», del fotógrafo puertorriqueño Rafael Coronado, es la primera obra cinematográfica de la que se tiene conocimiento en el país.",
++    },
++    en: {
++      titulo: "First known filmed record",
++      texto: "The documentary “La excursión de José de Diego”, by Puerto Rican photographer Rafael Coronado, is the earliest known film work in the country.",
++    },
++  },
++  {
++    id: "1922",
++    anio: 1922,
++    etiquetaAnio: "1922–23",
++    era: "origenes",
++    destacado: true,
++    es: {
++      titulo: "La leyenda de la Virgen de la Altagracia",
++      texto: "Francisco Palau, Juan B. Alfonseca y Tuto Báez filman la primera película de ficción dominicana, con guion del historiador Bernardo Pichardo. Se estrena el 16 de febrero de 1923.",
++    },
++    en: {
++      titulo: "La leyenda de la Virgen de la Altagracia",
++      texto: "Francisco Palau, Juan B. Alfonseca and Tuto Báez shoot the first Dominican fiction film, written by historian Bernardo Pichardo. It premieres on 16 February 1923.",
++    },
++  },
++  {
++    id: "1930",
++    anio: 1930,
++    etiquetaAnio: "1930–61",
++    era: "dictadura",
++    es: {
++      titulo: "Una pantalla controlada",
++      texto: "Durante el régimen de Trujillo el cine pierde iniciativa y creatividad y pasa a ser, sobre todo, un instrumento de propaganda. En 1953, la compañía Cine Dominicano, con Rafael Augusto Sánchez Sanlley «Pupito», realiza 13 producciones que exaltan al régimen.",
++    },
++    en: {
++      titulo: "A controlled screen",
++      texto: "Under the Trujillo regime, film loses initiative and creativity and becomes mostly a propaganda tool. In 1953 the company Cine Dominicano, with Rafael Augusto Sánchez Sanlley “Pupito”, makes 13 productions praising the regime.",
++    },
++  },
++  {
++    id: "1963",
++    anio: 1963,
++    era: "reapertura",
++    destacado: true,
++    es: {
++      titulo: "«La silla», de Franklin Domínguez",
++      texto: "Se estrena la que es considerada la primera producción dominicana realizada tras la caída del régimen; denuncia los horrores de la dictadura trujillista.",
++    },
++    en: {
++      titulo: "“La silla”, by Franklin Domínguez",
++      texto: "Premieres as the first Dominican production made after the fall of the regime; it condemns the horrors of the Trujillo dictatorship.",
++    },
++  },
++  {
++    id: "1995",
++    anio: 1995,
++    era: "comercial",
++    destacado: true,
++    es: {
++      titulo: "«Nueba Yol» y el cine comercial",
++      texto: "Con la película de Ángel Muñiz surge en el país una cinematografía de carácter comercial.",
++    },
++    en: {
++      titulo: "“Nueba Yol” and commercial cinema",
++      texto: "With Ángel Muñiz's film, a commercial cinema emerges in the country.",
++    },
++    catalogo: [{ titulo: "nueba yol", anio: 1995 }],
++  },
++  {
++    id: "2003",
++    anio: 2003,
++    era: "comercial",
++    es: {
++      titulo: "El «año cero»",
++      texto: "Se le considera el «año cero» del cine dominicano: la producción y la exhibición de ficción, comedia y documental se vuelven constantes.",
++    },
++    en: {
++      titulo: "The “year zero”",
++      texto: "Regarded as the “year zero” of Dominican cinema: production and exhibition of fiction, comedy and documentary become steady.",
++    },
++    catalogo: [{ titulo: "perico ripiao", anio: 2003 }],
++  },
++  {
++    id: "2009",
++    anio: 2009,
++    era: "comercial",
++    es: {
++      titulo: "El cine antes de la Ley",
++      texto: "Se estrenan, entre otras, «Cristiano de la secreta», «Mega diva», «Bosch: presidente en la frontera imperial» e «Historia del béisbol dominicano».",
++    },
++    en: {
++      titulo: "Cinema before the Law",
++      texto: "Releases include “Cristiano de la secreta”, “Mega diva”, “Bosch: presidente en la frontera imperial” and “Historia del béisbol dominicano”.",
++    },
++    catalogo: [{ titulo: "cristiano de la secreta", anio: 2009 }],
++  },
++  {
++    id: "2010",
++    anio: 2010,
++    era: "ley",
++    destacado: true,
++    es: {
++      titulo: "Ley 108-10 de Fomento de la Actividad Cinematográfica",
++      texto: "El 29 de julio se promulga la Ley de Cine, que estructura la DGCINE, la Cinemateca Dominicana y el CIPAC, e introduce incentivos a la inversión. Entre 1922 y 2010 se habían estrenado 46 películas a cargo de 31 directores.",
++    },
++    en: {
++      titulo: "Law 108-10 for the Promotion of Film Activity",
++      texto: "On 29 July the Film Law is enacted. It structures the DGCINE, the Dominican Cinematheque and the CIPAC, and introduces investment incentives. Between 1922 and 2010, 46 films by 31 directors had premiered.",
++    },
++  },
++  {
++    id: "2025",
++    anio: 2025,
++    era: "ley",
++    es: {
++      titulo: "Quince años de Ley de Cine",
++      texto: "La DGCINE celebra los 15 años de la Ley 108-10, el eje del desarrollo sostenido de la industria cinematográfica dominicana.",
++    },
++    en: {
++      titulo: "Fifteen years of the Film Law",
++      texto: "The DGCINE celebrates 15 years of Law 108-10, the backbone of the sustained development of the Dominican film industry.",
++    },
++  },
++];
++
++export const FUENTES = [
++  {
++    nombre: "DGCINE, «Antología de largometrajes dominicanos 1963-2019» (citada por Acento)",
++    url: "https://acento.com.do/cine/republica-dominicana-escenario-de-peliculas-desde-el-siglo-xx-9530209.html",
++  },
++  {
++    nombre: "elDinero: «En RD se hicieron 46 películas antes de la Ley de Cine»",
++    url: "https://eldinero.com.do/240897/en-rd-hicieron-46-peliculas-antes-de-la-ley-de-cine/",
++  },
++  {
++    nombre: "Acento: «La historia del documental en República Dominicana»",
++    url: "https://acento.com.do/cine/la-historia-del-documental-republica-dominicana-8415557.html",
++  },
++  {
++    nombre: "El Caribe: «Iconos del cine dominicano»",
++    url: "https://www.elcaribe.com.do/sin-categoria/iconos-del-cine-dominicano/",
++  },
++  {
++    nombre: "Ley 108-10 (WIPO Lex)",
++    url: "https://www.wipo.int/wipolex/en/legislation/details/13346",
++  },
++  {
++    nombre: "Presidencia: 15 años de la Ley 108-10",
++    url: "https://presidencia.gob.do/noticias/direccion-general-de-cine-celebra-15-anos-de-la-promulgacion-de-la-ley-108-10",
++  },
++];
++
++/* ---------- utilidades ---------- */
++
++export const normalizarTitulo = (valor) =>
++  String(valor || "")
++    .normalize("NFD")
++    .replace(/[\u0300-\u036f]/g, "")
++    .toLowerCase()
++    .replace(/[^a-z0-9 ]+/g, " ")
++    .replace(/\s+/g, " ")
++    .trim();
++
++export const anioDe = (fecha) => {
++  const anio = Number(String(fecha || "").substring(0, 4));
++  return Number.isInteger(anio) && anio > 1800 ? anio : null;
++};
++
++export const decadaDe = (anio) => (anio ? Math.floor(anio / 10) * 10 : null);
++
++/** Devuelve las películas del catálogo que corresponden a un hito. */
++export const peliculasDelHito = (hito, peliculas = []) =>
++  (hito.catalogo || [])
++    .map(({ titulo, anio }) =>
++      peliculas.find(
++        (p) => anioDe(p.FechaEstreno) === anio && normalizarTitulo(p.Titulo).startsWith(normalizarTitulo(titulo)),
++      ),
++    )
++    .filter(Boolean);
++
++/** Agrupa las películas por década, de la más antigua a la más reciente. */
++export const agruparPorDecada = (peliculas = []) => {
++  const mapa = new Map();
++  peliculas.forEach((pelicula) => {
++    const decada = decadaDe(anioDe(pelicula.FechaEstreno));
++    if (!decada) return;
++    if (!mapa.has(decada)) mapa.set(decada, []);
++    mapa.get(decada).push(pelicula);
++  });
++  return [...mapa.entries()]
++    .sort((a, b) => a[0] - b[0])
++    .map(([decada, items]) => ({
++      decada,
++      items: [...items].sort((a, b) => String(a.FechaEstreno).localeCompare(String(b.FechaEstreno))),
++    }));
++};
++
++export const etiquetaDecada = (decada, idioma = "es") => {
++  if (idioma === "en") return `${decada}s`;
++  return decada >= 2000 ? `Años ${decada}` : `Años ${decada % 100}`;
++};
+diff --git a/frontend/src/data/historiaCine.test.js b/frontend/src/data/historiaCine.test.js
+new file mode 100644
+index 0000000..7d7a9d5
+--- /dev/null
++++ b/frontend/src/data/historiaCine.test.js
+@@ -0,0 +1,92 @@
++import { describe, expect, it } from "vitest";
++import {
++  ERAS,
++  ERAS_TEXTO,
++  FUENTES,
++  HITOS,
++  agruparPorDecada,
++  anioDe,
++  decadaDe,
++  etiquetaDecada,
++  normalizarTitulo,
++  peliculasDelHito,
++} from "./historiaCine";
++
++describe("cronología del cine dominicano", () => {
++  it("cada hito pertenece a una época existente y cae dentro de su rango", () => {
++    HITOS.forEach((hito) => {
++      const era = ERAS.find((e) => e.id === hito.era);
++      expect(era, `época de ${hito.id}`).toBeTruthy();
++      expect(hito.anio).toBeGreaterThanOrEqual(era.desde);
++      if (era.hasta) expect(hito.anio).toBeLessThanOrEqual(era.hasta);
++    });
++  });
++
++  it("los hitos están en orden cronológico y con ids únicos", () => {
++    const anios = HITOS.map((h) => h.anio);
++    expect(anios).toEqual([...anios].sort((a, b) => a - b));
++    expect(new Set(HITOS.map((h) => h.id)).size).toBe(HITOS.length);
++  });
++
++  it("todo el contenido está en español e inglés", () => {
++    HITOS.forEach((hito) => {
++      ["es", "en"].forEach((idioma) => {
++        expect(hito[idioma]?.titulo, `${hito.id} ${idioma} título`).toBeTruthy();
++        expect(hito[idioma]?.texto, `${hito.id} ${idioma} texto`).toBeTruthy();
++      });
++    });
++    ERAS.forEach((era) => {
++      expect(ERAS_TEXTO[era.id].es.nombre).toBeTruthy();
++      expect(ERAS_TEXTO[era.id].en.nombre).toBeTruthy();
++    });
++  });
++
++  it("toda época tiene al menos un hito y las fuentes usan https", () => {
++    ERAS.forEach((era) => expect(HITOS.some((h) => h.era === era.id)).toBe(true));
++    expect(FUENTES.length).toBeGreaterThan(0);
++    FUENTES.forEach((f) => expect(f.url.startsWith("https://")).toBe(true));
++  });
++});
++
++describe("utilidades de fechas y catálogo", () => {
++  it("calcula año y década, y rechaza fechas inválidas", () => {
++    expect(anioDe("2007-02-01T00:00:00.000Z")).toBe(2007);
++    expect(anioDe(null)).toBeNull();
++    expect(anioDe("sin fecha")).toBeNull();
++    expect(decadaDe(1995)).toBe(1990);
++    expect(decadaDe(2020)).toBe(2020);
++    expect(decadaDe(null)).toBeNull();
++  });
++
++  it("etiqueta las décadas según el idioma", () => {
++    expect(etiquetaDecada(1990, "es")).toBe("Años 90");
++    expect(etiquetaDecada(2000, "es")).toBe("Años 2000");
++    expect(etiquetaDecada(1990, "en")).toBe("1990s");
++  });
++
++  it("normaliza títulos sin tildes ni signos", () => {
++    expect(normalizarTitulo("¡Nueba Yol: Por Fin Llegó!")).toBe("nueba yol por fin llego");
++  });
++
++  it("agrupa por década en orden y ordena cada grupo por fecha", () => {
++    const grupos = agruparPorDecada([
++      { Id: 1, FechaEstreno: "2011-05-01" },
++      { Id: 2, FechaEstreno: "1995-03-01" },
++      { Id: 3, FechaEstreno: "2010-01-01" },
++      { Id: 4, FechaEstreno: null },
++    ]);
++    expect(grupos.map((g) => g.decada)).toEqual([1990, 2010]);
++    expect(grupos[1].items.map((p) => p.Id)).toEqual([3, 1]);
++  });
++
++  it("enlaza un hito con películas del catálogo por título y año", () => {
++    const hito = { catalogo: [{ titulo: "nueba yol", anio: 1995 }] };
++    const peliculas = [
++      { Id: 1, Titulo: "Nueba Yol 3: Bajo la nueva ley", FechaEstreno: "1997-01-01" },
++      { Id: 2, Titulo: "Nueba Yol: ¡Por Fin Llegó Balbuena!", FechaEstreno: "1995-06-01" },
++    ];
++    expect(peliculasDelHito(hito, peliculas).map((p) => p.Id)).toEqual([2]);
++    expect(peliculasDelHito(hito, [])).toEqual([]);
++    expect(peliculasDelHito({}, peliculas)).toEqual([]);
++  });
++});
+diff --git a/frontend/src/i18n/locales/en.json b/frontend/src/i18n/locales/en.json
+index 5cefc64..7a26551 100644
+--- a/frontend/src/i18n/locales/en.json
++++ b/frontend/src/i18n/locales/en.json
+@@ -1,13 +1,14 @@
+ {
+-  "nav":{"home":"Home","movies":"Movies","talents":"Talents","space":"My space","verifyProfile":"Verify profile","verifications":"Verifications","newMovie":"+ Movie","newTalent":"+ Talent","login":"Sign in","register":"Create account","dashboard":"My dashboard","manageVerifications":"Manage verifications","logout":"Sign out","admin":"Administrator","verifiedTalent":"Verified talent","user":"User","toggleNavigation":"Show or hide navigation","language":"Language"},
+-  "footer":{"description":"Digital catalog of Dominican Cinema","rights":"All rights reserved.","tmdb":"This product uses the TMDb API but is not endorsed or certified by TMDb."},
+-  "home":{"eyebrow":"Digital archive of Dominican cinema 🇩🇴","title":"The stories filmed here deserve to become part of history too.","description":"CineRD connects movies, talents, casts and data from the Dominican audiovisual industry in a catalog built to discover, document and preserve our cinematic memory.","exploreMovies":"🎬 Explore movies","meetTalents":"🎭 Discover talents","movies":"Movies","talents":"Talents","participations":"Participations","catalogCaption":"Digital catalog of Dominican cinema","manifestoEyebrow":"MEMORY · IDENTITY · CINEMA","manifestoTitle":"A space created to view Dominican cinema as heritage, industry and culture.","topTalentsEyebrow":"Talents","topTalentsTitle":"Most movie appearances","topTalentsDescription":"Professionals with the strongest presence in CineRD's registered filmography.","viewAll":"View all →","moviesCount":"{{count}} movies","ephemeris":"Ephemerides · {{month}}","birthdaysTitle":"Birthdays this month","birthdaysDescription":"Talents celebrating birthdays this month, ordered from the earliest to the most recent birth year.","viewTalents":"View talents →","bornTurns":"Born in {{year}} · turns {{age}}","noBirthdays":"No birthdays registered this month","noBirthdaysDescription":"Only living talents with a complete birth date are shown.","premieresEyebrow":"Release ephemerides · {{month}}","premieresTitle":"Movies released this month","premieresDescription":"Dominican productions released during {{month}}, revisiting the catalog from the most recent premieres backward.","viewMovies":"View movies →","releasedIn":"Released in {{year}} · {{years}} years ago","releasedThisYear":"Released in {{year}} · released this year","noPremieres":"No releases registered for {{month}}","noPremieresDescription":"Movies will appear here when they have a release date registered in this month.","productions":"Productions","largestCast":"Movies with the largest casts","largestCastDescription":"Catalog productions featuring the highest number of registered talents.","castCount":"{{count}} talents in cast","movieCardTitle":"Movies","movieCardDescription":"Movie profiles, casts, genres, dates, directors and production companies.","enterCatalog":"Browse catalog →","talentCardTitle":"Talents","talentCardDescription":"Professional profiles, stage names, filmographies and credits.","exploreProfiles":"Explore profiles →","verifiedIdentity":"Verified identity","verifiedIdentityDescription":"Industry professionals can claim their profile and confirm their identity.","createAccount":"Create an account →","ctaEyebrow":"Do you work in the Dominican audiovisual industry?","ctaTitle":"Make your professional story part of CineRD too.","ctaDescription":"Create your account, find your profile and request verification.","createAccountButton":"Create account","signInButton":"Sign in","verified":"Verified"},
+-  "movies":{"eyebrow":"CINERD · FILM ARCHIVE","title":"Dominican movies","description":"Discover productions, casts and stories that form part of our audiovisual memory.","found":"productions found","new":"+ New movie","search":"Search by title, director or production company...","order":"Sort movies","releaseNewest":"Newest release","releaseOldest":"Oldest release","titleAZ":"Title A-Z","titleZA":"Title Z-A","largestCast":"Largest cast","smallestCast":"Smallest cast","genreFilter":"Filter by genre","allGenres":"All genres","viewMovie":"View movie","noDate":"No date","dominicanCinema":"Dominican cinema","directorMissing":"Director not registered","productionCompanyMissing":"Production company not registered","talentsCount":"{{count}} talents","edit":"Edit","cast":"Cast","delete":"Delete","confirmDelete":"Do you want to delete this movie?","deleteError":"Error deleting movie","emptyTitle":"No movies found","emptyDescription":"Try changing the search filters."},
++  "nav":{"home":"Home","history":"History","movies":"Movies","talents":"Talents","space":"My space","verifyProfile":"Verify profile","verifications":"Verifications","newMovie":"+ Movie","newTalent":"+ Talent","login":"Sign in","register":"Create account","dashboard":"My dashboard","manageVerifications":"Manage verifications","logout":"Sign out","admin":"Administrator","verifiedTalent":"Verified talent","user":"User","toggleNavigation":"Show or hide navigation","language":"Language"},
++  "history":{"eyebrow":"MEMORY · 1900 — TODAY","title":"More than a century of Dominican cinema","description":"A timeline of the moments that shaped our screen, connected to the films and talents in the CineRD archive.","yearsSince":"years since the first Dominican fiction film","milestones":"timeline milestones","archiveFilms":"films in the archive","eras":"Eras","inArchive":"In the CineRD archive","archiveEyebrow":"ARCHIVE BY DECADE","archiveTitle":"What the catalog holds for each decade","archiveDescription":"Films registered in CineRD by release year.","films_one":"{{count}} film","films_other":"{{count}} films","viewDecade":"View the decade →","sourcesTitle":"Sources","sourcesNote":"Reference timeline compiled from public sources. Some dates and credits vary between sources; if you spot a difference, let us know so we can correct it.","timelineLabel":"Timeline","goTo":"Go to","noFilms":"No films registered for this era yet."},
++  "footer":{"description":"Digital archive of Dominican cinema","explore":"Explore","tagline":"Memory, identity and cinema.","rights":"All rights reserved.","tmdb":"This product uses the TMDb API but is not endorsed or certified by TMDb."},
++  "home":{"eyebrow":"Digital archive of Dominican cinema 🇩🇴","title":"The stories filmed here deserve to become part of history too.","description":"CineRD connects movies, talents, casts and data from the Dominican audiovisual industry in a catalog built to discover, document and preserve our cinematic memory.","exploreMovies":"🎬 Explore movies","meetTalents":"🎭 Discover talents","movies":"Movies","talents":"Talents","participations":"Participations","catalogCaption":"Digital catalog of Dominican cinema","manifestoEyebrow":"MEMORY · IDENTITY · CINEMA","manifestoTitle":"A space created to view Dominican cinema as heritage, industry and culture.","topTalentsEyebrow":"Talents","topTalentsTitle":"Most movie appearances","topTalentsDescription":"Professionals with the strongest presence in CineRD's registered filmography.","viewAll":"View all →","moviesCount":"{{count}} movies","ephemeris":"Ephemerides · {{month}}","birthdaysTitle":"Birthdays this month","birthdaysDescription":"Talents celebrating birthdays this month, ordered from the earliest to the most recent birth year.","viewTalents":"View talents →","bornTurns":"Born in {{year}} · turns {{age}}","noBirthdays":"No birthdays registered this month","noBirthdaysDescription":"Only living talents with a complete birth date are shown.","premieresEyebrow":"Release ephemerides · {{month}}","premieresTitle":"Movies released this month","premieresDescription":"Dominican productions released during {{month}}, revisiting the catalog from the most recent premieres backward.","viewMovies":"View movies →","releasedIn_one":"Released in {{year}} · {{count}} year ago","releasedIn_other":"Released in {{year}} · {{count}} years ago","releasedIn":"Released in {{year}} · {{years}} years ago","timelineEyebrow":"TIMELINE","timelineTitle":"From 1922 to today, in six stops","timelineCta":"Walk through the history →","decadesEyebrow":"EXPLORE BY DECADE","decadesTitle":"One decade, many screens","coverage":"years of archive","releasedThisYear":"Released in {{year}} · released this year","noPremieres":"No releases registered for {{month}}","noPremieresDescription":"Movies will appear here when they have a release date registered in this month.","productions":"Productions","largestCast":"Movies with the largest casts","largestCastDescription":"Catalog productions featuring the highest number of registered talents.","castCount":"{{count}} talents in cast","movieCardTitle":"Movies","movieCardDescription":"Movie profiles, casts, genres, dates, directors and production companies.","enterCatalog":"Browse catalog →","talentCardTitle":"Talents","talentCardDescription":"Professional profiles, stage names, filmographies and credits.","exploreProfiles":"Explore profiles →","verifiedIdentity":"Verified identity","verifiedIdentityDescription":"Industry professionals can claim their profile and confirm their identity.","createAccount":"Create an account →","ctaEyebrow":"Do you work in the Dominican audiovisual industry?","ctaTitle":"Make your professional story part of CineRD too.","ctaDescription":"Create your account, find your profile and request verification.","createAccountButton":"Create account","signInButton":"Sign in","verified":"Verified"},
++  "movies":{"allDecades":"All eras","decadeFilter":"Filter by decade","eyebrow":"CINERD · FILM ARCHIVE","title":"Dominican movies","description":"Discover productions, casts and stories that form part of our audiovisual memory.","found":"productions found","new":"+ New movie","search":"Search by title, director or production company...","order":"Sort movies","releaseNewest":"Newest release","releaseOldest":"Oldest release","titleAZ":"Title A-Z","titleZA":"Title Z-A","largestCast":"Largest cast","smallestCast":"Smallest cast","genreFilter":"Filter by genre","allGenres":"All genres","viewMovie":"View movie","noDate":"No date","dominicanCinema":"Dominican cinema","directorMissing":"Director not registered","productionCompanyMissing":"Production company not registered","talentsCount":"{{count}} talents","edit":"Edit","cast":"Cast","delete":"Delete","confirmDelete":"Do you want to delete this movie?","deleteError":"Error deleting movie","emptyTitle":"No movies found","emptyDescription":"Try changing the search filters."},
+   "genres":{"Comedia":"Comedy","Drama":"Drama","Acción":"Action","Terror":"Horror","Romance":"Romance","Documental":"Documentary","Suspenso":"Thriller","Ciencia ficción":"Science fiction","Infantil":"Children's"},
+   "talents":{"eyebrow":"CINERD · DOMINICAN TALENT","title":"The faces of our cinema","description":"Actors, actresses, directors, producers, screenwriters and artists who shape the Dominican audiovisual industry.","found":"talents found","new":"+ New talent","search":"Search talent or stage name...","profession":"Profession","allProfessions":"All professions","order":"Order","nameAZ":"Name A-Z","nameZA":"Name Z-A","moreMovies":"Most movies","fewerMovies":"Fewest movies","younger":"Youngest","longerCareer":"Longest career","status":"Status","all":"All","livingPlural":"Living","deceasedPlural":"Deceased","year":"Year","birthYear":"Birth year","loading":"Searching talents...","alive":"Living","inMemoriam":"In memoriam","talent":"Talent","unnamed":"Unnamed","verifiedBy":"Profile verified by CineRD","verifiedProfile":"Verified profile","moviesCount":"{{count}} movies","directedMoviesCount":"{{count}} directed","age":"{{age}} years old","approxAge":"{{year}} · approx. {{age}} years old","ageUnavailable":"Age unavailable","unknownDate":"Unknown date","viewFilmography":"View filmography","edit":"Edit","delete":"Delete","confirmDelete":"Do you want to delete this talent?","deleteError":"Error deleting talent","emptyTitle":"No talents found","emptyDescription":"Try changing the search filters."},
+   "professions":{"Actor":"Actor","Actriz":"Actress","Comediante":"Comedian","Director":"Director","Productor":"Producer","Guionista":"Screenwriter","Cantante":"Singer","Artista urbano":"Urban artist","Artista urbana":"Urban artist","Otro":"Other"},
+   "talentProfile":{"loading":"Loading profile...","notFound":"Talent not found.","backToTalents":"Back to talents","back":"← Talents","eyebrow":"TALENT · CINERD","verifiedBy":"Profile verified by CineRD","verifiedProfile":"Verified profile","professionMissing":"Film professional","born":"Born","age":"{{age}} years old","died":"Died","active":"Active","inMemoriam":"In memoriam","edit":"Edit profile","thisIsMe":"This is me","digitalPresence":"DIGITAL PRESENCE","officialProfiles":"OFFICIAL PROFILES","follow":"Follow {{name}}","socialDescription":"Explore official channels, music and public profiles.","openSocial":"Open {{network}} for {{name}}","actingCredits":"Acting credits","directedMovies":"Movies directed","registeredCredits":"Registered credits","filmography":"FILMOGRAPHY","actingTitle":"Acting appearances","direction":"DIRECTING","directionTitle":"Movies directed","noDirectedMovies":"No directed movies are registered.","noActingCredits":"No acting appearances are registered.","characterMissing":"Character not registered","participation":"Cast","noDate":"No date","social":{"facebook":"Official page","profile":"Official profile","youtube":"Official channel","spotify":"Listen on Spotify","website":"Official website","websiteName":"Website"}},
+-  "movieProfile":{"back":"← Movies","edit":"Edit movie","manageCast":"Manage cast","dominicanCinema":"Dominican cinema","noGenre":"No genre","noDate":"No date","talents":"{{count}} talents","director":"Director","productionCompany":"Production company","originalLanguage":"Original language","originalTitle":"Original title","budget":"Budget","revenue":"Revenue","notRegistered":"Not registered","notRegisteredFemale":"Not registered","history":"STORY","synopsis":"Synopsis","synopsisMissing":"A synopsis has not yet been registered for this movie.","audiovisual":"AUDIOVISUAL","trailer":"Trailer","watchTrailer":"Watch trailer","cast":"CAST","talentsCharacters":"Talents and characters","emptyCast":"This movie does not have a registered cast yet.","characterMissing":"Character not registered","castRole":"Cast","loading":"Loading movie...","loadError":"The movie profile could not be loaded.","notFound":"Movie not found","backToMovies":"Back to movies","localizedNotice":"Localized version · {{source}}"},
++  "movieProfile":{"contextEyebrow":"CONTEXT","sameDecadeTitle":"From the same period","decade":"Decade","viewDecade":"View the decade →","back":"← Movies","edit":"Edit movie","manageCast":"Manage cast","dominicanCinema":"Dominican cinema","noGenre":"No genre","noDate":"No date","talents":"{{count}} talents","director":"Director","productionCompany":"Production company","originalLanguage":"Original language","originalTitle":"Original title","budget":"Budget","revenue":"Revenue","notRegistered":"Not registered","notRegisteredFemale":"Not registered","history":"STORY","synopsis":"Synopsis","synopsisMissing":"A synopsis has not yet been registered for this movie.","audiovisual":"AUDIOVISUAL","trailer":"Trailer","watchTrailer":"Watch trailer","cast":"CAST","talentsCharacters":"Talents and characters","emptyCast":"This movie does not have a registered cast yet.","characterMissing":"Character not registered","castRole":"Cast","loading":"Loading movie...","loadError":"The movie profile could not be loaded.","notFound":"Movie not found","backToMovies":"Back to movies","localizedNotice":"Localized version · {{source}}"},
+   "translationSources":{"OFICIAL":"Official source","DISTRIBUCION":"Official distribution","EDITORIAL":"✓ Reviewed by CineRD"},
+   "languages":{"es":"Spanish","en":"English","fr":"French","pt":"Portuguese","it":"Italian","de":"German","ja":"Japanese","ko":"Korean","zh":"Chinese","unknown":"Not registered"}
+ }
+\ No newline at end of file
+diff --git a/frontend/src/i18n/locales/es.json b/frontend/src/i18n/locales/es.json
+index 1a5d467..8eed398 100644
+--- a/frontend/src/i18n/locales/es.json
++++ b/frontend/src/i18n/locales/es.json
+@@ -1,13 +1,14 @@
+ {
+-  "nav":{"home":"Inicio","movies":"Películas","talents":"Talentos","space":"Mi espacio","verifyProfile":"Verificar perfil","verifications":"Verificaciones","newMovie":"+ Película","newTalent":"+ Talento","login":"Ingresar","register":"Crear cuenta","dashboard":"Mi dashboard","manageVerifications":"Gestionar verificaciones","logout":"Cerrar sesión","admin":"Administrador","verifiedTalent":"Talento verificado","user":"Usuario","toggleNavigation":"Mostrar u ocultar navegación","language":"Idioma"},
+-  "footer":{"description":"Catálogo digital del Cine Dominicano","rights":"Todos los derechos reservados.","tmdb":"Este producto utiliza la API de TMDb, pero no está respaldado ni certificado por TMDb."},
+-  "home":{"eyebrow":"Archivo digital del cine dominicano 🇩🇴","title":"Las historias que se filman aquí también merecen quedar para la historia.","description":"CineRD conecta películas, talentos, repartos y datos del audiovisual dominicano en un catálogo pensado para descubrir, documentar y preservar nuestra memoria cinematográfica.","exploreMovies":"🎬 Explorar películas","meetTalents":"🎭 Conocer talentos","movies":"Películas","talents":"Talentos","participations":"Participaciones","catalogCaption":"Catálogo digital del cine dominicano","manifestoEyebrow":"MEMORIA · IDENTIDAD · CINE","manifestoTitle":"Un espacio hecho para mirar el cine dominicano como patrimonio, industria y cultura.","topTalentsEyebrow":"Talentos","topTalentsTitle":"Con más películas","topTalentsDescription":"Profesionales con mayor presencia dentro de la filmografía registrada en CineRD.","viewAll":"Ver todos →","moviesCount":"{{count}} películas","ephemeris":"Efemérides · {{month}}","birthdaysTitle":"Cumpleaños del mes","birthdaysDescription":"Talentos que cumplen años este mes, ordenados desde el año de nacimiento más antiguo al más reciente.","viewTalents":"Ver talentos →","bornTurns":"Nació en {{year}} · cumple {{age}} años","noBirthdays":"Sin cumpleaños registrados este mes","noBirthdaysDescription":"Solo aparecen talentos vivos con fecha de nacimiento completa.","premieresEyebrow":"Efemérides de estrenos · {{month}}","premieresTitle":"Películas estrenadas en este mes","premieresDescription":"Producciones dominicanas que llegaron al público durante {{month}}, recorriendo la historia del catálogo desde los estrenos más recientes.","viewMovies":"Ver películas →","releasedIn":"Estrenada en {{year}} · {{years}} años","releasedThisYear":"Estrenada en {{year}} · estreno de este año","noPremieres":"Sin estrenos registrados para {{month}}","noPremieresDescription":"Las películas aparecerán aquí cuando tengan una fecha de estreno registrada en este mes.","productions":"Producciones","largestCast":"Películas con mayor reparto","largestCastDescription":"Las producciones del catálogo que reúnen la mayor cantidad de talentos registrados.","castCount":"{{count}} talentos en reparto","movieCardTitle":"Películas","movieCardDescription":"Fichas cinematográficas, repartos, géneros, fechas, directores y productoras.","enterCatalog":"Entrar al catálogo →","talentCardTitle":"Talentos","talentCardDescription":"Perfiles artísticos, nombres profesionales, filmografías y participaciones.","exploreProfiles":"Explorar perfiles →","verifiedIdentity":"Identidad verificada","verifiedIdentityDescription":"Los profesionales del sector pueden reclamar su perfil y confirmar su identidad.","createAccount":"Crear una cuenta →","ctaEyebrow":"¿Trabajas en el audiovisual dominicano?","ctaTitle":"Haz que tu historia profesional también forme parte de CineRD.","ctaDescription":"Crea tu cuenta, encuentra tu perfil y solicita su verificación.","createAccountButton":"Crear cuenta","signInButton":"Iniciar sesión","verified":"Verificado"},
+-  "movies":{"eyebrow":"CINERD · ARCHIVO CINEMATOGRÁFICO","title":"Películas dominicanas","description":"Descubre producciones, repartos y las historias que forman parte de nuestra memoria audiovisual.","found":"producciones encontradas","new":"+ Nueva película","search":"Buscar por título, director o productora...","order":"Ordenar películas","releaseNewest":"Estreno más reciente","releaseOldest":"Estreno más antiguo","titleAZ":"Título A-Z","titleZA":"Título Z-A","largestCast":"Mayor reparto","smallestCast":"Menor reparto","genreFilter":"Filtrar por género","allGenres":"Todos los géneros","viewMovie":"Ver película","noDate":"Sin fecha","dominicanCinema":"Cine dominicano","directorMissing":"Director no registrado","productionCompanyMissing":"Productora no registrada","talentsCount":"{{count}} talentos","edit":"Editar","cast":"Reparto","delete":"Eliminar","confirmDelete":"¿Desea eliminar esta película?","deleteError":"Error al eliminar la película","emptyTitle":"No encontramos películas","emptyDescription":"Prueba cambiando los filtros de búsqueda."},
++  "nav":{"home":"Inicio","history":"Historia","movies":"Películas","talents":"Talentos","space":"Mi espacio","verifyProfile":"Verificar perfil","verifications":"Verificaciones","newMovie":"+ Película","newTalent":"+ Talento","login":"Ingresar","register":"Crear cuenta","dashboard":"Mi dashboard","manageVerifications":"Gestionar verificaciones","logout":"Cerrar sesión","admin":"Administrador","verifiedTalent":"Talento verificado","user":"Usuario","toggleNavigation":"Mostrar u ocultar navegación","language":"Idioma"},
++  "history":{"eyebrow":"MEMORIA · 1900 — HOY","title":"Más de un siglo de cine dominicano","description":"Una cronología de los momentos que dieron forma a nuestra pantalla, conectada con las películas y los talentos del archivo de CineRD.","yearsSince":"años desde la primera ficción dominicana","milestones":"hitos en la cronología","archiveFilms":"películas en el archivo","eras":"Épocas","inArchive":"En el archivo de CineRD","archiveEyebrow":"ARCHIVO POR DÉCADAS","archiveTitle":"Lo que el catálogo guarda de cada década","archiveDescription":"Películas registradas en CineRD según su año de estreno.","films_one":"{{count}} película","films_other":"{{count}} películas","viewDecade":"Ver la década →","sourcesTitle":"Fuentes consultadas","sourcesNote":"Cronología de referencia elaborada a partir de fuentes públicas. Algunas fechas y autorías varían entre fuentes; si encuentras una diferencia, avísanos para corregirla.","timelineLabel":"Cronología","goTo":"Ir a","noFilms":"Aún no hay películas registradas de esta época."},
++  "footer":{"description":"Archivo digital del cine dominicano","explore":"Explorar","tagline":"Memoria, identidad y cine.","rights":"Todos los derechos reservados.","tmdb":"Este producto utiliza la API de TMDb, pero no está respaldado ni certificado por TMDb."},
++  "home":{"eyebrow":"Archivo digital del cine dominicano 🇩🇴","title":"Las historias que se filman aquí también merecen quedar para la historia.","description":"CineRD conecta películas, talentos, repartos y datos del audiovisual dominicano en un catálogo pensado para descubrir, documentar y preservar nuestra memoria cinematográfica.","exploreMovies":"🎬 Explorar películas","meetTalents":"🎭 Conocer talentos","movies":"Películas","talents":"Talentos","participations":"Participaciones","catalogCaption":"Catálogo digital del cine dominicano","manifestoEyebrow":"MEMORIA · IDENTIDAD · CINE","manifestoTitle":"Un espacio hecho para mirar el cine dominicano como patrimonio, industria y cultura.","topTalentsEyebrow":"Talentos","topTalentsTitle":"Con más películas","topTalentsDescription":"Profesionales con mayor presencia dentro de la filmografía registrada en CineRD.","viewAll":"Ver todos →","moviesCount":"{{count}} películas","ephemeris":"Efemérides · {{month}}","birthdaysTitle":"Cumpleaños del mes","birthdaysDescription":"Talentos que cumplen años este mes, ordenados desde el año de nacimiento más antiguo al más reciente.","viewTalents":"Ver talentos →","bornTurns":"Nació en {{year}} · cumple {{age}} años","noBirthdays":"Sin cumpleaños registrados este mes","noBirthdaysDescription":"Solo aparecen talentos vivos con fecha de nacimiento completa.","premieresEyebrow":"Efemérides de estrenos · {{month}}","premieresTitle":"Películas estrenadas en este mes","premieresDescription":"Producciones dominicanas que llegaron al público durante {{month}}, recorriendo la historia del catálogo desde los estrenos más recientes.","viewMovies":"Ver películas →","releasedIn_one":"Estrenada en {{year}} · hace {{count}} año","releasedIn_other":"Estrenada en {{year}} · hace {{count}} años","releasedIn":"Estrenada en {{year}} · hace {{years}} años","timelineEyebrow":"LÍNEA DE TIEMPO","timelineTitle":"De 1922 a hoy, en seis paradas","timelineCta":"Recorrer la historia →","decadesEyebrow":"EXPLORA POR DÉCADA","decadesTitle":"Una década, muchas pantallas","coverage":"años de archivo","releasedThisYear":"Estrenada en {{year}} · estreno de este año","noPremieres":"Sin estrenos registrados para {{month}}","noPremieresDescription":"Las películas aparecerán aquí cuando tengan una fecha de estreno registrada en este mes.","productions":"Producciones","largestCast":"Películas con mayor reparto","largestCastDescription":"Las producciones del catálogo que reúnen la mayor cantidad de talentos registrados.","castCount":"{{count}} talentos en reparto","movieCardTitle":"Películas","movieCardDescription":"Fichas cinematográficas, repartos, géneros, fechas, directores y productoras.","enterCatalog":"Entrar al catálogo →","talentCardTitle":"Talentos","talentCardDescription":"Perfiles artísticos, nombres profesionales, filmografías y participaciones.","exploreProfiles":"Explorar perfiles →","verifiedIdentity":"Identidad verificada","verifiedIdentityDescription":"Los profesionales del sector pueden reclamar su perfil y confirmar su identidad.","createAccount":"Crear una cuenta →","ctaEyebrow":"¿Trabajas en el audiovisual dominicano?","ctaTitle":"Haz que tu historia profesional también forme parte de CineRD.","ctaDescription":"Crea tu cuenta, encuentra tu perfil y solicita su verificación.","createAccountButton":"Crear cuenta","signInButton":"Iniciar sesión","verified":"Verificado"},
++  "movies":{"allDecades":"Todas las épocas","decadeFilter":"Filtrar por década","eyebrow":"CINERD · ARCHIVO CINEMATOGRÁFICO","title":"Películas dominicanas","description":"Descubre producciones, repartos y las historias que forman parte de nuestra memoria audiovisual.","found":"producciones encontradas","new":"+ Nueva película","search":"Buscar por título, director o productora...","order":"Ordenar películas","releaseNewest":"Estreno más reciente","releaseOldest":"Estreno más antiguo","titleAZ":"Título A-Z","titleZA":"Título Z-A","largestCast":"Mayor reparto","smallestCast":"Menor reparto","genreFilter":"Filtrar por género","allGenres":"Todos los géneros","viewMovie":"Ver película","noDate":"Sin fecha","dominicanCinema":"Cine dominicano","directorMissing":"Director no registrado","productionCompanyMissing":"Productora no registrada","talentsCount":"{{count}} talentos","edit":"Editar","cast":"Reparto","delete":"Eliminar","confirmDelete":"¿Desea eliminar esta película?","deleteError":"Error al eliminar la película","emptyTitle":"No encontramos películas","emptyDescription":"Prueba cambiando los filtros de búsqueda."},
+   "genres":{"Comedia":"Comedia","Drama":"Drama","Acción":"Acción","Terror":"Terror","Romance":"Romance","Documental":"Documental","Suspenso":"Suspenso","Ciencia ficción":"Ciencia ficción","Infantil":"Infantil"},
+   "talents":{"eyebrow":"CINERD · TALENTO DOMINICANO","title":"Las caras de nuestro cine","description":"Actores, actrices, directores, productores, guionistas y artistas que construyen el audiovisual dominicano.","found":"talentos encontrados","new":"+ Nuevo talento","search":"Buscar talento o nombre artístico...","profession":"Profesión","allProfessions":"Todas las profesiones","order":"Orden","nameAZ":"Nombre A-Z","nameZA":"Nombre Z-A","moreMovies":"Más películas","fewerMovies":"Menos películas","younger":"Más jóvenes","longerCareer":"Mayor trayectoria","status":"Estado","all":"Todos","livingPlural":"Vivos","deceasedPlural":"Fallecidos","year":"Año","birthYear":"Año de nacimiento","loading":"Buscando talentos...","alive":"Vivo","inMemoriam":"In memoriam","talent":"Talento","unnamed":"Sin nombre","verifiedBy":"Perfil verificado por CineRD","verifiedProfile":"Perfil verificado","moviesCount":"{{count}} películas","directedMoviesCount":"{{count}} dirigidas","age":"{{age}} años","approxAge":"{{year}} · aprox. {{age}} años","ageUnavailable":"Edad no disponible","unknownDate":"Fecha desconocida","viewFilmography":"Ver filmografía","edit":"Editar","delete":"Eliminar","confirmDelete":"¿Desea eliminar este talento?","deleteError":"Error al eliminar este talento","emptyTitle":"No encontramos talentos","emptyDescription":"Prueba cambiando los filtros de búsqueda."},
+   "professions":{"Actor":"Actor","Actriz":"Actriz","Comediante":"Comediante","Director":"Director","Productor":"Productor","Guionista":"Guionista","Cantante":"Cantante","Artista urbano":"Artista urbano","Artista urbana":"Artista urbana","Otro":"Otro"},
+   "talentProfile":{"loading":"Cargando perfil...","notFound":"Talento no encontrado.","backToTalents":"Volver a talentos","back":"← Talentos","eyebrow":"TALENTO · CINERD","verifiedBy":"Perfil verificado por CineRD","verifiedProfile":"Perfil verificado","professionMissing":"Talento cinematográfico","born":"Nació","age":"{{age}} años","died":"Falleció","active":"Activo","inMemoriam":"In memoriam","edit":"Editar perfil","thisIsMe":"Este soy yo","digitalPresence":"PRESENCIA DIGITAL","officialProfiles":"PERFILES OFICIALES","follow":"Sigue a {{name}}","socialDescription":"Consulta sus canales, música y perfiles públicos oficiales.","openSocial":"Abrir {{network}} de {{name}}","actingCredits":"Participaciones como intérprete","directedMovies":"Películas dirigidas","registeredCredits":"Créditos registrados","filmography":"FILMOGRAFÍA","actingTitle":"Participaciones como actor/actriz","direction":"DIRECCIÓN","directionTitle":"Películas dirigidas","noDirectedMovies":"No tiene películas dirigidas registradas.","noActingCredits":"No tiene participaciones como intérprete registradas.","characterMissing":"Personaje no registrado","participation":"Reparto","noDate":"Sin fecha","social":{"facebook":"Página oficial","profile":"Perfil oficial","youtube":"Canal oficial","spotify":"Escuchar artista","website":"Sitio web oficial","websiteName":"Sitio web"}},
+-  "movieProfile":{"back":"← Películas","edit":"Editar película","manageCast":"Gestionar reparto","dominicanCinema":"Cine dominicano","noGenre":"Sin género","noDate":"Sin fecha","talents":"{{count}} talentos","director":"Director","productionCompany":"Productora","originalLanguage":"Idioma original","originalTitle":"Título original","budget":"Presupuesto","revenue":"Recaudación","notRegistered":"No registrado","notRegisteredFemale":"No registrada","history":"HISTORIA","synopsis":"Sinopsis","synopsisMissing":"La sinopsis todavía no ha sido registrada para esta película.","audiovisual":"AUDIOVISUAL","trailer":"Tráiler","watchTrailer":"Ver tráiler","cast":"REPARTO","talentsCharacters":"Talentos y personajes","emptyCast":"Esta película todavía no tiene reparto registrado.","characterMissing":"Personaje no registrado","castRole":"Reparto","loading":"Cargando película...","loadError":"No fue posible cargar el perfil de la película.","notFound":"Película no encontrada","backToMovies":"Volver a películas","localizedNotice":"Versión localizada · {{source}}"},
++  "movieProfile":{"contextEyebrow":"CONTEXTO","sameDecadeTitle":"Del mismo período","decade":"Década","viewDecade":"Ver la década →","back":"← Películas","edit":"Editar película","manageCast":"Gestionar reparto","dominicanCinema":"Cine dominicano","noGenre":"Sin género","noDate":"Sin fecha","talents":"{{count}} talentos","director":"Director","productionCompany":"Productora","originalLanguage":"Idioma original","originalTitle":"Título original","budget":"Presupuesto","revenue":"Recaudación","notRegistered":"No registrado","notRegisteredFemale":"No registrada","history":"HISTORIA","synopsis":"Sinopsis","synopsisMissing":"La sinopsis todavía no ha sido registrada para esta película.","audiovisual":"AUDIOVISUAL","trailer":"Tráiler","watchTrailer":"Ver tráiler","cast":"REPARTO","talentsCharacters":"Talentos y personajes","emptyCast":"Esta película todavía no tiene reparto registrado.","characterMissing":"Personaje no registrado","castRole":"Reparto","loading":"Cargando película...","loadError":"No fue posible cargar el perfil de la película.","notFound":"Película no encontrada","backToMovies":"Volver a películas","localizedNotice":"Versión localizada · {{source}}"},
+   "translationSources":{"OFICIAL":"Fuente oficial","DISTRIBUCION":"Distribución oficial","EDITORIAL":"✓ Revisada por CineRD"},
+   "languages":{"es":"Español","en":"Inglés","fr":"Francés","pt":"Portugués","it":"Italiano","de":"Alemán","ja":"Japonés","ko":"Coreano","zh":"Chino","unknown":"No registrado"}
+ }
+\ No newline at end of file
+diff --git a/frontend/src/main.jsx b/frontend/src/main.jsx
+index c340dab..54d2603 100644
+--- a/frontend/src/main.jsx
++++ b/frontend/src/main.jsx
+@@ -1,6 +1,8 @@
+ import { StrictMode } from "react";
+ import { createRoot } from "react-dom/client";
+ 
++import "@fontsource-variable/inter";
++import "@fontsource-variable/fraunces";
+ import "bootstrap/dist/css/bootstrap.min.css";
+ import "bootstrap/dist/js/bootstrap.bundle.min.js";
+ 
+@@ -24,6 +26,8 @@ import "./styles/search.css";
+ import "./styles/movie-credits.css";
+ import "./styles/dark-polish.css";
+ import "./styles/adsense.css";
++import "./styles/heritage.css";
++import "./styles/historia.css";
+ 
+ import App from "./App.jsx";
+ 
+diff --git a/frontend/src/pages/Historia.jsx b/frontend/src/pages/Historia.jsx
+new file mode 100644
+index 0000000..354fcb0
+--- /dev/null
++++ b/frontend/src/pages/Historia.jsx
+@@ -0,0 +1,156 @@
++import { useEffect, useMemo, useState } from "react";
++import { Link, useLocation } from "react-router-dom";
++import { useTranslation } from "react-i18next";
++import api from "../services/api";
++import { API_URL } from "../config/api";
++import {
++  ERAS,
++  ERAS_TEXTO,
++  FUENTES,
++  HITOS,
++  agruparPorDecada,
++  etiquetaDecada,
++  peliculasDelHito,
++} from "../data/historiaCine";
++
++const AnioPrimeraFiccion = 1922;
++
++function Historia() {
++  const { t, i18n } = useTranslation();
++  const { hash } = useLocation();
++  const idioma = i18n.language?.startsWith("en") ? "en" : "es";
++  const [peliculas, setPeliculas] = useState([]);
++
++  useEffect(() => {
++    let activo = true;
++    api
++      .get("/peliculas")
++      .then((respuesta) => activo && setPeliculas(respuesta.data || []))
++      .catch((error) => console.error("Error al cargar el archivo para la cronología:", error));
++    return () => {
++      activo = false;
++    };
++  }, []);
++
++  // Los enlaces con #hito llegan antes de que el catálogo cargue; reajusta al terminar.
++  useEffect(() => {
++    if (!hash) return;
++    document.getElementById(hash.slice(1))?.scrollIntoView({ block: "start" });
++  }, [hash, peliculas.length]);
++
++  const grupos = useMemo(() => agruparPorDecada(peliculas), [peliculas]);
++  const erasConHitos = useMemo(
++    () => ERAS.map((era) => ({ era, hitos: HITOS.filter((hito) => hito.era === era.id) })),
++    [],
++  );
++  const aniosDesdeFiccion = new Date().getFullYear() - AnioPrimeraFiccion;
++  const rangoEra = (era) => `${era.desde} — ${era.hasta ?? (idioma === "en" ? "today" : "hoy")}`;
++  const urlFoto = (pelicula) => (pelicula.Foto ? `${API_URL}${pelicula.Foto}` : null);
++
++  return (
++    <div className="history-page">
++      <header className="history-hero">
++        <div className="history-hero-strip" aria-hidden="true" />
++        <span className="public-eyebrow">{t("history.eyebrow")}</span>
++        <h1>{t("history.title")}</h1>
++        <p>{t("history.description")}</p>
++        <dl className="history-hero-stats">
++          <div><dt>{t("history.yearsSince")}</dt><dd>{aniosDesdeFiccion}</dd></div>
++          <div><dt>{t("history.milestones")}</dt><dd>{HITOS.length}</dd></div>
++          <div><dt>{t("history.archiveFilms")}</dt><dd>{peliculas.length}</dd></div>
++        </dl>
++      </header>
++
++      <nav className="history-era-nav" aria-label={t("history.eras")}>
++        {erasConHitos.map(({ era }) => (
++          <a key={era.id} href={`#era-${era.id}`}>
++            <small>{era.desde}{era.hasta ? `–${String(era.hasta).slice(2)}` : "+"}</small>
++            <span>{ERAS_TEXTO[era.id][idioma].nombre}</span>
++          </a>
++        ))}
++      </nav>
++
++      <div className="history-timeline-wrap" aria-label={t("history.timelineLabel")}>
++        {erasConHitos.map(({ era, hitos }) => (
++          <section key={era.id} id={`era-${era.id}`} className="history-era">
++            <header className="history-era-header">
++              <span className="history-era-range">{rangoEra(era)}</span>
++              <h2>{ERAS_TEXTO[era.id][idioma].nombre}</h2>
++              <p>{ERAS_TEXTO[era.id][idioma].resumen}</p>
++            </header>
++
++            <ol className="history-timeline">
++              {hitos.map((hito) => {
++                const enArchivo = peliculasDelHito(hito, peliculas);
++                return (+                  <li key={hito.id} id={`h-${hito.id}`} className={`history-item${hito.destacado ? " is-featured" : ""}`}>
++                    <div className="history-item-year">{hito.etiquetaAnio || hito.anio}</div>
++                    <article className="history-item-card">
++                      <h3>{hito[idioma].titulo}</h3>
++                      <p>{hito[idioma].texto}</p>
++                      {enArchivo.length > 0 && (
++                        <div className="history-item-archive">
++                          <small>{t("history.inArchive")}</small>
++                          <div>
++                            {enArchivo.map((pelicula) => (
++                              <Link key={pelicula.Id} to={`/peliculas/${pelicula.Id}`} className="history-film-chip">
++                                {urlFoto(pelicula) && <img src={urlFoto(pelicula)} alt="" loading="lazy" />}
++                                <span>{pelicula.Titulo}</span>
++                              </Link>
++                            ))}
++                          </div>
++                        </div>
++                      )}
++                    </article>
++                  </li>
++                );
++              })}
++            </ol>
++          </section>
++        ))}
++      </div>
++
++      <section className="history-archive" aria-labelledby="history-archive-title">
++        <span className="public-eyebrow">{t("history.archiveEyebrow")}</span>
++        <h2 id="history-archive-title">{t("history.archiveTitle")}</h2>
++        <p>{t("history.archiveDescription")}</p>
++
++        {grupos.length === 0 && <p className="history-empty">{t("history.noFilms")}</p>}
++
++        {grupos.map(({ decada, items }) => (
++          <div key={decada} className="history-decade">
++            <div className="history-decade-head">
++              <h3>{etiquetaDecada(decada, idioma)}</h3>
++              <span>{t("history.films", { count: items.length })}</span>
++              <Link to={`/peliculas?decada=${decada}`}>{t("history.viewDecade")}</Link>
++            </div>
++            <ul className="history-decade-posters">
++              {items.slice(0, 12).map((pelicula) => (
++                <li key={pelicula.Id}>
++                  <Link to={`/peliculas/${pelicula.Id}`} title={pelicula.Titulo}>
++                    {urlFoto(pelicula) ? <img src={urlFoto(pelicula)} alt={pelicula.Titulo} loading="lazy" /> : <span>{pelicula.Titulo}</span>}
++                    <small>{String(pelicula.FechaEstreno).substring(0, 4)}</small>
++                  </Link>
++                </li>
++              ))}
++            </ul>
++          </div>
++        ))}
++      </section>
++
++      <footer className="history-sources">
++        <h2>{t("history.sourcesTitle")}</h2>
++        <ul>
++          {FUENTES.map((fuente) => (
++            <li key={fuente.url}>
++              <a href={fuente.url} target="_blank" rel="noreferrer noopener">{fuente.nombre}</a>
++            </li>
++          ))}
++        </ul>
++        <p>{t("history.sourcesNote")}</p>
++      </footer>
++    </div>
++  );
++}
++
++export default Historia;
+diff --git a/frontend/src/pages/HomePublica.jsx b/frontend/src/pages/HomePublica.jsx
+index a7b07a7..5e62c16 100644
+--- a/frontend/src/pages/HomePublica.jsx
++++ b/frontend/src/pages/HomePublica.jsx
+@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next";
+ import api from "../services/api";
+ import { API_URL } from "../config/api";
+ import { manejarErrorFotoTalento, obtenerFotoTalento } from "../utils/talentoPlaceholder";
++import { anioDe } from "../data/historiaCine";
++import CintaDecadas from "../components/historia/CintaDecadas";
++import LineaTiempoMini from "../components/historia/LineaTiempoMini";
+ 
+ const resolverImagen = (ruta) => {
+   if (!ruta) return null;
+@@ -32,6 +35,11 @@ function HomePublica() {
+   const topTalentos = useMemo(() => [...actores].sort((a,b)=>Number(b.CantidadPeliculas||0)-Number(a.CantidadPeliculas||0)).slice(0,10), [actores]);
+   const topPeliculas = useMemo(() => [...peliculas].sort((a,b)=>Number(b.CantidadActores||0)-Number(a.CantidadActores||0)).slice(0,5), [peliculas]);
+ 
++  const rangoAnios = useMemo(() => {
++    const anios = peliculas.map((p) => anioDe(p.FechaEstreno)).filter(Boolean);
++    return anios.length ? `${Math.min(...anios)}–${Math.max(...anios)}` : null;
++  }, [peliculas]);
++
+   const hoy = new Date();
+   const mesActual = hoy.getMonth();
+   const anioActual = hoy.getFullYear();
+@@ -51,7 +59,11 @@ function HomePublica() {
+     .sort((a,b)=>b.fecha.getFullYear()-a.fecha.getFullYear() || a.fecha.getDate()-b.fecha.getDate()), [peliculas, mesActual]);
+ 
+   return <div className="public-home cinematic-home">
+-    <section className="cinematic-hero"><div className="cinematic-flag-band" aria-hidden="true"/><div className="cinematic-hero-copy"><span className="public-eyebrow">{t("home.eyebrow")}</span><h1>{t("home.title")}</h1><p>{t("home.description")}</p><div className="public-hero-actions"><Link to="/peliculas" className="btn btn-primary btn-lg">{t("home.exploreMovies")}</Link><Link to="/actores" className="btn btn-outline-light btn-lg">{t("home.meetTalents")}</Link></div><div className="cinematic-stats" aria-label="CineRD"><div><strong>{peliculas.length}</strong><span>{t("home.movies")}</span></div><div><strong>{actores.length}</strong><span>{t("home.talents")}</span></div><div><strong>{peliculas.reduce((total,p)=>total+Number(p.CantidadActores||0),0)}</strong><span>{t("home.participations")}</span></div></div></div><div className="cinematic-hero-brand"><div className="cinematic-projector-beam"/><img src="/logo.png" alt="CineRD"/><span className="cinematic-caption">{t("home.catalogCaption")}</span></div></section>
++    <section className="cinematic-hero"><div className="cinematic-flag-band" aria-hidden="true"/><div className="cinematic-hero-copy"><span className="public-eyebrow">{t("home.eyebrow")}</span><h1>{t("home.title")}</h1><p>{t("home.description")}</p><div className="public-hero-actions"><Link to="/peliculas" className="btn btn-primary btn-lg">{t("home.exploreMovies")}</Link><Link to="/actores" className="btn btn-outline-light btn-lg">{t("home.meetTalents")}</Link></div><div className="cinematic-stats" aria-label="CineRD"><div><strong>{peliculas.length}</strong><span>{t("home.movies")}</span></div><div><strong>{actores.length}</strong><span>{t("home.talents")}</span></div><div><strong>{peliculas.reduce((total,p)=>total+Number(p.CantidadActores||0),0)}</strong><span>{t("home.participations")}</span></div>{rangoAnios&&<div><strong>{rangoAnios}</strong><span>{t("home.coverage")}</span></div>}</div></div><div className="cinematic-hero-brand"><div className="cinematic-projector-beam"/><img src="/logo.png" alt="CineRD"/><span className="cinematic-caption">{t("home.catalogCaption")}</span></div></section>
++
++    <LineaTiempoMini />
++
++    <section className="decade-explorer" aria-labelledby="decade-explorer-title"><div className="cinematic-showcase-heading"><div><span className="public-eyebrow">{t("home.decadesEyebrow")}</span><h2 id="decade-explorer-title">{t("home.decadesTitle")}</h2></div></div><CintaDecadas peliculas={peliculas} /></section>
+ 
+     <section className="cinematic-manifesto"><span>🎞️</span><div><small>{t("home.manifestoEyebrow")}</small><h2>{t("home.manifestoTitle")}</h2></div></section>
+ 
+@@ -59,7 +71,7 @@ function HomePublica() {
+ 
+     <section className="cinematic-showcase-section birthday-showcase-section"><div className="cinematic-showcase-heading"><div><span className="public-eyebrow">{t("home.ephemeris",{month:nombreMesActual})}</span><h2>{t("home.birthdaysTitle")}</h2><p>{t("home.birthdaysDescription")}</p></div><Link to="/actores">{t("home.viewTalents")}</Link></div><div className="cinematic-talent-showcase">{cumpleanerosDelMes.map(({actor,fecha})=>{const edadQueCumple=anioActual-fecha.getFullYear();const fechaCumple=new Intl.DateTimeFormat(locale,{day:"2-digit",month:"short"}).format(fecha);return <Link to={`/actores/${actor.Id}`} className="cinematic-talent-card birthday-card" key={`cumple-${actor.Id}`}><div className="cinematic-talent-photo-wrap"><img src={obtenerFotoTalento(actor)} alt={actor.NombreArtistico||actor.NombreCompleto} onError={(e)=>manejarErrorFotoTalento(e,actor.Sexo)}/><span className="birthday-date-badge">🎂 {fechaCumple}</span>{actor.EsVerificado&&<span className="cinerd-verified-card-badge">✓ {t("home.verified")}</span>}</div><div className="cinematic-talent-card-copy"><span className="cinerd-talent-name-row"><strong>{actor.NombreArtistico||actor.NombreCompleto}</strong>{actor.EsVerificado&&<span className="cinerd-verified-mark">✓</span>}</span><small>{actor.Profesion||t("home.talents")}</small><span>{t("home.bornTurns",{year:fecha.getFullYear(),age:edadQueCumple})}</span></div></Link>})}</div>{!cargando&&cumpleanerosDelMes.length===0&&<div className="birthday-empty-state"><span>🎂</span><div><strong>{t("home.noBirthdays")}</strong><small>{t("home.noBirthdaysDescription")}</small></div></div>}</section>
+ 
+-    <section className="cinematic-showcase-section premiere-showcase-section"><div className="cinematic-showcase-heading"><div><span className="public-eyebrow">{t("home.premieresEyebrow",{month:nombreMesActual})}</span><h2>{t("home.premieresTitle")}</h2><p>{t("home.premieresDescription",{month:nombreMesActual})}</p></div><Link to="/peliculas">{t("home.viewMovies")}</Link></div><div className="cinematic-movie-showcase">{estrenosDelMes.map(({pelicula,fecha})=>{const poster=resolverImagen(pelicula.Foto);const fechaEstreno=new Intl.DateTimeFormat(locale,{day:"2-digit",month:"short"}).format(fecha);const aniversario=anioActual-fecha.getFullYear();return <Link to={`/peliculas/${pelicula.Id}`} className="cinematic-movie-showcase-card premiere-card" key={`estreno-${pelicula.Id}`}><div className="cinematic-movie-poster-wrap">{poster?<img src={poster} alt={pelicula.Titulo}/>:<div className="cinematic-movie-poster-placeholder">🎬</div>}<span className="premiere-date-badge">🎬 {fechaEstreno}</span></div><div className="cinematic-movie-showcase-copy"><strong>{pelicula.Titulo}</strong><small>{pelicula.Genero||t("movieProfile.dominicanCinema")}</small><span>{aniversario>0?t("home.releasedIn",{year:fecha.getFullYear(),years:aniversario}):t("home.releasedThisYear",{year:fecha.getFullYear()})}</span></div></Link>})}</div>{!cargando&&estrenosDelMes.length===0&&<div className="birthday-empty-state"><span>🎬</span><div><strong>{t("home.noPremieres",{month:nombreMesActual})}</strong><small>{t("home.noPremieresDescription")}</small></div></div>}</section>
++    <section className="cinematic-showcase-section premiere-showcase-section"><div className="cinematic-showcase-heading"><div><span className="public-eyebrow">{t("home.premieresEyebrow",{month:nombreMesActual})}</span><h2>{t("home.premieresTitle")}</h2><p>{t("home.premieresDescription",{month:nombreMesActual})}</p></div><Link to="/peliculas">{t("home.viewMovies")}</Link></div><div className="cinematic-movie-showcase">{estrenosDelMes.map(({pelicula,fecha})=>{const poster=resolverImagen(pelicula.Foto);const fechaEstreno=new Intl.DateTimeFormat(locale,{day:"2-digit",month:"short"}).format(fecha);const aniversario=anioActual-fecha.getFullYear();return <Link to={`/peliculas/${pelicula.Id}`} className="cinematic-movie-showcase-card premiere-card" key={`estreno-${pelicula.Id}`}><div className="cinematic-movie-poster-wrap">{poster?<img src={poster} alt={pelicula.Titulo}/>:<div className="cinematic-movie-poster-placeholder">🎬</div>}<span className="premiere-date-badge">🎬 {fechaEstreno}</span></div><div className="cinematic-movie-showcase-copy"><strong>{pelicula.Titulo}</strong><small>{pelicula.Genero||t("movieProfile.dominicanCinema")}</small><span>{aniversario>0?t("home.releasedIn",{year:fecha.getFullYear(),years:aniversario,count:aniversario}):t("home.releasedThisYear",{year:fecha.getFullYear()})}</span></div></Link>})}</div>{!cargando&&estrenosDelMes.length===0&&<div className="birthday-empty-state"><span>🎬</span><div><strong>{t("home.noPremieres",{month:nombreMesActual})}</strong><small>{t("home.noPremieresDescription")}</small></div></div>}</section>
+ 
+     <section className="cinematic-showcase-section"><div className="cinematic-showcase-heading"><div><span className="public-eyebrow">{t("home.productions")}</span><h2>{t("home.largestCast")}</h2><p>{t("home.largestCastDescription")}</p></div><Link to="/peliculas">{t("home.viewAll")}</Link></div><div className="cinematic-movie-showcase">{topPeliculas.map((pelicula,index)=>{const poster=resolverImagen(pelicula.Foto);return <Link to={`/peliculas/${pelicula.Id}`} className="cinematic-movie-showcase-card" key={pelicula.Id}><div className="cinematic-movie-poster-wrap">{poster?<img src={poster} alt={pelicula.Titulo}/>:<div className="cinematic-movie-poster-placeholder">🎬</div>}<span className="cinematic-rank-badge">#{index+1}</span><span className="cinematic-cast-badge">👥 {pelicula.CantidadActores||0}</span></div><div className="cinematic-movie-showcase-copy"><strong>{pelicula.Titulo}</strong><small>{pelicula.Genero||t("movieProfile.dominicanCinema")}</small><span>{t("home.castCount",{count:pelicula.CantidadActores||0})}</span></div></Link>})}</div></section>
+ 
+diff --git a/frontend/src/pages/Peliculas.jsx b/frontend/src/pages/Peliculas.jsx
+index 2fbe1d3..2d26021 100644
+--- a/frontend/src/pages/Peliculas.jsx
++++ b/frontend/src/pages/Peliculas.jsx
+@@ -1,8 +1,10 @@
+ import { useEffect, useState } from "react";
+-import { Link } from "react-router-dom";
++import { Link, useSearchParams } from "react-router-dom";
+ import { useTranslation } from "react-i18next";
+ import api from "../services/api";
+ import { API_URL } from "../config/api";
++import { anioDe, decadaDe } from "../data/historiaCine";
++import CintaDecadas from "../components/historia/CintaDecadas";
+ 
+ function Peliculas() {
+   const { t, i18n } = useTranslation();
+@@ -10,6 +12,8 @@ function Peliculas() {
+   const [buscar, setBuscar] = useState("");
+   const [orden, setOrden] = useState("estrenoDesc");
+   const [genero, setGenero] = useState("");
++  const [params] = useSearchParams();
++  const decada = Number(params.get("decada")) || null;
+ 
+   const usuario = (() => { try { return JSON.parse(localStorage.getItem("cineRdUsuario") || "null"); } catch { return null; } })();
+   const esAdmin = usuario?.rol === "ADMINISTRADOR";
+@@ -36,6 +40,10 @@ function Peliculas() {
+     return new Intl.DateTimeFormat(i18n.language === "en" ? "en-US" : "es-DO", { day: "2-digit", month: "2-digit", year: "numeric" }).format(valor);
+   };
+ 
++  const visibles = decada
++    ? peliculas.filter((pelicula) => decadaDe(anioDe(pelicula.FechaEstreno)) === decada)
++    : peliculas;
++
+   const generoTraducido = (valor) => valor ? t(`genres.${valor}`, { defaultValue: valor }) : t("movies.dominicanCinema");
+ 
+   return (
+@@ -46,7 +54,7 @@ function Peliculas() {
+           <h1>{t("movies.title")}</h1>
+           <p>{t("movies.description")}</p>
+         </div>
+-        <div className="catalog-hero-meta"><strong>{peliculas.length}</strong><span>{t("movies.found")}</span></div>
++        <div className="catalog-hero-meta"><strong>{visibles.length}</strong><span>{t("movies.found")}</span></div>
+         {esAdmin && <Link to="/peliculas/nueva" className="btn catalog-admin-button">{t("movies.new")}</Link>}
+       </header>
+ 
+@@ -60,13 +68,15 @@ function Peliculas() {
+         </select>
+       </section>
+ 
++      <CintaDecadas peliculas={peliculas} activa={decada} mostrarTodas />
++
+       <section className="movie-catalog-grid">
+-        {peliculas.map((pelicula) => (
++        {visibles.map((pelicula) => (
+           <article className="cinerd-movie-card" key={pelicula.Id}>
+             <Link to={`/peliculas/${pelicula.Id}`} className="cinerd-poster-wrap">
+               {pelicula.Foto ? <img src={`${API_URL}${pelicula.Foto}`} alt={pelicula.Titulo} className="cinerd-poster" /> : <div className="cinerd-poster cinerd-poster-empty">🎬</div>}
+               <div className="cinerd-poster-overlay"><span>{t("movies.viewMovie")}</span></div>
+-              <span className="cinerd-date-chip">{formatearFecha(pelicula.FechaEstreno)}</span>
++              <span className="cinerd-date-chip" title={formatearFecha(pelicula.FechaEstreno)}>{anioDe(pelicula.FechaEstreno) ?? "—"}</span>
+             </Link>
+             <div className="cinerd-movie-copy">
+               <span className="cinerd-genre">{generoTraducido(pelicula.Genero)}</span>
+@@ -81,7 +91,7 @@ function Peliculas() {
+           </article>
+         ))}
+       </section>
+-      {peliculas.length === 0 && <div className="catalog-empty"><span>🎞️</span><h2>{t("movies.emptyTitle")}</h2><p>{t("movies.emptyDescription")}</p></div>}
++      {visibles.length === 0 && <div className="catalog-empty"><span>🎞️</span><h2>{t("movies.emptyTitle")}</h2><p>{t("movies.emptyDescription")}</p></div>}
+     </div>
+   );
+ }
+diff --git a/frontend/src/pages/PerfilPelicula.jsx b/frontend/src/pages/PerfilPelicula.jsx
+index 0bef1a9..f143974 100644
+--- a/frontend/src/pages/PerfilPelicula.jsx
++++ b/frontend/src/pages/PerfilPelicula.jsx
+@@ -5,6 +5,7 @@ import api from "../services/api";
+ import { API_URL } from "../config/api";
+ import { manejarErrorFotoTalento, obtenerFotoTalento } from "../utils/talentoPlaceholder";
+ import MusicaPelicula from "../components/peliculas/MusicaPelicula";
++import { anioDe, decadaDe } from "../data/historiaCine";
+ 
+ const resolverImagen = (ruta) => !ruta ? null : ruta.startsWith("http") ? ruta : `${API_URL}${ruta}`;
+ const formatearDuracion = (minutos) => !minutos ? null : `${Math.floor(minutos / 60) ? `${Math.floor(minutos / 60)} h ` : ""}${minutos % 60} min`;
+@@ -15,13 +16,16 @@ function PerfilPelicula(){
+  const{id}=useParams();const{t,i18n}=useTranslation();const[pelicula,setPelicula]=useState(null),[reparto,setReparto]=useState([]),[creditos,setCreditos]=useState([]),[nominaciones,setNominaciones]=useState([]),[galeria,setGaleria]=useState([]),[cargando,setCargando]=useState(true),[error,setError]=useState("");
+  const usuario=(()=>{try{return JSON.parse(localStorage.getItem("cineRdUsuario")||"null");}catch{return null;}})();const esAdmin=usuario?.rol==="ADMINISTRADOR",esTalentoVerificado=usuario?.rol==="TALENTO_VERIFICADO",idiomaUi=i18n.language?.startsWith("en")?"en":"es",locale=idiomaUi==="en"?"en-US":"es-DO";
+  useEffect(()=>{setCargando(true);setError("");Promise.all([api.get(`/peliculas/${id}/perfil`,{params:{lang:idiomaUi}}),api.get(`/actores-peliculas/pelicula/${id}`),api.get(`/peliculas/${id}/creditos`),api.get("/premios/nominaciones",{params:{peliculaId:id}}),api.get("/galeria",{params:{peliculaId:id}})]).then(([p,r,c,n,g])=>{setPelicula(p.data);setReparto(r.data||[]);setCreditos(c.data||[]);setNominaciones(n.data||[]);setGaleria(g.data||[]);}).catch(e=>{console.error(e);setError(e.response?.data?.mensaje||t("movieProfile.loadError"));}).finally(()=>setCargando(false));},[id,idiomaUi,t]);
++ const[todas,setTodas]=useState([]);useEffect(()=>{let activo=true;api.get("/peliculas").then(r=>{if(activo)setTodas(r.data||[]);}).catch(()=>{});return()=>{activo=false;};},[]);
++ const anioPelicula=anioDe(pelicula?.FechaEstreno),decadaPelicula=decadaDe(anioPelicula);const mismaDecada=useMemo(()=>decadaPelicula?todas.filter(p=>p.Id!==Number(id)&&decadaDe(anioDe(p.FechaEstreno))===decadaPelicula).sort((a,b)=>Math.abs(anioDe(a.FechaEstreno)-anioPelicula)-Math.abs(anioDe(b.FechaEstreno)-anioPelicula)).slice(0,8).sort((a,b)=>String(a.FechaEstreno).localeCompare(String(b.FechaEstreno))):[],[todas,decadaPelicula,anioPelicula,id]);
+  const repartoOrdenado=useMemo(()=>[...reparto].sort((a,b)=>(a.OrdenCreditos??9999)-(b.OrdenCreditos??9999)),[reparto]);const creditosOrdenados=useMemo(()=>[...creditos].sort((a,b)=>(a.Orden??9999)-(b.Orden??9999)),[creditos]);const youtubeId=useMemo(()=>obtenerYoutubeId(pelicula?.TrailerUrl),[pelicula?.TrailerUrl]);
+  const formatearFechaLocal=fecha=>{if(!fecha)return t("movieProfile.noDate");const v=new Date(`${String(fecha).substring(0,10)}T12:00:00`);return Number.isNaN(v.getTime())?t("movieProfile.noDate"):new Intl.DateTimeFormat(locale,{day:"numeric",month:"long",year:"numeric"}).format(v);};const formatearDinero=v=>v==null?null:new Intl.NumberFormat(locale,{style:"currency",currency:"USD",maximumFractionDigits:0}).format(v);const obtenerIdioma=c=>{if(!c)return t("languages.unknown");const n=c.toLowerCase(),k=`languages.${n}`,tr=t(k);return tr===k?c.toUpperCase():tr;};
+  if(cargando)return <div className="text-center py-5"><div className="spinner-border text-primary" role="status"/><p className="text-muted mt-3">{t("movieProfile.loading")}</p></div>;if(error||!pelicula)return <div className="text-center py-5"><div className="alert alert-danger">{error||t("movieProfile.notFound")}</div><Link to="/peliculas" className="btn btn-primary">{t("movieProfile.backToMovies")}</Link></div>;
+  const backdrop=resolverImagen(pelicula.Backdrop),poster=resolverImagen(pelicula.Foto),tituloFueLocalizado=pelicula.TraduccionAplicada&&pelicula.TituloOriginal&&pelicula.TituloOriginal!==pelicula.Titulo;
+  return <div className="table-page-container movie-profile-page"><div className="d-flex flex-wrap gap-2 mb-4"><Link to="/peliculas" className="btn btn-outline-secondary">{t("movieProfile.back")}</Link>{esAdmin&&<><Link to={`/peliculas/editar/${pelicula.Id}`} className="btn btn-outline-warning">{t("movieProfile.edit")}</Link><Link to={`/peliculas/${pelicula.Id}/reparto`} className="btn btn-primary">{t("movieProfile.manageCast")}</Link><Link to={`/peliculas/${pelicula.Id}/creditos`} className="btn btn-outline-primary">🎬 Créditos</Link><Link to="/admin/premios" className="btn btn-outline-primary">🏆 Premios</Link><Link to="/admin/galeria" className="btn btn-outline-primary">🖼️ Galería</Link></>}{esTalentoVerificado&&<Link to={`/mi-perfil/reclamar-credito?pelicula=${pelicula.Id}`} className="btn btn-outline-primary">➕ Reclamar participación</Link>}</div>
+- <section className="card mb-4 overflow-hidden"><div style={{minHeight:backdrop?"340px":"90px",background:backdrop?`linear-gradient(180deg,rgba(5,11,22,.08),rgba(5,11,22,.88)),url(${backdrop}) center/cover`:"linear-gradient(135deg,#07111f,#10345f)"}}/><div className="card-body p-4 p-lg-5"><div className="row g-4 align-items-center"><div className="col-12 col-md-4 col-lg-3 text-center">{poster?<img src={poster} alt={pelicula.Titulo} className="img-fluid rounded-4 shadow" style={{maxHeight:"430px",objectFit:"cover"}}/>:<div className="bg-light border rounded-4 d-grid mx-auto" style={{maxWidth:"280px",minHeight:"390px",placeItems:"center"}}>🎬</div>}</div><div className="col-12 col-md-8 col-lg-9"><span className="badge bg-primary mb-3">{t("movieProfile.dominicanCinema")}</span><h1 className="display-5 fw-bold mb-2">{pelicula.Titulo}</h1>{tituloFueLocalizado&&<p className="text-muted mb-2"><strong>{t("movieProfile.originalTitle")}:</strong> <span className="fst-italic">{pelicula.TituloOriginal}</span></p>}{pelicula.Eslogan&&<p className="lead text-muted fst-italic">“{pelicula.Eslogan}”</p>}<div className="d-flex flex-wrap gap-2 mb-4"><span className="badge bg-secondary">{pelicula.Genero||t("movieProfile.noGenre")}</span><span className="badge bg-light text-dark border">{formatearFechaLocal(pelicula.FechaEstreno)}</span>{pelicula.DuracionMinutos&&<span className="badge bg-light text-dark border">{formatearDuracion(pelicula.DuracionMinutos)}</span>}{pelicula.Calificacion!=null&&<span className="badge bg-warning text-dark">★ {Number(pelicula.Calificacion).toFixed(1)}/10</span>}<span className="badge bg-light text-dark border">{t("movieProfile.talents",{count:reparto.length})}</span>{nominaciones.some(n=>n.Resultado==="GANADOR")&&<span className="badge bg-success">🏆 {nominaciones.filter(n=>n.Resultado==="GANADOR").length}</span>}{galeria.length>0&&<span className="badge bg-light text-dark border">🖼️ {galeria.length}</span>}{pelicula.Estado&&<span className="badge bg-info text-dark">{pelicula.Estado}</span>}</div><dl className="row mb-0"><dt className="col-sm-3">{t("movieProfile.director")}</dt><dd className="col-sm-9">{pelicula.Director||t("movieProfile.notRegistered")}</dd><dt className="col-sm-3">{t("movieProfile.productionCompany")}</dt><dd className="col-sm-9">{pelicula.Productora||t("movieProfile.notRegisteredFemale")}</dd><dt className="col-sm-3">{t("movieProfile.originalLanguage")}</dt><dd className="col-sm-9">{obtenerIdioma(pelicula.IdiomaOriginal)}</dd>{pelicula.Presupuesto!=null&&<><dt className="col-sm-3">{t("movieProfile.budget")}</dt><dd className="col-sm-9">{formatearDinero(pelicula.Presupuesto)}</dd></>}{pelicula.Recaudacion!=null&&<><dt className="col-sm-3">{t("movieProfile.revenue")}</dt><dd className="col-sm-9">{formatearDinero(pelicula.Recaudacion)}</dd></>}</dl>{pelicula.TraduccionAplicada&&<p className="small text-muted mt-3 mb-0">{t("movieProfile.localizedNotice",{source:t(`translationSources.${pelicula.TipoFuenteTraduccion||"EDITORIAL"}`)})}</p>}</div></div></div></section>
++ <section className="card mb-4 overflow-hidden"><div className="movie-hero-banner" style={backdrop?{minHeight:"340px",background:`linear-gradient(180deg,rgba(5,11,22,.08),rgba(5,11,22,.88)),url(${backdrop}) center/cover`}:undefined}>{!backdrop&&anioPelicula&&<span className="movie-hero-year" aria-hidden="true">{anioPelicula}</span>}</div><div className="card-body p-4 p-lg-5"><div className="row g-4 align-items-center"><div className="col-12 col-md-4 col-lg-3 text-center">{poster?<img src={poster} alt={pelicula.Titulo} className="img-fluid rounded-4 shadow" style={{maxHeight:"430px",objectFit:"cover"}}/>:<div className="bg-light border rounded-4 d-grid mx-auto" style={{maxWidth:"280px",minHeight:"390px",placeItems:"center"}}>🎬</div>}</div><div className="col-12 col-md-8 col-lg-9"><span className="badge bg-primary mb-3">{t("movieProfile.dominicanCinema")}</span><h1 className="display-5 fw-bold mb-2">{pelicula.Titulo}</h1>{tituloFueLocalizado&&<p className="text-muted mb-2"><strong>{t("movieProfile.originalTitle")}:</strong> <span className="fst-italic">{pelicula.TituloOriginal}</span></p>}{pelicula.Eslogan&&<p className="lead text-muted fst-italic">“{pelicula.Eslogan}”</p>}<div className="d-flex flex-wrap gap-2 mb-4"><span className="badge bg-secondary">{pelicula.Genero||t("movieProfile.noGenre")}</span><span className="badge bg-light text-dark border">{formatearFechaLocal(pelicula.FechaEstreno)}</span>{decadaPelicula&&<Link className="badge decade-badge text-decoration-none" to={`/peliculas?decada=${decadaPelicula}`}>{decadaPelicula}s</Link>}{pelicula.DuracionMinutos&&<span className="badge bg-light text-dark border">{formatearDuracion(pelicula.DuracionMinutos)}</span>}{pelicula.Calificacion!=null&&<span className="badge bg-warning text-dark">★ {Number(pelicula.Calificacion).toFixed(1)}/10</span>}<span className="badge bg-light text-dark border">{t("movieProfile.talents",{count:reparto.length})}</span>{nominaciones.some(n=>n.Resultado==="GANADOR")&&<span className="badge bg-success">🏆 {nominaciones.filter(n=>n.Resultado==="GANADOR").length}</span>}{galeria.length>0&&<span className="badge bg-light text-dark border">🖼️ {galeria.length}</span>}{pelicula.Estado&&<span className="badge bg-info text-dark">{pelicula.Estado}</span>}</div><dl className="row mb-0"><dt className="col-sm-3">{t("movieProfile.director")}</dt><dd className="col-sm-9">{pelicula.Director||t("movieProfile.notRegistered")}</dd><dt className="col-sm-3">{t("movieProfile.productionCompany")}</dt><dd className="col-sm-9">{pelicula.Productora||t("movieProfile.notRegisteredFemale")}</dd><dt className="col-sm-3">{t("movieProfile.originalLanguage")}</dt><dd className="col-sm-9">{obtenerIdioma(pelicula.IdiomaOriginal)}</dd>{pelicula.Presupuesto!=null&&<><dt className="col-sm-3">{t("movieProfile.budget")}</dt><dd className="col-sm-9">{formatearDinero(pelicula.Presupuesto)}</dd></>}{pelicula.Recaudacion!=null&&<><dt className="col-sm-3">{t("movieProfile.revenue")}</dt><dd className="col-sm-9">{formatearDinero(pelicula.Recaudacion)}</dd></>}</dl>{pelicula.TraduccionAplicada&&<p className="small text-muted mt-3 mb-0">{t("movieProfile.localizedNotice",{source:t(`translationSources.${pelicula.TipoFuenteTraduccion||"EDITORIAL"}`)})}</p>}</div></div></div></section>
+  <section className="card mb-4"><div className="card-body p-4"><span className="catalog-eyebrow">{t("movieProfile.history")}</span><h2 className="h4">{t("movieProfile.synopsis")}</h2><p className="text-muted mb-0" style={{whiteSpace:"pre-line"}}>{pelicula.Sinopsis||t("movieProfile.synopsisMissing")}</p></div></section>
++ {mismaDecada.length>0&&<section className="card mb-4 same-decade"><div className="card-body p-4"><span className="catalog-eyebrow">{t("movieProfile.contextEyebrow")}</span><div className="same-decade-head"><h2 className="h4 mb-0">{t("movieProfile.sameDecadeTitle")} · {decadaPelicula}s</h2><Link to={`/peliculas?decada=${decadaPelicula}`}>{t("movieProfile.viewDecade")}</Link></div><ul className="same-decade-row">{mismaDecada.map(p=><li key={p.Id}><Link to={`/peliculas/${p.Id}`} title={p.Titulo}>{p.Foto?<img src={resolverImagen(p.Foto)} alt={p.Titulo} loading="lazy"/>:<span>{p.Titulo}</span>}<small>{anioDe(p.FechaEstreno)}</small></Link></li>)}</ul></div></section>}
+  {galeria.length>0&&<section className="card mb-4"><div className="card-body p-4"><span className="catalog-eyebrow">ARCHIVO VISUAL</span><h2 className="h4 mb-3">🖼️ Galería multimedia</h2><div className="row g-3">{galeria.map(g=><div className="col-12 col-sm-6 col-lg-4" key={g.Id}><a href={resolverImagen(g.Archivo)} target="_blank" rel="noreferrer" className="card h-100 text-decoration-none overflow-hidden"><img src={resolverImagen(g.Archivo)} alt={g.Titulo||pelicula.Titulo} loading="lazy" style={{width:"100%",aspectRatio:"4/3",objectFit:"cover"}}/><div className="card-body"><div className="d-flex justify-content-between gap-2"><strong className="text-dark">{g.Titulo||"Imagen de archivo"}</strong>{g.EsDestacada&&<span>⭐</span>}</div><small className="text-muted">{g.Tipo.replaceAll("_"," ")}</small>{g.Descripcion&&<p className="small text-muted mt-2 mb-0">{g.Descripcion}</p>}</div></a></div>)}</div></div></section>}
+  {nominaciones.length>0&&<section className="card mb-4"><div className="card-body p-4"><span className="catalog-eyebrow">RECONOCIMIENTOS</span><h2 className="h4 mb-3">🏆 Premios y nominaciones</h2><div className="row g-3">{nominaciones.map(n=><div className="col-12 col-md-6" key={n.Id}><article className="border rounded-3 p-3 h-100"><div className="d-flex justify-content-between gap-3"><div><strong className="d-block">{n.Premio}</strong><span className="text-muted small">{n.Categoria} · {n.Anio}</span></div><span className={`badge align-self-start ${n.Resultado==="GANADOR"?"bg-success":"bg-secondary"}`}>{n.Resultado==="GANADOR"?"🏆 Ganador":"Nominado"}</span></div>{n.Detalle&&<p className="small text-muted mt-2 mb-1">{n.Detalle}</p>}{n.FuenteUrl&&<a className="small" href={n.FuenteUrl} target="_blank" rel="noreferrer noopener">Fuente ↗</a>}</article></div>)}</div></div></section>}
+  <MusicaPelicula peliculaId={pelicula.Id}/>
+diff --git a/frontend/src/styles/heritage.css b/frontend/src/styles/heritage.css
+new file mode 100644
+index 0000000..c6e94cc
+--- /dev/null
++++ b/frontend/src/styles/heritage.css
+@@ -0,0 +1,579 @@
++/* =========================================================
++   CINERD · IDENTIDAD «ARCHIVO DEL CINE DOMINICANO»
++   Se carga al final: define tokens, tipografía y el motivo
++   visual (papel de archivo, cinta de película, grano) sobre
++   los componentes existentes sin reescribirlos.
++   ========================================================= */
++
++:root {
++  --font-display: "Fraunces Variable", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
++  --font-body: "Inter Variable", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
++
++  --rd-blue: #0a2f73;
++  --rd-red: #c8102e;
++  --rd-gold: #b98a2e;
++  --rd-gold-soft: #d6ad52;
++
++  /* Acentos que cambian según el tema para mantener contraste */
++  --hist-accent: #0a2f73;
++  --hist-gold: #9a6f1c;
++
++  /* Papel de archivo (modo claro) */
++  --cine-background: #f4eee1;
++  --cine-bg: #f4eee1;
++  --cine-surface-1: #fffdf8;
++  --cine-surface-2: #faf6ec;
++  --cine-surface-3: #f1eadb;
++  --cine-line: #e2d8c3;
++  --cine-line-soft: #ece4d2;
++  --cine-border: #e2d8c3;
++  --cine-text-1: #14192b;
++  --cine-text-2: #484d5c;
++  --cine-text-3: #696d79;
++  --cine-shadow-theme: 0 10px 28px rgba(60, 42, 10, 0.08);
++
++  /* Grano de película (SVG inline, sin peticiones de red) */
++  --film-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
++}
++
++html[data-theme="dark"] {
++  --hist-accent: #9cc0ff;
++  --hist-gold: #e2bb62;
++}
++
++html body {
++  font-family: var(--font-body);
++}
++
++/* ---------- Tipografía editorial ---------- */
++
++.cinematic-hero h1,
++.cinematic-showcase-heading h2,
++.cinematic-manifesto h2,
++.catalog-hero h1,
++.catalog-page .catalog-hero h1,
++.cinerd-movie-copy h2,
++.movie-profile-page h1,
++.movie-profile-page h2,
++.mini-timeline-heading h2,
++.cine-footer-tagline {
++  font-family: var(--font-display);
++  font-optical-sizing: auto;
++  letter-spacing: -0.015em;
++}
++
++.cinematic-hero h1 {
++  font-size: clamp(2.3rem, 5.2vw, 4.1rem);
++  font-weight: 600;
++  line-height: 1.03;
++}
++
++.cinematic-showcase-heading h2,
++.cinematic-manifesto h2,
++.mini-timeline-heading h2 {
++  font-weight: 600;
++}
++
++.cinerd-movie-copy h2 {
++  font-weight: 600;
++}
++
++.public-eyebrow,
++.catalog-eyebrow {
++  letter-spacing: 0.18em;
++  font-weight: 700;
++}
++
++.cinematic-hero .public-eyebrow {
++  color: var(--rd-gold-soft);
++}
++
++/* ---------- Motivo: cinta de película ---------- */
++
++.film-perforations,
++.cine-footer-strip,
++.history-hero-strip,
++.cinematic-hero::after,
++.movie-hero-banner::after,
++.catalog-hero::after {
++  content: "";
++  display: block;
++  height: 26px;
++  background-color: rgba(3, 8, 18, 0.55);
++  background-image: repeating-linear-gradient(
++    90deg,
++    transparent 0 12px,
++    rgba(255, 255, 255, 0.22) 12px 26px,
++    transparent 26px 38px
++  );
++  background-size: 100% 10px;
++  background-repeat: no-repeat;
++  background-position: 0 8px;
++}
++
++.cinematic-hero::after,
++.movie-hero-banner::after,
++.catalog-hero::after {
++  position: absolute;
++  left: 0;
++  right: 0;
++  bottom: 0;
++  pointer-events: none;
++}
++
++/* Grano sutil sobre superficies oscuras */
++.cinematic-hero::before,
++.history-hero::before,
++.movie-hero-banner::before {
++  content: "";
++  position: absolute;
++  inset: 0;
++  background-image: var(--film-grain);
++  background-size: 160px;
++  background-position: 0 0;
++  opacity: 0.1;
++  mix-blend-mode: overlay;
++  mask-image: none;
++  -webkit-mask-image: none;
++  pointer-events: none;
++}
++
++/* Deja espacio para la cinta en el hero de la portada */
++.cinematic-hero {
++  padding-bottom: calc(clamp(36px, 6vw, 72px) + 14px);
++}
++
++/* ---------- Portada ---------- */
++
++.cinematic-manifesto {
++  border-left-color: var(--rd-red);
++  background: var(--cine-surface-2);
++}
++
++.cinematic-manifesto h2 {
++  font-weight: 500;
++}
++
++.cinematic-stats strong {
++  font-family: var(--font-display);
++  font-weight: 600;
++}
++
++/* Línea de tiempo resumida */
++.mini-timeline-section,
++.decade-explorer {
++  margin: 28px 0 8px;
++  padding: 28px clamp(18px, 3vw, 34px);
++  border: 1px solid var(--cine-line);
++  border-radius: 24px;
++  background: var(--cine-surface-1);
++  box-shadow: var(--cine-shadow-theme);
++}
++
++.mini-timeline-heading {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: end;
++  justify-content: space-between;
++  gap: 12px 24px;
++}
++
++.mini-timeline-heading h2 {
++  margin: 4px 0 0;
++  font-size: clamp(1.5rem, 3vw, 2.1rem);
++}
++
++.mini-timeline-cta {
++  color: var(--hist-accent);
++  font-weight: 700;
++  font-size: 0.92rem;
++}
++
++.mini-timeline {
++  position: relative;
++  display: grid;
++  grid-template-columns: repeat(6, minmax(0, 1fr));
++  margin: 26px 0 0;
++  padding: 0;
++  list-style: none;
++}
++
++.mini-timeline::before {
++  content: "";
++  position: absolute;
++  top: 14px;
++  left: 8px;
++  right: 8px;
++  height: 2px;
++  background: linear-gradient(90deg, var(--rd-blue), var(--rd-red) 60%, var(--rd-gold-soft));
++}
++
++.mini-timeline a {
++  position: relative;
++  display: block;
++  padding: 34px 14px 0 0;
++  color: inherit;
++  text-decoration: none;
++}
++
++.mini-timeline a::before {
++  content: "";
++  position: absolute;
++  top: 7px;
++  left: 0;
++  width: 16px;
++  height: 16px;
++  box-sizing: border-box;
++  border: 3px solid var(--rd-red);
++  border-radius: 50%;
++  background: var(--cine-surface-1);
++  box-shadow: 0 0 0 4px var(--cine-surface-1);
++  transition: transform 0.15s ease, background 0.15s ease;
++}
++
++.mini-timeline a:hover::before,
++.mini-timeline a:focus-visible::before {
++  background: var(--rd-red);
++  transform: scale(1.2);
++}
++
++.mini-timeline-year {
++  display: block;
++  color: var(--hist-accent);
++  font-family: var(--font-display);
++  font-size: 1.7rem;
++  font-weight: 600;
++  line-height: 1;
++}
++
++.mini-timeline strong {
++  display: block;
++  margin-top: 8px;
++  color: var(--cine-text-2);
++  font-size: 0.86rem;
++  font-weight: 600;
++  line-height: 1.35;
++}
++
++@media (max-width: 820px) {
++  .mini-timeline {
++    grid-template-columns: none;
++    grid-auto-flow: column;
++    grid-auto-columns: 58%;
++    gap: 6px;
++    overflow-x: auto;
++    padding-bottom: 8px;
++    scroll-snap-type: x proximity;
++  }
++
++  .mini-timeline li {
++    scroll-snap-align: start;
++  }
++
++  .mini-timeline::before {
++    right: auto;
++    width: calc(6 * 58% + 30px);
++  }
++}
++
++/* ---------- Cinta de décadas ---------- */
++
++.decade-explorer .decade-rail {
++  margin: 18px 0 0;
++}
++
++.decade-rail {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 10px;
++  margin: 0 0 22px;
++}
++
++.decade-chip {
++  display: flex;
++  flex-direction: column;
++  min-width: 118px;
++  padding: 12px 18px;
++  border: 1px solid var(--cine-line);
++  border-radius: 14px;
++  background: var(--cine-surface-1);
++  color: var(--cine-text-1);
++  text-decoration: none;
++  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
++}
++
++.decade-chip:hover,
++.decade-chip:focus-visible {
++  transform: translateY(-2px);
++  border-color: var(--rd-gold);
++  box-shadow: var(--cine-shadow-theme);
++  color: var(--cine-text-1);
++}
++
++.decade-chip-year {
++  font-family: var(--font-display);
++  font-size: 1.35rem;
++  font-weight: 600;
++  line-height: 1.1;
++}
++
++.decade-chip small {
++  margin-top: 2px;
++  color: var(--cine-text-3);
++  font-size: 0.74rem;
++  letter-spacing: 0.02em;
++}
++
++.decade-chip.is-active,
++.decade-chip.is-active:hover {
++  border-color: transparent;
++  background: linear-gradient(135deg, #0a2f73, #0e3f94);
++  color: #fff;
++}
++
++.decade-chip.is-active small {
++  color: rgba(255, 255, 255, 0.78);
++}
++
++.decade-chip-all .decade-chip-year {
++  font-family: var(--font-body);
++  font-size: 1rem;
++  font-weight: 700;
++  line-height: 1.5;
++}
++
++/* ---------- Catálogo ---------- */
++
++.catalog-hero {
++  padding-bottom: 52px;
++  border-radius: 24px;
++}
++
++.catalog-hero h1 {
++  font-weight: 600;
++}
++
++.cinerd-poster-wrap .cinerd-date-chip {
++  padding: 4px 11px;
++  border: 1px solid rgba(243, 217, 143, 0.5);
++  background: rgba(8, 12, 22, 0.84);
++  color: #f3d98f;
++  font-family: var(--font-display);
++  font-size: 0.92rem;
++  font-weight: 600;
++  letter-spacing: 0.02em;
++}
++
++.cinerd-movie-card {
++  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
++}
++
++.cinerd-movie-card:hover {
++  transform: translateY(-4px);
++  border-color: rgba(185, 138, 46, 0.55);
++}
++
++@media (max-width: 575px) {
++  .cinerd-poster-wrap .cinerd-date-chip {
++    padding: 3px 8px;
++    font-size: 0.74rem;
++  }
++}
++
++/* ---------- Ficha de película ---------- */
++
++.movie-hero-banner {
++  position: relative;
++  min-height: 150px;
++  overflow: hidden;
++  background: linear-gradient(135deg, #07111f, #10345f);
++}
++
++.movie-hero-year {
++  position: absolute;
++  right: clamp(16px, 4vw, 40px);
++  bottom: -0.12em;
++  color: rgba(214, 173, 82, 0.26);
++  font-family: var(--font-display);
++  font-size: clamp(5rem, 15vw, 9.5rem);
++  font-weight: 700;
++  line-height: 1;
++  letter-spacing: -0.04em;
++  user-select: none;
++}
++
++.movie-profile-page h1 {
++  font-weight: 600;
++}
++
++.decade-badge {
++  border: 1px solid #e1cd96;
++  background: #f6ecd0;
++  color: #5a4210;
++  font-weight: 700;
++}
++
++html[data-theme="dark"] .decade-badge {
++  border-color: rgba(226, 187, 98, 0.45);
++  background: rgba(226, 187, 98, 0.14);
++  color: #f0d58f;
++}
++
++.same-decade-head {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: baseline;
++  justify-content: space-between;
++  gap: 8px 16px;
++  margin: 6px 0 16px;
++}
++
++.same-decade-head a {
++  color: var(--hist-accent);
++  font-size: 0.9rem;
++  font-weight: 700;
++}
++
++.same-decade-row {
++  display: grid;
++  grid-auto-flow: column;
++  grid-auto-columns: minmax(104px, 128px);
++  gap: 14px;
++  margin: 0;
++  padding: 0 0 8px;
++  overflow-x: auto;
++  list-style: none;
++  scroll-snap-type: x proximity;
++}
++
++.same-decade-row li {
++  scroll-snap-align: start;
++}
++
++.same-decade-row a {
++  display: block;
++  color: inherit;
++  text-decoration: none;
++}
++
++.same-decade-row img {
++  display: block;
++  width: 100%;
++  aspect-ratio: 2 / 3;
++  border-radius: 10px;
++  box-shadow: var(--cine-shadow-theme);
++  object-fit: cover;
++}
++
++.same-decade-row small {
++  display: block;
++  margin-top: 6px;
++  color: var(--cine-text-3);
++  font-size: 0.78rem;
++  font-weight: 700;
++}
++
++/* ---------- Footer ---------- */
++
++html[data-theme] .cine-footer {
++  margin-top: 56px;
++  border-top: 0;
++  background: #050b16;
++  color: rgba(255, 255, 255, 0.78);
++}
++
++.cine-footer-strip {
++  margin-bottom: 8px;
++}
++
++.cine-footer-grid {
++  display: grid;
++  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr);
++  gap: 28px 40px;
++  padding: 26px 0 18px;
++}
++
++.cine-footer-brand {
++  display: flex;
++  align-items: center;
++  gap: 22px;
++}
++
++.cine-footer-logo {
++  width: 124px;
++  max-height: 96px;
++  flex-shrink: 0;
++}
++
++.cine-footer-tagline {
++  margin: 0 0 4px;
++  color: #fff;
++  font-size: 1.55rem;
++  font-weight: 600;
++  line-height: 1.15;
++}
++
++html[data-theme] .cine-footer-description {
++  margin: 0;
++  color: rgba(255, 255, 255, 0.66);
++  font-size: 0.95rem;
++  font-weight: 500;
++}
++
++.cine-footer-links {
++  display: flex;
++  flex-direction: column;
++  align-items: flex-start;
++  gap: 8px;
++}
++
++.cine-footer-links strong {
++  margin-bottom: 2px;
++  color: var(--rd-gold-soft);
++  font-size: 0.74rem;
++  letter-spacing: 0.18em;
++  text-transform: uppercase;
++}
++
++.cine-footer-links a {
++  color: rgba(255, 255, 255, 0.82);
++  font-weight: 600;
++  text-decoration: none;
++}
++
++.cine-footer-links a:hover {
++  color: #fff;
++  text-decoration: underline;
++  text-decoration-color: var(--rd-red);
++  text-underline-offset: 4px;
++}
++
++html[data-theme] .cine-footer-copy,
++html[data-theme] .cine-footer-attribution {
++  color: rgba(255, 255, 255, 0.5);
++  text-align: left;
++}
++
++html[data-theme] .cine-footer-attribution {
++  border-top-color: rgba(255, 255, 255, 0.12);
++}
++
++@media (max-width: 720px) {
++  .cine-footer-grid {
++    grid-template-columns: 1fr;
++  }
++
++  .cine-footer-brand {
++    flex-direction: column;
++    align-items: flex-start;
++    gap: 14px;
++  }
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .decade-chip,
++  .cinerd-movie-card,
++  .mini-timeline a::before {
++    transition: none;
++  }
++}
+diff --git a/frontend/src/styles/historia.css b/frontend/src/styles/historia.css
+new file mode 100644
+index 0000000..72082b2
+--- /dev/null
++++ b/frontend/src/styles/historia.css
+@@ -0,0 +1,493 @@
++/* =========================================================
++   PÁGINA /historia — cronología del cine dominicano
++   ========================================================= */
++
++.history-page {
++  display: flex;
++  flex-direction: column;
++  gap: 32px;
++  padding-bottom: 12px;
++}
++
++/* ---------- Cabecera ---------- */
++
++.history-hero {
++  position: relative;
++  overflow: hidden;
++  padding: clamp(34px, 6vw, 68px) clamp(24px, 5vw, 64px) calc(clamp(34px, 5vw, 56px) + 20px);
++  border-radius: 28px;
++  background:
++    radial-gradient(circle at 86% 18%, rgba(214, 173, 82, 0.24), transparent 30%),
++    radial-gradient(circle at 8% 100%, rgba(200, 16, 46, 0.26), transparent 34%),
++    linear-gradient(135deg, #050b16 0%, #0b2345 58%, #0a2f73 100%);
++  box-shadow: 0 30px 80px rgba(4, 18, 41, 0.22);
++  color: #fff;
++}
++
++.history-hero > * {
++  position: relative;
++}
++
++.history-hero .history-hero-strip {
++  position: absolute;
++  inset: auto 0 0 0;
++}
++
++.history-hero .public-eyebrow {
++  color: var(--rd-gold-soft);
++}
++
++.history-hero h1 {
++  max-width: 16ch;
++  margin: 14px 0 16px;
++  font-family: var(--font-display);
++  font-size: clamp(2.3rem, 5.4vw, 4.2rem);
++  font-weight: 600;
++  line-height: 1.03;
++  letter-spacing: -0.02em;
++}
++
++.history-hero p {
++  max-width: 58ch;
++  margin: 0;
++  color: rgba(255, 255, 255, 0.8);
++  font-size: 1.06rem;
++  line-height: 1.6;
++}
++
++.history-hero-stats {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 16px 44px;
++  margin: 30px 0 0;
++  padding-top: 24px;
++  border-top: 1px solid rgba(255, 255, 255, 0.16);
++}
++
++.history-hero-stats div {
++  display: flex;
++  flex-direction: column-reverse;
++  gap: 4px;
++}
++
++.history-hero-stats dt {
++  max-width: 17ch;
++  color: rgba(255, 255, 255, 0.62);
++  font-size: 0.72rem;
++  font-weight: 600;
++  letter-spacing: 0.06em;
++  line-height: 1.35;
++  text-transform: uppercase;
++}
++
++.history-hero-stats dd {
++  margin: 0;
++  color: var(--rd-gold-soft);
++  font-family: var(--font-display);
++  font-size: 2.6rem;
++  font-weight: 600;+  line-height: 1;
++}
++
++/* ---------- Navegación por épocas ---------- */
++
++.history-era-nav {
++  position: sticky;
++  top: 76px;
++  z-index: 5;
++  display: flex;
++  gap: 8px;
++  padding: 8px;
++  overflow-x: auto;
++  border: 1px solid var(--cine-line);
++  border-radius: 16px;
++  background: color-mix(in srgb, var(--cine-surface-1) 92%, transparent);
++  backdrop-filter: blur(12px);
++  box-shadow: var(--cine-shadow-theme);
++}
++
++.history-era-nav a {
++  display: flex;
++  flex: 1 0 auto;
++  flex-direction: column;
++  gap: 1px;
++  min-width: 128px;
++  padding: 8px 14px;
++  border-radius: 11px;
++  color: var(--cine-text-1);
++  text-decoration: none;
++  transition: background 0.15s ease;
++}
++
++.history-era-nav a:hover,
++.history-era-nav a:focus-visible {
++  background: var(--cine-surface-3);
++  color: var(--cine-text-1);
++}
++
++.history-era-nav small {
++  color: var(--hist-gold);
++  font-family: var(--font-display);
++  font-size: 0.82rem;
++  font-weight: 600;
++}
++
++.history-era-nav span {
++  font-size: 0.86rem;
++  font-weight: 650;
++  line-height: 1.25;
++}
++
++/* ---------- Épocas y línea de tiempo ---------- */
++
++.history-timeline-wrap {
++  display: flex;
++  flex-direction: column;
++  gap: 40px;
++}
++
++.history-era {
++  scroll-margin-top: 150px;
++}
++
++.history-era-header {
++  display: grid;
++  gap: 4px;
++  margin-bottom: 22px;
++}
++
++.history-era-range {
++  color: var(--hist-gold);
++  font-family: var(--font-display);
++  font-size: 1rem;
++  font-weight: 600;
++  letter-spacing: 0.06em;
++}
++
++.history-era-header h2 {
++  margin: 0;
++  font-family: var(--font-display);
++  font-size: clamp(1.8rem, 3.6vw, 2.5rem);
++  font-weight: 600;
++  letter-spacing: -0.015em;
++}
++
++.history-era-header p {
++  max-width: 60ch;
++  margin: 0;
++  color: var(--cine-text-2);
++}
++
++.history-timeline {
++  position: relative;
++  margin: 0;
++  padding: 0;
++  list-style: none;
++}
++
++.history-timeline::before {
++  content: "";
++  position: absolute;
++  top: 8px;
++  bottom: 8px;
++  left: 131px;
++  width: 2px;
++  background: linear-gradient(var(--rd-blue), var(--rd-red));
++  opacity: 0.55;
++}
++
++.history-item {
++  position: relative;
++  display: grid;
++  grid-template-columns: 112px minmax(0, 1fr);
++  column-gap: 38px;
++  padding-bottom: 22px;
++  scroll-margin-top: 150px;
++}
++
++.history-item:last-child {
++  padding-bottom: 0;
++}
++
++.history-item::before {
++  content: "";
++  position: absolute;
++  top: 14px;
++  left: 123px;
++  z-index: 1;
++  width: 16px;
++  height: 16px;
++  box-sizing: border-box;
++  border: 3px solid var(--rd-red);
++  border-radius: 50%;
++  background: var(--cine-background);
++}
++
++.history-item.is-featured::before {
++  background: var(--rd-red);
++  box-shadow: 0 0 0 5px rgba(200, 16, 46, 0.2);
++}
++
++.history-item-year {
++  padding-top: 6px;
++  color: var(--hist-accent);
++  font-family: var(--font-display);
++  font-size: 1.6rem;
++  font-weight: 600;
++  line-height: 1.15;
++  text-align: right;
++  white-space: nowrap;
++}
++
++.history-item-card {
++  padding: 20px 24px;
++  border: 1px solid var(--cine-line);
++  border-radius: 18px;
++  background: var(--cine-surface-1);
++  box-shadow: var(--cine-shadow-theme);
++}
++
++.history-item.is-featured .history-item-card {
++  border-left: 4px solid var(--rd-red);
++}
++
++.history-item-card h3 {
++  margin: 0 0 8px;
++  font-family: var(--font-display);
++  font-size: 1.32rem;
++  font-weight: 600;
++  line-height: 1.25;
++}
++
++.history-item-card p {
++  margin: 0;
++  color: var(--cine-text-2);
++  line-height: 1.65;
++}
++
++.history-item-archive {
++  margin-top: 16px;
++  padding-top: 14px;
++  border-top: 1px dashed var(--cine-line);
++}
++
++.history-item-archive small {
++  color: var(--hist-gold);
++  font-size: 0.7rem;
++  font-weight: 700;
++  letter-spacing: 0.16em;
++  text-transform: uppercase;
++}
++
++.history-film-chip {
++  display: inline-flex;
++  align-items: center;
++  gap: 10px;
++  margin: 8px 8px 0 0;
++  padding: 6px 14px 6px 6px;
++  border: 1px solid var(--cine-line);
++  border-radius: 12px;
++  background: var(--cine-surface-2);
++  color: var(--cine-text-1);
++  font-size: 0.9rem;
++  font-weight: 650;
++  text-decoration: none;
++  transition: border-color 0.15s ease, transform 0.15s ease;
++}
++
++.history-film-chip:hover {
++  border-color: var(--rd-gold);
++  color: var(--cine-text-1);
++  transform: translateY(-1px);
++}
++
++.history-film-chip img {
++  width: 34px;
++  height: 50px;
++  border-radius: 6px;
++  object-fit: cover;
++}
++
++/* ---------- Archivo por décadas ---------- */
++
++.history-archive {
++  padding: clamp(22px, 4vw, 40px);
++  border: 1px solid var(--cine-line);
++  border-radius: 26px;
++  background: var(--cine-surface-1);
++  box-shadow: var(--cine-shadow-theme);
++}
++
++.history-archive > h2 {
++  margin: 6px 0 6px;
++  font-family: var(--font-display);
++  font-size: clamp(1.7rem, 3.4vw, 2.3rem);
++  font-weight: 600;
++  letter-spacing: -0.015em;
++}
++
++.history-archive > p {
++  margin: 0;
++  color: var(--cine-text-2);
++}
++
++.history-decade {
++  margin-top: 30px;
++}
++
++.history-decade-head {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: baseline;
++  gap: 6px 14px;
++}
++
++.history-decade-head h3 {
++  margin: 0;
++  font-family: var(--font-display);
++  font-size: 1.65rem;
++  font-weight: 600;
++}
++
++.history-decade-head span {
++  color: var(--cine-text-3);
++  font-size: 0.88rem;
++  font-weight: 600;
++}
++
++.history-decade-head a {
++  margin-left: auto;
++  color: var(--hist-accent);
++  font-size: 0.9rem;
++  font-weight: 700;
++}
++
++.history-decade-posters {
++  display: grid;
++  grid-auto-flow: column;
++  grid-auto-columns: minmax(104px, 128px);
++  gap: 14px;
++  margin: 0;
++  padding: 12px 0 8px;
++  overflow-x: auto;
++  list-style: none;
++  scroll-snap-type: x proximity;
++}
++
++.history-decade-posters li {
++  scroll-snap-align: start;
++}
++
++.history-decade-posters a {
++  display: block;
++  color: inherit;
++  text-decoration: none;
++}
++
++.history-decade-posters img {
++  display: block;
++  width: 100%;
++  aspect-ratio: 2 / 3;
++  border-radius: 10px;
++  box-shadow: var(--cine-shadow-theme);
++  object-fit: cover;
++  transition: transform 0.15s ease;
++}
++
++.history-decade-posters a:hover img {
++  transform: translateY(-3px);
++}
++
++.history-decade-posters small {
++  display: block;
++  margin-top: 6px;
++  color: var(--cine-text-3);
++  font-size: 0.78rem;
++  font-weight: 700;
++}
++
++.history-empty {
++  margin-top: 18px;
++  color: var(--cine-text-3);
++}
++
++/* ---------- Fuentes ---------- */
++
++.history-sources {
++  padding: 24px 28px;
++  border: 1px dashed var(--cine-line);
++  border-radius: 20px;
++  background: var(--cine-surface-2);
++}
++
++.history-sources h2 {
++  margin: 0 0 10px;
++  font-family: var(--font-display);
++  font-size: 1.25rem;
++  font-weight: 600;
++}
++
++.history-sources ul {
++  margin: 0 0 12px;
++  padding-left: 1.1rem;
++}
++
++.history-sources li {
++  margin-bottom: 4px;
++  font-size: 0.9rem;
++}
++
++.history-sources a {
++  color: var(--hist-accent);
++  text-underline-offset: 3px;
++}
++
++.history-sources p {
++  margin: 0;
++  color: var(--cine-text-3);
++  font-size: 0.85rem;
++  line-height: 1.55;
++}
++
++/* ---------- Móvil ---------- */
++
++@media (max-width: 640px) {
++  .history-era-nav {
++    top: 66px;
++  }
++
++  .history-timeline::before {
++    left: 7px;
++  }
++
++  .history-item {
++    grid-template-columns: minmax(0, 1fr);
++    padding-left: 30px;
++  }
++
++  .history-item::before {
++    top: 4px;
++    left: 0;
++  }
++
++  .history-item-year {
++    padding: 0 0 6px;
++    font-size: 1.45rem;
++    text-align: left;
++  }
++
++  .history-item-card {
++    padding: 16px 18px;
++  }
++
++  .history-hero-stats dd {
++    font-size: 2.1rem;
++  }
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .history-film-chip,
++  .history-decade-posters img {
++    transition: none;
++  }
++}
