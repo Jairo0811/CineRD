@@ -41,6 +41,11 @@ jobs:
           npm --prefix frontend audit --omit=dev --audit-level=high
           npm --prefix frontend run build
 
+      - name: Remediate newly disclosed backend dependency advisories
+        shell: bash
+        run: |
+          npm --prefix backend audit fix --package-lock-only --ignore-scripts
+
       - name: Validate backend regression gate
         shell: bash
         run: |
@@ -54,6 +59,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add frontend
+          git add frontend backend/package.json backend/package-lock.json
           git commit -m "feat: add CineRD history editorial experience"
           git push origin HEAD:feature/historia-editorial-design
