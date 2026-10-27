@@ -44,7 +44,9 @@ jobs:
       - name: Remediate newly disclosed backend dependency advisories
         shell: bash
         run: |
-          npm --prefix backend audit fix --package-lock-only --ignore-scripts
+          npm --prefix backend ci
+          npm --prefix backend audit fix --ignore-scripts || true
+          npm --prefix backend audit --omit=dev --audit-level=high
 
       - name: Validate backend regression gate
         shell: bash
