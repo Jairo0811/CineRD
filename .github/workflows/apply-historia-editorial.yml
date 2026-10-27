@@ -44,8 +44,25 @@ jobs:
       - name: Remediate newly disclosed backend dependency advisories
         shell: bash
         run: |
+          npm --prefix backend pkg set 'overrides.@azure/msal-node=7.1.0'
+          npm --prefix backend install --package-lock-only --ignore-scripts
           npm --prefix backend ci
-          npm --prefix backend audit fix --ignore-scripts || true
+          node <<'NODE'
+          const sql = require('./backend/node_modules/mssql');
+          if (typeof sql.ConnectionPool !== 'function' || typeof sql.Transaction !== 'function' || typeof sql.Request !== 'function') {
+            throw new Error('mssql no expone la API esperada por CineRD');
+          }
+          const pool = new sql.ConnectionPool({
+            server: 'localhost',
+            user: 'cinerd-smoke',
+            password: 'not-used',
+            database: 'cinerd-smoke',
+            options: { encrypt: false, trustServerCertificate: true },
+          });
+          if (!pool.request() || !new sql.Transaction(pool)) throw new Error('mssql smoke test falló');
+          console.log('mssql smoke test OK', require('./backend/node_modules/mssql/package.json').version);
+          console.log('msal-node override', require('./backend/node_modules/@azure/msal-node/package.json').version);
+          NODE
           npm --prefix backend audit --omit=dev --audit-level=high
 
       - name: Validate backend regression gate
