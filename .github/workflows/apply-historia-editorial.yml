@@ -1,0 +1,59 @@
+name: Apply CineRD historia editorial patch
+
+on:
+  push:
+    branches:
+      - feature/historia-editorial-design
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-validate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Verify and apply supplied patch
+        shell: bash
+        run: |
+          git apply --check .tmp/cinerd-diseno-historia.patch
+          git apply .tmp/cinerd-diseno-historia.patch
+
+      - name: Validate frontend
+        shell: bash
+        run: |
+          npm --prefix frontend ci
+          npm --prefix frontend run lint
+          npm --prefix frontend test
+          npm --prefix frontend audit --omit=dev --audit-level=high
+          npm --prefix frontend run build
+
+      - name: Validate backend regression gate
+        shell: bash
+        run: |
+          npm --prefix backend ci
+          npm --prefix backend test
+          npm --prefix backend run catalog:validate
+          npm --prefix backend audit --omit=dev --audit-level=high
+
+      - name: Commit validated patch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add frontend
+          git commit -m "feat: add CineRD history editorial experience"
+          git push origin HEAD:feature/historia-editorial-design
