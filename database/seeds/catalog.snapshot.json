@@ -1,7 +1,7 @@
 {
   "format": "CineRD.CatalogSnapshot",
   "version": 2,
-  "generatedAtUtc": "2026-08-20T23:27:06.296Z",
+  "generatedAtUtc": "2026-11-04T18:33:05.369Z",
   "sourceDatabase": "CRUDPeliculas",
   "tables": {
     "Actores": [
@@ -398,7 +398,7 @@
       },
       {
         "Id": 30,
-        "NombreCompleto": "Félix Manuel  Tejeda Rosario",
+        "NombreCompleto": "Félix Manuel Tejeda Rosario",
         "FechaNacimiento": null,
         "Sexo": "Masculino",
         "Foto": "/uploads/actores/1783301847404-Foto.jpeg",
@@ -408,10 +408,10 @@
         "Profesion": "Actor",
         "AnioNacimiento": null,
         "Apellido": null,
-        "Nombres": "Félix Manuel ",
+        "Nombres": "Félix Manuel",
         "Apellidos": "Tejeda Rosario",
         "TMDbId": null,
-        "InstagramUrl": null,
+        "InstagramUrl": "https://www.instagram.com/nonguito1/",
         "FacebookUrl": null,
         "TikTokUrl": null,
         "YouTubeUrl": null,
@@ -620,7 +620,7 @@
         "TMDbId": null,
         "InstagramUrl": "https://www.instagram.com/ramcelisdjesus_/",
         "FacebookUrl": null,
-        "TikTokUrl": null,
+        "TikTokUrl": "https://www.tiktok.com/@ramcelisdjesus",
         "YouTubeUrl": null,
         "SitioWebUrl": null,
         "XUrl": null,
@@ -710,13 +710,13 @@
         "Nombres": "Chelsy",
         "Apellidos": "Bautista García",
         "TMDbId": 984439,
-        "InstagramUrl": null,
-        "FacebookUrl": null,
+        "InstagramUrl": "https://www.instagram.com/chelsybautista5/",
+        "FacebookUrl": "https://www.facebook.com/chelsy25/",
         "TikTokUrl": null,
-        "YouTubeUrl": null,
+        "YouTubeUrl": "https://www.youtube.com/channel/UC0VDvRa6AGXb7sSrMU8Qxfg",
         "SitioWebUrl": null,
         "XUrl": null,
-        "SpotifyUrl": null
+        "SpotifyUrl": "https://open.spotify.com/intl-es/artist/2DR4ukJfl3MNXYWPTFMe7D?si=HzeDUpQFQjKjYPeXvrRP0w"
       },
       {
         "Id": 46,
@@ -894,10 +894,10 @@
         "Nombres": "Carlos Junior",
         "Apellidos": "Alba Montesquieu",
         "TMDbId": null,
-        "InstagramUrl": null,
-        "FacebookUrl": null,
-        "TikTokUrl": null,
-        "YouTubeUrl": null,
+        "InstagramUrl": "https://www.instagram.com/carlosmontesquieu",
+        "FacebookUrl": "https://www.facebook.com/CarlosMontesquieuHD",
+        "TikTokUrl": "https://www.tiktok.com/@montesquieufenix",
+        "YouTubeUrl": "https://www.youtube.com/@CarlosMontesquieuOficial",
         "SitioWebUrl": null,
         "XUrl": null,
         "SpotifyUrl": null
@@ -1067,7 +1067,7 @@
         "Id": 61,
         "NombreCompleto": "Yorlla Lina Castillo",
         "FechaNacimiento": null,
-        "Sexo": "Masculino",
+        "Sexo": "Femenino",
         "Foto": "/uploads/actores/1783567120117-Foto.jpeg",
         "NombreArtistico": null,
         "EstaVivo": true,
@@ -1078,7 +1078,7 @@
         "Nombres": "Yorlla Lina",
         "Apellidos": "Castillo",
         "TMDbId": null,
-        "InstagramUrl": null,
+        "InstagramUrl": "https://www.instagram.com/yorllacastillo/",
         "FacebookUrl": null,
         "TikTokUrl": null,
         "YouTubeUrl": null,
@@ -1180,7 +1180,7 @@
       },
       {
         "Id": 66,
-        "NombreCompleto": "Erickson Rafael  Fernández Paniagua",
+        "NombreCompleto": "Erickson Rafael Fernández Paniagua",
         "FechaNacimiento": "1988-01-31T00:00:00.000Z",
         "Sexo": "Masculino",
         "Foto": "/uploads/actores/1783742676684-Foto.jpeg",
@@ -1190,7 +1190,7 @@
         "Profesion": "Artista Urbano",
         "AnioNacimiento": null,
         "Apellido": null,
-        "Nombres": "Erickson Rafael ",
+        "Nombres": "Erickson Rafael",
         "Apellidos": "Fernández Paniagua",
         "TMDbId": null,
         "InstagramUrl": null,
@@ -1199,7 +1199,7 @@
         "YouTubeUrl": null,
         "SitioWebUrl": null,
         "XUrl": null,
-        "SpotifyUrl": null
+        "SpotifyUrl": "https://open.spotify.com/intl-es/artist/0odliLZMTk45CEVzF3Zocl?si=1wtB-IK1SR-2UsF6Cs-j8Q"
       },
       {
         "Id": 67,
@@ -1262,7 +1262,7 @@
         "Nombres": "Lizbeth",
         "Apellidos": "Santos",
         "TMDbId": 175605,
-        "InstagramUrl": null,
+        "InstagramUrl": "https://www.instagram.com/libesona/?hl=es",
         "FacebookUrl": null,
         "TikTokUrl": null,
         "YouTubeUrl": null,
@@ -1342,12 +1342,12 @@
       {
         "Id": 73,
         "NombreCompleto": "Elizabeth Ruíz",
-        "FechaNacimiento": "1991-11-21T00:00:00.000Z",
+        "FechaNacimiento": "1978-08-07T00:00:00.000Z",
         "Sexo": "Femenino",
-        "Foto": null,
+        "Foto": "/uploads/actores/1789837568251-Foto.jpeg",
         "NombreArtistico": null,
-        "EstaVivo": true,
-        "FechaFallecimiento": null,
+        "EstaVivo": false,
+        "FechaFallecimiento": "2026-09-16T00:00:00.000Z",
         "Profesion": "Actriz",
         "AnioNacimiento": null,
         "Apellido": null,
@@ -1614,6 +1614,259 @@
         "SitioWebUrl": null,
         "XUrl": null,
         "SpotifyUrl": null
+      },
+      {
+        "Id": 85,
+        "NombreCompleto": "Clara Luz Lozano",
+        "FechaNacimiento": null,
+        "Sexo": "Femenino",
+        "Foto": "/uploads/actores/1787416514213-Foto.jpeg",
+        "NombreArtistico": null,
+        "EstaVivo": true,
+        "FechaFallecimiento": null,
+        "Profesion": "Actriz",
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "Clara Luz",
+        "Apellidos": "Lozano",
+        "TMDbId": null,
+        "InstagramUrl": "https://www.instagram.com/claraluzlozano/",
+        "FacebookUrl": null,
+        "TikTokUrl": null,
+        "YouTubeUrl": null,
+        "SitioWebUrl": null,
+        "XUrl": null,
+        "SpotifyUrl": null
+      },
+      {
+        "Id": 86,
+        "NombreCompleto": "José Luis Peralta",
+        "FechaNacimiento": "1981-02-07T00:00:00.000Z",
+        "Sexo": "Masculino",
+        "Foto": "/uploads/actores/1787433261411-Foto.jpeg",
+        "NombreArtistico": "Shelow Shaq",
+        "EstaVivo": true,
+        "FechaFallecimiento": null,
+        "Profesion": "Artista Urbano",
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "José Luis",
+        "Apellidos": "Peralta",
+        "TMDbId": null,
+        "InstagramUrl": "https://www.instagram.com/shelowshaq_/",
+        "FacebookUrl": null,
+        "TikTokUrl": null,
+        "YouTubeUrl": null,
+        "SitioWebUrl": null,
+        "XUrl": null,
+        "SpotifyUrl": null
+      },
+      {
+        "Id": 87,
+        "NombreCompleto": "Reinaldo Hungría Disla Ortiz",
+        "FechaNacimiento": "1956-11-19T00:00:00.000Z",
+        "Sexo": "Masculino",
+        "Foto": "/uploads/actores/1787493716073-Foto.jpeg",
+        "NombreArtistico": null,
+        "EstaVivo": true,
+        "FechaFallecimiento": null,
+        "Profesion": "Actor",
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "Reinaldo Hungría",
+        "Apellidos": "Disla Ortiz",
+        "TMDbId": null,
+        "InstagramUrl": null,
+        "FacebookUrl": null,
+        "TikTokUrl": null,
+        "YouTubeUrl": null,
+        "SitioWebUrl": null,
+        "XUrl": null,
+        "SpotifyUrl": null
+      },
+      {
+        "Id": 88,
+        "NombreCompleto": "Armando Ariel Henríquez Grullón",
+        "FechaNacimiento": "1960-06-23T00:00:00.000Z",
+        "Sexo": "Masculino",
+        "Foto": "/uploads/actores/1787493892899-Foto.jpeg",
+        "NombreArtistico": "Kenny Grullon",
+        "EstaVivo": true,
+        "FechaFallecimiento": null,
+        "Profesion": null,
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "Armando Ariel",
+        "Apellidos": "Henríquez Grullón",
+        "TMDbId": null,
+        "InstagramUrl": null,
+        "FacebookUrl": "https://www.facebook.com/kenny.grullon.39/",
+        "TikTokUrl": null,
+        "YouTubeUrl": null,
+        "SitioWebUrl": null,
+        "XUrl": null,
+        "SpotifyUrl": null
+      },
+      {
+        "Id": 89,
+        "NombreCompleto": "Evelyna Rodríguez",
+        "FechaNacimiento": "1985-08-26T00:00:00.000Z",
+        "Sexo": "Femenino",
+        "Foto": "/uploads/actores/1787493968347-Foto.jpeg",
+        "NombreArtistico": null,
+        "EstaVivo": true,
+        "FechaFallecimiento": null,
+        "Profesion": "Actriz",
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "Evelyna",
+        "Apellidos": "Rodríguez",
+        "TMDbId": 1308394,
+        "InstagramUrl": "https://www.instagram.com/evelynarodriguez/?hl=es",
+        "FacebookUrl": null,
+        "TikTokUrl": null,
+        "YouTubeUrl": null,
+        "SitioWebUrl": "https://evelynarodriguez.com",
+        "XUrl": null,
+        "SpotifyUrl": null
+      },
+      {
+        "Id": 90,
+        "NombreCompleto": "José Francisco Clisante Muñiz",
+        "FechaNacimiento": "1953-05-25T00:00:00.000Z",
+        "Sexo": "Masculino",
+        "Foto": "/uploads/actores/1787494723827-Foto.jpeg",
+        "NombreArtistico": "Pancho",
+        "EstaVivo": false,
+        "FechaFallecimiento": "2025-01-18T00:00:00.000Z",
+        "Profesion": null,
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "José Francisco",
+        "Apellidos": "Clisante Muñiz",
+        "TMDbId": null,
+        "InstagramUrl": null,
+        "FacebookUrl": null,
+        "TikTokUrl": null,
+        "YouTubeUrl": null,
+        "SitioWebUrl": null,
+        "XUrl": null,
+        "SpotifyUrl": null
+      },
+      {
+        "Id": 91,
+        "NombreCompleto": "Jose Manuel Rodríguez Sanchez",
+        "FechaNacimiento": null,
+        "Sexo": "Masculino",
+        "Foto": "/uploads/actores/1787785983055-Foto.jpeg",
+        "NombreArtistico": "Josema",
+        "EstaVivo": true,
+        "FechaFallecimiento": null,
+        "Profesion": "Comediante",
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "Jose Manuel",
+        "Apellidos": "Rodríguez Sanchez",
+        "TMDbId": null,
+        "InstagramUrl": "https://www.instagram.com/josemaekh/",
+        "FacebookUrl": null,
+        "TikTokUrl": null,
+        "YouTubeUrl": null,
+        "SitioWebUrl": null,
+        "XUrl": null,
+        "SpotifyUrl": null
+      },
+      {
+        "Id": 92,
+        "NombreCompleto": "Carlos Sanchez",
+        "FechaNacimiento": null,
+        "Sexo": "Masculino",
+        "Foto": "/uploads/actores/1787786388752-Foto.jpeg",
+        "NombreArtistico": null,
+        "EstaVivo": true,
+        "FechaFallecimiento": null,
+        "Profesion": "Comediante",
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "Carlos",
+        "Apellidos": "Sanchez",
+        "TMDbId": 1211369,
+        "InstagramUrl": "https://www.instagram.com/carloscomic/?hl=es",
+        "FacebookUrl": null,
+        "TikTokUrl": null,
+        "YouTubeUrl": null,
+        "SitioWebUrl": null,
+        "XUrl": null,
+        "SpotifyUrl": null
+      },
+      {
+        "Id": 93,
+        "NombreCompleto": "Francisco Vasquez",
+        "FechaNacimiento": "1972-04-01T00:00:00.000Z",
+        "Sexo": "Masculino",
+        "Foto": "/uploads/actores/1787788440352-Foto.jpeg",
+        "NombreArtistico": null,
+        "EstaVivo": true,
+        "FechaFallecimiento": null,
+        "Profesion": null,
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "Francisco",
+        "Apellidos": "Vasquez",
+        "TMDbId": null,
+        "InstagramUrl": "https://www.instagram.com/franciscovasquezoficial/?hl=es",
+        "FacebookUrl": "https://www.facebook.com/francisco.vasquez.3954/?locale=es_LA",
+        "TikTokUrl": null,
+        "YouTubeUrl": null,
+        "SitioWebUrl": null,
+        "XUrl": null,
+        "SpotifyUrl": null
+      },
+      {
+        "Id": 94,
+        "NombreCompleto": "Winston Antonio Aponte Acta",
+        "FechaNacimiento": "1988-01-31T00:00:00.000Z",
+        "Sexo": "Masculino",
+        "Foto": "/uploads/actores/1789839465588-Foto.jpeg",
+        "NombreArtistico": "Villano Sam",
+        "EstaVivo": true,
+        "FechaFallecimiento": null,
+        "Profesion": "Artista Urbano",
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "Winston Antonio",
+        "Apellidos": "Aponte Acta",
+        "TMDbId": null,
+        "InstagramUrl": "https://www.instagram.com/villanosamoficial/",
+        "FacebookUrl": null,
+        "TikTokUrl": null,
+        "YouTubeUrl": null,
+        "SitioWebUrl": null,
+        "XUrl": null,
+        "SpotifyUrl": "https://open.spotify.com/intl-es/artist/4y9i0THzpXUR3gdaeHNME1?si=KLsrxfgwSO28qiM4qZiXlg"
+      },
+      {
+        "Id": 95,
+        "NombreCompleto": "María Vitalia Sánchez",
+        "FechaNacimiento": null,
+        "Sexo": "Femenino",
+        "Foto": "/uploads/actores/1793811817213-Foto.jpeg",
+        "NombreArtistico": "Vítaly Sánchez",
+        "EstaVivo": true,
+        "FechaFallecimiento": null,
+        "Profesion": "Comunicador",
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "María Vitalia",
+        "Apellidos": "Sánchez",
+        "TMDbId": null,
+        "InstagramUrl": "https://www.instagram.com/vitalysancheztv/",
+        "FacebookUrl": "https://www.facebook.com/vitalysancheztv",
+        "TikTokUrl": "https://www.tiktok.com/@vitalysancheztv",
+        "YouTubeUrl": "https://www.youtube.com/@vitalysancheztv",
+        "SitioWebUrl": null,
+        "XUrl": null,
+        "SpotifyUrl": "https://open.spotify.com/intl-es/artist/6fTiHiSuxQ1YkirhIQWzjk?si=nbDWHL4STWaIW64A0ZxJaQ"
       }
     ],
     "Peliculas": [
@@ -1627,7 +1880,15 @@
         "Productora": "Premium Latin Films",
         "TMDbId": null,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 5,
@@ -1639,7 +1900,15 @@
         "Productora": "Cigua Films",
         "TMDbId": 25000,
         "Sinopsis": "Tres criminales convictos escapan de prisión con solo un güiro, un tambor y un acordeón. \r\n\r\nDurante su viaje, se encuentran con un grupo de personajes interesantes y se ven obligados a usar sus habilidades musicales para volver a casa.",
-        "IdiomaOriginal": "es"
+        "IdiomaOriginal": "es",
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 6,
@@ -1651,7 +1920,15 @@
         "Productora": "Estudio Quitasueño",
         "TMDbId": 36424,
         "Sinopsis": "El profesor universitario Bruno, cúyo principal objetivo es echar adelante su familia de manera honrada, es padre de Sandra, quién alberga la esperanza de obtener una beca en una prestigiosa universidad privada. \r\n\r\nLa propia universidad donde trabaja Bruno le informa que han sido suspendidos los programas de beca. \r\n\r\nDiariamente se enfrenta a la falta de disciplina y respeto de sus alumnos, principalmente de Rogelio, hijo de una familia acomodada, quién no parece valorar lo que a él le da tanto trabajo conseguir para su hija. \r\n\r\nDecidido a darle una mejor educación a su hija, y con la ayuda de su compadre Biembo, toma un segundo empleo como chofer de una compañía de transporte de valores.",
-        "IdiomaOriginal": "es"
+        "IdiomaOriginal": "es",
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": "https://www.youtube.com/watch?v=u679vbRKjM8",
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 9,
@@ -1663,19 +1940,35 @@
         "Productora": "Panamericana",
         "TMDbId": 58651,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 10,
         "Titulo": "Vamos de robo",
         "Genero": "Comedia",
         "FechaEstreno": "2014-01-15T00:00:00.000Z",
-        "Foto": "/uploads/peliculas/1783797369982-Foto.jpeg",
-        "Director": "Roberto Angel Salcedo",
+        "Foto": "/uploads/peliculas/1787434127535-Foto.jpeg",
+        "Director": "Roberto Ángel  Salcedo Sanz",
         "Productora": "Producciones Coral",
         "TMDbId": 259108,
-        "Sinopsis": null,
-        "IdiomaOriginal": null
+        "Sinopsis": "El largometraje cuenta la historia de Michael, Pedro, Mateo, y Antonio, quienes se desempeñan como encargados del departamento de fiscalización del Banco Futuro que una noche es objeto de un robo en la bóveda, de RD$150,000,000 de pesos, esto lo convierte a ellos en sospechosos, ya que se encontraban en el banco en el momento del robo.",
+        "IdiomaOriginal": "es",
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 11,
@@ -1687,7 +1980,15 @@
         "Productora": "Premium Latin Films",
         "TMDbId": null,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 12,
@@ -1699,7 +2000,15 @@
         "Productora": "Producciones Coral",
         "TMDbId": 194304,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 13,
@@ -1711,7 +2020,15 @@
         "Productora": "Panamericana",
         "TMDbId": 93127,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 14,
@@ -1723,7 +2040,15 @@
         "Productora": "Bougroup",
         "TMDbId": 1417502,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": "es",
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": "https://www.youtube.com/watch?v=by0VKTC7TLU",
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 15,
@@ -1735,7 +2060,15 @@
         "Productora": "Panamericana",
         "TMDbId": 422142,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": "https://www.youtube.com/watch?v=sUxvLJGRt2c",
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 16,
@@ -1747,7 +2080,15 @@
         "Productora": "Cigua Films",
         "TMDbId": 55475,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 17,
@@ -1759,19 +2100,35 @@
         "Productora": "Producciones Coral",
         "TMDbId": 426066,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 18,
         "Titulo": "Lotoman 2.0",
-        "Genero": "Infantil",
+        "Genero": "Comedia",
         "FechaEstreno": "2012-11-01T00:00:00.000Z",
         "Foto": "/uploads/peliculas/1783797682156-Foto.jpeg",
         "Director": "Archie López",
         "Productora": "Panamericana",
         "TMDbId": 211706,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 19,
@@ -1783,7 +2140,15 @@
         "Productora": "Dukesa Films",
         "TMDbId": 1516605,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 20,
@@ -1795,7 +2160,15 @@
         "Productora": "Producciones Coral",
         "TMDbId": 115127,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 21,
@@ -1807,7 +2180,15 @@
         "Productora": "Caribbean Films",
         "TMDbId": 1554299,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 23,
@@ -1819,7 +2200,15 @@
         "Productora": "Premium Latin Films",
         "TMDbId": 301625,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 24,
@@ -1831,7 +2220,15 @@
         "Productora": "Piñolywood Studios",
         "TMDbId": 407651,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 25,
@@ -1843,7 +2240,15 @@
         "Productora": "Premium Latin Films",
         "TMDbId": 1338321,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 26,
@@ -1855,7 +2260,15 @@
         "Productora": "Kaluana Films",
         "TMDbId": 397050,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 27,
@@ -1867,7 +2280,15 @@
         "Productora": "Producciones Coral",
         "TMDbId": 258910,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 28,
@@ -1879,7 +2300,15 @@
         "Productora": "Caribbean Films",
         "TMDbId": 1069812,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 29,
@@ -1891,7 +2320,15 @@
         "Productora": "Caribbean Films",
         "TMDbId": null,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 30,
@@ -1903,7 +2340,15 @@
         "Productora": "Estudio Quitasueño",
         "TMDbId": null,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 31,
@@ -1915,7 +2360,15 @@
         "Productora": null,
         "TMDbId": 1704402,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 32,
@@ -1927,7 +2380,15 @@
         "Productora": "Bougroup",
         "TMDbId": null,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 33,
@@ -1939,7 +2400,15 @@
         "Productora": null,
         "TMDbId": 516952,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 34,
@@ -1951,7 +2420,15 @@
         "Productora": null,
         "TMDbId": 381200,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 36,
@@ -1963,7 +2440,15 @@
         "Productora": null,
         "TMDbId": 55471,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 38,
@@ -1975,7 +2460,15 @@
         "Productora": null,
         "TMDbId": null,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 39,
@@ -1987,7 +2480,15 @@
         "Productora": null,
         "TMDbId": 495056,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 40,
@@ -1999,7 +2500,15 @@
         "Productora": null,
         "TMDbId": 1143119,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 41,
@@ -2011,7 +2520,15 @@
         "Productora": null,
         "TMDbId": 1145715,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 42,
@@ -2023,7 +2540,15 @@
         "Productora": null,
         "TMDbId": 316710,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 44,
@@ -2035,7 +2560,15 @@
         "Productora": null,
         "TMDbId": 98518,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 45,
@@ -2047,11 +2580,19 @@
         "Productora": "Antena Films",
         "TMDbId": 61056,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 47,
-        "Titulo": "Pimp Bullies: Victima de un Prostibulo",
+        "Titulo": "Pimp Bullies: Victimas de un Prostibulo",
         "Genero": "Acción",
         "FechaEstreno": "2011-09-22T00:00:00.000Z",
         "Foto": "/uploads/peliculas/1783795968674-Foto.jpeg",
@@ -2059,7 +2600,15 @@
         "Productora": "Antena Films",
         "TMDbId": 171363,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": "es",
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": "https://www.youtube.com/watch?v=-9JmWVc7g0g",
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 48,
@@ -2071,7 +2620,15 @@
         "Productora": null,
         "TMDbId": 119647,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": "es",
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 49,
@@ -2083,7 +2640,15 @@
         "Productora": null,
         "TMDbId": 404775,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 50,
@@ -2095,7 +2660,15 @@
         "Productora": "Panamericana",
         "TMDbId": 526558,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 51,
@@ -2107,7 +2680,15 @@
         "Productora": "Panamericana",
         "TMDbId": 422145,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": "https://www.youtube.com/watch?v=fZY0y83HAqQ",
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 52,
@@ -2119,7 +2700,15 @@
         "Productora": null,
         "TMDbId": 409538,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 53,
@@ -2131,7 +2720,15 @@
         "Productora": null,
         "TMDbId": 744776,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       },
       {
         "Id": 54,
@@ -2143,7 +2740,15 @@
         "Productora": null,
         "TMDbId": 335178,
         "Sinopsis": null,
-        "IdiomaOriginal": null
+        "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       }
     ],
     "ActoresPeliculas": [
@@ -2224,7 +2829,7 @@
         "ActorId": 3,
         "Personaje": "Gengibrero",
         "EsPrincipal": false,
-        "TipoParticipacion": "Secundario",
+        "TipoParticipacion": "Debut cinematográfico",
         "OrdenCreditos": null
       },
       {
@@ -2246,7 +2851,7 @@
       {
         "PeliculaId": 5,
         "ActorId": 10,
-        "Personaje": "Mauricio",
+        "Personaje": "Mauricio Frometa",
         "EsPrincipal": true,
         "TipoParticipacion": "Principal",
         "OrdenCreditos": null
@@ -2272,7 +2877,7 @@
         "ActorId": 14,
         "Personaje": "Capatáz",
         "EsPrincipal": false,
-        "TipoParticipacion": "Secundario",
+        "TipoParticipacion": "Debut cinematográfico",
         "OrdenCreditos": null
       },
       {
@@ -2310,7 +2915,7 @@
       {
         "PeliculaId": 5,
         "ActorId": 54,
-        "Personaje": "Cristina - Esposa de Manuel",
+        "Personaje": "Cristina  (Esposa de Manuel)",
         "EsPrincipal": false,
         "TipoParticipacion": "Secundario",
         "OrdenCreditos": null
@@ -2345,6 +2950,38 @@
         "Personaje": "Facito Ortíz",
         "EsPrincipal": false,
         "TipoParticipacion": "Secundario",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 5,
+        "ActorId": 85,
+        "Personaje": "Loly (Esposa de Mauricio)",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Flashback",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 5,
+        "ActorId": 87,
+        "Personaje": "Tuti, el Motonetero ",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Secundario",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 5,
+        "ActorId": 88,
+        "Personaje": "Chofer de la guagua ",
+        "EsPrincipal": true,
+        "TipoParticipacion": "Principal",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 5,
+        "ActorId": 90,
+        "Personaje": "Narrador",
+        "EsPrincipal": true,
+        "TipoParticipacion": "Principal",
         "OrdenCreditos": null
       },
       {
@@ -2421,6 +3058,14 @@
       },
       {
         "PeliculaId": 9,
+        "ActorId": 30,
+        "Personaje": "Motoconcho",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Sin acreditar",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 9,
         "ActorId": 32,
         "Personaje": "Lic. Ramirez ",
         "EsPrincipal": false,
@@ -2452,9 +3097,17 @@
         "OrdenCreditos": null
       },
       {
+        "PeliculaId": 9,
+        "ActorId": 73,
+        "Personaje": "Sobeida",
+        "EsPrincipal": true,
+        "TipoParticipacion": "Principal",
+        "OrdenCreditos": null
+      },
+      {
         "PeliculaId": 10,
         "ActorId": 3,
-        "Personaje": "Michael",
+        "Personaje": "Michael José Dominguez ",
         "EsPrincipal": true,
         "TipoParticipacion": "Principal",
         "OrdenCreditos": null
@@ -2462,7 +3115,7 @@
       {
         "PeliculaId": 10,
         "ActorId": 10,
-        "Personaje": "Mateo ",
+        "Personaje": "Mateo de Jesus Pichardo",
         "EsPrincipal": true,
         "TipoParticipacion": "Principal",
         "OrdenCreditos": null
@@ -2502,7 +3155,7 @@
       {
         "PeliculaId": 10,
         "ActorId": 69,
-        "Personaje": "Diana ",
+        "Personaje": "Diana Fernandez ",
         "EsPrincipal": false,
         "TipoParticipacion": "Secundario",
         "OrdenCreditos": null
@@ -2511,6 +3164,46 @@
         "PeliculaId": 10,
         "ActorId": 76,
         "Personaje": "Yuli",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Secundario",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 10,
+        "ActorId": 88,
+        "Personaje": "Rafael ",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Secundario",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 10,
+        "ActorId": 89,
+        "Personaje": "Patricia ",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Secundario",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 10,
+        "ActorId": 91,
+        "Personaje": "Detective Troncoso",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Secundario",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 10,
+        "ActorId": 92,
+        "Personaje": "Antonio Perez Paulino",
+        "EsPrincipal": true,
+        "TipoParticipacion": "Principal",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 10,
+        "ActorId": 93,
+        "Personaje": "Eduardo (Presidente del Banco Futuro)",
         "EsPrincipal": false,
         "TipoParticipacion": "Secundario",
         "OrdenCreditos": null
@@ -2550,7 +3243,7 @@
       {
         "PeliculaId": 11,
         "ActorId": 33,
-        "Personaje": null,
+        "Personaje": "Él Mismo",
         "EsPrincipal": false,
         "TipoParticipacion": "Voz",
         "OrdenCreditos": null
@@ -2657,6 +3350,14 @@
         "Personaje": "Presidente de la Republica",
         "EsPrincipal": true,
         "TipoParticipacion": "Principal",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 14,
+        "ActorId": 95,
+        "Personaje": "Yolanda (Esposa de Dagoberto)",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Reparto",
         "OrdenCreditos": null
       },
       {
@@ -3096,7 +3797,7 @@
         "ActorId": 2,
         "Personaje": null,
         "EsPrincipal": false,
-        "TipoParticipacion": "Secundario",
+        "TipoParticipacion": "Especial",
         "OrdenCreditos": null
       },
       {
@@ -3126,9 +3827,9 @@
       {
         "PeliculaId": 27,
         "ActorId": 34,
-        "Personaje": "Comandante Lopez ",
+        "Personaje": "Comandante López ",
         "EsPrincipal": false,
-        "TipoParticipacion": "Secundario",
+        "TipoParticipacion": "Especial",
         "OrdenCreditos": null
       },
       {
@@ -3152,7 +3853,7 @@
         "ActorId": 55,
         "Personaje": "Juanita",
         "EsPrincipal": false,
-        "TipoParticipacion": "Secundario",
+        "TipoParticipacion": "Especial",
         "OrdenCreditos": null
       },
       {
@@ -3174,9 +3875,17 @@
       {
         "PeliculaId": 27,
         "ActorId": 73,
-        "Personaje": "Sobeida de Marchena",
+        "Personaje": "Sobeida",
         "EsPrincipal": false,
         "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 27,
+        "ActorId": 94,
+        "Personaje": "Cliente de Taller ",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Debut cinematográfico",
         "OrdenCreditos": null
       },
       {
@@ -3311,8 +4020,8 @@
         "PeliculaId": 34,
         "ActorId": 75,
         "Personaje": "Superchepa",
-        "EsPrincipal": false,
-        "TipoParticipacion": "Reparto",
+        "EsPrincipal": true,
+        "TipoParticipacion": "Principal",
         "OrdenCreditos": null
       },
       {
@@ -3454,7 +4163,7 @@
       {
         "PeliculaId": 48,
         "ActorId": 8,
-        "Personaje": "Cabo Azulado",
+        "Personaje": "El Cabo Azulado",
         "EsPrincipal": false,
         "TipoParticipacion": "Reparto",
         "OrdenCreditos": null
@@ -3470,7 +4179,31 @@
       {
         "PeliculaId": 48,
         "ActorId": 32,
-        "Personaje": "Jefe Vampiro",
+        "Personaje": "Figura Alta ",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 48,
+        "ActorId": 51,
+        "Personaje": "Bacalao",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Secundario",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 48,
+        "ActorId": 89,
+        "Personaje": "Mayra",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 48,
+        "ActorId": 91,
+        "Personaje": "Brown",
         "EsPrincipal": false,
         "TipoParticipacion": "Reparto",
         "OrdenCreditos": null
@@ -3620,6 +4353,14 @@
         "OrdenCreditos": null
       },
       {
+        "PeliculaId": 52,
+        "ActorId": 86,
+        "Personaje": null,
+        "EsPrincipal": true,
+        "TipoParticipacion": "Principal",
+        "OrdenCreditos": null
+      },
+      {
         "PeliculaId": 53,
         "ActorId": 33,
         "Personaje": "Suriel",
@@ -3660,12 +4401,446 @@
         "OrdenCreditos": null
       }
     ],
-    "PeliculaCreditos": [],
-    "PeliculaTraducciones": []
+    "PeliculaCreditos": [
+      {
+        "Id": 1,
+        "PeliculaId": 4,
+        "ActorId": 35,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 2,
+        "PeliculaId": 5,
+        "ActorId": 36,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 3,
+        "PeliculaId": 6,
+        "ActorId": 36,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 4,
+        "PeliculaId": 11,
+        "ActorId": 35,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 5,
+        "PeliculaId": 12,
+        "ActorId": 16,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 6,
+        "PeliculaId": 13,
+        "ActorId": 68,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 7,
+        "PeliculaId": 15,
+        "ActorId": 68,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 8,
+        "PeliculaId": 16,
+        "ActorId": 36,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 9,
+        "PeliculaId": 17,
+        "ActorId": 16,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 10,
+        "PeliculaId": 18,
+        "ActorId": 68,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 11,
+        "PeliculaId": 19,
+        "ActorId": 41,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 12,
+        "PeliculaId": 20,
+        "ActorId": 32,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 13,
+        "PeliculaId": 21,
+        "ActorId": 41,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 14,
+        "PeliculaId": 23,
+        "ActorId": 35,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 15,
+        "PeliculaId": 26,
+        "ActorId": 32,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 16,
+        "PeliculaId": 27,
+        "ActorId": 68,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 17,
+        "PeliculaId": 28,
+        "ActorId": 15,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 18,
+        "PeliculaId": 29,
+        "ActorId": 15,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 19,
+        "PeliculaId": 36,
+        "ActorId": 36,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 20,
+        "PeliculaId": 39,
+        "ActorId": 15,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 21,
+        "PeliculaId": 40,
+        "ActorId": 15,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 22,
+        "PeliculaId": 45,
+        "ActorId": 32,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 23,
+        "PeliculaId": 47,
+        "ActorId": 32,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 24,
+        "PeliculaId": 48,
+        "ActorId": 32,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 25,
+        "PeliculaId": 50,
+        "ActorId": 68,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 26,
+        "PeliculaId": 51,
+        "ActorId": 68,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 27,
+        "PeliculaId": 54,
+        "ActorId": 68,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": null,
+        "EsPrincipal": true,
+        "Fuente": "MIGRACION_CAMPO_DIRECTOR",
+        "FechaCreacion": "2026-08-22T20:49:15.097Z",
+        "FechaActualizacion": null,
+        "CreditoVerificado": false,
+        "FuenteCredito": null,
+        "SolicitudCreditoId": null
+      },
+      {
+        "Id": 28,
+        "PeliculaId": 10,
+        "ActorId": 16,
+        "TipoCredito": "DIRECTOR",
+        "Personaje": null,
+        "Orden": 0,
+        "EsPrincipal": false,
+        "Fuente": "CREDITOS_OFICIALES",
+        "FechaCreacion": "2026-08-26T23:28:56.969Z",
+        "FechaActualizacion": "2026-09-19T17:12:46.639Z",
+        "CreditoVerificado": true,
+        "FuenteCredito": "CREDITOS_OFICIALES",
+        "SolicitudCreditoId": null
+      }
+    ],
+    "PeliculaTraducciones": [
+      {
+        "Id": 1,
+        "PeliculaId": 5,
+        "Idioma": "en",
+        "Titulo": null,
+        "Sinopsis": "Three convicted criminals escape from prison with nothing but a güiro, a drum, and an accordion.\n\nDuring their journey, they encounter a group of interesting characters and are forced to use their musical skills to find their way back home.",
+        "Eslogan": null,
+        "TipoFuente": "EDITORIAL",
+        "FuenteReferencia": null,
+        "FechaCreacion": "2026-08-21T01:31:08.361Z",
+        "FechaActualizacion": null
+      }
+    ]
   },
   "media": {
-    "referenced": 112,
-    "availableLocally": 112,
+    "referenced": 124,
+    "availableLocally": 124,
     "missing": []
   }
 }

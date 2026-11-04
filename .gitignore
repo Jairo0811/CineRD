@@ -10,6 +10,13 @@ frontend/dist/
 # Local catalog backups
 database/seeds/backups/
 
+# Respaldos y archivos de base de datos (no deben versionarse)
+*.bak
+*.bacpac
+*.mdf
+*.ldf
+backend/src/uploads/
+
 # Logs
 *.log
 
