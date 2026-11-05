@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../CineRD.Application/CineRD.Application.csproj" />
+  </ItemGroup>
+</Project>
