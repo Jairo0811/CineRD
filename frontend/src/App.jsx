@@ -10,6 +10,7 @@ import ActorEditRoute from "./components/auth/ActorEditRoute";
 import AdSenseArea from "./components/ads/AdSenseArea";
 import PageLoader from "./components/ui/PageLoader";
 import HomePublica from "./pages/HomePublica";
+import NotFound from "./pages/NotFound";
 
 // Configuración del modo demo
 import { DEMO_MODE } from "./config/api";
@@ -116,6 +117,10 @@ function App() {
               <Route path="/peliculas" element={<Peliculas />} />
 
               <Route path="/peliculas/:id" element={<PerfilPelicula />} />
+
+              {/* No dejar la zona central en blanco si Netlify sirve
+                  index.html para una dirección inexistente. */}
+              <Route path="*" element={<NotFound />} />
 
               {/* ==========================
                   AUTENTICACIÓN
