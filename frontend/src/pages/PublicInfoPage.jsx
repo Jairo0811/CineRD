@@ -4,7 +4,9 @@ import { useTranslation } from "react-i18next";
 
 const lastUpdated = { es: "5 de noviembre de 2026", en: "November 5, 2026" };
 const githubIssues = "https://github.com/Jairo0811/CineRD/issues/new";
-const rawEmail = import.meta.env.VITE_CONTACT_EMAIL?.trim() || "";
+// Temporary contact approved by the site owner; override with VITE_CONTACT_EMAIL
+// when a dedicated CineRD mailbox becomes available.
+const rawEmail = import.meta.env.VITE_CONTACT_EMAIL?.trim() || "jairo_1829@hotmail.com";
 const contactEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail) ? rawEmail : null;
 
 // Public, readable content. Keep aligned with actual deployment capabilities.
@@ -46,7 +48,7 @@ const content = {
         ] },
         { heading: "8. Solicitudes y correcciones", paragraphs: [
           "Puedes notificar errores del catálogo o solicitar una corrección mediante los canales publicados en la página de Contacto. No publiques identificaciones, direcciones, documentos ni otras evidencias confidenciales en GitHub Issues.",
-          "Para solicitudes privadas sobre datos personales es necesario disponer de un canal privado oficial. Este canal aún está pendiente de configuración para la demostración pública."
+          "Para solicitudes privadas sobre datos personales, derechos de imagen u otras consultas confidenciales, utiliza el correo temporal indicado en la página de Contacto. No publiques información sensible en GitHub Issues."
         ] },
         { heading: "9. Menores y actualizaciones", paragraphs: [
           "CineRD no está dirigido específicamente a menores. Podemos actualizar esta política si cambian las funcionalidades, los proveedores o las obligaciones aplicables. La fecha visible indica la versión publicada."
@@ -106,7 +108,7 @@ const content = {
       action: "Abrir incidencia en GitHub",
       caution: "Importante: las incidencias de GitHub son públicas. No incluyas documentos de identidad, teléfonos privados, contraseñas, direcciones, evidencias confidenciales ni información sensible.",
       privateHeading: "Asuntos privados y solicitudes sobre datos",
-      privateAvailable: "Para solicitudes de privacidad, derechos de imagen o comunicaciones confidenciales, escribe a este correo oficial:",
+      privateAvailable: "Para solicitudes de privacidad, derechos de imagen o comunicaciones confidenciales, escribe a este correo temporal de CineRD:",
       privatePending: "El correo privado oficial de CineRD aún no está configurado en esta demostración. No envíes información confidencial por el canal público. Este canal se habilitará antes de gestionar solicitudes sensibles.",
       aboutHeading: "Sobre el proyecto",
       aboutText: "CineRD es una iniciativa independiente dedicada al cine dominicano. El catálogo público se encuentra en desarrollo y no ofrece streaming ni formularios de soporte con almacenamiento de mensajes.",
@@ -149,7 +151,7 @@ const content = {
         ] },
         { heading: "8. Requests and corrections", paragraphs: [
           "You can report public catalog inaccuracies through the Contact page. Do not post identification, addresses or confidential evidence in GitHub Issues.",
-          "A dedicated private contact channel for personal data requests is still pending setup for the public demo."
+          "For private personal data requests, image rights or other confidential inquiries, use the temporary email listed on the Contact page. Do not publish sensitive information in GitHub Issues."
         ] },
         { heading: "9. Children and updates", paragraphs: [
           "CineRD is not specifically intended for children. This policy may change when features, providers or obligations change. The displayed date identifies the published version."
@@ -209,7 +211,7 @@ const content = {
       action: "Open a GitHub issue",
       caution: "Important: GitHub issues are public. Do not submit IDs, private phone numbers, passwords, addresses, confidential evidence or other sensitive information.",
       privateHeading: "Private and data-related requests",
-      privateAvailable: "For privacy, image rights or confidential inquiries, use this official email:",
+      privateAvailable: "For privacy, image rights or confidential inquiries, use this temporary CineRD contact email:",
       privatePending: "A private official CineRD email address has not yet been configured for this demo. Do not post confidential information via public issues. This channel must be available before handling sensitive requests.",
       aboutHeading: "About the project",
       aboutText: "CineRD is an independent initiative dedicated to Dominican cinema. The public catalog is under development and does not offer streaming or a stored contact form.",
