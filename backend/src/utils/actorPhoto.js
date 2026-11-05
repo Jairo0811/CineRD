@@ -4,17 +4,46 @@ const ANCHO_RETRATO = 450;
 const ALTO_RETRATO = 560;
 
 /**
- * Crea una fotografía de catálogo con relación 4:5 sin barras blancas añadidas.
- * El recorte mantiene la proporción original y usa la zona visualmente relevante.
+ * Mantiene la foto completa dentro de un marco 450x560, sin recortarla
+ * ni ampliar píxeles de baja resolución. El espacio sobrante se rellena
+ * con la misma fotografía desenfocada y oscurecida, NUNCA con blanco.
+ *
+ * Nota: el fondo sí se amplía para cubrir el lienzo, pero queda desenfocado;
+ * la fotografía nítida de primer plano conserva su encuadre original.
  */
 async function normalizarFotoTalento(buffer) {
-  return sharp(buffer)
+  const original = await sharp(buffer)
     .rotate()
     .flatten({ background: "#172b45" })
+    .toBuffer();
+
+  const primerPlano = await sharp(original)
     .resize(ANCHO_RETRATO, ALTO_RETRATO, {
-      fit: "cover",
-      position: sharp.strategy.attention,
+      fit: "inside",
+      withoutEnlargement: true,
     })
+    .jpeg({ quality: 90, mozjpeg: true })
+    .toBuffer();
+
+  const { width, height } = await sharp(primerPlano).metadata();
+
+  if (width === ANCHO_RETRATO && height === ALTO_RETRATO) {
+    return primerPlano;
+  }
+
+  const fondo = await sharp(original)
+    .resize(ANCHO_RETRATO, ALTO_RETRATO, { fit: "cover" })
+    .blur(24)
+    .modulate({ brightness: 0.45, saturation: 0.7 })
+    .jpeg({ quality: 85 })
+    .toBuffer();
+
+  return sharp(fondo)
+    .composite([{
+      input: primerPlano,
+      left: Math.floor((ANCHO_RETRATO - width) / 2),
+      top: Math.floor((ALTO_RETRATO - height) / 2),
+    }])
     .jpeg({ quality: 90, mozjpeg: true })
     .toBuffer();
 }
