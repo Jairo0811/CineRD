@@ -14,7 +14,18 @@ const TABLES = [
   "ActoresPeliculas",
   "PeliculaCreditos",
   "PeliculaTraducciones",
+  "Premios",
+  "Nominaciones",
+  "GaleriaMultimedia",
 ];
+
+// Solo columnas públicas explícitas. Nunca hacer SELECT * de dominios nuevos
+// en el snapshot exportable: podrían agregarse campos privados más adelante.
+const PUBLIC_COLUMNS = {
+  Premios: ["Id", "Nombre", "Organizacion", "Pais", "SitioWeb"],
+  Nominaciones: ["Id", "PremioId", "Categoria", "Anio", "PeliculaId", "ActorId", "Resultado", "Detalle", "FuenteUrl"],
+  GaleriaMultimedia: ["Id", "PeliculaId", "ActorId", "Tipo", "Titulo", "Artista", "Descripcion", "Archivo", "VideoUrl", "AudioUrl", "Proveedor", "FuenteUrl", "Orden", "EsDestacada"],
+};
 
 function getConfig(database = process.env.DB_DATABASE) {
   return {
@@ -38,7 +49,9 @@ async function tableExists(pool, table) {
 
 async function exportTable(pool, table) {
   if (!(await tableExists(pool, table))) return [];
-  const result = await pool.request().query(`SELECT * FROM dbo.[${table}]`);
+  const columns = PUBLIC_COLUMNS[table];
+  const selected = columns ? columns.map(name => `[${name}]`).join(", ") : "*";
+  const result = await pool.request().query(`SELECT ${selected} FROM dbo.[${table}]`);
   return result.recordset;
 }
 
@@ -61,6 +74,10 @@ function auditReferencedMedia(tables) {
       const mediaPath = normalizeUploadPath(candidate);
       if (mediaPath) paths.add(mediaPath);
     }
+  }
+  for (const item of tables.GaleriaMultimedia || []) {
+    const mediaPath = normalizeUploadPath(item.Archivo);
+    if (mediaPath) paths.add(mediaPath);
   }
 
   const missing = [];
@@ -94,7 +111,7 @@ async function main() {
     const media = auditReferencedMedia(tables);
     const snapshot = {
       format: "CineRD.CatalogSnapshot",
-      version: 2,
+      version: 3,
       generatedAtUtc: new Date().toISOString(),
       sourceDatabase: process.env.DB_DATABASE,
       tables,
@@ -113,6 +130,7 @@ async function main() {
 
     console.log("\nSiguiente paso:");
     console.log("  npm run catalog:validate");
+    console.log("  Comprueba los registros públicos exportados de premios, nominaciones y música antes de publicar.");
     console.log("  git add database/seeds/catalog.snapshot.json backend/uploads");
     console.log("  git commit -m \"data: update CineRD development catalog\"");
     console.log("  git push");
