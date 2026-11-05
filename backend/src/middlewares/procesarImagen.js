@@ -12,7 +12,7 @@ const procesarImagenActor = async (req, res, next) => {
     const rutaDestino = path.join(carpetaDestino, nombreArchivo);
     if (!fs.existsSync(carpetaDestino)) fs.mkdirSync(carpetaDestino, { recursive: true });
     // El formato anterior (450x450, fit: contain) incorporaba franjas blancas al JPEG.
-    // Formato retrato 4:5 con recorte proporcional: sin deformaciones ni relleno blanco.
+    // Marco 450x560: sujeto completo y sin ampliación; fondo difuminado en el área sobrante.
     const imagen = await normalizarFotoTalento(req.file.buffer);
     fs.writeFileSync(rutaDestino, imagen);
     req.file.filename = nombreArchivo;
