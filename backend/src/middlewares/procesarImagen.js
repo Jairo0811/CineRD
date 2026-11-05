@@ -3,6 +3,7 @@ const fs = require("fs");
 const sharp = require("sharp");
 const { uploadsDir } = require("../config/storage");
 const { normalizarFotoTalento } = require("../utils/actorPhoto");
+const { normalizarPosterPelicula } = require("../utils/moviePoster");
 
 const procesarImagenActor = async (req, res, next) => {
   try {
@@ -27,10 +28,10 @@ const procesarImagenPelicula = async (req, res, next) => {
     const carpetaDestino = path.join(uploadsDir, "peliculas");
     const rutaDestino = path.join(carpetaDestino, nombreArchivo);
     if (!fs.existsSync(carpetaDestino)) fs.mkdirSync(carpetaDestino, { recursive: true });
-    await sharp(req.file.buffer).rotate().resize(450, 650, {
-      fit: "contain",
-      background: { r: 255, g: 255, b: 255, alpha: 1 },
-    }).jpeg({ quality: 90 }).toFile(rutaDestino);
+    // El método anterior añadía franjas blancas cuando el cartel no medía 450x650.
+    // Mantener el póster completo, sin ampliar ni recortar textos o ilustraciones.
+    const imagen = await normalizarPosterPelicula(req.file.buffer);
+    fs.writeFileSync(rutaDestino, imagen);
     req.file.filename = nombreArchivo;
     next();
   } catch (error) { next(error); }
