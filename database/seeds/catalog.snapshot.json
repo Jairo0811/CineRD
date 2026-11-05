@@ -1,7 +1,7 @@
 {
   "format": "CineRD.CatalogSnapshot",
   "version": 3,
-  "generatedAtUtc": "2026-11-05T02:05:33.192Z",
+  "generatedAtUtc": "2026-11-05T21:23:30.480Z",
   "sourceDatabase": "CRUDPeliculas",
   "tables": {
     "Actores": [
@@ -1890,6 +1890,29 @@
         "SitioWebUrl": null,
         "XUrl": null,
         "SpotifyUrl": null
+      },
+      {
+        "Id": 97,
+        "NombreCompleto": "Vincent Carmona Arias",
+        "FechaNacimiento": null,
+        "Sexo": "Masculino",
+        "Foto": "/uploads/actores/1793882012853-Foto.jpeg",
+        "NombreArtistico": "El Dotol Nastra",
+        "EstaVivo": true,
+        "FechaFallecimiento": null,
+        "Profesion": "Comunicador",
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "Vincent",
+        "Apellidos": "Carmona Arias",
+        "TMDbId": null,
+        "InstagramUrl": "https://www.instagram.com/eldotolnastra/?hl=es-la",
+        "FacebookUrl": "https://www.facebook.com/ElDotolNastra/",
+        "TikTokUrl": null,
+        "YouTubeUrl": "https://www.youtube.com/@ElDotolNastra",
+        "SitioWebUrl": null,
+        "XUrl": "https://x.com/ElDotolNastra",
+        "SpotifyUrl": null
       }
     ],
     "Peliculas": [
@@ -2792,6 +2815,26 @@
         "TrailerUrl": null,
         "Estado": null,
         "Eslogan": null
+      },
+      {
+        "Id": 56,
+        "Titulo": "La Lucha de Ana",
+        "Genero": "Drama",
+        "FechaEstreno": "2012-04-13T00:00:00.000Z",
+        "Foto": "/uploads/peliculas/1793895363074-Foto.jpeg",
+        "Director": "Bladimir Abud",
+        "Productora": null,
+        "TMDbId": 224354,
+        "Sinopsis": "La historia se centra dentro del contexto marginal de una mujer de nombre Ana, la cual mantiene a su único hijo vendiendo flores en el Mercado Nuevo de la avenida Duarte. Un día, por un accidente fortuito, su hijo, que acababa de cumplir años, es asesinado. Esto la lleva a buscar justicia para su hijo, pero como no la consigue por la vía legal, Ana intentará conseguirla por su cuenta, atravesando un verdadero calvario.",
+        "IdiomaOriginal": "es",
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
       }
     ],
     "ActoresPeliculas": [
@@ -2879,8 +2922,8 @@
         "PeliculaId": 5,
         "ActorId": 8,
         "Personaje": "Francisco",
-        "EsPrincipal": true,
-        "TipoParticipacion": "Principal",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Debut cinematográfico",
         "OrdenCreditos": null
       },
       {
@@ -4309,6 +4352,14 @@
       },
       {
         "PeliculaId": 51,
+        "ActorId": 64,
+        "Personaje": "Limpiabotas",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 51,
         "ActorId": 71,
         "Personaje": "Yeya",
         "EsPrincipal": false,
@@ -4489,6 +4540,30 @@
         "Personaje": "Gerente 3",
         "EsPrincipal": false,
         "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 55,
+        "ActorId": 97,
+        "Personaje": "Gerente 4",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 56,
+        "ActorId": 11,
+        "Personaje": "Capitán García",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 56,
+        "ActorId": 18,
+        "Personaje": "Ana",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Debut cinematográfico",
         "OrdenCreditos": null
       }
     ],
@@ -5126,8 +5201,8 @@
     ]
   },
   "media": {
-    "referenced": 126,
-    "availableLocally": 126,
+    "referenced": 128,
+    "availableLocally": 128,
     "missing": []
   }
 }

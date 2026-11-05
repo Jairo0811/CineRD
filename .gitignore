@@ -26,3 +26,7 @@ backend/src/uploads/
 # Windows
 Thumbs.db
 .DS_Store
+
+# Generated static catalog and media
+frontend/public/demo/
+frontend/public/uploads/
