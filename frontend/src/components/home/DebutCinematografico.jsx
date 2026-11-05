@@ -7,7 +7,7 @@ const anioEstreno = (fecha) => {
   return match ? match[0] : null;
 };
 
-export default function DebutCinematografico({ debuts = [], cargando = false }) {
+export default function DebutCinematografico({ debuts = [], cargando = false, error = false }) {
   const { t } = useTranslation();
 
   return (
@@ -61,7 +61,7 @@ export default function DebutCinematografico({ debuts = [], cargando = false }) 
         </div>
       ) : (
         <p className="cinematic-debuts-empty" role="status">
-          {cargando ? t("home.debutsLoading") : t("home.debutsEmpty")}
+          {cargando ? t("home.debutsLoading") : error ? t("home.debutsError") : t("home.debutsEmpty")}
         </p>
       )}
       <p className="cinematic-debuts-note">{t("home.debutsNote")}</p>
