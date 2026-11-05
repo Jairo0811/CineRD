@@ -15,7 +15,8 @@
     "catalog:import:replace": "node scripts/importCatalog.js --replace",
     "setup:local": "node scripts/setupLocal.js",
     "photos:repair:preview": "node scripts/repairActorPhotos.js",
-    "photos:repair": "node scripts/repairActorPhotos.js"
+    "photos:repair": "node scripts/repairActorPhotos.js",
+    "photos:rebuild": "node scripts/reprocessActorPhotosFromBackup.js"
   },
   "keywords": [],
   "author": "",
