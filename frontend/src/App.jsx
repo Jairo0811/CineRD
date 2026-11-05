@@ -11,6 +11,7 @@ import AdSenseArea from "./components/ads/AdSenseArea";
 import PageLoader from "./components/ui/PageLoader";
 import HomePublica from "./pages/HomePublica";
 import NotFound from "./pages/NotFound";
+import { PrivacyPolicy, TermsOfUse, Contact } from "./pages/PublicInfoPage";
 
 // Configuración del modo demo
 import { DEMO_MODE } from "./config/api";
@@ -109,6 +110,11 @@ function App() {
               <Route path="/buscar" element={<Busqueda />} />
 
               <Route path="/historia" element={<Historia />} />
+
+              {/* Páginas institucionales públicas, disponibles también en la demo. */}
+              <Route path="/privacidad" element={<PrivacyPolicy />} />
+              <Route path="/terminos" element={<TermsOfUse />} />
+              <Route path="/contacto" element={<Contact />} />
 
               <Route path="/actores" element={<Actores />} />
 

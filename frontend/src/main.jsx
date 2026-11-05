@@ -29,6 +29,7 @@ import "./styles/adsense.css";
 import "./styles/heritage.css";
 import "./styles/historia.css";
 import "./styles/heritage-pages.css";
+import "./styles/public-info.css";
 
 import App from "./App.jsx";
 
