@@ -16,7 +16,9 @@
     "setup:local": "node scripts/setupLocal.js",
     "photos:repair:preview": "node scripts/repairActorPhotos.js",
     "photos:repair": "node scripts/repairActorPhotos.js",
-    "photos:rebuild": "node scripts/reprocessActorPhotosFromBackup.js"
+    "photos:rebuild": "node scripts/reprocessActorPhotosFromBackup.js",
+    "posters:repair:preview": "node scripts/repairMoviePosters.js",
+    "posters:repair": "node scripts/repairMoviePosters.js"
   },
   "keywords": [],
   "author": "",
