@@ -489,7 +489,12 @@ Incluye datos de catálogo como:
 - películas;
 - participaciones;
 - créditos profesionales;
-- traducciones.
+- traducciones;
+- premios y nominaciones públicas;
+- galerías multimedia públicas;
+- enlaces a bandas sonoras/OST, temas oficiales, canciones originales y score de Spotify/YouTube.
+
+**Importante:** la web de Netlify es una demo estática de solo lectura. Para que se vean los soundtracks y premios añadidos en SQL Server, vuelve a ejecutar `npm --prefix backend run catalog:export`, valida y sube el snapshot **v3** mediante un PR. No se sincronizan automáticamente desde tu PC. Consulta [la guía de catálogo portable](database/seeds/README.md).
 
 No incluye:
 
@@ -523,6 +528,7 @@ La multimedia pública usada por el catálogo puede vivir en:
 ```text
 backend/uploads/actores/
 backend/uploads/peliculas/
+backend/uploads/galerias/
 ```
 
 El exportador valida que los archivos referenciados existan.
