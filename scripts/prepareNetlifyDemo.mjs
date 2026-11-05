@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -55,14 +56,43 @@ for (const p of tables.Peliculas) { addMedia(p.Foto); addMedia(p.Backdrop); }
 for (const g of tables.GaleriaMultimedia) addMedia(g.Archivo);
 
 let copied = 0;
-for (const relative of media) {
+const mediaChecksums = [];
+const mediaCounts = { actores: 0, peliculas: 0, galerias: 0 };
+for (const relative of [...media].sort()) {
   const source = path.join(root, 'backend', relative);
   const target = path.join(outPublic, relative);
   if (!fs.existsSync(source)) throw new Error(`Archivo público requerido inexistente: ${relative}`);
+
+  // No confiar en archivos antiguos de frontend/public: copiar siempre el
+  // original versionado más reciente del backend, también en builds con caché.
   fs.mkdirSync(path.dirname(target), { recursive: true });
   fs.copyFileSync(source, target);
+
+  // La compilación falla si la versión pública no coincide byte a byte con
+  // el JPEG de GitHub; así no se despliegan accidentalmente retratos antiguos.
+  const hashOrigen = createHash('sha256').update(fs.readFileSync(source)).digest('hex');
+  const hashDestino = createHash('sha256').update(fs.readFileSync(target)).digest('hex');
+  if (hashOrigen !== hashDestino) {
+    throw new Error(`No coincide la imagen de origen y la versión Netlify: ${relative}`);
+  }
+
+  mediaChecksums.push(`${relative}:${hashOrigen}`);
+  const tipo = relative.split('/')[1];
+  mediaCounts[tipo]++;
   copied++;
 }
+
+// Metadatos públicos mínimos para saber qué revisión y qué imágenes
+// contiene realmente cada compilación estática (sin exponer datos privados).
+const mediaChecksum = createHash('sha256').update(mediaChecksums.join('\n')).digest('hex');
+fs.writeFileSync(path.join(outPublic, 'demo', 'deploy-status.json'), JSON.stringify({
+  format: 'CineRD.PublicDemoDeploy',
+  sourceCommit: process.env.COMMIT_REF || null,
+  catalogGeneratedAtUtc: snapshot.generatedAtUtc,
+  mediaFilesCopied: copied,
+  mediaCounts,
+  mediaSha256: mediaChecksum,
+}, null, 2));
 
 const musicTypes = new Set(['TEMA_OFICIAL', 'CANCION_ORIGINAL', 'BANDA_SONORA', 'SCORE']);
 const songs = tables.GaleriaMultimedia.filter(item => musicTypes.has(item.Tipo)).length;
@@ -70,4 +100,5 @@ console.log(`Demo CineRD preparada: ${tables.Peliculas.length} películas, ${tab
 if (snapshot.version < 3) {
   console.warn('⚠ El snapshot versionado es v2 y no incluye premios, galería ni soundtracks. Ejecuta npm run catalog:export en la PC con SQL Server y versiona el snapshot v3 para publicar estos datos.');
 }
+console.log(`Medios Netlify verificados por SHA-256: ${mediaCounts.actores} fotos de talentos, ${mediaCounts.peliculas} pósteres y ${mediaCounts.galerias} archivos de galería.`);
 console.log('Archivos públicos generados en frontend/public/demo y frontend/public/uploads.');
