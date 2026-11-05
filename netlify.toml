@@ -33,3 +33,16 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Imágenes que conservan su URL al ser reparadas: el navegador debe
+# revalidar después de cada despliegue y no mostrar JPEG anteriores.
+[[headers]]
+  for = "/uploads/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Incluye el estado del despliegue y el snapshot público actualizado.
+[[headers]]
+  for = "/demo/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
