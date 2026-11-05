@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const sharp = require("sharp");
 const { uploadsDir } = require("../config/storage");
+const { normalizarFotoTalento } = require("../utils/actorPhoto");
 
 const procesarImagenActor = async (req, res, next) => {
   try {
@@ -10,10 +11,10 @@ const procesarImagenActor = async (req, res, next) => {
     const carpetaDestino = path.join(uploadsDir, "actores");
     const rutaDestino = path.join(carpetaDestino, nombreArchivo);
     if (!fs.existsSync(carpetaDestino)) fs.mkdirSync(carpetaDestino, { recursive: true });
-    await sharp(req.file.buffer).rotate().resize(450, 450, {
-      fit: "contain",
-      background: { r: 255, g: 255, b: 255, alpha: 1 },
-    }).jpeg({ quality: 90 }).toFile(rutaDestino);
+    // El formato anterior (450x450, fit: contain) incorporaba franjas blancas al JPEG.
+    // Formato retrato 4:5 con recorte proporcional: sin deformaciones ni relleno blanco.
+    const imagen = await normalizarFotoTalento(req.file.buffer);
+    fs.writeFileSync(rutaDestino, imagen);
     req.file.filename = nombreArchivo;
     next();
   } catch (error) { next(error); }
