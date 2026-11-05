@@ -75,7 +75,8 @@ describe("Netlify public catalog demo", () => {
       ok: true,
       json: async () => ({ format: "CineRD.PublicDemoCatalog", tables: catalogo }),
     })));
-    const testAdapter = (await import("./demoAdapter.js?debuts-case")).default;
+    vi.resetModules();
+    const testAdapter = (await import("./demoAdapter.js")).default;
     const resultado = await request(testAdapter, "/actores-peliculas/debuts");
     expect(resultado).toHaveLength(1);
     expect(resultado[0]).toMatchObject({
