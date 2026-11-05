@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import api from "../services/api";
 
 const TIPOS = [
@@ -149,10 +150,9 @@ function ReclamacionCredito() {
   if (cargando) return <div className="text-center py-5"><div className="spinner-border text-primary"/><p className="mt-3 text-muted">Preparando reclamación...</p></div>;
 
   return <div className="table-page-container">
-    <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
-      <div><span className="catalog-eyebrow">TRAYECTORIA VERIFICABLE</span><h1 className="h2 mb-1">Reclamar participación</h1><p className="text-muted mb-0">Solicita agregar un crédito faltante aportando evidencia comprobable.</p></div>
-      {perfil?.Id && <Link to={`/actores/${perfil.Id}`} className="btn btn-outline-secondary">← Mi perfil</Link>}
-    </div>
+    <EncabezadoPagina eyebrow="TRAYECTORIA VERIFICABLE" titulo="Reclamar participación" descripcion="Solicita agregar un crédito faltante aportando evidencia comprobable.">
+      {perfil?.Id && <Link to={`/actores/${perfil.Id}`} className="page-hero-link">← Mi perfil</Link>}
+    </EncabezadoPagina>
 
     <div className="alert alert-warning border">
       <strong>Regla de integridad:</strong> este formulario es únicamente para participaciones que todavía no aparecen en tu filmografía de CineRD. Si no figuras en los créditos oficiales de la obra, debes indicar la escena y aportar evidencia suficiente para revisión.

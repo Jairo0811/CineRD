@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import api from "../services/api";
 import { API_URL } from "../config/api";
 
@@ -290,11 +291,11 @@ function AdminGaleria() {
 
   return (
     <div className="table-page-container">
-      <header className="mb-4">
-        <span className="catalog-eyebrow">FASE 8 · CATÁLOGO</span>
-        <h1 className="display-6 fw-bold">Galerías multimedia</h1>
-        <p className="text-muted mb-0">Administra imágenes, trailers de YouTube y música oficial enlazada desde Spotify o YouTube.</p>
-      </header>
+      <EncabezadoPagina
+        eyebrow="CATÁLOGO"
+        titulo="Galerías multimedia"
+        descripcion="Administra imágenes, trailers de YouTube y música oficial enlazada desde Spotify o YouTube."
+      />
 
       {error && <div className="alert alert-danger">{error}</div>}
 

@@ -1,4 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import { useEffect, useMemo, useState } from "react";
 import api from "../services/api";
 import PeliculaTraduccionesPanel from "../components/peliculas/PeliculaTraduccionesPanel";
@@ -228,13 +229,18 @@ function FormularioPelicula() {
   };
 
   return <div className="form-page-container">
-    <Link to="/peliculas" className="btn btn-secondary mb-3">← Volver a Películas</Link>
-    <div className="text-center"><h2>{esEdicion ? "✏️ Editar Película" : "➕ Nueva Película"}</h2></div>
+    <EncabezadoPagina
+      eyebrow="CATÁLOGO"
+      titulo={esEdicion ? "Editar película" : "Nueva película"}
+      descripcion="Completa la ficha o impórtala desde TMDb y revísala antes de guardar."
+      volverA="/peliculas"
+      volverTexto="← Volver a Películas"
+    />
 
     <form onSubmit={guardarPelicula} className="card mt-3 shadow">
       <div className="card-body">
         <div className="card border-primary mb-4">
-          <div className="card-header bg-white fw-bold text-primary">🎬 Asistente de importación desde TMDb</div>
+          <div className="card-header fw-bold card-header-accent">🎬 Asistente de importación desde TMDb</div>
           <div className="card-body">
             <p className="text-muted">Busca una película en TMDb para completar automáticamente sus datos. Podrás revisarlos antes de guardar.</p>
             <div className="row g-2">

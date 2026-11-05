@@ -6,7 +6,7 @@ import api from "../services/api";
 
 ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 const API_URL = "http://localhost:3000";
-const COLORES = ["#0057B8", "#CE1126", "#F4B400", "#198754", "#6F42C1", "#FD7E14", "#1F2937", "#6C757D"];
+const COLORES = ["#0a2f73", "#c8102e", "#b98a2e", "#2f7d5b", "#6b4a9e", "#d9731a", "#1f2937", "#6c757d"];
 const resolverImagen = (ruta) => !ruta ? null : ruta.startsWith("http://") || ruta.startsWith("https://") ? ruta : `${API_URL}${ruta}`;
 const imagenActor = (a) => resolverImagen(a?.Foto || a?.FotoUrl || a?.Imagen || a?.ImagenUrl || a?.ProfilePath || null);
 const imagenPelicula = (p) => resolverImagen(p?.Foto || p?.Poster || p?.PosterUrl || p?.Imagen || p?.ImagenUrl || null);
@@ -42,8 +42,8 @@ function Home() {
   const coberturaReparto = peliculas.length ? Math.round((resumen.conReparto / peliculas.length) * 100) : 0;
   const opciones = { responsive:true, maintainAspectRatio:false, plugins:{legend:{position:"bottom"}} };
   const datosGeneros = { labels:Object.keys(generos), datasets:[{label:"Películas",data:Object.values(generos),backgroundColor:COLORES,borderWidth:0}] };
-  const datosEstrenos = { labels:anios, datasets:[{label:"Estrenos",data:anios.map(a=>estrenos[a]),backgroundColor:"#0057B8",borderWidth:0}] };
-  const datosTop = { labels:topPeliculas.map(p=>p.Titulo), datasets:[{label:"Talentos en reparto",data:topPeliculas.map(p=>Number(p.CantidadActores||0)),backgroundColor:"#0057B8",borderWidth:0}] };
+  const datosEstrenos = { labels:anios, datasets:[{label:"Estrenos",data:anios.map(a=>estrenos[a]),backgroundColor:"#0a2f73",borderWidth:0}] };
+  const datosTop = { labels:topPeliculas.map(p=>p.Titulo), datasets:[{label:"Talentos en reparto",data:topPeliculas.map(p=>Number(p.CantidadActores||0)),backgroundColor:"#0a2f73",borderWidth:0}] };
   const kpis = [
     ["🎬",peliculas.length,"Películas catalogadas"],["🎭",actores.length,"Talentos registrados"],["👥",resumen.participaciones,"Participaciones"],["🎞️",resumen.conReparto,"Películas con reparto"],
     ["🎥",resumen.directores,"Directores registrados"],["🟢",resumen.vivos,"Talentos vivos"],["📚",Object.keys(generos).length,"Géneros presentes"],["📈",Object.keys(estrenos).length,"Años documentados"]

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import api from "../services/api";
 
 import ActorFormFields from "../components/actores/ActorFormFields";
@@ -479,15 +480,13 @@ function RepartoPelicula() {
 
   return (
     <div className="table-page-container">
-      <Link to="/peliculas" className="btn btn-secondary mb-3">
-        ← Volver a Películas
-      </Link>
-
-      <div className="mb-4">
-        <h2>👥 Reparto</h2>
-
-        {pelicula && <p className="text-muted mb-0">🎬 {pelicula.Titulo}</p>}
-      </div>
+      <EncabezadoPagina
+        eyebrow="ADMINISTRACIÓN EDITORIAL"
+        titulo="Reparto"
+        descripcion={pelicula ? `🎬 ${pelicula.Titulo}` : undefined}
+        volverA="/peliculas"
+        volverTexto="← Volver a Películas"
+      />
 
       <form onSubmit={agregarActor} className="card shadow-sm mb-4">
         <div className="card-body">
@@ -531,7 +530,7 @@ function RepartoPelicula() {
       </form>
 
       <div className="card shadow-sm mb-4">
-        <div className="card-header bg-white fw-bold text-primary">
+        <div className="card-header fw-bold card-header-accent">
           🌍 Reparto disponible en TMDb
         </div>
 
@@ -699,7 +698,7 @@ function RepartoPelicula() {
                 </span>
               </div>
 
-              <div className="card-footer bg-white border-0">
+              <div className="card-footer border-0">
                 <div className="d-flex gap-2">
                   <button
                     type="button"

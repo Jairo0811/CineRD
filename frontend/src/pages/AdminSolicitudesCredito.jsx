@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import api from "../services/api";
 
 const ESTADOS = ["", "PENDIENTE", "EN_REVISION", "REQUIERE_MAS_EVIDENCIA", "APROBADO", "RECHAZADO"];
@@ -111,15 +112,12 @@ function AdminSolicitudesCredito() {
 
   return (
     <div className="table-page-container credit-claims-admin-page">
-      <div className="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
-        <div>
-          <span className="catalog-eyebrow">CONTROL EDITORIAL</span>
-          <h1 className="h2 mb-1">Reclamaciones de créditos</h1>
-          <p className="text-muted mb-0">
-            Valida cada participación con evidencia antes de incorporarla a la filmografía pública.
-          </p>
-        </div>
-        <div style={{ minWidth: "280px" }}>
+      <EncabezadoPagina
+        eyebrow="CONTROL EDITORIAL"
+        titulo="Reclamaciones de créditos"
+        descripcion="Valida cada participación con evidencia antes de incorporarla a la filmografía pública."
+      >
+        <div className="page-hero-filter">
           <label className="form-label small text-muted mb-1" htmlFor="filtro-estado-creditos">
             Filtrar por estado
           </label>
@@ -136,7 +134,7 @@ function AdminSolicitudesCredito() {
             ))}
           </select>
         </div>
-      </div>
+      </EncabezadoPagina>
 
       <section className="row g-3 mb-4" aria-label="Resumen de reclamaciones">
         <div className="col-6 col-lg-3">

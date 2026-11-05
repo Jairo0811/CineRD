@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import api from "../services/api";
 import CreditosProfesionalesPelicula from "../components/reparto/CreditosProfesionalesPelicula";
 
@@ -33,16 +34,15 @@ function AdminCreditosPelicula() {
 
   return (
     <div className="table-page-container">
-      <div className="d-flex flex-wrap gap-2 mb-4">
-        <Link to={`/peliculas/${id}`} className="btn btn-outline-secondary">← Volver a la película</Link>
-        <Link to={`/peliculas/${id}/reparto`} className="btn btn-outline-primary">👥 Administrar reparto</Link>
-      </div>
-
-      <header className="mb-4">
-        <span className="catalog-eyebrow">ADMINISTRACIÓN EDITORIAL</span>
-        <h1 className="display-6 fw-bold mb-1">Créditos profesionales</h1>
-        <p className="text-muted mb-0">🎬 {pelicula.Titulo}</p>
-      </header>
+      <EncabezadoPagina
+        eyebrow="ADMINISTRACIÓN EDITORIAL"
+        titulo="Créditos profesionales"
+        descripcion={`🎬 ${pelicula.Titulo}`}
+        volverA={`/peliculas/${id}`}
+        volverTexto="← Volver a la película"
+      >
+        <Link to={`/peliculas/${id}/reparto`} className="page-hero-link">👥 Administrar reparto</Link>
+      </EncabezadoPagina>
 
       <CreditosProfesionalesPelicula peliculaId={Number(id)} actores={actores} />
     </div>
