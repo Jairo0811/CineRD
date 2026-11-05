@@ -52,9 +52,13 @@ Fuentes primarias: `backend/src/app.js`, `backend/src/routes/*.js`, `backend/src
 - [x] Rama separada desde `0321581`.
 - [x] Proyectos Domain/Application/Infrastructure/API definidos.
 - [x] Endpoints básicos de health/readiness.
-- [ ] Compilación con SDK .NET 10 en máquina del desarrollador o CI.
-- [ ] Prueba HTTP local de `/health` y `/ready`.
+- [x] Compilación verificada en Windows con SDK .NET 10.0.403 (cuatro proyectos, Release).
+- [x] Pruebas HTTP locales: `/health` respondió 200, `/ready` respondió 503 intencional por SQL sin configurar.
 - [ ] Inventario endpoint-por-endpoint y pruebas comparativas (Fase 1).
+
+## Verificación local y advertencia de HTTPS
+
+El perfil `http` escucha en `http://localhost:5100`. En Development no se aplica redirección HTTPS porque no existe un puerto TLS configurado. En producción, antes de publicar la API se deberá configurar TLS, terminación de proxy y cabeceras reenviadas seguras, y validar el comportamiento HTTPS end-to-end.
 
 ## Seguridad de entrega
 
