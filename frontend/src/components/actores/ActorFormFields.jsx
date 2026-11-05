@@ -24,9 +24,9 @@ function ActorFormFields({ formulario, onChange, onChangeEstadoVida, onFotoChang
       <div className="col-12 col-md-6"><label className="form-label">X / Twitter</label><input type="url" name="XUrl" className="form-control" placeholder="https://x.com/..." value={formulario.XUrl || ""} onChange={onChange}/></div>
       <div className="col-12 col-md-6"><label className="form-label">Sitio web oficial</label><input type="url" name="SitioWebUrl" className="form-control" placeholder="https://..." value={formulario.SitioWebUrl || ""} onChange={onChange}/></div>
 
-      {mostrarFotografia && <div className="col-12"><label className="form-label">Fotografía del talento</label><input type="file" name="Foto" className="form-control" accept="image/jpeg,image/png,image/webp" onChange={onFotoChange}/></div>}
+      {mostrarFotografia && <div className="col-12"><label className="form-label">Fotografía del talento</label><input type="file" name="Foto" className="form-control" accept="image/jpeg,image/png,image/webp" onChange={onFotoChange}/><small className="text-muted">La imagen se adapta a formato retrato 4:5 sin bordes blancos. Mantén el rostro lejos de los bordes para evitar recortes.</small></div>}
     </div>
-    {vistaPrevia && <div className="mt-3 text-center"><p className="text-muted mb-2">Vista previa</p><img src={vistaPrevia} alt="Vista previa del talento" className="img-thumbnail" style={{width:"180px",height:"180px",objectFit:"cover",borderRadius:"50%"}}/></div>}
+    {vistaPrevia && <div className="mt-3 text-center"><p className="text-muted mb-2">Vista previa</p><img src={vistaPrevia} alt="Vista previa del talento" className="img-thumbnail" style={{width:"180px",height:"225px",objectFit:"cover",objectPosition:"center",borderRadius:"16px"}}/></div>}
   </>;
 }
 export default ActorFormFields;
