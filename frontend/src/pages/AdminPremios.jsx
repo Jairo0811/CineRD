@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import api from "../services/api";
 
 const premioInicial = {
@@ -196,11 +197,11 @@ function AdminPremios() {
 
   return (
     <div className="table-page-container">
-      <header className="mb-4">
-        <span className="text-uppercase text-muted small fw-semibold">Fase 8 · Enriquecimiento del catálogo</span>
-        <h1 className="mt-2 mb-2">🏆 Premios y nominaciones</h1>
-        <p className="text-muted mb-0">Administra reconocimientos obtenidos por películas y talentos de CineRD.</p>
-      </header>
+      <EncabezadoPagina
+        eyebrow="ENRIQUECIMIENTO DEL CATÁLOGO"
+        titulo="🏆 Premios y nominaciones"
+        descripcion="Administra reconocimientos obtenidos por películas y talentos de CineRD."
+      />
 
       <section className="row g-3 mb-4">
         <div className="col-12 col-md-4"><div className="card h-100 shadow-sm"><div className="card-body"><small className="text-muted">Premios</small><div className="display-6 fw-bold">{resumen.premios}</div></div></div></div>

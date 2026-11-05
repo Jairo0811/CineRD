@@ -1,4 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
@@ -141,8 +142,13 @@ function FormularioActor() {
   };
 
   return <div className="form-page-container">
-    <Link to="/actores" className="btn btn-secondary mb-3">← Volver a Actores</Link>
-    <div className="text-center"><h2>{esEdicion ? "✏️ Editar Actor" : "➕ Nuevo Actor"}</h2></div>
+    <EncabezadoPagina
+      eyebrow="TALENTOS"
+      titulo={esEdicion ? "Editar talento" : "Nuevo talento"}
+      descripcion="Registra o actualiza el perfil profesional y su información biográfica."
+      volverA="/actores"
+      volverTexto="← Volver a Talentos"
+    />
     <form onSubmit={guardarActor} className="card mt-3 shadow"><div className="card-body">
       {formulario.TMDbId && <div className="alert alert-success">✅ Talento vinculado con TMDb. ID: <strong>{formulario.TMDbId}</strong></div>}
       <ActorFormFields formulario={formulario} onChange={manejarCambio} onChangeEstadoVida={cambiarEstadoVida} onFotoChange={manejarFoto} vistaPrevia={vistaPrevia}/>

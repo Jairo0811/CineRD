@@ -28,6 +28,7 @@ import "./styles/dark-polish.css";
 import "./styles/adsense.css";
 import "./styles/heritage.css";
 import "./styles/historia.css";
+import "./styles/heritage-pages.css";
 
 import App from "./App.jsx";
 

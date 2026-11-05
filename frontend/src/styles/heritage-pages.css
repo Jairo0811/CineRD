@@ -1,0 +1,1286 @@
+/* =========================================================
+   CINERD · IDENTIDAD «ARCHIVO» APLICADA AL RESTO DE VENTANAS
+   Se carga después de heritage.css. Lleva a la ficha de
+   película, acceso, formularios, paneles, administración y
+   búsqueda el mismo lenguaje de la portada: papel de archivo,
+   tipografía editorial, cinta de película y acentos dorados.
+   El modo oscuro usa los tokens --cine-* del tema.
+   ========================================================= */
+
+:root {
+  --hero-bg:
+    radial-gradient(circle at 86% 18%, rgba(214, 173, 82, 0.22), transparent 30%),
+    radial-gradient(circle at 8% 100%, rgba(200, 16, 46, 0.24), transparent 34%),
+    linear-gradient(135deg, #050b16 0%, #0b2345 58%, #0a2f73 100%);
+  --perforations: repeating-linear-gradient(
+    90deg,
+    transparent 0 12px,
+    rgba(255, 255, 255, 0.22) 12px 26px,
+    transparent 26px 38px
+  );
+}
+
+/* ---------- Barra: botones de acceso legibles cuando están activos ---------- */
+
+.cine-btn-ghost.active,
+.cine-btn-ghost.active:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.cine-btn-accent.active,
+.cine-btn-accent.active:hover {
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+/* =========================================================
+   CABECERAS OSCURAS (héroes de todas las ventanas)
+   ========================================================= */
+
+.user-dashboard-hero,
+.admin-dashboard-hero,
+.talent-hero,
+.global-search-hero,
+.verification-hero,
+.admin-review-hero,
+.claim-summary-top,
+.cine-auth-brand {
+  position: relative;
+  overflow: hidden;
+  background: var(--hero-bg);
+  color: #fff;
+}
+
+.user-dashboard-hero,
+.admin-dashboard-hero,
+.talent-hero,
+.global-search-hero,
+.verification-hero,
+.admin-review-hero {
+  border-radius: 28px;
+  padding-bottom: calc(clamp(1.4rem, 3vw, 2rem) + 20px);
+  box-shadow: 0 26px 70px rgba(4, 18, 41, 0.2);
+}
+
+/* Cinta de película en el borde inferior */
+.user-dashboard-hero::after,
+.admin-dashboard-hero::after,
+.talent-hero::after,
+.global-search-hero::after,
+.verification-hero::after,
+.admin-review-hero::after,
+.cine-auth-brand::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 26px;
+  background-color: rgba(3, 8, 18, 0.55);
+  background-image: var(--perforations);
+  background-size: 100% 10px;
+  background-repeat: no-repeat;
+  background-position: 0 8px;
+  pointer-events: none;
+}
+
+/* Grano sutil (sustituye la cuadrícula azul anterior) */
+.cine-auth-brand::before,
+.user-dashboard-hero::before,
+.admin-dashboard-hero::before,
+.talent-hero::before,
+.verification-hero::before,
+.admin-review-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  background-image: var(--film-grain);
+  background-size: 160px;
+  background-position: 0 0;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.user-dashboard-hero > *,
+.admin-dashboard-hero > *,
+.talent-hero > *,
+.verification-hero > *,
+.admin-review-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Títulos editoriales en las cabeceras */
+.user-dashboard-hero h1,
+.admin-dashboard-hero h1,
+.talent-hero h1,
+.global-search-hero h1,
+.verification-hero h1,
+.admin-review-hero h1,
+.claim-summary-top h1,
+.cine-auth-brand h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+/* Sobretítulos dorados */
+.user-dashboard-eyebrow,
+.admin-dashboard-eyebrow,
+.talent-hero-copy > span:first-child,
+.global-search-hero > span,
+.verification-hero span,
+.admin-review-hero small,
+.claim-summary-top span,
+.cine-auth-brand small {
+  color: var(--rd-gold-soft);
+  letter-spacing: 0.16em;
+}
+
+.user-dashboard-hero p,
+.admin-dashboard-hero p,
+.talent-hero p,
+.global-search-hero p,
+.verification-hero p,
+.admin-review-hero p,
+.claim-summary-top p,
+.cine-auth-brand p {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* =========================================================
+   SUPERFICIES: papel de archivo en lugar de blanco frío
+   ========================================================= */
+
+.user-stat,
+.user-action,
+.user-panel,
+.admin-kpi,
+.admin-dashboard-panel,
+.admin-dashboard-action,
+.talent-kpi,
+.talent-action-card,
+.talent-panel,
+.verification-search,
+.verification-card,
+.claim-summary,
+.claim-form,
+.admin-review-card,
+.admin-review-empty,
+.verified-link-card,
+.global-search-section,
+.global-search-result,
+.dashboard-card,
+.form-page-container > .card {
+  border-color: var(--cine-line);
+  background: var(--cine-surface-1);
+  box-shadow: var(--cine-shadow-theme);
+}
+
+.user-discovery-card,
+.admin-recent-item,
+.admin-ranking-item {
+  border-color: var(--cine-line-soft);
+}
+
+.user-panel-header,
+.admin-dashboard-panel-header,
+.talent-panel-header {
+  border-color: var(--cine-line);
+}
+
+/* Títulos de sección y valores destacados en tipografía editorial */
+.user-panel-header h2,
+.admin-dashboard-panel-header h2,
+.talent-panel-header h2,
+.admin-review-section-heading h2,
+.claim-form h2,
+.global-search-section h2,
+.global-search-section h3,
+.form-page-container h1,
+.form-page-container h2,
+.cine-auth-panel h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.user-stat strong,
+.admin-kpi-value,
+.talent-kpi strong,
+.admin-review-count strong {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.user-action h2,
+.talent-action-card h2,
+.admin-dashboard-action strong {
+  font-weight: 700;
+}
+
+/* Etiquetas pequeñas: de azul frío a azul de la bandera / dorado */
+.user-panel-header span,
+.admin-dashboard-panel-header span,
+.talent-panel-header span,
+.admin-review-section-heading span,
+.admin-kpi-label {
+  color: var(--hist-accent);
+}
+
+.user-panel-header a,
+.admin-dashboard-panel-header a,
+.talent-panel-header a {
+  color: var(--hist-accent);
+}
+
+/* Acciones destacadas: azul profundo con filo dorado */
+.user-action.highlight,
+.talent-action-card.highlight,
+.admin-dashboard-action.primary {
+  border-color: #0a2f73;
+  background: linear-gradient(135deg, #0a2f73, #0c3b8c);
+  box-shadow: 0 14px 34px rgba(10, 47, 115, 0.28);
+}
+
+.user-action.highlight h2,
+.talent-action-card.highlight h2,
+.admin-dashboard-action.primary strong {
+  color: #fff;
+}
+
+.user-action:hover,
+.talent-action-card:hover,
+.admin-dashboard-action:hover,
+.user-discovery-card:hover {
+  border-color: var(--rd-gold);
+}
+
+/* =========================================================
+   ACCESO Y REGISTRO
+   ========================================================= */
+
+.cine-auth-shell {
+  border-color: var(--cine-line);
+  border-radius: 28px;
+  background: var(--cine-surface-1);
+  box-shadow: 0 26px 70px rgba(4, 18, 41, 0.16);
+}
+
+.cine-auth-brand {
+  padding-bottom: calc(3rem + 14px);
+}
+
+.cine-auth-brand h1 {
+  font-size: clamp(2.1rem, 3.6vw, 3.3rem);
+}
+
+.cine-auth-brand p {
+  line-height: 1.6;
+}
+
+.cine-auth-logo {
+  position: relative;
+  z-index: 1;
+}
+
+.cine-auth-panel {
+  background: var(--cine-surface-1);
+  color: var(--cine-text-1);
+}
+
+.cine-auth-panel h2 {
+  font-size: 1.9rem;
+}
+
+.cine-auth-panel .lead-copy,
+.cine-auth-switch {
+  color: var(--cine-text-2);
+}
+
+.cine-auth-panel a,
+.cine-auth-switch a {
+  color: var(--hist-accent);
+}
+
+.cine-field label,
+.form-page-container .form-label {
+  color: var(--cine-text-1);
+}
+
+.cine-field input,
+.cine-field select,
+.cine-field textarea,
+.form-page-container .form-control,
+.form-page-container .form-select,
+.verification-search input {
+  border-color: var(--cine-line);
+  background: var(--cine-surface-2);
+  color: var(--cine-text-1);
+}
+
+.cine-field input:focus,
+.cine-field select:focus,
+.cine-field textarea:focus,
+.form-page-container .form-control:focus,
+.form-page-container .form-select:focus,
+.verification-search input:focus {
+  border-color: var(--rd-gold);
+  background: var(--cine-surface-1);
+  box-shadow: 0 0 0 3px rgba(185, 138, 46, 0.2);
+  outline: 0;
+}
+
+/* Botón principal de conversión: rojo, como la portada */
+.cine-submit {
+  background: var(--rd-red);
+  box-shadow: 0 10px 24px rgba(200, 16, 46, 0.24);
+  letter-spacing: 0.01em;
+}
+
+.cine-submit:hover:not(:disabled) {
+  background: #a50d26;
+}
+
+.cine-submit:disabled {
+  opacity: 0.7;
+}
+
+/* Botones Bootstrap dentro de formularios y paneles */
+.form-page-container .btn-primary,
+.verification-page .btn-primary,
+.admin-review-page .btn-primary,
+.claim-shell .btn-primary,
+.table-page-container:not(.film-page) .btn-primary {
+  border-color: var(--rd-blue);
+  background: var(--rd-blue);
+}
+
+.form-page-container .btn-primary:hover,
+.verification-page .btn-primary:hover,
+.admin-review-page .btn-primary:hover,
+.claim-shell .btn-primary:hover,
+.table-page-container:not(.film-page) .btn-primary:hover {
+  border-color: #072355;
+  background: #072355;
+}
+
+.form-page-container .btn-outline-primary,
+.verification-page .btn-outline-primary,
+.admin-review-page .btn-outline-primary,
+.table-page-container .btn-outline-primary {
+  border-color: var(--rd-blue);
+  color: var(--rd-blue);
+}
+
+.form-page-container .btn-outline-primary:hover,
+.verification-page .btn-outline-primary:hover,
+.admin-review-page .btn-outline-primary:hover,
+.table-page-container .btn-outline-primary:hover {
+  background: var(--rd-blue);
+  color: #fff;
+}
+
+html[data-theme="dark"] .form-page-container .btn-outline-primary,
+html[data-theme="dark"] .verification-page .btn-outline-primary,
+html[data-theme="dark"] .admin-review-page .btn-outline-primary,
+html[data-theme="dark"] .table-page-container .btn-outline-primary {
+  border-color: #9cc0ff;
+  color: #9cc0ff;
+}
+
+html[data-theme="dark"] .form-page-container .btn-outline-primary:hover,
+html[data-theme="dark"] .verification-page .btn-outline-primary:hover,
+html[data-theme="dark"] .admin-review-page .btn-outline-primary:hover,
+html[data-theme="dark"] .table-page-container .btn-outline-primary:hover {
+  background: #9cc0ff;
+  color: #07111f;
+}
+
+/* Pasos y notas */
+.claim-summary-body li,
+.admin-review-meta,
+.verification-card small {
+  color: var(--cine-text-3);
+}
+
+.claim-form > p,
+.admin-review-section-heading p {
+  color: var(--cine-text-2);
+}
+
+.admin-review-evidence {
+  background: var(--cine-surface-2);
+  color: var(--cine-text-2);
+}
+
+.claim-code {
+  border-color: var(--rd-gold);
+  background: var(--cine-surface-1);
+  font-family: var(--font-display);
+}
+
+/* =========================================================
+   FICHA DE PELÍCULA
+   ========================================================= */
+
+.film-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.film-state {
+  padding: 64px 16px;
+  color: var(--cine-text-2);
+  text-align: center;
+}
+
+.film-state p {
+  margin-top: 14px;
+}
+
+/* ----- Hero ----- */
+
+.film-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--hero-bg);
+  box-shadow: 0 30px 80px rgba(4, 18, 41, 0.24);
+  color: #fff;
+  isolation: isolate;
+}
+
+/* Sin backdrop: el póster desenfocado da el color de la película */
+.film-hero-bg {
+  position: absolute;
+  inset: -40px;
+  z-index: -2;
+  width: calc(100% + 80px);
+  height: calc(100% + 80px);
+  object-fit: cover;
+  filter: blur(46px) saturate(1.25);
+  opacity: 0.42;
+}
+
+.film-hero.has-backdrop .film-hero-bg {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: none;
+  opacity: 0.55;
+}
+
+.film-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(5, 11, 22, 0.3), rgba(5, 11, 22, 0.8));
+}
+
+.film-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--film-grain);
+  background-size: 160px;
+  mix-blend-mode: overlay;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.film-hero-year {
+  position: absolute;
+  top: 64px;
+  right: clamp(16px, 4vw, 40px);
+  z-index: -1;
+  color: rgba(214, 173, 82, 0.16);
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 17vw, 12rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  user-select: none;
+}
+
+.film-hero-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 20px clamp(20px, 4vw, 44px) 0;
+}
+
+.film-back,
+.film-hero-actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(5, 11, 22, 0.35);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 650;
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.film-back:hover,
+.film-hero-actions a:hover {
+  border-color: var(--rd-gold-soft);
+  background: rgba(5, 11, 22, 0.6);
+  color: #fff;
+}
+
+.film-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.film-hero-body {
+  display: grid;
+  grid-template-columns: minmax(150px, 230px) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(22px, 4vw, 48px);
+  padding: clamp(24px, 4vw, 44px) clamp(20px, 4vw, 44px) calc(clamp(30px, 4vw, 48px) + 26px);
+}
+
+.film-poster {
+  display: grid;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid rgba(214, 173, 82, 0.5);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 26px 50px rgba(0, 0, 0, 0.5);
+  font-size: 3rem;
+}
+
+.film-poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.film-hero-copy .public-eyebrow {
+  color: var(--rd-gold-soft);
+}
+
+.film-hero-copy h1 {
+  margin: 10px 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5.2vw, 4.2rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.film-original,
+.film-tagline {
+  margin: 0 0 8px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.film-tagline {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-style: italic;
+}
+
+.film-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.film-chips li {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 650;
+  backdrop-filter: blur(6px);
+}
+
+.film-chips a {
+  color: var(--rd-gold-soft);
+  text-decoration: none;
+}
+
+.film-chips .is-rating {
+  border-color: transparent;
+  background: var(--rd-gold-soft);
+  color: #2b1d00;
+}
+
+.film-chips .is-award {
+  border-color: rgba(214, 173, 82, 0.6);
+  color: var(--rd-gold-soft);
+}
+
+.film-hero-strip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  height: 26px;
+  background-color: rgba(3, 8, 18, 0.55);
+  background-image: var(--perforations);
+  background-size: 100% 10px;
+  background-repeat: no-repeat;
+  background-position: 0 8px;
+}
+
+/* ----- Secciones ----- */
+
+.film-section {
+  padding: clamp(20px, 3.4vw, 34px);
+  border: 1px solid var(--cine-line);
+  border-radius: 24px;
+  background: var(--cine-surface-1);
+  box-shadow: var(--cine-shadow-theme);
+  color: var(--cine-text-1);
+}
+
+.film-section .catalog-eyebrow {
+  color: var(--hist-gold);
+}
+
+.film-section h2 {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.film-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 20px;
+}
+
+.film-link {
+  color: var(--hist-accent);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.film-empty {
+  margin: 0;
+  padding: 28px 0;
+  color: var(--cine-text-3);
+  text-align: center;
+}
+
+.film-note {
+  margin: 14px 0 0;
+  color: var(--cine-text-3);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+/* Sinopsis + datos clave */
+
+.film-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr);
+  gap: clamp(24px, 4vw, 48px);
+}
+
+.film-synopsis p:not(.film-note) {
+  max-width: 62ch;
+  margin: 14px 0 0;
+  color: var(--cine-text-2);
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.film-facts {
+  display: grid;
+  align-content: start;
+  gap: 0;
+  margin: 0;
+  padding: 6px 20px;
+  border: 1px solid var(--cine-line-soft);
+  border-radius: 18px;
+  background: var(--cine-surface-2);
+}
+
+.film-facts > div {
+  padding: 13px 0;
+  border-bottom: 1px dashed var(--cine-line);
+}
+
+.film-facts > div:last-child {
+  border-bottom: 0;
+}
+
+.film-facts dt {
+  color: var(--hist-gold);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.film-facts dd {
+  margin: 3px 0 0;
+  color: var(--cine-text-1);
+  font-weight: 600;
+}
+
+.film-trailer {
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000;
+}
+
+/* Reparto, créditos */
+
+.film-people {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.film-person {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 100%;
+  padding: 12px;
+  border: 1px solid var(--cine-line-soft);
+  border-radius: 16px;
+  background: var(--cine-surface-2);
+  color: var(--cine-text-1);
+  text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.film-person:hover {
+  border-color: var(--rd-gold);
+  color: var(--cine-text-1);
+  transform: translateY(-1px);
+}
+
+.film-person img {
+  width: 64px;
+  height: 80px;
+  flex: 0 0 64px;
+  border-radius: 10px;
+  background: var(--cine-surface-3);
+  object-fit: cover;
+  object-position: center top;
+}
+
+.film-person div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.film-person strong {
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+.film-person span {
+  color: var(--cine-text-2);
+  font-size: 0.86rem;
+}
+
+.film-tag {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 3px 10px;
+  border: 1px solid var(--cine-line);
+  border-radius: 999px;
+  background: var(--cine-surface-1);
+  color: var(--cine-text-2);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.film-tag.is-lead {
+  border-color: transparent;
+  background: var(--rd-blue);
+  color: #fff;
+}
+
+.film-tag.is-verified {
+  border-color: #b9e1c8;
+  background: #effaf3;
+  color: #1c6a43;
+}
+
+.film-tag.is-award {
+  border-color: #e1cd96;
+  background: #f6ecd0;
+  color: #5a4210;
+}
+
+html[data-theme="dark"] .film-tag.is-lead {
+  background: #1d4fa8;
+}
+
+html[data-theme="dark"] .film-tag.is-verified {
+  border-color: rgba(114, 239, 168, 0.35);
+  background: rgba(25, 135, 84, 0.18);
+  color: #8ee6b4;
+}
+
+html[data-theme="dark"] .film-tag.is-award {
+  border-color: rgba(226, 187, 98, 0.45);
+  background: rgba(226, 187, 98, 0.14);
+  color: #f0d58f;
+}
+
+/* Premios */
+
+.film-awards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.film-awards li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 12px;
+  padding: 16px;
+  border: 1px solid var(--cine-line-soft);
+  border-radius: 16px;
+  background: var(--cine-surface-2);
+}
+
+.film-awards strong {
+  display: block;
+}
+
+.film-awards span {
+  color: var(--cine-text-3);
+  font-size: 0.85rem;
+}
+
+.film-awards .film-tag {
+  margin-top: 0;
+}
+
+.film-awards p,
+.film-awards a {
+  grid-column: 1 / -1;
+  margin: 4px 0 0;
+  color: var(--cine-text-2);
+  font-size: 0.86rem;
+}
+
+.film-awards a {
+  color: var(--hist-accent);
+}
+
+/* Galería */
+
+.film-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.film-gallery a {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--cine-line-soft);
+  border-radius: 16px;
+  background: var(--cine-surface-2);
+  color: var(--cine-text-1);
+  text-decoration: none;
+}
+
+.film-gallery img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.film-gallery div {
+  display: grid;
+  gap: 2px;
+  padding: 12px 14px 14px;
+}
+
+.film-gallery small,
+.film-gallery p {
+  margin: 0;
+  color: var(--cine-text-3);
+}
+
+.film-page .same-decade {
+  box-shadow: var(--cine-shadow-theme);
+}
+
+.film-page .same-decade h2 {
+  margin: 0;
+}
+
+/* =========================================================
+   CABECERA DE PÁGINA REUTILIZABLE (administración y formularios)
+   ========================================================= */
+
+.page-hero {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px 32px;
+  margin-bottom: 24px;
+  padding: clamp(24px, 4vw, 40px) clamp(22px, 4vw, 44px) calc(clamp(24px, 4vw, 36px) + 22px);
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--hero-bg);
+  box-shadow: 0 26px 70px rgba(4, 18, 41, 0.2);
+  color: #fff;
+  isolation: isolate;
+}
+
+.page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--film-grain);
+  background-size: 160px;
+  mix-blend-mode: overlay;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.page-hero-main {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 420px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.page-hero-back,
+.page-hero-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(5, 11, 22, 0.35);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.page-hero-back:hover,
+.page-hero-link:hover {
+  border-color: var(--rd-gold-soft);
+  background: rgba(5, 11, 22, 0.6);
+  color: #fff;
+}
+
+.page-hero-eyebrow {
+  display: block;
+  color: var(--rd-gold-soft);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.page-hero h1 {
+  margin: 8px 0 8px;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.page-hero p {
+  max-width: 62ch;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.55;
+}
+
+.page-hero-aside {
+  display: flex;
+  align-items: flex-end;
+}
+
+.page-hero-filter {
+  min-width: 260px;
+}
+
+.table-page-container .page-hero-filter label,
+.page-hero-filter label {
+  display: block;
+  margin-bottom: 4px;
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 0.78rem !important;
+  font-weight: 600;
+}
+
+.page-hero-strip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  height: 26px;
+  background-color: rgba(3, 8, 18, 0.55);
+  background-image: var(--perforations);
+  background-size: 100% 10px;
+  background-repeat: no-repeat;
+  background-position: 0 8px;
+  pointer-events: none;
+}
+
+/* Sobretítulos: dorado legible sobre papel; dorado claro sobre fondos oscuros */
+.catalog-eyebrow {
+  color: var(--hist-gold);
+}
+
+.catalog-hero .catalog-eyebrow,
+.page-hero .catalog-eyebrow {
+  color: var(--rd-gold-soft);
+}
+
+/* ----- Tarjetas, tablas y títulos de las pantallas internas ----- */
+
+.table-page-container:not(.film-page) .card,
+.form-page-container .card {
+  border-color: var(--cine-line);
+  border-radius: 18px;
+  background: var(--cine-surface-1);
+  box-shadow: var(--cine-shadow-theme);
+  color: var(--cine-text-1);
+}
+
+.table-page-container:not(.film-page) .card-header,
+.form-page-container .card-header {
+  border-color: var(--cine-line);
+  background: var(--cine-surface-2);
+}
+
+.table-page-container .card.border-primary,
+.form-page-container .card.border-primary {
+  border-color: var(--rd-gold) !important;
+}
+
+.table-page-container .card.border-primary > .card-header,
+.form-page-container .card.border-primary > .card-header {
+  color: var(--hist-accent);
+}
+
+.table-page-container:not(.film-page) h2,
+.table-page-container:not(.film-page) h3,
+.table-page-container:not(.film-page) .h4,
+.table-page-container:not(.film-page) .h5,
+.form-page-container h3,
+.form-page-container .h5 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.table-page-container .display-6 {
+  font-family: var(--font-display);
+  font-weight: 600 !important;
+}
+
+.table-page-container .text-muted,
+.form-page-container .text-muted,
+.form-page-container .form-text {
+  color: var(--cine-text-3) !important;
+}
+
+.table-page-container .table > thead th {
+  border-bottom-color: var(--cine-line);
+  color: var(--hist-gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.table-page-container .table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--cine-text-1);
+  --bs-table-border-color: var(--cine-line-soft);
+}
+
+.table-page-container .form-control,
+.table-page-container .form-select {
+  border-color: var(--cine-line);
+  background-color: var(--cine-surface-2);
+  color: var(--cine-text-1);
+}
+
+.table-page-container .form-control:focus,
+.table-page-container .form-select:focus {
+  border-color: var(--rd-gold);
+  box-shadow: 0 0 0 3px rgba(185, 138, 46, 0.2);
+}
+
+.table-page-container .page-hero .form-select {
+  border-color: rgba(255, 255, 255, 0.28);
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #14192b;
+}
+
+/* =========================================================
+   BÚSQUEDA
+   ========================================================= */
+
+.global-search-hero h1 {
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+}
+
+.global-search-form input {
+  border-color: var(--cine-line);
+  background: var(--cine-surface-1);
+  color: var(--cine-text-1);
+}
+
+.global-search-form input:focus {
+  border-color: var(--rd-gold);
+  box-shadow: 0 0 0 3px rgba(185, 138, 46, 0.2);
+  outline: 0;
+}
+
+.global-search-form button {
+  background: var(--rd-red);
+  border-color: var(--rd-red);
+}
+
+.global-search-result:hover {
+  border-color: var(--rd-gold);
+}
+
+.global-search-hero small {
+  color: var(--rd-gold-soft);
+  letter-spacing: 0.01em;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 860px) {
+  .film-overview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .film-hero,
+  .user-dashboard-hero,
+  .admin-dashboard-hero,
+  .talent-hero,
+  .global-search-hero,
+  .verification-hero,
+  .admin-review-hero {
+    border-radius: 22px;
+  }
+
+  .film-hero-body {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .film-poster {
+    width: min(58%, 220px);
+  }
+
+  .film-chips {
+    justify-content: center;
+  }
+
+  .film-hero-top {
+    justify-content: center;
+  }
+
+  .page-hero {
+    border-radius: 22px;
+  }
+
+  .page-hero-aside,
+  .page-hero-filter {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .film-hero-year {
+    font-size: 6rem;
+  }
+
+  .film-people,
+  .film-awards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .film-person,
+  .film-back,
+  .film-hero-actions a {
+    transition: none;
+  }
+}
+
+/* Títulos de cabecera de tarjeta que antes usaban text-primary (azul Bootstrap, ilegible en oscuro) */
+.card-header-accent {
+  color: var(--hist-accent) !important;
+}
