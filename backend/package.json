@@ -13,7 +13,9 @@
     "catalog:validate": "node scripts/validateCatalog.js",
     "catalog:import": "node scripts/importCatalog.js",
     "catalog:import:replace": "node scripts/importCatalog.js --replace",
-    "setup:local": "node scripts/setupLocal.js"
+    "setup:local": "node scripts/setupLocal.js",
+    "photos:repair:preview": "node scripts/repairActorPhotos.js",
+    "photos:repair": "node scripts/repairActorPhotos.js"
   },
   "keywords": [],
   "author": "",
