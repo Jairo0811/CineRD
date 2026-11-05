@@ -33,7 +33,7 @@ test("fotos nuevas horizontales no reciben franjas blancas en el formato retrato
   assert.ok(r < 240 || g < 240 || b < 240, "no debe agregarse un fondo blanco");
 });
 
-test("fotos nuevas verticales mantienen relación 4:5 sin deformarse", async () => {
+test("fotos nuevas verticales mantienen relación 4:5 sin deformarse ni recortar", async () => {
   const entrada = await crearFoto(300, 900, "#b12452");
   const procesada = await normalizarFotoTalento(entrada);
   const info = await sharp(procesada).metadata();
@@ -74,4 +74,53 @@ test("no modifica fotos cuadradas sin bandas blancas", async () => {
   const original = await crearFoto(450, 450, "#173c72");
   assert.equal(await detectarFranjasBlancas(original), null);
   assert.equal(await repararFotoTalento(original), null);
+});
+
+test("una foto pequeña no se agranda: primer plano conserva sus dimensiones", async () => {
+  const entrada = await sharp({
+    create: { width: 90, height: 140, channels: 3, background: "#df2030" },
+  }).png().toBuffer();
+
+  const salida = await normalizarFotoTalento(entrada);
+  const { data, info } = await sharp(salida).raw().toBuffer({ resolveWithObject: true });
+  assert.equal(info.width, ANCHO_RETRATO);
+  assert.equal(info.height, ALTO_RETRATO);
+
+  // El fondo borroso es rojo oscuro. Solo los píxeles rojos intensos pertenecen
+  // al retrato nítido; su ancho debe seguir siendo 90 px, no 450 px.
+  let widthBright = 0;
+  const y = Math.floor(ALTO_RETRATO / 2);
+  for (let x = 0; x < ANCHO_RETRATO; x++) {
+    const i = (y * ANCHO_RETRATO + x) * info.channels;
+    if (data[i] > 170 && data[i + 1] < 100 && data[i + 2] < 110) widthBright++;
+  }
+  assert.ok(widthBright >= 85 && widthBright <= 95,
+    `El retrato no debe ampliarse: ancho esperado ~90, recibido ${widthBright}`);
+});
+
+test("una foto horizontal conserva ambos extremos dentro del cuadro final", async () => {
+  const izquierda = await sharp({
+    create: { width: 600, height: 300, channels: 3, background: "#e31d28" },
+  }).png().toBuffer();
+  const derecha = await sharp({
+    create: { width: 300, height: 300, channels: 3, background: "#2066e4" },
+  }).png().toBuffer();
+
+  const entrada = await sharp(izquierda)
+    .composite([{ input: derecha, left: 300, top: 0 }])
+    .png()
+    .toBuffer();
+
+  const salida = await normalizarFotoTalento(entrada);
+  const { data, info } = await sharp(salida).raw().toBuffer({ resolveWithObject: true });
+
+  const pixel = (x, y) => {
+    const i = (y * info.width + x) * info.channels;
+    return [data[i], data[i + 1], data[i + 2]];
+  };
+
+  const a = pixel(20, 280);
+  const b = pixel(430, 280);
+  assert.ok(a[0] > a[2] + 80, "el extremo izquierdo debe seguir rojo");
+  assert.ok(b[2] > b[0] + 80, "el extremo derecho debe seguir azul");
 });
