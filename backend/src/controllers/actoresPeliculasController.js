@@ -67,6 +67,39 @@ const asignarActorAPelicula = async (req, res) => {
   }
 };
 
+/**
+ * Debuts que el catálogo ha identificado explícitamente como cinematográficos.
+ * No inferir un debut a partir de la película más antigua del reparto.
+ */
+const obtenerDebutsCinematograficos = async (req, res) => {
+  try {
+    const pool = await poolPromise;
+    const resultado = await pool.request().query(`
+      SELECT TOP (8)
+        A.Id AS ActorId,
+        A.NombreCompleto,
+        A.NombreArtistico,
+        A.Sexo,
+        A.Foto AS FotoTalento,
+        P.Id AS PeliculaId,
+        P.Titulo AS PeliculaTitulo,
+        P.FechaEstreno,
+        P.Foto AS PeliculaFoto,
+        AP.Personaje
+      FROM ActoresPeliculas AP
+      INNER JOIN Actores A ON AP.ActorId = A.Id
+      INNER JOIN Peliculas P ON AP.PeliculaId = P.Id
+      WHERE LTRIM(RTRIM(AP.TipoParticipacion)) = N'Debut cinematográfico'
+      ORDER BY P.FechaEstreno DESC, A.NombreCompleto ASC, P.Id ASC
+    `);
+    res.json(resultado.recordset);
+  } catch (error) {
+    res.status(500).json({
+      mensaje: "Error al obtener los debuts cinematográficos",
+    });
+  }
+};
+
 const obtenerActoresPorPelicula = async (req, res) => {
   try {
     const { peliculaId } = req.params;
@@ -235,6 +268,7 @@ const actualizarParticipacion = async (req, res) => {
 };
 
 module.exports = {
+  obtenerDebutsCinematograficos,
   asignarActorAPelicula,
   obtenerActoresPorPelicula,
   obtenerPeliculasPorActor,
