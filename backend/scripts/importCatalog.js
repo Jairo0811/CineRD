@@ -14,6 +14,9 @@ const INSERT_ORDER = [
   "ActoresPeliculas",
   "PeliculaCreditos",
   "PeliculaTraducciones",
+  "Premios",
+  "Nominaciones",
+  "GaleriaMultimedia",
 ];
 
 const DELETE_ORDER = [...INSERT_ORDER].reverse();
@@ -139,6 +142,13 @@ async function main() {
       throw new Error(`La base ya contiene datos (${existingActors} talentos, ${existingMovies} películas). Usa npm run catalog:import:replace solo si deseas reemplazar el catálogo local.`);
     }
 
+    if (replace && snapshot.version < 3) {
+      const extraCounts = await Promise.all(["Premios", "Nominaciones", "GaleriaMultimedia"].map(table => countRows(pool, table)));
+      if (extraCounts.some(Boolean)) {
+        throw new Error("La base contiene premios/galerías/música que no están incluidos en este snapshot v2. Exporta un snapshot v3 antes de reemplazar.");
+      }
+    }
+
     if (replace && (existingActors > 0 || existingMovies > 0)) await backupExistingCatalog(pool);
 
     const transaction = new sql.Transaction(pool);
@@ -163,6 +173,7 @@ async function main() {
 
     console.log("\n✓ Catálogo de CineRD restaurado correctamente.");
     console.log("✓ Las imágenes se sirven desde backend/uploads, que debe estar sincronizado mediante Git.");
+    if (snapshot.version >= 3) console.log("✓ Premios, nominaciones y multimedia pública restaurados cuando existían en el snapshot.");
   } finally {
     await pool.close();
   }
