@@ -6,7 +6,13 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 app.UseExceptionHandler();
-app.UseHttpsRedirection();
+
+// The local HTTP-only launch profile has no TLS port to redirect to.
+// Production must configure TLS termination and forwarded headers at ingress.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.MapGet("/", () => Results.Ok(new { mensaje = "API de CineRD funcionando correctamente" }));
 app.MapGet("/health", (HttpContext context) =>
