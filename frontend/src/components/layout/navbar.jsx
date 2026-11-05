@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import banderaDo from "../../branding/flag-do.svg";
 import banderaUs from "../../branding/flag-us.svg";
-import cineRdNavbarLogo from "../../branding/cinerd-navbar.webp";
+import cineRdNavbarLogo from "../../branding/cinerd-navbar-brand.webp";
 import api, { limpiarSesion } from "../../services/api";
 
 function Navbar() {

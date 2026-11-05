@@ -11,7 +11,7 @@ function Footer() {
       <div className="container">
         <div className="cine-footer-grid">
           <div className="cine-footer-brand">
-            <img src="/logo.png" alt="CineRD" className="cine-footer-logo" />
+            <img src="/logo-cinerd.webp" alt="CineRD" className="cine-footer-logo" />
             <div>
               <p className="cine-footer-tagline">{t("footer.tagline")}</p>
               <p className="cine-footer-description">{t("footer.description")}</p>

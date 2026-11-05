@@ -17,6 +17,7 @@
 }
 .cine-navbar-cinematic .cine-navbar-brand { color:#fff; }
 .cine-navbar-cinematic .cine-navbar-logo { width:44px; height:44px; filter:drop-shadow(0 5px 12px rgba(0,0,0,.3)); }
+.cine-navbar-cinematic .cine-navbar-logo-horizontal { width: clamp(150px, 14vw, 186px); max-height: 46px; object-fit: contain; display: block; }
 .cine-navbar-wordmark { font-size:1.2rem; font-weight:900; letter-spacing:-.04em; }
 .cine-navbar-wordmark span { color:#ef3340; }
 .cine-navbar-cinematic .cine-navbar-link { position:relative; color:rgba(255,255,255,.68); font-size:.91rem; font-weight:650; }

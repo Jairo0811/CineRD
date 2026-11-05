@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="frontend/src/branding/cinerd-logo.png" alt="Logo de CineRD" width="720" />
+<img src="frontend/public/logo-cinerd.webp" alt="Logo de CineRD" width="720" />
 
 ### Cine dominicano: catálogo, talento, historia y herramientas profesionales
 
