@@ -15,9 +15,11 @@ const foto = (width, height, background = "#b72a45") =>
     .png().toBuffer();
 
 test("un cartel horizontal conserva los dos extremos sin zoom ni recorte", async () => {
-  const izquierda = await foto(450, 450, "#d21c38");
+  // El lienzo debe medir 900 px: así el panel azul no queda fuera
+  // del área de composición antes de evaluar el encuadre del póster.
+  const lienzo = await foto(900, 450, "#d21c38");
   const derecha = await foto(450, 450, "#155ee2");
-  const original = await sharp(izquierda)
+  const original = await sharp(lienzo)
     .composite([{ input: derecha, left: 450, top: 0 }]).png().toBuffer();
 
   const resultado = await normalizarPosterPelicula(original);
