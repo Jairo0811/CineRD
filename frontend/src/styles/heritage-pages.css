@@ -1307,3 +1307,16 @@ html[data-theme="dark"] .film-tag.is-award {
 .card-header-accent {
   color: var(--hist-accent) !important;
 }
+
+/* TALENTOS · ENCUADRE SIN ZOOM
+   El JPEG se prepara con fondo difuminado y primer plano íntegro.
+   Evitar que object-fit: cover vuelva a agrandar o recortar los retratos
+   al mostrar tarjetas, perfiles y créditos en pantallas pequeñas. */
+.cinerd-talent-visual img,
+.cinematic-talent-photo-wrap img,
+.actor-profile-photo,
+.film-person img {
+  object-fit: contain;
+  object-position: center;
+  background-color: #172b45;
+}
