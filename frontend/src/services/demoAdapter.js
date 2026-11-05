@@ -1,5 +1,6 @@
 // Adaptador de solo lectura para publicar una demo estática CineRD sin Express ni SQL Server.
-// No simula escritura, autenticación, premios ni galerías que no estén en el snapshot.
+// No simula escritura ni autenticación. Los premios y la galería se leen
+// exclusivamente del snapshot público versionado (nunca de datos privados).
 let catalogPromise;
 
 const value = x => String(x ?? '').trim();
@@ -39,6 +40,9 @@ function getData(t, route, p, config) {
   const relaciones = t.ActoresPeliculas || [];
   const creditos = t.PeliculaCreditos || [];
   const traducciones = t.PeliculaTraducciones || [];
+  const premios = t.Premios || [];
+  const nominaciones = t.Nominaciones || [];
+  const galeria = t.GaleriaMultimedia || [];
   const relationCountMovie = id => relaciones.filter(r => Number(r.PeliculaId) === Number(id)).length;
   const relationCountActor = id => relaciones.filter(r => Number(r.ActorId) === Number(id)).length;
   const film = x => ({ ...x, CantidadActores: relationCountMovie(x.Id) });
@@ -54,6 +58,56 @@ function getData(t, route, p, config) {
   const filmById = id => peliculas.find(x => Number(x.Id) === Number(id));
   const actorById = id => actores.find(x => Number(x.Id) === Number(id));
   const descending = (a,b) => byDate(b)-byDate(a);
+  const galeriaOrdenada = (a,b) => Number(Boolean(b.EsDestacada)) - Number(Boolean(a.EsDestacada)) ||
+    Number(a.Orden ?? 2147483647) - Number(b.Orden ?? 2147483647) || Number(b.Id) - Number(a.Id);
+  const tiposMusica = new Set(['TEMA_OFICIAL','CANCION_ORIGINAL','BANDA_SONORA','SCORE']);
+  const tiposExternos = new Set([...tiposMusica, 'TRAILER']);
+
+  if (route === '/premios') {
+    return premios.map(premio => {
+      const delPremio = nominaciones.filter(n => Number(n.PremioId) === Number(premio.Id));
+      return { ...premio, CantidadNominaciones: delPremio.length, CantidadGanadores: delPremio.filter(n => n.Resultado === 'GANADOR').length };
+    }).sort((a,b) => byName(a.Nombre,b.Nombre));
+  }
+
+  if (route === '/premios/nominaciones') {
+    return nominaciones.filter(n =>
+      (!p.peliculaId || Number(n.PeliculaId) === Number(p.peliculaId)) &&
+      (!p.actorId || Number(n.ActorId) === Number(p.actorId)) &&
+      (!p.premioId || Number(n.PremioId) === Number(p.premioId)) &&
+      (!p.anio || Number(n.Anio) === Number(p.anio)) &&
+      (!p.resultado || norm(n.Resultado) === norm(p.resultado))
+    ).map(n => {
+      const premio = premios.find(x => Number(x.Id) === Number(n.PremioId));
+      return {
+        ...n, Premio: premio?.Nombre ?? null, Organizacion: premio?.Organizacion ?? null,
+        Pelicula: filmById(n.PeliculaId)?.Titulo ?? null,
+        Talento: actorById(n.ActorId)?.NombreArtistico || actorById(n.ActorId)?.NombreCompleto || null,
+      };
+    }).sort((a,b) => Number(b.Anio) - Number(a.Anio) || byName(a.Premio,b.Premio) || byName(a.Categoria,b.Categoria));
+  }
+
+  const premioMatch = route.match(/^\/premios\/(\d+)$/);
+  if (premioMatch) {
+    const premio = premios.find(x => Number(x.Id) === Number(premioMatch[1]));
+    if (!premio) throw errorResponse('Premio no encontrado',404,config);
+    return premio;
+  }
+
+  if (route === '/galeria') {
+    return galeria.filter(g => {
+      if (p.peliculaId && Number(g.PeliculaId) !== Number(p.peliculaId)) return false;
+      if (p.actorId && Number(g.ActorId) !== Number(p.actorId)) return false;
+      if (p.tipo && norm(g.Tipo) !== norm(p.tipo)) return false;
+      if (norm(p.musica) === 'true' && !tiposMusica.has(g.Tipo)) return false;
+      if (p.peliculaId && norm(p.incluirExternos) !== 'true' && tiposExternos.has(g.Tipo)) return false;
+      return true;
+    }).map(g => ({
+      ...g,
+      Pelicula: filmById(g.PeliculaId)?.Titulo ?? null,
+      Talento: actorById(g.ActorId)?.NombreArtistico || actorById(g.ActorId)?.NombreCompleto || null,
+    })).sort(galeriaOrdenada);
+  }
 
   if (route === '/peliculas') {
     let list = peliculas.map(film);
@@ -155,8 +209,7 @@ function getData(t, route, p, config) {
       TipoParticipacion:r.TipoParticipacion,
     })).sort(descending);
   }
-  if (route === '/premios/nominaciones' || route === '/galeria') return [];
-  throw errorResponse(`La ruta ${route} no está disponible en la demo de solo lectura.`, 501, config);
+   throw errorResponse(`La ruta ${route} no está disponible en la demo de solo lectura.`, 501, config);
 }
 
 export default async function demoAdapter(config) {
