@@ -34,7 +34,11 @@ async function main() {
   }
 
   const carpetaRespaldos = path.resolve(privateDir, "backups-fotos-talentos");
-  const origenBackup = path.resolve(backupArg);
+  // Npm ejecuta el script con cwd=backend; las rutas relativas se interpretan
+  // desde la raíz del repositorio para que el comando de PowerShell sea consistente.
+  const origenBackup = path.isAbsolute(backupArg)
+    ? path.resolve(backupArg)
+    : path.resolve(__dirname, "../..", backupArg);
   if (!dentroDe(carpetaRespaldos, origenBackup) ||
       !fs.existsSync(origenBackup) ||
       !fs.statSync(origenBackup).isDirectory()) {
