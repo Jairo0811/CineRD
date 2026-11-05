@@ -12,8 +12,10 @@
   # Generar los archivos públicos de la demo.
   #
   # Compilar la aplicación React con Vite.
+  # Los hooks prebuild/postbuild de frontend/package.json
+  # generan/verifican el catálogo incluso si Netlify ejecuta Vite solo.
 
-  command = "npm --prefix backend ci && npm --prefix backend test && npm --prefix backend run catalog:validate && npm --prefix frontend ci && npm --prefix frontend run lint && npm --prefix frontend test && node scripts/prepareNetlifyDemo.mjs && npm --prefix frontend run build && node scripts/verifyNetlifyDist.mjs"
+  command = "npm --prefix backend ci && npm --prefix backend test && npm --prefix backend run catalog:validate && npm --prefix frontend ci && npm --prefix frontend run lint && npm --prefix frontend test && npm --prefix frontend run build"
 
   # Directorio publicado por Netlify.
   publish = "frontend/dist"
@@ -24,6 +26,7 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  VITE_DEMO_MODE = "true"
 
 # ==========================================
 # REACT ROUTER — SPA FALLBACK

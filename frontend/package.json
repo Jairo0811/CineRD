@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node ../scripts/prepareNetlifyDemo.mjs",
     "build": "vite build",
+    "postbuild": "node ../scripts/verifyNetlifyDist.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run"
