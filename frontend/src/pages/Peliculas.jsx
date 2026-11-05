@@ -5,6 +5,7 @@ import api from "../services/api";
 import { API_URL } from "../config/api";
 import { anioDe, decadaDe } from "../data/historiaCine";
 import CintaDecadas from "../components/historia/CintaDecadas";
+import { ordenarAlfabeticamente } from "../utils/ordenAlfabetico";
 
 function Peliculas() {
   const { t, i18n } = useTranslation();
@@ -64,7 +65,7 @@ function Peliculas() {
           <option value="estrenoDesc">{t("movies.releaseNewest")}</option><option value="estrenoAsc">{t("movies.releaseOldest")}</option><option value="az">{t("movies.titleAZ")}</option><option value="za">{t("movies.titleZA")}</option><option value="masActores">{t("movies.largestCast")}</option><option value="menosActores">{t("movies.smallestCast")}</option>
         </select>
         <select value={genero} onChange={(e) => setGenero(e.target.value)} aria-label={t("movies.genreFilter")}>
-          <option value="">{t("movies.allGenres")}</option>{["Comedia","Drama","Acción","Terror","Romance","Documental"].map(g=><option key={g} value={g}>{generoTraducido(g)}</option>)}
+          <option value="">{t("movies.allGenres")}</option>{ordenarAlfabeticamente(["Comedia","Drama","Acción","Terror","Romance","Documental"], generoTraducido, i18n.language).map(g=><option key={g} value={g}>{generoTraducido(g)}</option>)}
         </select>
       </section>
 
