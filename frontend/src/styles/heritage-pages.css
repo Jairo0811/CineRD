@@ -1320,3 +1320,21 @@ html[data-theme="dark"] .film-tag.is-award {
   object-position: center;
   background-color: #172b45;
 }
+
+/* PÓSTERES · CARTEL COMPLETO, SIN AMPLIACIÓN
+   Los pósteres procesados ya tienen un fondo difuminado detrás de la
+   ilustración original. El navegador no debe recortar ni ampliar textos. */
+.cinerd-poster,
+.cinematic-movie-poster-wrap img,
+.film-poster img,
+.actor-credit img,
+.same-decade-row img {
+  object-fit: contain;
+  object-position: center;
+  background-color: #101c30;
+}
+
+.cinerd-movie-card:hover .cinerd-poster,
+.cinematic-movie-showcase-card:hover .cinematic-movie-poster-wrap img {
+  transform: none;
+}
