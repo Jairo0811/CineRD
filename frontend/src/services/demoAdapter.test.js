@@ -55,6 +55,40 @@ describe("Netlify public catalog demo", () => {
     expect((await request(adapter, "/premios/3")).Nombre).toBe("Premios del Cine");
   });
 
+  it("solo expone debuts cinematográficos marcados, con el talento y la película relacionados", async () => {
+    const catalogo = {
+      ...tables,
+      Actores: [
+        { Id: 2, NombreCompleto: "Talento Debut", NombreArtistico: "Debutante", Foto: "/uploads/actores/actor.jpg", Sexo: "Masculino" },
+        { Id: 3, NombreCompleto: "Talento Otro" },
+      ],
+      Peliculas: [
+        { Id: 1, Titulo: "Primera película", FechaEstreno: "2003-01-01", Foto: "/uploads/peliculas/film.jpg" },
+        { Id: 2, Titulo: "Otra película", FechaEstreno: "2025-01-01" },
+      ],
+      ActoresPeliculas: [
+        { ActorId: 2, PeliculaId: 1, Personaje: "El protagonista", TipoParticipacion: "Debut cinematográfico" },
+        { ActorId: 3, PeliculaId: 2, TipoParticipacion: "Principal" },
+      ],
+    };
+    vi.stubGlobal("fetch", vi.fn(async () => ({
+      ok: true,
+      json: async () => ({ format: "CineRD.PublicDemoCatalog", tables: catalogo }),
+    })));
+    vi.resetModules();
+    const testAdapter = (await import("./demoAdapter.js")).default;
+    const resultado = await request(testAdapter, "/actores-peliculas/debuts");
+    expect(resultado).toHaveLength(1);
+    expect(resultado[0]).toMatchObject({
+      ActorId: 2,
+      NombreArtistico: "Debutante",
+      FotoTalento: "/uploads/actores/actor.jpg",
+      PeliculaId: 1,
+      PeliculaTitulo: "Primera película",
+      Personaje: "El protagonista",
+    });
+  });
+
   it("no admite escritura en la demo", async () => {
     await expect(adapter({ method: "post", url: "/api/galeria" }))
       .rejects.toMatchObject({ response: { status: 403 } });

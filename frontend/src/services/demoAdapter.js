@@ -63,6 +63,34 @@ function getData(t, route, p, config) {
   const tiposMusica = new Set(['TEMA_OFICIAL','CANCION_ORIGINAL','BANDA_SONORA','SCORE']);
   const tiposExternos = new Set([...tiposMusica, 'TRAILER']);
 
+  if (route === '/actores-peliculas/debuts') {
+    // Mostrar solo créditos marcados como debut; no inferir desde el año más antiguo.
+    return relaciones
+      .filter(r => norm(r.TipoParticipacion) === 'debut cinematográfico')
+      .map(r => {
+        const a = actorById(r.ActorId);
+        const m = filmById(r.PeliculaId);
+        if (!a || !m) return null;
+        return {
+          ActorId: a.Id,
+          NombreCompleto: a.NombreCompleto,
+          NombreArtistico: a.NombreArtistico,
+          Sexo: a.Sexo,
+          FotoTalento: a.Foto,
+          PeliculaId: m.Id,
+          PeliculaTitulo: m.Titulo,
+          FechaEstreno: m.FechaEstreno,
+          PeliculaFoto: m.Foto,
+          Personaje: r.Personaje,
+        };
+      })
+      .filter(Boolean)
+      .sort((a,b) => byDate(b) - byDate(a) ||
+        byName(a.NombreCompleto, b.NombreCompleto) ||
+        Number(a.PeliculaId) - Number(b.PeliculaId))
+      .slice(0, 8);
+  }
+
   if (route === '/premios') {
     return premios.map(premio => {
       const delPremio = nominaciones.filter(n => Number(n.PremioId) === Number(premio.Id));

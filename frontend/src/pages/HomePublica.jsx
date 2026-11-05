@@ -7,6 +7,7 @@ import { manejarErrorFotoTalento, obtenerFotoTalento } from "../utils/talentoPla
 import { anioDe } from "../data/historiaCine";
 import CintaDecadas from "../components/historia/CintaDecadas";
 import LineaTiempoMini from "../components/historia/LineaTiempoMini";
+import DebutCinematografico from "../components/home/DebutCinematografico";
 
 const resolverImagen = (ruta) => {
   if (!ruta) return null;
@@ -18,6 +19,9 @@ function HomePublica() {
   const { t, i18n } = useTranslation();
   const [actores, setActores] = useState([]);
   const [peliculas, setPeliculas] = useState([]);
+  const [debuts, setDebuts] = useState([]);
+  const [cargandoDebuts, setCargandoDebuts] = useState(true);
+  const [errorDebuts, setErrorDebuts] = useState(false);
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
@@ -30,6 +34,24 @@ function HomePublica() {
       finally { setCargando(false); }
     };
     cargar();
+  }, []);
+
+  // Los debuts se consultan por separado para que una falla opcional
+  // nunca impida que cargue el catálogo principal de la portada.
+  useEffect(() => {
+    let activo = true;
+    api.get("/actores-peliculas/debuts")
+      .then((respuesta) => {
+        if (activo) setDebuts(Array.isArray(respuesta.data) ? respuesta.data : []);
+      })
+      .catch((error) => {
+        console.error("Error al cargar debuts cinematográficos:", error);
+        if (activo) setErrorDebuts(true);
+      })
+      .finally(() => {
+        if (activo) setCargandoDebuts(false);
+      });
+    return () => { activo = false; };
   }, []);
 
   const topTalentos = useMemo(() => [...actores].sort((a,b)=>Number(b.CantidadPeliculas||0)-Number(a.CantidadPeliculas||0)).slice(0,10), [actores]);
@@ -68,6 +90,8 @@ function HomePublica() {
     <section className="cinematic-manifesto"><span>🎞️</span><div><small>{t("home.manifestoEyebrow")}</small><h2>{t("home.manifestoTitle")}</h2></div></section>
 
     <section className="cinematic-showcase-section"><div className="cinematic-showcase-heading"><div><span className="public-eyebrow">{t("home.topTalentsEyebrow")}</span><h2>{t("home.topTalentsTitle")}</h2><p>{t("home.topTalentsDescription")}</p></div><Link to="/actores">{t("home.viewAll")}</Link></div><div className="cinematic-talent-showcase">{topTalentos.map((actor,index)=><Link to={`/actores/${actor.Id}`} className="cinematic-talent-card" key={actor.Id}><div className="cinematic-talent-photo-wrap"><img src={obtenerFotoTalento(actor)} alt={actor.NombreArtistico||actor.NombreCompleto} onError={(e)=>manejarErrorFotoTalento(e,actor.Sexo)}/><span className="cinematic-rank-badge">#{index+1}</span>{actor.EsVerificado&&<span className="cinerd-verified-card-badge">✓ {t("home.verified")}</span>}</div><div className="cinematic-talent-card-copy"><span className="cinerd-talent-name-row"><strong>{actor.NombreArtistico||actor.NombreCompleto}</strong>{actor.EsVerificado&&<span className="cinerd-verified-mark" title={t("home.verified")}>✓</span>}</span><small>{actor.Profesion||t("home.talents")}</small><span>{t("home.moviesCount",{count:actor.CantidadPeliculas||0})}</span></div></Link>)}</div>{!cargando&&topTalentos.length===0&&<p className="text-muted mb-0">—</p>}</section>
+
+    <DebutCinematografico debuts={debuts} cargando={cargandoDebuts} error={errorDebuts} />
 
     <section className="cinematic-showcase-section birthday-showcase-section"><div className="cinematic-showcase-heading"><div><span className="public-eyebrow">{t("home.ephemeris",{month:nombreMesActual})}</span><h2>{t("home.birthdaysTitle")}</h2><p>{t("home.birthdaysDescription")}</p></div><Link to="/actores">{t("home.viewTalents")}</Link></div><div className="cinematic-talent-showcase">{cumpleanerosDelMes.map(({actor,fecha})=>{const edadQueCumple=anioActual-fecha.getFullYear();const fechaCumple=new Intl.DateTimeFormat(locale,{day:"2-digit",month:"short"}).format(fecha);return <Link to={`/actores/${actor.Id}`} className="cinematic-talent-card birthday-card" key={`cumple-${actor.Id}`}><div className="cinematic-talent-photo-wrap"><img src={obtenerFotoTalento(actor)} alt={actor.NombreArtistico||actor.NombreCompleto} onError={(e)=>manejarErrorFotoTalento(e,actor.Sexo)}/><span className="birthday-date-badge">🎂 {fechaCumple}</span>{actor.EsVerificado&&<span className="cinerd-verified-card-badge">✓ {t("home.verified")}</span>}</div><div className="cinematic-talent-card-copy"><span className="cinerd-talent-name-row"><strong>{actor.NombreArtistico||actor.NombreCompleto}</strong>{actor.EsVerificado&&<span className="cinerd-verified-mark">✓</span>}</span><small>{actor.Profesion||t("home.talents")}</small><span>{t("home.bornTurns",{year:fecha.getFullYear(),age:edadQueCumple})}</span></div></Link>})}</div>{!cargando&&cumpleanerosDelMes.length===0&&<div className="birthday-empty-state"><span>🎂</span><div><strong>{t("home.noBirthdays")}</strong><small>{t("home.noBirthdaysDescription")}</small></div></div>}</section>
 
