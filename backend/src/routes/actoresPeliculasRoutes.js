@@ -3,6 +3,7 @@ const router = express.Router();
 const { autenticar, autorizar } = require("../middlewares/auth");
 
 const {
+  obtenerDebutsCinematograficos,
   actualizarParticipacion,
   asignarActorAPelicula,
   obtenerActoresPorPelicula,
@@ -10,6 +11,7 @@ const {
   eliminarActorDePelicula,
 } = require("../controllers/actoresPeliculasController");
 
+router.get("/debuts", obtenerDebutsCinematograficos);
 router.get("/pelicula/:peliculaId", obtenerActoresPorPelicula);
 router.get("/actor/:actorId", obtenerPeliculasPorActor);
 router.post("/", autenticar, autorizar("ADMINISTRADOR"), asignarActorAPelicula);
