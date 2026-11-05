@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import api from "../services/api";
 import { API_URL } from "../config/api";
+import { ordenarAlfabeticamente } from "../utils/ordenAlfabetico";
 
 const TIPOS = [
   ["FOTO_RODAJE", "Foto de rodaje"],
@@ -317,12 +318,12 @@ function AdminGaleria() {
               {form.entidad === "pelicula" ? (
                 <select className="form-select" value={form.PeliculaId} onChange={(e)=>cambiar("PeliculaId", e.target.value)} required>
                   <option value="">Seleccionar...</option>
-                  {peliculas.map((p)=><option key={p.Id} value={p.Id}>{p.Titulo}</option>)}
+                  {ordenarAlfabeticamente(peliculas, (p) => p.Titulo).map((p)=><option key={p.Id} value={p.Id}>{p.Titulo}</option>)}
                 </select>
               ) : (
                 <select className="form-select" value={form.ActorId} onChange={(e)=>cambiar("ActorId", e.target.value)} required>
                   <option value="">Seleccionar...</option>
-                  {actores.map((a)=><option key={a.Id} value={a.Id}>{a.NombreArtistico || a.NombreCompleto}</option>)}
+                  {ordenarAlfabeticamente(actores, (a) => a.NombreArtistico || a.NombreCompleto).map((a)=><option key={a.Id} value={a.Id}>{a.NombreArtistico || a.NombreCompleto}</option>)}
                 </select>
               )}
             </div>
@@ -330,7 +331,7 @@ function AdminGaleria() {
             <div className="col-12 col-md-4">
               <label className="form-label">Tipo</label>
               <select className="form-select" value={form.Tipo} onChange={(e)=>cambiarTipo(e.target.value)}>
-                {TIPOS.map(([valor,etiqueta])=><option key={valor} value={valor}>{etiqueta}</option>)}
+                {ordenarAlfabeticamente(TIPOS, ([, etiqueta]) => etiqueta).map(([valor,etiqueta])=><option key={valor} value={valor}>{etiqueta}</option>)}
               </select>
             </div>
 
