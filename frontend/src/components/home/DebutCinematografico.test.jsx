@@ -14,6 +14,7 @@ vi.mock("react-i18next", () => ({
       "home.debutsViewTalent": `Ver perfil de ${params.name}`,
       "home.debutsLoading": "Cargando debuts",
       "home.debutsEmpty": "Sin debuts",
+      "home.debutsError": "Error de carga",
       "home.debutsNote": "Solo participaciones identificadas.",
       "home.viewTalents": "Ver talentos",
     })[key] || key,
@@ -53,6 +54,11 @@ describe("Debut Cinematográfico en la portada", () => {
     montar({ debuts: [] });
     expect(screen.getByRole("status").textContent).toBe("Sin debuts");
     expect(screen.queryByRole("heading", { level: 3 })).toBeNull();
+  });
+
+  it("distingue un fallo de carga de un catálogo vacío", () => {
+    montar({ debuts: [], error: true });
+    expect(screen.getByRole("status").textContent).toBe("Error de carga");
   });
 
   it("muestra un mensaje de carga sin inventar datos", () => {
