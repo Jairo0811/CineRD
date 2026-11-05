@@ -5,6 +5,7 @@ import api from "../services/api";
 
 import ActorFormFields from "../components/actores/ActorFormFields";
 import ParticipacionFormFields from "../components/reparto/ParticipacionFormFields";
+import { ordenarAlfabeticamente } from "../utils/ordenAlfabetico";
 
 import {
   obtenerClaseParticipacion,
@@ -504,7 +505,7 @@ function RepartoPelicula() {
               >
                 <option value="">Seleccione un actor</option>
 
-                {actores.map((actor) => (
+                {ordenarAlfabeticamente(actores, (actor) => actor.NombreArtistico || actor.NombreCompleto).map((actor) => (
                   <option key={actor.Id} value={actor.Id}>
                     {actor.NombreCompleto}
                     {actor.NombreArtistico ? ` (${actor.NombreArtistico})` : ""}
