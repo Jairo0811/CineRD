@@ -1,7 +1,7 @@
 {
   "format": "CineRD.CatalogSnapshot",
   "version": 3,
-  "generatedAtUtc": "2026-11-05T01:14:33.714Z",
+  "generatedAtUtc": "2026-11-05T02:05:33.192Z",
   "sourceDatabase": "CRUDPeliculas",
   "tables": {
     "Actores": [
@@ -226,7 +226,7 @@
         "Apellido": null,
         "Nombres": "Roberto Ángel ",
         "Apellidos": "Salcedo Sanz",
-        "TMDbId": null,
+        "TMDbId": 1070821,
         "InstagramUrl": null,
         "FacebookUrl": null,
         "TikTokUrl": null,
@@ -1867,6 +1867,29 @@
         "SitioWebUrl": null,
         "XUrl": null,
         "SpotifyUrl": "https://open.spotify.com/intl-es/artist/6fTiHiSuxQ1YkirhIQWzjk?si=nbDWHL4STWaIW64A0ZxJaQ"
+      },
+      {
+        "Id": 96,
+        "NombreCompleto": "Liondy Ozoria",
+        "FechaNacimiento": "1980-08-03T00:00:00.000Z",
+        "Sexo": "Masculino",
+        "Foto": "/uploads/actores/1793841833915-Foto.jpeg",
+        "NombreArtistico": null,
+        "EstaVivo": true,
+        "FechaFallecimiento": null,
+        "Profesion": "Comediante",
+        "AnioNacimiento": null,
+        "Apellido": null,
+        "Nombres": "Liondy",
+        "Apellidos": "Ozoria",
+        "TMDbId": null,
+        "InstagramUrl": "https://www.instagram.com/liondyozoria/",
+        "FacebookUrl": null,
+        "TikTokUrl": null,
+        "YouTubeUrl": "https://www.youtube.com/@liondyozoriaoficial",
+        "SitioWebUrl": null,
+        "XUrl": null,
+        "SpotifyUrl": null
       }
     ],
     "Peliculas": [
@@ -2741,6 +2764,26 @@
         "TMDbId": 335178,
         "Sinopsis": null,
         "IdiomaOriginal": null,
+        "DuracionMinutos": null,
+        "Calificacion": null,
+        "Presupuesto": null,
+        "Recaudacion": null,
+        "Backdrop": null,
+        "TrailerUrl": null,
+        "Estado": null,
+        "Eslogan": null
+      },
+      {
+        "Id": 55,
+        "Titulo": "El Plan Perfecto",
+        "Genero": "Comedia",
+        "FechaEstreno": "2017-01-17T00:00:00.000Z",
+        "Foto": "/uploads/peliculas/1793841671768-Foto.jpeg",
+        "Director": "Roberto Ángel  Salcedo Sanz",
+        "Productora": null,
+        "TMDbId": 597353,
+        "Sinopsis": "Un grupo de empleados del almacén son estafados y acusados de robo. Ahora tienen que huir mientras elaboran un plan para revelar la verdad.",
+        "IdiomaOriginal": "es",
         "DuracionMinutos": null,
         "Calificacion": null,
         "Presupuesto": null,
@@ -4399,6 +4442,54 @@
         "EsPrincipal": false,
         "TipoParticipacion": "Reparto",
         "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 55,
+        "ActorId": 3,
+        "Personaje": "Rosendo",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 55,
+        "ActorId": 10,
+        "Personaje": "Lucrecio",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 55,
+        "ActorId": 16,
+        "Personaje": "Ricky",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 55,
+        "ActorId": 18,
+        "Personaje": "Tomasina",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 55,
+        "ActorId": 33,
+        "Personaje": "Don Tony",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
+      },
+      {
+        "PeliculaId": 55,
+        "ActorId": 96,
+        "Personaje": "Gerente 3",
+        "EsPrincipal": false,
+        "TipoParticipacion": "Reparto",
+        "OrdenCreditos": null
       }
     ],
     "PeliculaCreditos": [
@@ -5035,8 +5126,8 @@
     ]
   },
   "media": {
-    "referenced": 124,
-    "availableLocally": 124,
+    "referenced": 126,
+    "availableLocally": 126,
     "missing": []
   }
 }
