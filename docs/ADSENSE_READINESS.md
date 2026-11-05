@@ -102,3 +102,15 @@ La preparación técnica puede considerarse completa cuando:
 5. La CMP se configura en AdSense antes de servir publicidad donde sea requerida.
 6. La Política de Privacidad refleja el uso real de publicidad.
 7. El sitio ha sido aprobado por AdSense antes de esperar impresiones monetizadas.
+
+## Páginas públicas de información y contacto (noviembre 2026)
+
+CineRD incorpora rutas accesibles desde la demostración de Cloudflare Pages:
+
+- `/privacidad`: Política de Privacidad, con información sobre cookies, publicidad y proveedores.
+- `/terminos`: Términos de Uso del catálogo.
+- `/contacto`: incidencias públicas del catálogo a través de GitHub Issues y, opcionalmente, un correo oficial de contacto.
+
+El correo privado no se inventa: debe configurarse la variable de compilación `VITE_CONTACT_EMAIL` en Cloudflare Pages cuando el titular defina un correo **dedicado y operativo**. Hasta entonces se muestra expresamente que el canal privado no está disponible; GitHub Issues es público y no sirve para información sensible.
+
+**Requisitos aún pendientes antes de monetizar:** revisión jurídica de los textos publicados, activación de un canal privado para ejercer derechos de datos, confirmación de derechos de uso comercial de fotos/pósteres y proveedores, configuración de CMP cuando corresponda, aceptación de AdSense y activación deliberada de anuncios. Publicar estas páginas no equivale a una garantía de aprobación.

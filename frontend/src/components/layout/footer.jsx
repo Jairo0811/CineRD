@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 function Footer() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const anioActual = new Date().getFullYear();
 
   return (
@@ -23,6 +23,13 @@ function Footer() {
             <Link to="/historia">{t("nav.history")}</Link>
             <Link to="/peliculas">{t("nav.movies")}</Link>
             <Link to="/actores">{t("nav.talents")}</Link>
+          </nav>
+
+          <nav className="cine-footer-links" aria-label={t("footer.explore") + " / Legal"}>
+            <strong>{i18n.language?.startsWith("en") ? "Legal & contact" : "Información y contacto"}</strong>
+            <Link to="/privacidad">{i18n.language?.startsWith("en") ? "Privacy Policy" : "Política de Privacidad"}</Link>
+            <Link to="/terminos">{i18n.language?.startsWith("en") ? "Terms of Use" : "Términos de Uso"}</Link>
+            <Link to="/contacto">{i18n.language?.startsWith("en") ? "Contact" : "Contacto"}</Link>
           </nav>
         </div>
 
