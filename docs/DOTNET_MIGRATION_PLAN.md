@@ -54,7 +54,20 @@ Fuentes primarias: `backend/src/app.js`, `backend/src/routes/*.js`, `backend/src
 - [x] Endpoints básicos de health/readiness.
 - [x] Compilación verificada en Windows con SDK .NET 10.0.403 (cuatro proyectos, Release).
 - [x] Pruebas HTTP locales: `/health` respondió 200, `/ready` respondió 503 intencional por SQL sin configurar.
-- [ ] Inventario endpoint-por-endpoint y pruebas comparativas (Fase 1).
+- [x] Inventario endpoint-por-endpoint (ver `DOTNET_API_CONTRACTS.md`).
+
+## Definición de terminado de la fase 1 (SQL Server + lecturas de actores)
+
+Alcance: `GET /api/actores`, `GET /api/actores/{id}` y `/ready` con comprobación real de SQL Server. Sin escrituras, sin autenticación, sin cambios en el frontend.
+
+- [x] `feature/dotnet10-migration` sincronizada con `main` (merge sin conflictos).
+- [x] Cuatro proyectos compilan en Release con advertencias como errores.
+- [x] Acceso a SQL Server de solo lectura: `System.Data.Common` + `Microsoft.Data.SqlClient`, consultas parametrizadas, timeouts, `CancellationToken`, ORDER BY por lista blanca.
+- [x] Contrato JSON de actores igual al de Express (nombres PascalCase, orden de claves, `null`, booleanos, fechas `...T00:00:00.000Z`).
+- [x] `/ready`: 200 con SQL accesible, 503 si no está configurado o no responde, sin exponer datos de conexión.
+- [x] Pruebas automatizadas escritas (unitarias, repositorio con base en memoria, API en proceso).
+- [ ] **Aceptación funcional contra SQL Server real pendiente:** ejecutar las pruebas `SqlServerIntegrationTests` con `CINERD_TEST_SQL_CONNECTION` y `scripts/compareActoresParity.mjs` con Express y .NET apuntando a la misma base de pruebas.
+- [ ] Restaurar paquetes NuGet y ejecutar la suite con xunit real (ver "Pruebas ejecutadas" en `backend-dotnet/README.md`).
 
 ## Verificación local y advertencia de HTTPS
 

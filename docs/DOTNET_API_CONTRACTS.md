@@ -112,3 +112,65 @@ Alcance propuesto para Claude después de la auditoría de contratos:
 - La API .NET todavía no implementa HTTPS detrás de proxy, secretos, autenticación ni acceso a datos de producción.
 
 **Regla de aceptación:** no se redirige tráfico real al nuevo backend hasta que pruebas contractuales, funcionales y de seguridad de cada módulo hayan pasado.
+
+## 7. Contrato implementado — Fase 1 (actores, solo lectura)
+
+Fuente de verdad: `backend/src/controllers/actoresController.js` (`obtenerActores`, `obtenerActorPorId`) y `CRUD-Peliculas.sql` (`dbo.Actores`).
+
+### GET /api/actores
+
+Parámetros de consulta (todos opcionales):
+
+| Parámetro | Regla (idéntica a Express) |
+| --- | --- |
+| `buscar` | Si no está vacío: `LIKE %texto recortado%` sobre `Nombres`, `Apellidos`, `NombreCompleto`, `NombreArtistico`, `Profesion`. Una cadena de solo espacios activa el filtro con `%%`. |
+| `estado` | `vivo` → `EstaVivo = 1`; `fallecido` → `EstaVivo = 0`; otro valor no filtra. |
+| `anio` | Entero (prefijo numérico, como `parseInt`): `YEAR(FechaNacimiento) = anio OR AnioNacimiento = anio`. |
+| `profesion` | `Profesion LIKE %texto recortado%`. |
+| `orden` | `az` (defecto), `za`, `masPeliculas`, `menosPeliculas`, `nacimientoReciente`, `nacimientoAntiguo`. Valores desconocidos usan `az`. |
+
+Respuesta 200: arreglo de objetos con las claves, **en este orden**:
+`Id, TMDbId, Nombres, Apellidos, NombreCompleto, NombreArtistico, Profesion, FechaNacimiento, AnioNacimiento, Sexo, EstaVivo, FechaFallecimiento, Foto, InstagramUrl, FacebookUrl, TikTokUrl, YouTubeUrl, SpotifyUrl, XUrl, SitioWebUrl, EsVerificado, CantidadPeliculas, CantidadPeliculasDirigidas`.
+
+### GET /api/actores/{id}
+
+Mismas claves que el listado **sin** `CantidadPeliculas` ni `CantidadPeliculasDirigidas`.
+
+| Situación | HTTP | Cuerpo |
+| --- | --- | --- |
+| Encontrado | 200 | actor |
+| `id` no es entero positivo | 400 | `{ "mensaje": "El identificador del actor no es válido" }` |
+| No existe | 404 | `{ "mensaje": "Actor no encontrado" }` |
+| Error interno | 500 | `{ "mensaje": "Error al obtener el actor" }` |
+
+### Tipos y formatos
+
+- `Id`, `TMDbId`, `AnioNacimiento`, conteos: número entero (`TMDbId`/`AnioNacimiento` pueden ser `null`).
+- `EstaVivo`, `EsVerificado`: booleanos JSON.
+- `FechaNacimiento`, `FechaFallecimiento` (columnas SQL `DATE`): texto UTC `"1990-05-01T00:00:00.000Z"` o `null`, como serializa Express.
+- `EsVerificado` = existe un registro `TalentosUsuarios` con `Estado = 'ACTIVO'` para el actor.
+
+### GET /ready
+
+| Situación | HTTP | Cuerpo |
+| --- | --- | --- |
+| SQL Server responde a `SELECT 1;` | 200 | `{ "status": "ready", "database": "ok", "requestId": "..." }` |
+| Sin configuración | 503 | `{ "status": "not-ready", "database": "not-configured", "requestId": "..." }` |
+| Inaccesible / error / timeout | 503 | `{ "status": "not-ready", "database": "unavailable", "requestId": "..." }` |
+
+### Diferencias deliberadas respecto a Express
+
+| Caso | Express | ASP.NET Core | Motivo |
+| --- | --- | --- | --- |
+| Error 500 | Incluye `error: error.message` | Solo `mensaje` | El mensaje de SQL Server puede revelar servidor, usuario o esquema. |
+| `anio` sin número (`?anio=abc`) | 500 (NaN rechazado por el driver) | 400 `"El año de nacimiento no es válido"` | Error del cliente, no del servidor. |
+| `id` mayor que `int.MaxValue` | 500 | 400 (id no válido) | Igual que el anterior. |
+| SQL Server sin configurar | El proceso no arranca | 503 `"Base de datos no disponible"` en los endpoints de datos | La API puede iniciar y reportar `/ready`. |
+| `buscar`/`profesion` > 148/98 caracteres | Depende del driver | Se truncan al tamaño del parámetro | Evita errores de truncamiento. |
+
+Se conservan a propósito: los comodines `%` y `_` escritos por el usuario actúan como comodines (Express no los escapa), y los empates de `za` no tienen desempate (igual que Express).
+
+### Pendiente en esta fase
+
+- CORS para que el frontend (`cinerd.pages.dev`, `localhost`) pueda consumir la API .NET desde el navegador: no está implementado; el frontend sigue apuntando a Express.
+- `/uploads/**` (las fotos se devuelven como ruta, igual que Express, pero la API .NET aún no las sirve).

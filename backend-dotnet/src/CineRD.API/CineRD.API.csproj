@@ -1,4 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <UserSecretsId>cinerd-api-dotnet10</UserSecretsId>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../CineRD.Application/CineRD.Application.csproj" />
     <ProjectReference Include="../CineRD.Infrastructure/CineRD.Infrastructure.csproj" />
