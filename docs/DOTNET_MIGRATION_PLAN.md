@@ -77,3 +77,11 @@ El perfil `http` escucha en `http://localhost:5100`. En Development no se aplica
 ## Seguridad de entrega
 
 No convertir el nuevo backend en destino de producción antes de tener prueba de contrato, verificación SQL, autenticación, CORS y manejo de archivos. No guardar credenciales, respaldos, tokens ni evidencias en Git.
+
+## Fase 2 (en curso)
+
+- [x] CORS con la misma política que `backend/src/config/cors.js` (403 para orígenes no permitidos, credenciales, preflight) y cabeceras de seguridad.
+- [x] `GET /uploads/**` solo para la carpeta pública; carpeta privada nunca servida; archivos ocultos denegados.
+- [x] Pruebas: 119 casos pasan con runner local (xunit real pendiente de ejecutar en tu máquina); sondeos HTTP con rutas sin normalizar (`--path-as-is`) confirman que no se alcanza `private/`.
+- [ ] Lecturas de películas (`/api/peliculas`, perfil, créditos, traducciones, director).
+- [ ] Paridad de `/uploads` y de CORS contra Express con datos reales.

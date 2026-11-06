@@ -1,6 +1,6 @@
 # CineRD.API — migración incremental a ASP.NET Core 10
 
-**Estado:** Fase 1 — lecturas de actores sobre SQL Server. **No sustituye al backend Express** y el frontend sigue usando Express.
+**Estado:** Fase 1 aceptada (lecturas de actores sobre SQL Server) y Fase 2 en curso (CORS y `/uploads` listos; lecturas de películas pendientes). **No sustituye al backend Express** y el frontend sigue usando Express.
 
 ## Arquitectura
 
@@ -51,6 +51,18 @@ dotnet build backend-dotnet/src/CineRD.API/CineRD.API.csproj -c Release
 dotnet run --project backend-dotnet/src/CineRD.API/CineRD.API.csproj --launch-profile http
 ```
 
+## CORS y archivos públicos (Fase 2)
+
+| Variable | Descripción |
+| --- | --- |
+| `FRONTEND_URLS` (o `FRONTEND_URL`) | Orígenes permitidos separados por coma, sin importar la barra final. En producción **no hay valor por defecto**. |
+| `UPLOADS_DIR` | Carpeta pública de medios. Por defecto `./uploads` relativa al directorio de trabajo; al ejecutar desde la raíz del repo defina `UPLOADS_DIR=backend/uploads` (ruta completa). |
+| `PRIVATE_STORAGE_DIR` | Carpeta privada (evidencias). **Nunca se sirve**; si se solapa con `UPLOADS_DIR`, `/uploads` se desactiva. |
+
+Comportamiento igual al de Express: sin cabecera `Origin` se permite; orígenes de `FRONTEND_URLS` se permiten con credenciales; localhost y redes privadas (puerto 5173 o por defecto) solo fuera de producción; cualquier otro origen recibe **403** `{ "mensaje": "Origen no permitido", "requestId": ... }` antes de ejecutar la ruta. `/uploads/**` rechaza archivos ocultos (403) y tipos desconocidos (404). Se añaden las mismas cabeceras de seguridad que Express.
+
+> "Producción" aquí es `ASPNETCORE_ENVIRONMENT=Production` (el valor por defecto de .NET); el perfil `http` usa Development.
+
 ## Endpoints
 
 | Método | Ruta | Descripción |
@@ -60,6 +72,7 @@ dotnet run --project backend-dotnet/src/CineRD.API/CineRD.API.csproj --launch-pr
 | GET | `/ready` | 200 si `SELECT 1;` funciona; 503 si SQL no está configurado o no responde |
 | GET | `/api/actores` | Listado con filtros `buscar`, `estado`, `anio`, `profesion`, `orden` |
 | GET | `/api/actores/{id}` | Detalle de un talento |
+| GET | `/uploads/**` | Archivos públicos de medios (fotos) |
 
 Contrato detallado y diferencias con Express: `docs/DOTNET_API_CONTRACTS.md` (sección 7).
 

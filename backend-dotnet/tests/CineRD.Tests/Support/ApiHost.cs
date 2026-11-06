@@ -19,10 +19,11 @@ public sealed class ApiHost : IAsyncDisposable
         Client = new HttpClient { BaseAddress = new Uri(app.Urls.First()) };
     }
 
-    public static async Task<ApiHost> StartAsync(IActorRepository repositorio, IDatabaseReadiness readiness)
+    public static async Task<ApiHost> StartAsync(
+        IActorRepository repositorio, IDatabaseReadiness readiness, string environment = "Development", params string[] argumentos)
     {
         var app = ApiApplication.Create(
-            ["--urls=http://127.0.0.1:0", "--environment=Development"],
+            ["--urls=http://127.0.0.1:0", $"--environment={environment}", .. argumentos],
             servicios =>
             {
                 servicios.RemoveAll<IActorRepository>();
