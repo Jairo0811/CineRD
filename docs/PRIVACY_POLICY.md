@@ -56,4 +56,4 @@ CineRD no está diseñado como servicio dirigido específicamente a menores de e
 
 ## 11. Contacto
 
-Antes del lanzamiento comercial se debe publicar un correo oficial de privacidad/soporte y el responsable jurídico del servicio.
+Canal temporal de contacto publicado en CineRD: `jairo_1829@hotmail.com`. Este correo personal fue autorizado por el titular del proyecto para recibir solicitudes de privacidad, derechos de imagen y consultas confidenciales mientras se habilita una cuenta específica para CineRD. Antes de la operación comercial definitiva se revisarán los datos del responsable jurídico y los mecanismos de atención de derechos.

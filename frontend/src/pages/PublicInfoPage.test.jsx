@@ -36,6 +36,8 @@ describe("Páginas informativas públicas", () => {
     const issue = screen.getByRole("link", { name: "Abrir incidencia en GitHub" });
     expect(issue.getAttribute("href")).toBe("https://github.com/Jairo0811/CineRD/issues/new");
     expect(screen.getByText(/las incidencias de GitHub son públicas/i)).toBeTruthy();
+    const email = screen.getByRole("link", { name: "jairo_1829@hotmail.com" });
+    expect(email.getAttribute("href")).toBe("mailto:jairo_1829@hotmail.com");
   });
   it("excluye todas las rutas legales de las superficies publicitarias", () => {
     for (const path of ["/privacidad", "/terminos", "/contacto"]) {
