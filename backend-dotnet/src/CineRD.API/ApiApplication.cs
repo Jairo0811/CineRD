@@ -82,6 +82,7 @@ public static class ApiApplication
 
         app.MapOperationalEndpoints();
         app.MapActoresEndpoints();
+        app.MapPeliculasEndpoints();
         return app;
     }
 

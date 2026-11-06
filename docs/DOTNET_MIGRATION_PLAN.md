@@ -83,5 +83,6 @@ No convertir el nuevo backend en destino de producción antes de tener prueba de
 - [x] CORS con la misma política que `backend/src/config/cors.js` (403 para orígenes no permitidos, credenciales, preflight) y cabeceras de seguridad.
 - [x] `GET /uploads/**` solo para la carpeta pública; carpeta privada nunca servida; archivos ocultos denegados.
 - [x] Pruebas: 119 casos pasan con runner local (xunit real pendiente de ejecutar en tu máquina); sondeos HTTP con rutas sin normalizar (`--path-as-is`) confirman que no se alcanza `private/`.
-- [ ] Lecturas de películas (`/api/peliculas`, perfil, créditos, traducciones, director).
+- [x] Lecturas de películas: `GET /api/peliculas`, `/director/{nombre}`, `/{id}` (157 casos con runner local; xunit real y paridad contra Express pendientes en tu máquina).
+- [ ] Lecturas de películas restantes: perfil, créditos, traducciones.
 - [ ] Paridad de `/uploads` y de CORS contra Express con datos reales.

@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.Common;
 using CineRD.Application.Abstractions;
 using CineRD.Application.Actores;
+using CineRD.Application.Peliculas;
+using CineRD.Domain.Peliculas;
 using CineRD.Domain.Actores;
 using CineRD.Infrastructure.Persistence;
 
@@ -31,6 +33,36 @@ public sealed class FakeActorRepository : IActorRepository
     }
 }
 
+public sealed class FakePeliculaRepository : IPeliculaRepository
+{
+    public List<PeliculaConConteo> Filas { get; } = [];
+    public PeliculaListQuery? UltimaConsulta { get; private set; }
+    public string? UltimoPatronDirector { get; private set; }
+    public int? UltimoId { get; private set; }
+    public Exception? Falla { get; set; }
+
+    public Task<IReadOnlyList<PeliculaConConteo>> ListarAsync(PeliculaListQuery query, CancellationToken cancellationToken)
+    {
+        UltimaConsulta = query;
+        if (Falla is not null) throw Falla;
+        return Task.FromResult<IReadOnlyList<PeliculaConConteo>>(Filas.ToList());
+    }
+
+    public Task<Pelicula?> ObtenerPorIdAsync(int id, CancellationToken cancellationToken)
+    {
+        UltimoId = id;
+        if (Falla is not null) throw Falla;
+        return Task.FromResult(Filas.Select(f => f.Pelicula).FirstOrDefault(p => p.Id == id));
+    }
+
+    public Task<IReadOnlyList<Pelicula>> ListarPorDirectorAsync(string nombrePatron, CancellationToken cancellationToken)
+    {
+        UltimoPatronDirector = nombrePatron;
+        if (Falla is not null) throw Falla;
+        return Task.FromResult<IReadOnlyList<Pelicula>>(Filas.Select(f => f.Pelicula).ToList());
+    }
+}
+
 public sealed class FakeReadiness(DatabaseReadinessStatus estado) : IDatabaseReadiness
 {
     public Task<DatabaseReadinessStatus> CheckAsync(CancellationToken cancellationToken) => Task.FromResult(estado);
@@ -38,6 +70,10 @@ public sealed class FakeReadiness(DatabaseReadinessStatus estado) : IDatabaseRea
 
 public static class Datos
 {
+    public static Pelicula Pelicula(int id = 1, string titulo = "Nueba Yol") => new(
+        Id: id, TMDbId: null, Titulo: titulo, Genero: "Comedia", Director: "Angel Muñiz", Productora: null,
+        FechaEstreno: new DateOnly(1995, 3, 17), Foto: "/uploads/peliculas/x.jpg", Sinopsis: null, IdiomaOriginal: "es");
+
     public static Actor Actor(int id = 1, string nombre = "Ana Pérez") => new(
         Id: id, TMDbId: null, Nombres: "Ana", Apellidos: "Pérez", NombreCompleto: nombre, NombreArtistico: null,
         Profesion: "Actriz", FechaNacimiento: new DateOnly(1990, 5, 1), AnioNacimiento: null, Sexo: "Femenino",

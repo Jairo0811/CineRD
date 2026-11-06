@@ -174,3 +174,16 @@ Se conservan a propósito: los comodines `%` y `_` escritos por el usuario actú
 
 - CORS para que el frontend (`cinerd.pages.dev`, `localhost`) pueda consumir la API .NET desde el navegador: no está implementado; el frontend sigue apuntando a Express.
 - `/uploads/**` (las fotos se devuelven como ruta, igual que Express, pero la API .NET aún no las sirve).
+
+
+## 8. Contrato implementado — Fase 2 (películas, solo lectura)
+
+Copiado de `peliculasController.js`; mismas claves y orden (`PascalCase`), fechas `yyyy-MM-ddT00:00:00.000Z`, `null` explícito.
+
+| Ruta | Respuesta |
+|---|---|
+| `GET /api/peliculas?buscar&genero&orden` | Arreglo con `Id, TMDbId, Titulo, Genero, Director, Productora, FechaEstreno, Foto, Sinopsis, IdiomaOriginal, CantidadActores`. `buscar`: `LIKE %texto%` en Título/Director/Productora; `genero`: igualdad. `orden` por lista blanca; cualquier otro valor usa `estrenoDesc`. |
+| `GET /api/peliculas/director/{nombre}` | Arreglo sin `CantidadActores`, `FechaEstreno DESC`. Nombre vacío o solo espacios: 400 "Debe indicar el nombre del director". |
+| `GET /api/peliculas/{id}` | Objeto sin `CantidadActores`. Id inválido: 400 "El identificador de la película no es válido"; inexistente: 404 "Película no encontrada". |
+
+Orden de rutas: `/director/{nombre}` se resuelve antes que `/{id}`. Errores 500 sin detalles internos y 503 si SQL no está configurado (mismas diferencias deliberadas de la sección 7).

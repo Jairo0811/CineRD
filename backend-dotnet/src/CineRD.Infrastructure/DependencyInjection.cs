@@ -1,6 +1,8 @@
 using CineRD.Application.Abstractions;
 using CineRD.Application.Actores;
+using CineRD.Application.Peliculas;
 using CineRD.Infrastructure.Actores;
+using CineRD.Infrastructure.Peliculas;
 using CineRD.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +29,8 @@ public static class DependencyInjection
         services.AddSingleton<IDatabaseReadiness, SqlDatabaseReadiness>();
         services.AddScoped<IActorRepository, SqlActorRepository>();
         services.AddScoped<ActorService>();
+        services.AddScoped<IPeliculaRepository, SqlPeliculaRepository>();
+        services.AddScoped<PeliculaService>();
         return services;
     }
 

@@ -1,6 +1,6 @@
 # CineRD.API — migración incremental a ASP.NET Core 10
 
-**Estado:** Fase 1 aceptada (lecturas de actores sobre SQL Server) y Fase 2 en curso (CORS y `/uploads` listos; lecturas de películas pendientes). **No sustituye al backend Express** y el frontend sigue usando Express.
+**Estado:** Fase 1 aceptada (lecturas de actores sobre SQL Server) y Fase 2 en curso (CORS y `/uploads` listos; lecturas de películas: listado, detalle y director listos; perfil, créditos y traducciones pendientes). **No sustituye al backend Express** y el frontend sigue usando Express.
 
 ## Arquitectura
 
@@ -72,6 +72,9 @@ Comportamiento igual al de Express: sin cabecera `Origin` se permite; orígenes 
 | GET | `/ready` | 200 si `SELECT 1;` funciona; 503 si SQL no está configurado o no responde |
 | GET | `/api/actores` | Listado con filtros `buscar`, `estado`, `anio`, `profesion`, `orden` |
 | GET | `/api/actores/{id}` | Detalle de un talento |
+| GET | `/api/peliculas` | Listado con filtros `buscar`, `genero`, `orden` (`estrenoDesc` por defecto, `estrenoAsc`, `az`, `za`, `masActores`, `menosActores`) y `CantidadActores` |
+| GET | `/api/peliculas/director/{nombre}` | Películas cuyo director contiene `nombre` (más recientes primero) |
+| GET | `/api/peliculas/{id}` | Detalle de una película |
 | GET | `/uploads/**` | Archivos públicos de medios (fotos) |
 
 Contrato detallado y diferencias con Express: `docs/DOTNET_API_CONTRACTS.md` (sección 7).

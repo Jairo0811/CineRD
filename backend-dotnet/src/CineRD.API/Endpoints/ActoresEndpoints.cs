@@ -1,5 +1,5 @@
-using CineRD.Application.Abstractions;
 using CineRD.Application.Actores;
+using static CineRD.API.Endpoints.EndpointResults;
 
 namespace CineRD.API.Endpoints;
 
@@ -23,7 +23,7 @@ public static class ActoresEndpoints
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
-                return ErrorControlado(ex, logs, "Error al obtener los actores");
+                return ErrorControlado(ex, logs, "CineRD.API.Actores", "Error al obtener los actores");
             }
         });
 
@@ -41,22 +41,10 @@ public static class ActoresEndpoints
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
-                return ErrorControlado(ex, logs, "Error al obtener el actor");
+                return ErrorControlado(ex, logs, "CineRD.API.Actores", "Error al obtener el actor");
             }
         });
 
         return app;
-    }
-
-    // Formato de error del frontend: { mensaje }. A diferencia de Express, no se devuelve error.message.
-    private static IResult Mensaje(int codigo, string mensaje) => Results.Json(new { mensaje }, statusCode: codigo);
-
-    private static IResult ErrorControlado(Exception ex, ILoggerFactory logs, string mensaje)
-    {
-        // Solo el tipo de excepción: los mensajes de SQL Server pueden contener datos de conexión.
-        logs.CreateLogger("CineRD.API.Actores").LogError("{Mensaje} ({TipoError}).", mensaje, ex.GetType().Name);
-        return ex is DatabaseNotConfiguredException
-            ? Mensaje(StatusCodes.Status503ServiceUnavailable, "Base de datos no disponible")
-            : Mensaje(StatusCodes.Status500InternalServerError, mensaje);
     }
 }

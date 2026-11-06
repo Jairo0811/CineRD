@@ -22,8 +22,8 @@ public sealed class SqlActorRepository(IDbConnectionFactory fabrica, IOptions<Sq
         {
             resultado.Add(new ActorConConteos(
                 LeerActor(lector),
-                lector.GetInt32(lector.GetOrdinal("CantidadPeliculas")),
-                lector.GetInt32(lector.GetOrdinal("CantidadPeliculasDirigidas"))));
+                lector.GetInt("CantidadPeliculas"),
+                lector.GetInt("CantidadPeliculasDirigidas")));
         }
         return resultado;
     }
@@ -57,43 +57,25 @@ public sealed class SqlActorRepository(IDbConnectionFactory fabrica, IOptions<Sq
     }
 
     private static Actor LeerActor(DbDataReader r) => new(
-        Id: r.GetInt32(r.GetOrdinal("Id")),
-        TMDbId: Entero(r, "TMDbId"),
-        Nombres: Texto(r, "Nombres"),
-        Apellidos: Texto(r, "Apellidos"),
-        NombreCompleto: Texto(r, "NombreCompleto") ?? string.Empty,
-        NombreArtistico: Texto(r, "NombreArtistico"),
-        Profesion: Texto(r, "Profesion"),
-        FechaNacimiento: Fecha(r, "FechaNacimiento"),
-        AnioNacimiento: Entero(r, "AnioNacimiento"),
-        Sexo: Texto(r, "Sexo"),
-        EstaVivo: r.GetBoolean(r.GetOrdinal("EstaVivo")),
-        FechaFallecimiento: Fecha(r, "FechaFallecimiento"),
-        Foto: Texto(r, "Foto"),
-        InstagramUrl: Texto(r, "InstagramUrl"),
-        FacebookUrl: Texto(r, "FacebookUrl"),
-        TikTokUrl: Texto(r, "TikTokUrl"),
-        YouTubeUrl: Texto(r, "YouTubeUrl"),
-        SpotifyUrl: Texto(r, "SpotifyUrl"),
-        XUrl: Texto(r, "XUrl"),
-        SitioWebUrl: Texto(r, "SitioWebUrl"),
-        EsVerificado: r.GetBoolean(r.GetOrdinal("EsVerificado")));
-
-    private static string? Texto(DbDataReader r, string columna)
-    {
-        var i = r.GetOrdinal(columna);
-        return r.IsDBNull(i) ? null : r.GetString(i);
-    }
-
-    private static int? Entero(DbDataReader r, string columna)
-    {
-        var i = r.GetOrdinal(columna);
-        return r.IsDBNull(i) ? null : r.GetInt32(i);
-    }
-
-    private static DateOnly? Fecha(DbDataReader r, string columna)
-    {
-        var i = r.GetOrdinal(columna);
-        return r.IsDBNull(i) ? null : DateOnly.FromDateTime(r.GetDateTime(i));
-    }
+        Id: r.GetInt("Id"),
+        TMDbId: r.GetNullableInt("TMDbId"),
+        Nombres: r.GetNullableString("Nombres"),
+        Apellidos: r.GetNullableString("Apellidos"),
+        NombreCompleto: r.GetNullableString("NombreCompleto") ?? string.Empty,
+        NombreArtistico: r.GetNullableString("NombreArtistico"),
+        Profesion: r.GetNullableString("Profesion"),
+        FechaNacimiento: r.GetNullableDate("FechaNacimiento"),
+        AnioNacimiento: r.GetNullableInt("AnioNacimiento"),
+        Sexo: r.GetNullableString("Sexo"),
+        EstaVivo: r.GetBool("EstaVivo"),
+        FechaFallecimiento: r.GetNullableDate("FechaFallecimiento"),
+        Foto: r.GetNullableString("Foto"),
+        InstagramUrl: r.GetNullableString("InstagramUrl"),
+        FacebookUrl: r.GetNullableString("FacebookUrl"),
+        TikTokUrl: r.GetNullableString("TikTokUrl"),
+        YouTubeUrl: r.GetNullableString("YouTubeUrl"),
+        SpotifyUrl: r.GetNullableString("SpotifyUrl"),
+        XUrl: r.GetNullableString("XUrl"),
+        SitioWebUrl: r.GetNullableString("SitioWebUrl"),
+        EsVerificado: r.GetBool("EsVerificado"));
 }
