@@ -22,6 +22,7 @@ function readBuilt(relative) {
 const html = readBuilt('index.html').toString('utf8');
 const robots = readBuilt('robots.txt').toString('utf8');
 const sitemap = readBuilt('sitemap.xml').toString('utf8');
+const adsTxt = readBuilt('ads.txt').toString('utf8');
 
 function meta(type, name) {
   const tags = html.match(/<meta\s+[^>]*>/gi) || [];
@@ -33,6 +34,7 @@ const expectedImage = `${origin}/share-cinerd-v1.jpg`;
 assert.ok(html.includes(`rel="canonical" href="${origin}/"`), 'Canonical incorrecta');
 assert.equal(meta('property', 'og:url'), `${origin}/`);
 assert.equal(meta('property', 'og:type'), 'website');
+assert.equal(meta('name', 'google-adsense-account'), 'ca-pub-1228497984086853');
 assert.equal(meta('property', 'og:image'), expectedImage);
 assert.equal(meta('property', 'og:image:type'), 'image/jpeg');
 assert.equal(meta('property', 'og:image:width'), '1200');
@@ -71,9 +73,11 @@ function jpegDimensions(bytes) {
 assert.deepEqual(jpegDimensions(banner), { width: 1200, height: 630 }, 'La portada social debe medir 1200x630');
 
 assert.ok(robots.includes(`Sitemap: ${origin}/sitemap.xml`), 'robots.txt usa otro dominio');
+assert.equal(adsTxt.trim(), 'google.com, pub-1228497984086853, DIRECT, f08c47fec0942fa0', 'ads.txt no coincide con el publicador oficial');
 assert.ok(sitemap.includes(`<loc>${origin}/</loc>`), 'sitemap.xml usa otro dominio');
 for (const [name, content] of [['index.html', html], ['robots.txt', robots], ['sitemap.xml', sitemap]]) {
   assert.ok(!content.includes('cinerd.netlify.app'), `Dominio canónico antiguo en ${name}`);
 }
 
 console.log('✓ Social preview verificada: Open Graph, Twitter Card, portada JPG 1200x630, canonical y sitemap Cloudflare.');
+console.log('✓ AdSense: metaetiqueta de propiedad y ads.txt del publicador verificados; anuncios aún desactivados.');
