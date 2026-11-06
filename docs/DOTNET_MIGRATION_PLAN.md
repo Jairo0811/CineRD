@@ -66,8 +66,9 @@ Alcance: `GET /api/actores`, `GET /api/actores/{id}` y `/ready` con comprobació
 - [x] Contrato JSON de actores igual al de Express (nombres PascalCase, orden de claves, `null`, booleanos, fechas `...T00:00:00.000Z`).
 - [x] `/ready`: 200 con SQL accesible, 503 si no está configurado o no responde, sin exponer datos de conexión.
 - [x] Pruebas automatizadas escritas (unitarias, repositorio con base en memoria, API en proceso).
-- [ ] **Aceptación funcional contra SQL Server real pendiente:** ejecutar las pruebas `SqlServerIntegrationTests` con `CINERD_TEST_SQL_CONNECTION` y `scripts/compareActoresParity.mjs` con Express y .NET apuntando a la misma base de pruebas.
-- [ ] Restaurar paquetes NuGet y ejecutar la suite con xunit real (ver "Pruebas ejecutadas" en `backend-dotnet/README.md`).
+- [x] Aceptación funcional contra SQL Server real (05-11-2026, base `CRUDPeliculas`): 83/83 pruebas xUnit, incluidas `SqlServerIntegrationTests`.
+- [x] Paridad Express vs .NET con `scripts/compareActoresParity.mjs`: 104 comparaciones, 0 diferencias (83 actores, 16 variantes de consulta, todos los ids, ids inválidos/inexistentes).
+- [x] Suite ejecutada con xunit real tras `dotnet restore`.
 
 ## Verificación local y advertencia de HTTPS
 

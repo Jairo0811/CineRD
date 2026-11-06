@@ -97,15 +97,15 @@ Compara código HTTP, claves y su orden, tipos, valores, `null`, fechas y orden 
 
 ## Pruebas ejecutadas en esta fase
 
-- Compilación Release de los cuatro proyectos con el SDK .NET 10.0.401: correcta, 0 advertencias (advertencias tratadas como errores).
-- El código real de las pruebas (81 casos) se ejecutó con un runner mínimo propio sustituyendo xunit y el proveedor SQL por stand-ins locales (NuGet no era accesible): **81 pasaron, 0 fallaron**, 2 omitidas (integración SQL real). **No es una ejecución con xunit real** ni contra SQL Server.
-- HTTP real contra la API compilada: `/health` 200; `/ready` 503 (`not-configured` y `unavailable`); ids inválidos 400; sin filtrar secretos en respuestas ni logs.
-- `compareActoresParity.mjs` validado contra servidores simulados (detecta diferencias de tipo y devuelve código 1).
+- Compilación Release de los cuatro proyectos con el SDK .NET 10: correcta, sin advertencias.
+- xUnit real: **83 de 83 pasan**, incluidas las 2 pruebas contra SQL Server real (`/ready` 200, listado, detalle y 404).
+- Paridad Express vs .NET sobre la misma base (`CRUDPeliculas`, 83 actores): **104 comparaciones, 0 diferencias** (código HTTP, claves y su orden, tipos, `null`, fechas, conteos y orden de filas; 16 variantes de consulta, todos los ids, ids inválidos e inexistentes).
+- HTTP real: `/health` 200; `/ready` 503 con SQL sin configurar o inaccesible; sin filtrar secretos en respuestas ni logs.
+
+No comparadas contra Express (son diferencias deliberadas, ver `docs/DOTNET_API_CONTRACTS.md`): `?anio=abc`, ids mayores que `int.MaxValue` y el cuerpo de los errores 500.
 
 ## Pendiente / limitaciones
 
-- **Aceptación funcional contra SQL Server real** (consultas, conteos, ordenaciones, paridad con Express).
-- Ejecutar la suite con xunit real tras `dotnet restore`.
 - CORS y `/uploads/**` no implementados: el frontend no puede consumir esta API desde el navegador todavía.
 - Sin autenticación ni escrituras (Fase 5 y 4 del plan).
 - `COUNT`/subconsulta de directores se replica tal cual de Express (coste O(actores × películas)); optimizar después de la paridad.
