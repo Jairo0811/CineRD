@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "criterion": "FechaEstreno: estreno comercial en cines de República Dominicana",
+  "rows": [
+    {
+      "filmId": 9,
+      "title": "Lotoman",
+      "field": "Genero",
+      "expected": "Infantil",
+      "proposed": "Comedia",
+      "sources": [
+        "https://cinemadominicano.com/lotoman-2011/",
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/lotoman-2011/"
+      ]
+    },
+    {
+      "filmId": 9,
+      "title": "Lotoman",
+      "field": "FechaEstreno",
+      "expected": "2011-03-10",
+      "proposed": "2011-01-20",
+      "sources": [
+        "https://cinemadominicano.com/lotoman-2011/",
+        "https://www.diariolibre.com/revista/lotoman-se-estrena-el-20-de-este-mes-BNDL275224"
+      ]
+    },
+    {
+      "filmId": 24,
+      "title": "Sanky Panky 3",
+      "field": "Director",
+      "expected": null,
+      "proposed": "Eduardo Transfor Ortiz",
+      "sources": [
+        "https://www.elcaribe.com.do/gente/a-y-e/sanky-panky-3-se-estrenara-el-29-de-marzo-en-rd/",
+        "https://eldia.com.do/sanky-panky-3-llega-a-los-cines-este-lunes/"
+      ]
+    },
+    {
+      "filmId": 24,
+      "title": "Sanky Panky 3",
+      "field": "FechaEstreno",
+      "expected": "2018-03-18",
+      "proposed": "2018-03-29",
+      "sources": [
+        "https://www.elcaribe.com.do/gente/a-y-e/sanky-panky-3-se-estrenara-el-29-de-marzo-en-rd/",
+        "https://eldia.com.do/sanky-panky-3-llega-a-los-cines-este-lunes/"
+      ]
+    },
+    {
+      "filmId": 30,
+      "title": "El Diablo no duerme en su cama",
+      "field": "Director",
+      "expected": null,
+      "proposed": "Amauris Pérez",
+      "sources": [
+        "https://cinemadominicano.com/el-diablo-no-duerme-en-su-cama-comedia-negra-de-amauris-perez/",
+        "https://notisurbani.com/index.php/15-entretenimiento"
+      ]
+    },
+    {
+      "filmId": 32,
+      "title": "Los Rechazados 2: Operación Espacial",
+      "field": "Director",
+      "expected": null,
+      "proposed": "Yasser Michelén",
+      "sources": [
+        "https://dgcine.gob.do/los-rechazados-2-lleva-la-comedia-y-la-ciencia-ficcion-a-nuevas-audiencias/",
+        "https://cinedominicano.com/estreno/los-rechazados-2/"
+      ]
+    },
+    {
+      "filmId": 32,
+      "title": "Los Rechazados 2: Operación Espacial",
+      "field": "FechaEstreno",
+      "expected": "2026-09-13",
+      "proposed": "2026-08-13",
+      "sources": [
+        "https://dgcine.gob.do/los-rechazados-2-lleva-la-comedia-y-la-ciencia-ficcion-a-nuevas-audiencias/",
+        "https://cinedominicano.com/estreno/los-rechazados-2/"
+      ]
+    }
+  ]
+}
