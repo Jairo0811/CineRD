@@ -1,66 +1,79 @@
 /**
- * CineRD: en vista piloto, cada archivo se habilita individualmente
- * ÚNICAMENTE si existe una autorización documental vigente en el ledger.
- * Sin permiso => cubierta CineRD. El modo normal conserva su conducta
- * previa salvo RETIRAR / RESTRINGIDO para los cuatro filmes prioritarios.
+ * CineRD media publication gate.
+ * ""       = historical behavior, but restricted/retired media are always withheld.
+ * "pilot"  = mask only four prioritized posters absent documented license.
+ * "review" = mask ALL unlicensed catalog images (films, actors and galleries).
  *
- * No sustituye una revisión legal: la evidencia se verifica fuera del repo.
+ * Never treat a CSV declaration as proof of a real contract. Editorial staff
+ * must inspect private evidence before authorizing an image.
  */
 import { isEffectiveCommercialLicense } from "./verifyMediaRightsLedger.mjs";
 
 export const PILOT_FILM_IDS = Object.freeze([4, 5, 16, 56]);
 const TARGETS = new Set(PILOT_FILM_IDS);
-const MODES = new Set(["", "pilot"]);
-const SAFE_POSTER = /^\/uploads\/peliculas\/[^/.][^/]*$/i;
-const EXCLUDED_STATUSES = new Set(["RESTRINGIDO", "RETIRAR"]);
+const MODES = new Set(["", "pilot", "review"]);
+const SAFE_MEDIA = /^\/uploads\/(actores|peliculas|galerias)\/[^/.][^/]*$/i;
+const BLOCKED = new Set(["RESTRINGIDO", "RETIRAR"]);
 
 export function createRightsReviewCatalog(tables, mode = "", rightsRows = []) {
-  if (!MODES.has(mode)) throw new Error("VITE_MEDIA_RIGHTS_MODE inválido: vacío o 'pilot'.");
+  if (!MODES.has(mode)) throw new Error("VITE_MEDIA_RIGHTS_MODE inválido: vacío, 'pilot' o 'review'.");
   if (!Array.isArray(tables?.Peliculas)) throw new Error("Catálogo sin tabla Peliculas");
   if (!Array.isArray(rightsRows)) throw new Error("Registro de derechos inválido");
 
-  const rightsByPath = new Map(rightsRows.map(row => [row.file_path, row]));
+  const indexed = new Map();
+  for (const row of rightsRows) {
+    if (indexed.has(row.file_path)) throw new Error("Archivo duplicado en permisos: " + row.file_path);
+    indexed.set(row.file_path, row);
+  }
   const excluded = new Set();
-  const retainedAuthorized = new Set();
-  let changed = false;
+  const authorized = new Set();
 
-  const movies = tables.Peliculas.map(movie => {
-    if (!TARGETS.has(Number(movie.Id))) return movie;
-    let next = movie;
-    for (const field of ["Foto", "Backdrop"]) {
-      const path = movie[field];
-      if (!path) continue;
-      if (!SAFE_POSTER.test(path) || path.includes("..") || path.includes("\\")) {
-        throw new Error("Ruta de afiche insegura: " + path);
-      }
-      const record = rightsByPath.get(path);
-      // A license is attached to ONE exact file, ONE field and ONE film.
-      const sameFile = record?.kind === "pelicula" &&
-        Number(record?.entity_id) === Number(movie.Id) && record?.field === field;
-      if (record?.status === "AUTORIZADO" && !sameFile) {
-        throw new Error("AUTORIZADO vinculado a película/campo incorrecto: " + path);
-      }
-      const licensed = sameFile && record?.status === "AUTORIZADO" &&
-        isEffectiveCommercialLicense(record);
-      if (sameFile && record?.status === "AUTORIZADO" && !licensed) {
-        throw new Error("Autorización inválida o vencida para: " + path);
-      }
-
-      if (licensed) retainedAuthorized.add(path);
-      const blocked = sameFile && EXCLUDED_STATUSES.has(record?.status);
-      const hide = blocked || (mode === "pilot" && !licensed);
-      if (hide) {
-        if (next === movie) next = { ...movie };
-        next[field] = null;
-        excluded.add(path);
-        changed = true;
-      }
+  function filterRow(row, kind, field, id, maskPending) {
+    const filename = row[field];
+    if (!filename) return row;
+    if (typeof filename !== "string" || !SAFE_MEDIA.test(filename) ||
+        filename.includes("..") || filename.includes("\\")) {
+      throw new Error("Ruta de archivo insegura: " + filename);
     }
-    return next;
-  });
+    const license = indexed.get(filename);
+    const identityMatches = license?.kind === kind &&
+      String(license?.entity_id) === String(id) && license?.field === field;
+    if (license?.status === "AUTORIZADO" && !identityMatches) {
+      throw new Error("AUTORIZADO vinculado a entidad/campo incorrecto: " + filename);
+    }
+    const valid = identityMatches && isEffectiveCommercialLicense(license);
+    if (identityMatches && license.status === "AUTORIZADO" && !valid) {
+      throw new Error("Autorización inválida o vencida: " + filename);
+    }
+    if (valid) authorized.add(filename);
+    const forbidden = identityMatches && BLOCKED.has(license?.status);
+    if (!forbidden && (!maskPending || valid)) return row;
+    excluded.add(filename);
+    return { ...row, [field]: null };
+  }
+  function mapRows(source, kind, fields, shouldMask) {
+    if (!Array.isArray(source)) return source;
+    return source.map(row => {
+      let next = row;
+      for (const field of fields) {
+        next = filterRow(next, kind, field, row.Id, shouldMask(row));
+      }
+      return next;
+    });
+  }
+
+  const movies = mapRows(tables.Peliculas, "pelicula", ["Foto", "Backdrop"],
+    p => mode === "review" || (mode === "pilot" && TARGETS.has(Number(p.Id))));
+  const actors = mapRows(tables.Actores, "talento", ["Foto"],
+    () => mode === "review");
+  const galleries = mapRows(tables.GaleriaMultimedia, "galeria", ["Archivo"],
+    () => mode === "review");
+
+  const changed = excluded.size > 0;
   return {
-    tables: changed ? { ...tables, Peliculas: movies } : tables,
+    tables: changed ? { ...tables, Peliculas: movies, ...(actors ? { Actores: actors } : {}),
+      ...(galleries ? { GaleriaMultimedia: galleries } : {}) } : tables,
     excludedPaths: [...excluded].sort(),
-    authorizedPaths: [...retainedAuthorized].sort(),
+    authorizedPaths: [...authorized].sort(),
   };
 }

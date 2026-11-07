@@ -31,7 +31,12 @@ if (snapshot.version >= 3 && EXTRA_TABLES.some(name => !Array.isArray(snapshot.t
 }
 
 let tables = Object.fromEntries(BASIC_TABLES.map(name => [name, snapshot.tables[name]]));
-// Solo cuando se elige el modo piloto: referencias a carteles sin permiso pendiente.
+// Publicar únicamente las columnas explícitamente permitidas en galería/premios.
+for (const name of EXTRA_TABLES) {
+  const rows = snapshot.tables[name] || [];
+  tables[name] = rows.map(row => Object.fromEntries(PUBLIC_COLUMNS[name].map(key => [key, row[key] ?? null])));
+}
+// El modo "review" excluye TODO archivo visual sin licencia documentada de actores, películas y galerías.
 const rightsRows = readCsv(fs.readFileSync(path.join(root, 'docs', 'media-rights-ledger.csv'), 'utf8'));
 const audit = auditRows(snapshot, rightsRows);
 if (audit.errors.length) throw new Error('Registro de derechos inválido: ' + audit.errors.join('; '));
@@ -40,17 +45,12 @@ tables = review.tables;
 for (const resource of review.excludedPaths) {
   // El módulo piloto ha validado esta ruta de imagen.
   const relative = resource.slice(1);
-  if (!/^uploads\/peliculas\/[^/.][^/]*$/i.test(relative) || relative.includes('..')) throw new Error('Ruta piloto inválida: ' + relative);
+  if (!/^uploads\/(actores|peliculas|galerias)\/[^/.][^/]*$/i.test(relative) || relative.includes('..')) throw new Error('Ruta piloto inválida: ' + relative);
   // Retirar restos del build anterior sin tocar backend/ ni el snapshot SQL.
   fs.rmSync(path.join(outPublic, relative), { force: true });
 }
-if (review.excludedPaths.length) console.log('CineRD: ' + review.excludedPaths.length + ' carteles excluidos del catálogo y archivos públicos.');
-if (review.authorizedPaths.length) console.log('CineRD: ' + review.authorizedPaths.length + ' carteles con registro documental vigente en el CSV.');
-for (const name of EXTRA_TABLES) {
-  // Whitelist defensiva: no exponer automáticamente futuras columnas privadas.
-  const rows = snapshot.tables[name] || [];
-  tables[name] = rows.map(row => Object.fromEntries(PUBLIC_COLUMNS[name].map(key => [key, row[key] ?? null])));
-}
+if (review.excludedPaths.length) console.log('CineRD: ' + review.excludedPaths.length + ' archivos excluidos del catálogo y archivos públicos.');
+if (review.authorizedPaths.length) console.log('CineRD: ' + review.authorizedPaths.length + ' archivos con registro documental vigente en el CSV.');
 
 // Solamente catálogo y metadatos públicos: nunca incluir cuentas, sesiones,
 // contraseñas, verificaciones, reclamaciones, credenciales ni evidencias privadas.

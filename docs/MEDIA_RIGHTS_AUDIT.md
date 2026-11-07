@@ -85,3 +85,14 @@ Desde la revisión de noviembre de 2026, el modo **opt-in** `VITE_MEDIA_RIGHTS_M
 En los cuatro títulos prioritarios, `RESTRINGIDO` o `RETIRAR` excluyen la imagen incluso en el modo normal de compilación; las otras 124 imágenes siguen requiriendo revisión manual y no se eliminan automáticamente. Las imágenes excluidas no se copian al artefacto estático generado de ese build. Para permisos con plazo, el validador **falla** si el vencimiento ha pasado; se deberá renovar la licencia o cambiar el estado y mantener el cartel oculto.
 
 El modo piloto y el registro de licencias **no se activaron en Cloudflare** por este cambio.
+
+
+### Modo de revisión integral de medios (Fase B)
+
+Para una **vista previa sin ninguna de las imágenes pendientes**, establecer `VITE_MEDIA_RIGHTS_MODE=review` durante la compilación. Filtra por archivo individual las películas, fotografías de talento y archivos de galería del snapshot. No borra archivos originales ni certificados; reemplaza las imágenes ausentes con las cubiertas SVG de CineRD o los placeholders existentes. El modo `pilot` sigue siendo válido para cuatro películas. `review` **es opt-in y todavía no está activado en Cloudflare**.
+
+La exclusión funciona a nivel de **archivo estático de distribución**: elimina los archivos bloqueados de `frontend/public/uploads` y evita copiarlos a `frontend/dist/uploads`. Los metadatos del catálogo no revelan referencias a medios excluidos.
+
+En todos los modos, `RESTRINGIDO` y `RETIRAR` ocultan la imagen inventariada; **PENDIENTE en el modo normal no se oculta** para preservar la configuración actual hasta aprobar el cambio visual. Solo `AUTORIZADO`, con evidencias verificadas por una persona y vigencia comercial, conserva un archivo en modo `review`.
+
+**Limitación:** no incluye una certificación de recursos decorativos, iconos, imágenes de `frontend/src/assets` o recursos externos enlazados. Requieren auditoría adicional. No es un sustituto de una revisión jurídica.
