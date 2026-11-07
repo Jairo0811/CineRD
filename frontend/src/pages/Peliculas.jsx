@@ -6,6 +6,7 @@ import { API_URL } from "../config/api";
 import { anioDe, decadaDe } from "../data/historiaCine";
 import CintaDecadas from "../components/historia/CintaDecadas";
 import { ordenarAlfabeticamente } from "../utils/ordenAlfabetico";
+import PosterOriginal from "../components/media/PosterOriginal";
 
 function Peliculas() {
   const { t, i18n } = useTranslation();
@@ -75,7 +76,7 @@ function Peliculas() {
         {visibles.map((pelicula) => (
           <article className="cinerd-movie-card" key={pelicula.Id}>
             <Link to={`/peliculas/${pelicula.Id}`} className="cinerd-poster-wrap">
-              {pelicula.Foto ? <img src={`${API_URL}${pelicula.Foto}`} alt={pelicula.Titulo} className="cinerd-poster" /> : <div className="cinerd-poster cinerd-poster-empty">🎬</div>}
+              {pelicula.Foto ? <img src={`${API_URL}${pelicula.Foto}`} alt={pelicula.Titulo} className="cinerd-poster" /> : <PosterOriginal titulo={pelicula.Titulo} anio={anioDe(pelicula.FechaEstreno)} idioma={i18n.language || "es"} className="cinerd-poster" />}
               <div className="cinerd-poster-overlay"><span>{t("movies.viewMovie")}</span></div>
               <span className="cinerd-date-chip" title={formatearFecha(pelicula.FechaEstreno)}>{anioDe(pelicula.FechaEstreno) ?? "—"}</span>
             </Link>

@@ -31,6 +31,7 @@ import "./styles/historia.css";
 import "./styles/heritage-pages.css";
 import "./styles/public-info.css";
 import "./styles/editorial-peliculas.css";
+import "./styles/poster-original.css";
 
 import App from "./App.jsx";
 
