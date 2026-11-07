@@ -30,3 +30,6 @@ Thumbs.db
 # Generated static catalog and media
 frontend/public/demo/
 frontend/public/uploads/
+
+# Local SQL preimages — never upload to GitHub
+backend/backups/

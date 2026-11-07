@@ -33,7 +33,8 @@ function validate(ledger,snapshot) {
     seen.add(key);
     const film=snapshot.tables.Peliculas.find(p=>Number(p.Id)===c.filmId);
     if(!film || normalize(film.Titulo)!==normalize(c.title)) throw Error("Identidad de película no coincide: "+key);
-    if(compared(c.field,film[c.field])!==compared(c.field,c.expected)) throw Error("El snapshot difiere del valor esperado: "+key);
+    const current=compared(c.field,film[c.field]);
+    if(current!==compared(c.field,c.expected) && current!==compared(c.field,c.proposed)) throw Error("El snapshot difiere del valor esperado o propuesto: "+key);
     if(compared(c.field,c.expected)===compared(c.field,c.proposed)) throw Error("Cambio sin diferencia: "+key);
     if(!Array.isArray(c.sources) || c.sources.length<2 ||
        !c.sources.every(u=>{try{return new URL(u).protocol==="https:"}catch{return false}}))
@@ -100,7 +101,11 @@ async function apply() {
 if(require.main===module){
   console.log("CineRD E-4 — propuestas documentadas: "+rows.length+" campos de "+
     new Set(rows.map(c=>c.filmId)).size+" películas.");
-  for(const c of rows) console.log("  #"+c.filmId+" "+c.title+" / "+c.field+": "+String(c.expected)+" -> "+String(c.proposed));
+  for(const c of rows) {
+    const film=catalog.tables.Peliculas.find(p=>p.Id===c.filmId);
+    const done=compared(c.field,film[c.field])===compared(c.field,c.proposed);
+    console.log("  "+(done?"[APLICADO EN SNAPSHOT]":"[PENDIENTE]")+" #"+c.filmId+" "+c.title+" / "+c.field+": "+String(c.expected)+" -> "+String(c.proposed));
+  }
   if(process.argv.includes("--apply")) apply().catch(e=>{console.error("✗ "+e.message);process.exitCode=1});
   else console.log("✓ VISTA PREVIA; no se ha modificado SQL Server. Para aplicar: --apply --confirm-db-backup");
 }
