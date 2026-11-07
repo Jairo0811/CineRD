@@ -1,7 +1,7 @@
 /*
  * CineRD — Archivo de Cine: portadas editoriales premium.
  * Composiciones SVG/CSS originales, sin carteles, retratos ni marcas ajenas.
- * Sistema visual consistente; motivos individuales para cuatro producciones.
+ * Sistema visual consistente: cuatro clásicos premium + 42 motivos individuales originales.
  */
 .cinerd-poster-original {
   --co-gold: #f5ca76;
@@ -162,4 +162,27 @@
 @media (max-width: 600px) {
   .cinerd-poster-original { padding: clamp(8px, 4.5cqw, 18px); }
   .cinerd-poster-original-edition { letter-spacing: .055em; }
+}
+
+/* Nuevas ediciones originales: paletas inyectadas desde el catálogo curado.
+   Ninguna de estas capas incorpora imágenes o marcas de terceros. */
+.cinerd-poster-original--archive {
+  background:
+    radial-gradient(ellipse at 75% 22%, var(--co-haze), transparent 51%),
+    radial-gradient(ellipse at 23% 79%, color-mix(in srgb, var(--co-accent) 16%, transparent), transparent 54%),
+    linear-gradient(159deg, var(--co-back) 0%, #111b30 77%, #080d1d 100%);
+}
+.cinerd-poster-original--archive .cinerd-poster-original-art {
+  background: radial-gradient(circle at 50% 51%, color-mix(in srgb, var(--co-gold) 8%, transparent), transparent 61%);
+}
+.cinerd-poster-original--archive .cinerd-poster-original-art svg {
+  max-width: 300px;
+  filter: drop-shadow(0 10px 10px rgba(0, 0, 0, .22));
+}
+.cinerd-poster-original--title-medium .cinerd-poster-original-title {
+  font-size: clamp(.92rem, 7.35cqw, 2rem);
+}
+.cinerd-poster-original--title-long .cinerd-poster-original-title {
+  font-size: clamp(.83rem, 6.35cqw, 1.85rem);
+  line-height: 1.13;
 }
