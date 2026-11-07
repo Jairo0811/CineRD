@@ -151,6 +151,11 @@ function Navbar() {
                 {t("nav.history")}
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink className={obtenerClaseNav} to="/sobre-cinerd" onClick={cerrarMenuMovil}>
+                {idiomaActual === "en" ? "About" : "Acerca de"}
+              </NavLink>
+            </li>
             {usuario && (
               <li className="nav-item">
                 <NavLink className={obtenerClaseNav} to="/dashboard" onClick={cerrarMenuMovil}>

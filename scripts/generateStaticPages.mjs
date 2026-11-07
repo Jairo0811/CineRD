@@ -6,7 +6,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { ERAS, ERAS_TEXTO, HITOS, FUENTES, anioDe } from "../frontend/src/data/historiaCine.js";
+import { HITOS, FUENTES, anioDe } from "../frontend/src/data/historiaCine.js";
+import { SOBRE_CINERD } from "../frontend/src/data/sobreCineRD.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const out = path.join(root, "frontend", "dist");
@@ -46,7 +47,7 @@ const envolver = (body) =>
   enlace("/peliculas", "Películas") + " · " + enlace("/actores", "Talentos") + "</nav>" +
   '<main>' + body + '</main><footer><p>CineRD: archivo independiente de información del cine dominicano.</p>' +
   enlace("/contacto", "Contacto") + " · " + enlace("/privacidad", "Privacidad") + " · " +
-  enlace("/terminos", "Términos") + "</footer></div>";
+  enlace("/terminos", "Términos") + " · " + enlace("/sobre-cinerd", "Sobre CineRD") + "</footer></div>";
 
 function atributo(doc, etiqueta, clave, contenido) {
   const rx = new RegExp('(<meta\\s+' + etiqueta + '="' + clave.replace(/[.*+?^$()|[\]{}\\]/g, "\\$&") + '"\\s+content=")[^"]*(")', "i");
@@ -207,12 +208,23 @@ for (const a of actores) {
   pagina(actorUrl(a), nombre + " | CineRD", desc, contenidoActor(a), metadatosActor(a));
 }
 
-const rutasBase = ["/", "/peliculas", "/actores", "/historia", "/privacidad", "/terminos", "/contacto"];
+
+const acerca = SOBRE_CINERD.es;
+const acercaCuerpo = cabecera("CineRD", acerca.title, acerca.intro) +
+  acerca.sections.map((s) => "<section><h2>" + escapar(s.title) + "</h2>" +
+    s.paragraphs.map((p) => "<p>" + escapar(p) + "</p>").join("") + "</section>").join("\n") +
+  "<p>" + enlace("/historia", acerca.history) + " · " +
+  enlace("/contacto", acerca.contact) + "</p>";
+pagina("/sobre-cinerd", "Sobre CineRD | Origen, alcance y metodología",
+  "Descubre cómo CineRD pasó de una prueba técnica a un archivo independiente de cine dominicano, su metodología y sus límites.",
+  acercaCuerpo);
+
+const rutasBase = ["/", "/peliculas", "/actores", "/historia", "/sobre-cinerd", "/privacidad", "/terminos", "/contacto"];
 const rutas = [...rutasBase, ...peliculas.map(peliculaUrl), ...actores.map(actorUrl)];
 const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
   rutas.map((r) => "  <url><loc>" + escapar(site + r) + "</loc></url>").join("\n") +
   "\n</urlset>\n";
 fs.writeFileSync(path.join(out, "sitemap.xml"), xml, "utf8");
-console.log("CineRD SEO: HTML estático de " + (4 + peliculas.length + actores.length) +
+console.log("CineRD SEO: HTML estático de " + (5 + peliculas.length + actores.length) +
   " páginas indexables, buscador noindex, sitemap de " + rutas.length + " URLs generado.");

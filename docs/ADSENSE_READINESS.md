@@ -137,3 +137,7 @@ Google verificó la propiedad de `cinerd.pages.dev`, pero marcó el sitio como *
 5. Corregir enlaces rotos o datos incompletos, publicar las mejoras y solicitar revisión **solo después** de comprobar todo lo anterior.
 
 Referencia oficial: https://support.google.com/publisherpolicies/answer/11112688?hl=es
+
+### Página editorial original de CineRD
+
+Se publica `/sobre-cinerd`, disponible en español e inglés y enlazada desde navegación y pie de página. Explica el origen del proyecto (prueba técnica en 2021, retomada en 2026), sus objetivos, alcance, límites, metodología de correcciones y condición de proyecto independiente. Esta información se redactó específicamente para CineRD y no se generó mediante plantillas a partir de fichas.

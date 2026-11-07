@@ -12,6 +12,7 @@ import PageLoader from "./components/ui/PageLoader";
 import HomePublica from "./pages/HomePublica";
 import NotFound from "./pages/NotFound";
 import { PrivacyPolicy, TermsOfUse, Contact } from "./pages/PublicInfoPage";
+import SobreCineRD from "./pages/SobreCineRD";
 
 // Configuración del modo demo
 import { DEMO_MODE } from "./config/api";
@@ -115,6 +116,7 @@ function App() {
               <Route path="/privacidad" element={<PrivacyPolicy />} />
               <Route path="/terminos" element={<TermsOfUse />} />
               <Route path="/contacto" element={<Contact />} />
+              <Route path="/sobre-cinerd" element={<SobreCineRD />} />
 
               <Route path="/actores" element={<Actores />} />
 

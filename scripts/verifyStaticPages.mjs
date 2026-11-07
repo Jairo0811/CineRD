@@ -22,6 +22,7 @@ function pagina(ruta, texto) {
 }
 pagina("/", "El cine dominicano");
 pagina("/historia", "Historia del cine dominicano");
+pagina("/sobre-cinerd", "Sobre CineRD");
 pagina("/peliculas", "Películas dominicanas");
 pagina("/actores", "Talentos del cine dominicano");
 const buscar = pagina("/buscar", "Buscar en CineRD");
@@ -40,5 +41,5 @@ for (const a of people) {
   exigir(sitemap.includes("<loc>https://cinerd.pages.dev" + ruta + "</loc>"), "No está en sitemap: " + ruta);
 }
 const urls = [...sitemap.matchAll(/<loc>/g)].length;
-exigir(urls === movies.length + people.length + 7, "Cantidad de sitemap incorrecta: " + urls);
+exigir(urls === movies.length + people.length + 8, "Cantidad de sitemap incorrecta: " + urls);
 console.log("✓ SEO: " + (movies.length + people.length) + " fichas prerenderizadas, canonical/metadatos/esquemas, buscador noindex y " + urls + " URLs.");
