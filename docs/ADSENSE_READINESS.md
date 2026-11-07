@@ -141,3 +141,7 @@ Referencia oficial: https://support.google.com/publisherpolicies/answer/11112688
 ### Página editorial original de CineRD
 
 Se publica `/sobre-cinerd`, disponible en español e inglés y enlazada desde navegación y pie de página. Explica el origen del proyecto (prueba técnica en 2021, retomada en 2026), sus objetivos, alcance, límites, metodología de correcciones y condición de proyecto independiente. Esta información se redactó específicamente para CineRD y no se generó mediante plantillas a partir de fichas.
+
+### URLs canónicas y HTML de Cloudflare Pages
+
+El generador produce `dist/peliculas/123.html` (que Cloudflare Pages sirve como `/peliculas/123`) en lugar de `dist/peliculas/123/index.html` (que podría redirigir a `/peliculas/123/`). Así, los enlaces SPA, la URL canónica y el sitemap comparten la misma versión sin barra final. Las rutas legales reciben además HTML inicial informativo y metadatos específicos, aunque React presenta su texto completo tras cargar.

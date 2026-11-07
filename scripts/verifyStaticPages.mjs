@@ -11,7 +11,7 @@ const leer = (p) => fs.readFileSync(path.join(dist, p), "utf8");
 const sitemap = leer("sitemap.xml");
 function exigir(ok, msg) { if (!ok) throw new Error("SEO: " + msg); }
 function pagina(ruta, texto) {
-  const file = ruta === "/" ? "index.html" : path.join(ruta.slice(1), "index.html");
+  const file = ruta === "/" ? "index.html" : ruta.slice(1) + ".html";
   const html = leer(file);
   const canonical = "https://cinerd.pages.dev" + ruta;
   exigir(html.includes('<link rel="canonical" href="' + canonical + '"'), "Canonical inválido: " + ruta);
@@ -23,6 +23,9 @@ function pagina(ruta, texto) {
 pagina("/", "El cine dominicano");
 pagina("/historia", "Historia del cine dominicano");
 pagina("/sobre-cinerd", "Sobre CineRD");
+pagina("/privacidad", "Política de Privacidad");
+pagina("/terminos", "Términos de Uso");
+pagina("/contacto", "Contacto");
 pagina("/peliculas", "Películas dominicanas");
 pagina("/actores", "Talentos del cine dominicano");
 const buscar = pagina("/buscar", "Buscar en CineRD");

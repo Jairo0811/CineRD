@@ -82,7 +82,9 @@ function pagina(ruta, titulo, descripcion, contenido, datos = null, noindex = fa
   const target = '<div id="root"></div>';
   if (!doc.includes(target)) throw new Error("No se encontró el nodo #root tras compilar Vite");
   doc = doc.replace(target, '<div id="root">' + envolver(contenido) + "</div>");
-  const dest = ruta === "/" ? path.join(out, "index.html") : path.join(out, ruta.slice(1), "index.html");
+  // Cloudflare Pages sirve foo.html como /foo, mientras foo/index.html fuerza /foo/.
+  // Los enlaces de React y las URL canónicas usan rutas sin barra final.
+  const dest = ruta === "/" ? path.join(out, "index.html") : path.join(out, ruta.slice(1) + ".html");
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.writeFileSync(dest, doc, "utf8");
 }
@@ -219,6 +221,44 @@ pagina("/sobre-cinerd", "Sobre CineRD | Origen, alcance y metodología",
   "Descubre cómo CineRD pasó de una prueba técnica a un archivo independiente de cine dominicano, su metodología y sus límites.",
   acercaCuerpo);
 
+
+const informativas = [
+  {
+    ruta: "/privacidad",
+    titulo: "Política de Privacidad | CineRD",
+    desc: "Conoce el tratamiento de la información y los canales de consulta y corrección de CineRD.",
+    nombre: "Política de Privacidad",
+    cuerpo: "<section><h2>Información y funcionamiento público</h2><p>CineRD publica un catálogo de consulta sobre películas y talentos. La versión de Cloudflare Pages no habilita cuentas públicas ni verificación de identidad. El idioma y tema visual pueden guardarse en el navegador.</p></section>" +
+      "<section><h2>Publicidad y proveedores</h2><p>La verificación de Google AdSense no significa que haya anuncios activos. El catálogo utiliza Cloudflare Pages y puede enlazar a proveedores externos. Antes de habilitar anuncios se revisarán los requisitos de cookies y consentimiento aplicables.</p></section>" +
+      "<section><h2>Correcciones y privacidad</h2><p>Para solicitar correcciones, derechos de imagen o consultas privadas, utiliza el correo temporal publicado en Contacto. No publiques información sensible en incidencias abiertas.</p></section>"
+  },
+  {
+    ruta: "/terminos",
+    titulo: "Términos de Uso | CineRD",
+    desc: "Términos de uso del catálogo informativo CineRD, alcance del servicio y derechos de terceros.",
+    nombre: "Términos de Uso",
+    cuerpo: "<section><h2>Uso informativo</h2><p>CineRD es un catálogo independiente de referencia sobre el cine dominicano. No ofrece servicios de streaming, descargas de películas ni licencias sobre contenidos audiovisuales.</p></section>" +
+      "<section><h2>Exactitud y derechos</h2><p>Los datos pueden estar incompletos y pueden corregirse. Los nombres, fotografías, carteles, marcas y materiales de terceros permanecen sujetos a sus respectivos derechos.</p></section>" +
+      "<section><h2>Enlaces y contacto</h2><p>Los enlaces externos pertenecen a otros servicios. Puedes notificar un error o solicitar una corrección desde la página de contacto.</p></section>"
+  },
+  {
+    ruta: "/contacto",
+    titulo: "Contacto y correcciones | CineRD",
+    desc: "Contacta a CineRD para correcciones del catálogo, privacidad y derechos de imagen.",
+    nombre: "Contacto",
+    cuerpo: "<section><h2>Correo de contacto temporal</h2><p>Para consultas privadas, privacidad y derechos de imagen, escribe a " +
+      enlace("mailto:jairo_1829@hotmail.com", "jairo_1829@hotmail.com") + ".</p></section>" +
+      "<section><h2>Incidencias públicas del catálogo</h2><p>Para correcciones que no contengan datos sensibles puedes crear una " +
+      '<a href="https://github.com/Jairo0811/CineRD/issues/new" rel="noopener noreferrer">incidencia pública en GitHub</a>.' +
+      " Nunca publiques documentos, datos de contacto privados ni evidencias confidenciales en un canal público.</p></section>"
+  },
+];
+for (const info of informativas) {
+  pagina(info.ruta, info.titulo, info.desc,
+    cabecera("Información y contacto", info.nombre, info.desc) + info.cuerpo +
+    "<p>" + enlace("/sobre-cinerd", "Sobre el proyecto") + "</p>");
+}
+
 const rutasBase = ["/", "/peliculas", "/actores", "/historia", "/sobre-cinerd", "/privacidad", "/terminos", "/contacto"];
 const rutas = [...rutasBase, ...peliculas.map(peliculaUrl), ...actores.map(actorUrl)];
 const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
@@ -226,5 +266,5 @@ const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
   rutas.map((r) => "  <url><loc>" + escapar(site + r) + "</loc></url>").join("\n") +
   "\n</urlset>\n";
 fs.writeFileSync(path.join(out, "sitemap.xml"), xml, "utf8");
-console.log("CineRD SEO: HTML estático de " + (5 + peliculas.length + actores.length) +
+console.log("CineRD SEO: HTML estático de " + (8 + peliculas.length + actores.length) +
   " páginas indexables, buscador noindex, sitemap de " + rutas.length + " URLs generado.");
