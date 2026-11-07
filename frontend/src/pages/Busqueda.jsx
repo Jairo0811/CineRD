@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import api from "../services/api";
 import { API_URL } from "../config/api";
 import { manejarErrorFotoTalento, obtenerFotoTalento } from "../utils/talentoPlaceholder";
+import PosterOriginal from "../components/media/PosterOriginal";
 
 const resolverImagen = (ruta) => !ruta ? null : ruta.startsWith("http") ? ruta : `${API_URL}${ruta}`;
 
@@ -67,7 +68,7 @@ function Busqueda() {
       {resultados.peliculas.length > 0 && <section className="global-search-section">
         <h2>{copy.movies}</h2>
         <div className="global-search-grid">{resultados.peliculas.map((p)=><Link key={p.Id} to={`/peliculas/${p.Id}`} className="global-search-result">
-          {resolverImagen(p.Foto) ? <img src={resolverImagen(p.Foto)} alt={p.Titulo} /> : <div className="global-search-placeholder">🎬</div>}
+          {resolverImagen(p.Foto) ? <img src={resolverImagen(p.Foto)} alt={p.Titulo} /> : <PosterOriginal titulo={p.Titulo} anio={String(p.FechaEstreno || "").slice(0, 4)} idioma={i18n.language || "es"} />}
           <div><strong>{p.Titulo}</strong><span>{[p.Genero,p.Director,p.Productora].filter(Boolean).join(" · ")}</span></div>
         </Link>)}</div>
       </section>}
