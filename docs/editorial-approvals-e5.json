@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "description": "Solo aprobaciones humanas verificadas. El arreglo vacío significa 58 piezas pendientes; no inventar firmas, evidencia ni revisión.",
+  "approvals": []
+}

@@ -18,7 +18,9 @@
     "photos:repair": "node scripts/repairActorPhotos.js",
     "photos:rebuild": "node scripts/reprocessActorPhotosFromBackup.js",
     "posters:repair:preview": "node scripts/repairMoviePosters.js",
-    "posters:repair": "node scripts/repairMoviePosters.js"
+    "posters:repair": "node scripts/repairMoviePosters.js",
+    "catalog:corrections:preview": "node scripts/applyEditorialCorrections.js",
+    "catalog:corrections:apply": "node scripts/applyEditorialCorrections.js --apply"
   },
   "keywords": [],
   "author": "",

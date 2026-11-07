@@ -127,3 +127,8 @@ Se agregaron **24** resúmenes bilingües originales basados en fuentes históri
 ## Cierre de la Fase E-2 — 46/46 fichas con sinopsis
 
 Se completaron las nueve películas pendientes con textos originales en ES/EN y fuente asociada. **Cinco fichas contienen sinopsis registradas en SQL; otras 41 presentan sinopsis de respaldo en estado `pendiente_revision`**. Los textos no sustituyen SQL Server ni aseguran calidad suficiente para AdSense. DGCINE confirma, por ejemplo, un estreno diferente para `Los Rechazados 2`; consultar el registro de discrepancias y fuentes en [REVISION_EDITORIAL_FASE_E.md](./REVISION_EDITORIAL_FASE_E.md). El próximo trabajo es la revisión humana de los 41 textos, la corrección de metadatos y la Fase E-3 de talentos.
+
+
+## Fases E-3, E-4 y E-5 — seguimiento
+
+Se añadió **contexto profesional derivado** de los registros de reparto/dirección/créditos en las 83 fichas de talentos y su versión SEO. Las siete correcciones de cuatro películas están **preparadas** con manifestación documentada y script SQL transaccional de ejecución manual, pero **NO se aplicaron al SQL Server local**. El inventario editorial contabiliza **58 piezas (46 sinopsis y 12 lecturas)**; no tienen aprobación humana por defecto. La modalidad `--strict` bloqueará la preparación hasta que se documenten aprobaciones legítimas. Consulte [FASES_E3_E4_E5.md](./FASES_E3_E4_E5.md). Los controles de imágenes siguen siendo independientes de la revisión de texto y la aprobación de Google.
