@@ -59,3 +59,21 @@ jobs:
         run: VITE_MEDIA_RIGHTS_MODE=pilot npm run build
       - name: Verify excluded posters are not shipped
         run: node ../scripts/verifyRightsPilotBuild.mjs
+
+  rights-review:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - name: Build with comprehensive image rights review
+        run: VITE_MEDIA_RIGHTS_MODE=review npm run build
+      - name: Validate no unlicensed media enter the artifact
+        run: node ../scripts/verifyRightsReviewBuild.mjs

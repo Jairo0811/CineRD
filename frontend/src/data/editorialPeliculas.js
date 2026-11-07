@@ -1,3 +1,4 @@
+import { CONTEXTOS_ARCHIVO } from "./editorialPeliculasFaseA.js";
 /**
  * Editoriales de CineRD: síntesis originales redactadas a partir de fuentes verificables.
  * estado: pendiente_revision. NO implica validación final del titular ni derechos de imagen.
@@ -131,7 +132,8 @@ export const EDITORIALES_PELICULAS = {
         "url": "https://cinemadominicano.com/la-lucha-de-ana-2012/"
       }
     ]
-  }
+  },
+  ...CONTEXTOS_ARCHIVO
 };
 
 const normalizar = (value) => String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();

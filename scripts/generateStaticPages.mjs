@@ -177,7 +177,7 @@ const homeBody = cabecera("Inicio", "El cine dominicano en un solo lugar", descr
   '<section><h2>Producciones del catálogo</h2>' +
   lista(peliculasOrdenadas.slice(0, 12).map((p) => enlace(peliculaUrl(p), p.Titulo + (anio(p) ? " (" + anio(p) + ")" : "")))) +
   "</section>" +
-  '<section><h2>Lecturas y contexto del cine dominicano</h2><p>Cuatro fichas incorporan contexto editorial original sustentado en referencias verificables, pendiente de revisión final.</p>' +
+  '<section><h2>Lecturas y contexto del cine dominicano</h2><p>El archivo dispone de ' + editorialesDestacados.length + ' fichas con lecturas editoriales originales y fuentes, pendientes de revisión final por el titular.</p>' +
   lista(editorialesDestacados.map((e) => enlace("/peliculas/" + e.id, e.tituloReferencia + " (" + e.anioReferencia + "): " + e.es.titulo))) + "</section>" +
   '<section><h2>Acerca del proyecto</h2><p>CineRD es un archivo independiente y en desarrollo. El catálogo recoge información disponible y puede ampliarse o corregirse. ' +
   enlace("/contacto", "Puedes solicitar correcciones") + ".</p></section>";
