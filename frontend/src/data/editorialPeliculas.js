@@ -132,8 +132,8 @@ export const EDITORIALES_PELICULAS = {
         "url": "https://cinemadominicano.com/la-lucha-de-ana-2012/"
       }
     ]
-  }
-  ,...CONTEXTOS_ARCHIVO
+  },
+  ...CONTEXTOS_ARCHIVO
 };
 
 const normalizar = (value) => String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
