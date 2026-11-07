@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { HITOS, FUENTES, anioDe } from "../frontend/src/data/historiaCine.js";
 import { SOBRE_CINERD } from "../frontend/src/data/sobreCineRD.js";
 import { getEditorialPelicula, editorialesDestacados } from "../frontend/src/data/editorialPeliculas.js";
+import { crearPerfilDocumentalTalento } from "../frontend/src/data/perfilProfesionalTalento.js";
 import { getSinopsisEditorial } from "../frontend/src/data/sinopsisCuradasFaseE.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -130,6 +131,12 @@ const contenidoPelicula = (p) => {
 const contenidoActor = (a) => {
   const pelis = filmografia(a);
   const n = nombreActor(a);
+  const cast = relaciones.filter(r=>Number(r.ActorId)===a.Id).map(r=>({...peliculasPorId.get(Number(r.PeliculaId)),...r,Id:Number(r.PeliculaId)}));
+  const profesionales = (tables.PeliculaCreditos||[]).filter(c=>Number(c.ActorId)===a.Id)
+    .map(c=>({...peliculasPorId.get(Number(c.PeliculaId)),...c,Id:Number(c.PeliculaId)}));
+  const director = peliculas.filter(p=>normalizar(p.Director) &&
+    [normalizar(a.NombreCompleto),normalizar(a.NombreArtistico)].includes(normalizar(p.Director)));
+  const resumen = crearPerfilDocumentalTalento(a,cast,director,profesionales,"es");
   const partes = [
     cabecera("Talentos", n, "Ficha profesional del catálogo de CineRD."),
     '<section><h2>Datos registrados</h2>',
@@ -141,10 +148,13 @@ const contenidoActor = (a) => {
     ]),
     "</section>",
   ];
-  if (pelis.length) partes.push("<section><h2>Participaciones registradas</h2><p>Producciones del catálogo vinculadas a este talento.</p>" +
-    lista(pelis.map((p) => enlace(peliculaUrl(p), p.Titulo + (anio(p) ? " (" + anio(p) + ")" : "")))) + "</section>");
-  else partes.push("<p>Aún no hay participaciones vinculadas en este catálogo parcial. " +
-    enlace("/actores", "Consultar otros talentos") + ".</p>");
+  if (resumen) {
+    partes.push("<section><h2>Trayectoria documentada en CineRD</h2><p>"+escapar(resumen.texto)+"</p>"+
+      (resumen.notaProfesion?"<p>"+escapar(resumen.notaProfesion)+"</p>":"")+
+      (resumen.obras.length?"<h3>Obras vinculadas a este perfil</h3>"+
+        lista(resumen.obras.map(p=>enlace(peliculaUrl(p),p.Titulo+(anio(p)?" ("+anio(p)+")":"")))):"")+
+      "</section>");
+  }
   partes.push("<p>" + enlace("/actores", "Directorio de talentos") + " · " + enlace("/contacto", "Solicitar una corrección") + "</p>");
   return partes.join("\n");
 };
