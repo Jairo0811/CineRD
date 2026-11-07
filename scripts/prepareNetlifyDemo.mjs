@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRightsReviewCatalog } from './pilotRightsCatalog.mjs';
+import { resolveMediaRightsBuildMode } from './resolveMediaRightsBuildMode.mjs';
 import { readCsv, auditRows } from './verifyMediaRightsLedger.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -40,7 +41,9 @@ for (const name of EXTRA_TABLES) {
 const rightsRows = readCsv(fs.readFileSync(path.join(root, 'docs', 'media-rights-ledger.csv'), 'utf8'));
 const audit = auditRows(snapshot, rightsRows);
 if (audit.errors.length) throw new Error('Registro de derechos inválido: ' + audit.errors.join('; '));
-const review = createRightsReviewCatalog(tables, (process.env.VITE_MEDIA_RIGHTS_MODE || '').trim(), rightsRows);
+const mediaRightsMode = resolveMediaRightsBuildMode();
+console.log('CineRD: modo de derechos del build = ' + (mediaRightsMode || 'normal') + '.');
+const review = createRightsReviewCatalog(tables, mediaRightsMode, rightsRows);
 tables = review.tables;
 for (const resource of review.excludedPaths) {
   // El módulo piloto ha validado esta ruta de imagen.
@@ -104,9 +107,9 @@ for (const relative of [...media].sort()) {
 const mediaChecksum = createHash('sha256').update(mediaChecksums.join('\n')).digest('hex');
 fs.writeFileSync(path.join(outPublic, 'demo', 'deploy-status.json'), JSON.stringify({
   format: 'CineRD.PublicDemoDeploy',
-  sourceCommit: process.env.COMMIT_REF || null,
+  sourceCommit: process.env.CF_PAGES_COMMIT_SHA || process.env.COMMIT_REF || null,
   catalogGeneratedAtUtc: snapshot.generatedAtUtc,
-  mediaRightsMode: (process.env.VITE_MEDIA_RIGHTS_MODE || '').trim() || 'normal',
+  mediaRightsMode: mediaRightsMode || 'normal',
   mediaFilesCopied: copied,
   mediaCounts,
   mediaSha256: mediaChecksum,
