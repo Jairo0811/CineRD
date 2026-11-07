@@ -69,3 +69,15 @@ Equipo CineRD — dirección de contacto publicada en el sitio.
 - TMDb distingue API no comercial y acuerdos comerciales (https://developer.themoviedb.org/docs/faq), y no reclama propiedad sobre todas las imágenes de la API.
 - El problema comunicado por AdSense fue **contenido insuficiente/de bajo valor**, no un dictamen específico sobre derechos de los pósteres. Esta medida no garantiza aprobación.
 - La revisión jurídica de las otras 124 imágenes, los logotipos y otros recursos aún está pendiente.
+
+
+## Refinamiento editorial premium (noviembre de 2026)
+
+El componente `PosterOriginal` tiene ahora cuatro ilustraciones vectoriales originales (SVG/CSS), con una identidad gráfica diferenciada según el ID verificado del catálogo. Se respeta el estilo CineRD, sin utilizar pósteres, fotogramas, fotografías ni logotipos de terceros:
+
+- **ID 16, Nueba Yol:** arquitectura urbana abstracta y líneas de recorrido (azul/cian).
+- **ID 5, Perico Ripiao:** disco y notas musicales abstractas (naranja/cobre).
+- **ID 4, Sanky Panky:** sol y olas geométricas (azul turquesa).
+- **ID 56, La lucha de Ana:** flor simbólica y haces de luz (violeta/rosa).
+
+Para cualquier otra ficha sin imagen se utiliza una bobina abstracta genérica. Las cubiertas muestran el título, identidad editorial y motivos gráficos; **no repiten el año visualmente** porque la tarjeta ya tiene un marcador. El año permanece en la descripción accesible para lectores de pantalla. El código y las pruebas usan `peliculaId` para distinguir las variantes, sin heurísticas inestables sobre el título. El modo piloto continúa desactivado por defecto y no modifica archivos multimedia originales.

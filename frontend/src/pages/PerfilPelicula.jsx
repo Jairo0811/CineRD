@@ -45,7 +45,7 @@ function PerfilPelicula(){
    {(esAdmin||esTalentoVerificado)&&<div className="film-hero-actions">{esAdmin&&<><Link to={`/peliculas/editar/${pelicula.Id}`}>{t("movieProfile.edit")}</Link><Link to={`/peliculas/${pelicula.Id}/reparto`}>{t("movieProfile.manageCast")}</Link><Link to={`/peliculas/${pelicula.Id}/creditos`}>🎬 Créditos</Link><Link to="/admin/premios">🏆 Premios</Link><Link to="/admin/galeria">🖼️ Galería</Link></>}{esTalentoVerificado&&<Link to={`/mi-perfil/reclamar-credito?pelicula=${pelicula.Id}`}>➕ Reclamar participación</Link>}</div>}
   </div>
   <div className="film-hero-body">
-   <div className="film-poster">{poster?<img src={poster} alt={pelicula.Titulo}/>:<PosterOriginal titulo={pelicula.Titulo} anio={anioPelicula} idioma={idiomaUi} />}</div>
+   <div className="film-poster">{poster?<img src={poster} alt={pelicula.Titulo}/>:<PosterOriginal peliculaId={pelicula.Id} titulo={pelicula.Titulo} anio={anioPelicula} idioma={idiomaUi} />}</div>
    <div className="film-hero-copy">
     <span className="public-eyebrow">{t("movieProfile.dominicanCinema")}{anioPelicula?` · ${anioPelicula}`:""}</span>
     <h1>{pelicula.Titulo}</h1>

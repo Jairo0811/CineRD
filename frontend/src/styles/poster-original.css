@@ -1,82 +1,165 @@
-/* CineRD · portadas tipográficas originales cuando falta un cartel. */
+/*
+ * CineRD — Archivo de Cine: portadas editoriales premium.
+ * Composiciones SVG/CSS originales, sin carteles, retratos ni marcas ajenas.
+ * Sistema visual consistente; motivos individuales para cuatro producciones.
+ */
 .cinerd-poster-original {
+  --co-gold: #f5ca76;
+  --co-ink: #eef5ff;
+  --co-accent: #52c7db;
+  --co-haze: rgba(45, 123, 196, .23);
+  --co-back: #091c39;
   position: relative;
   isolation: isolate;
-  overflow: hidden;
-  min-width: 0;
+  box-sizing: border-box;
+  container-type: inline-size;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  align-items: stretch;
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
   aspect-ratio: 2 / 3;
-  padding: clamp(12px, 2.2vw, 24px);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
-  text-align: center;
-  color: #fff7df;
-  background:
-    radial-gradient(circle at 85% 20%, rgba(214, 173, 82, .32), transparent 29%),
-    radial-gradient(circle at 10% 82%, rgba(199, 24, 49, .37), transparent 36%),
-    linear-gradient(155deg, #061123 5%, #153a71 57%, #060c1b 100%);
-  border: 1px solid rgba(214, 173, 82, .48);
+  overflow: hidden;
+  padding: clamp(12px, 5cqw, 25px);
+  border: 1px solid rgba(238, 200, 117, .6);
   border-radius: inherit;
-  box-shadow: inset 0 0 0 5px rgba(255, 255, 255, .03);
+  color: var(--co-ink);
+  background:
+    radial-gradient(ellipse at 82% 31%, var(--co-haze), transparent 55%),
+    radial-gradient(ellipse at 12% 85%, rgba(89, 37, 78, .36), transparent 49%),
+    linear-gradient(162deg, var(--co-back) 2%, #0d1630 70%, #070d1b 100%);
+  box-shadow: inset 0 0 0 4px rgba(255,255,255,.025), inset 0 0 46px rgba(0,0,0,.25);
   font-family: var(--font-display, Georgia, serif);
+}
+.cinerd-poster-original--city {
+  --co-accent: #80e5f7;
+  --co-haze: rgba(36, 158, 216, .39);
+  --co-back: #071c3b;
+}
+.cinerd-poster-original--rhythm {
+  --co-accent: #ffac71;
+  --co-haze: rgba(220, 104, 44, .32);
+  --co-back: #22102c;
+}
+.cinerd-poster-original--coast {
+  --co-accent: #61e2d2;
+  --co-haze: rgba(22, 185, 184, .39);
+  --co-back: #042e45;
+}
+.cinerd-poster-original--bloom {
+  --co-accent: #f4a3be;
+  --co-haze: rgba(173, 47, 84, .35);
+  --co-back: #21122f;
 }
 .cinerd-poster-original::before,
 .cinerd-poster-original::after {
-  content: "";
   position: absolute;
-  top: 6%;
-  bottom: 6%;
-  width: 6px;
-  border-left: 2px dashed rgba(255,255,255,.25);
-  border-right: 2px dashed rgba(255,255,255,.25);
+  content: "";
+  z-index: -1;
   pointer-events: none;
 }
-.cinerd-poster-original::before { left: 5px; }
-.cinerd-poster-original::after { right: 5px; }
-.cinerd-poster-original-top {
-  font: 750 clamp(.5rem, .8vw, .7rem)/1.4 var(--font-body, system-ui);
-  letter-spacing: .15em;
-  color: #efc77b;
+.cinerd-poster-original::before {
+  inset: 7px;
+  border: 1px solid rgba(243, 198, 110, .2);
 }
-.cinerd-poster-original-symbol {
-  font-family: Georgia, serif;
-  font-size: clamp(2.2rem, 4vw, 4.8rem);
-  color: #e6b759;
-  text-shadow: 0 5px 22px rgba(5,8,28,.7);
-  line-height: 1;
+.cinerd-poster-original::after {
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, rgba(255,255,255,.014) 0 1px, transparent 1px 6px
+  );
+}
+.cinerd-poster-original-head,
+.cinerd-poster-original-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  z-index: 1;
+  min-width: 0;
+}
+.cinerd-poster-original-head {
+  border-bottom: 1px solid rgba(245,202,118,.34);
+  padding-bottom: clamp(6px, 2.8cqw, 12px);
+}
+.cinerd-poster-original-monogram {
+  flex-shrink: 0;
+  color: var(--co-gold);
+  font: 800 clamp(.65rem, 4.5cqw, 1.1rem)/1 var(--font-body, system-ui);
+  letter-spacing: -.07em;
+}
+.cinerd-poster-original-monogram span { color: var(--co-accent); }
+.cinerd-poster-original-edition {
+  text-align: right;
+  text-transform: uppercase;
+  font: 700 clamp(.41rem, 2.4cqw, .68rem)/1.4 var(--font-body, system-ui);
+  letter-spacing: .14em;
+  color: #c7d7e8;
+}
+.cinerd-poster-original-art {
+  position: relative;
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  width: 100%;
+  padding: 2% 0;
+}
+.cinerd-poster-original-art svg {
+  width: min(100%, 280px);
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  overflow: visible;
+  filter: drop-shadow(0 9px 13px rgba(0,0,0,.27));
+}
+.cinerd-poster-original-art .cover-art-primary { stroke: var(--co-accent); }
+.cinerd-poster-original-art .cover-art-accent { stroke: var(--co-gold); }
+.cinerd-poster-original-art .cover-art-muted { stroke: rgba(229, 240, 252, .35); }
+.cinerd-poster-original-art .cover-art-orbit { stroke: rgba(245, 202, 118, .46); }
+.cinerd-poster-original-art .cover-art-hot { fill: var(--co-gold); opacity: .9; }
+.cinerd-poster-original-art .cover-art-star { fill: var(--co-accent); }
+.cinerd-poster-original-copy {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: clamp(7px, 3cqw, 14px);
+  z-index: 1;
+  text-align: center;
+  padding: 0 0 clamp(10px, 4cqw, 22px);
+  min-width: 0;
+}
+.cinerd-poster-original-rule {
+  display: block;
+  width: 24%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--co-gold), transparent);
 }
 .cinerd-poster-original-title {
   display: block;
-  margin: auto 0;
-  font-family: var(--font-display, Georgia, serif);
-  font-size: clamp(.92rem, 2vw, 1.7rem);
-  line-height: 1.14;
+  color: #fffaed;
+  font-size: clamp(.98rem, 8.7cqw, 2.4rem);
+  font-weight: 750;
+  line-height: 1.10;
+  letter-spacing: -.025em;
   overflow-wrap: anywhere;
   text-wrap: balance;
-  color: #fff9ec;
-  text-shadow: 0 2px 10px rgba(0,0,0,.7);
+  max-width: 100%;
+  text-shadow: 0 3px 9px rgba(0,0,0,.6);
 }
-.cinerd-poster-original-year {
-  color: #f0cc82;
-  font: 700 clamp(.8rem, 1.4vw, 1.2rem) var(--font-body, system-ui);
+.cinerd-poster-original-foot {
+  padding-top: clamp(6px, 2.8cqw, 12px);
+  border-top: 1px solid rgba(245,202,118,.34);
+  color: #ccd5e4;
+  font: 650 clamp(.46rem, 2.7cqw, .7rem)/1.3 var(--font-body, system-ui);
+  letter-spacing: .09em;
 }
-.cinerd-poster-original-disclaimer {
-  font: 500 clamp(.48rem, .75vw, .68rem)/1.3 var(--font-body, system-ui);
-  letter-spacing: .015em;
-  color: #e3eaf8;
-}
+.cinerd-poster-original-footmark { color: var(--co-gold); font-size: 1.15em; }
 .cinerd-movie-poster-wrap .cinerd-poster-original,
-.cinerd-poster-wrap .cinerd-poster-original {
-  min-height: 100%;
-  border-radius: 10px;
-}
-.film-poster > .cinerd-poster-original { font-size: 1rem; border-radius: 12px; }
-@media(max-width:600px) {
-  .cinerd-poster-original { padding: 9px; }
-  .cinerd-poster-original-title { font-size: clamp(.85rem, 3vw, 1.25rem); }
-  .cinerd-poster-original-top { letter-spacing: .06em; }
-  .cinerd-poster-original-symbol { font-size: 2rem; }
+.cinerd-poster-wrap .cinerd-poster-original { border-radius: 10px; }
+.film-poster > .cinerd-poster-original { border-radius: 12px; }
+@media (max-width: 600px) {
+  .cinerd-poster-original { padding: clamp(8px, 4.5cqw, 18px); }
+  .cinerd-poster-original-edition { letter-spacing: .055em; }
 }
