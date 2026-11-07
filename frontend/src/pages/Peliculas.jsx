@@ -77,7 +77,7 @@ function Peliculas() {
           <article className="cinerd-movie-card" key={pelicula.Id}>
             <Link to={`/peliculas/${pelicula.Id}`} className="cinerd-poster-wrap">
               {pelicula.Foto ? <img src={`${API_URL}${pelicula.Foto}`} alt={pelicula.Titulo} className="cinerd-poster" /> : <PosterOriginal peliculaId={pelicula.Id} titulo={pelicula.Titulo} anio={anioDe(pelicula.FechaEstreno)} idioma={i18n.language || "es"} className="cinerd-poster" />}
-              <div className="cinerd-poster-overlay"><span>{t("movies.viewMovie")}</span></div>
+              {pelicula.Foto && <div className="cinerd-poster-overlay"><span>{t("movies.viewMovie")}</span></div>}
               <span className="cinerd-date-chip" title={formatearFecha(pelicula.FechaEstreno)}>{anioDe(pelicula.FechaEstreno) ?? "—"}</span>
             </Link>
             <div className="cinerd-movie-copy">

@@ -186,3 +186,29 @@
   font-size: clamp(.83rem, 6.35cqw, 1.85rem);
   line-height: 1.13;
 }
+
+
+/* Ajustes a partir de la revisión visual del catálogo en modo review.
+   En tarjetas 2:3 el chip del año ocupa la esquina superior derecha: el
+   encabezado largo se muestra solo en la ficha grande, no en la tarjeta. */
+.cinerd-poster-wrap .cinerd-poster-original-edition {
+  display: none;
+}
+
+/* Los nombres largos deben conservarse íntegros, sin colisionar con el pie.
+   El bloque SVG cede altura al texto gracias al grid minmax(0,1fr). */
+.cinerd-poster-original--title-medium .cinerd-poster-original-copy {
+  padding-bottom: clamp(13px, 5.5cqw, 24px);
+}
+.cinerd-poster-original--title-long .cinerd-poster-original-copy {
+  padding-bottom: clamp(16px, 6.4cqw, 28px);
+}
+.cinerd-poster-original--title-long .cinerd-poster-original-title {
+  font-size: clamp(.76rem, 5.7cqw, 1.6rem);
+  line-height: 1.18;
+}
+@media (max-width: 499.98px) {
+  .cinerd-poster-original--title-long .cinerd-poster-original-title {
+    font-size: clamp(.72rem, 5.5cqw, 1.15rem);
+  }
+}
