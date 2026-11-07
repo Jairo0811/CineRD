@@ -48,7 +48,7 @@ const envolver = (body) =>
   enlace("/contacto", "Contacto") + " · " + enlace("/privacidad", "Privacidad") + " · " +
   enlace("/terminos", "Términos") + "</footer></div>";
 
-function atributo(doc, etiqueta, clave, valor, contenido) {
+function atributo(doc, etiqueta, clave, contenido) {
   const rx = new RegExp('(<meta\\s+' + etiqueta + '="' + clave.replace(/[.*+?^$()|[\]{}\\]/g, "\\$&") + '"\\s+content=")[^"]*(")', "i");
   if (!rx.test(doc)) throw new Error("Metadato base no encontrado: " + clave);
   return doc.replace(rx, (_match, before, after) => before + escapar(contenido) + after);
