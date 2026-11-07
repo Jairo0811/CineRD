@@ -1338,3 +1338,13 @@ html[data-theme="dark"] .film-tag.is-award {
 .cinematic-movie-showcase-card:hover .cinematic-movie-poster-wrap img {
   transform: none;
 }
+
+/* El eyebrow y el título comparten bloque; acciones opcionales siguen
+   al otro extremo en encabezados que sí tengan controles laterales. */
+.film-section-heading-copy {
+  min-width: 0;
+  max-width: 100%;
+}
+.film-section-heading-copy h2 {
+  overflow-wrap: anywhere;
+}
