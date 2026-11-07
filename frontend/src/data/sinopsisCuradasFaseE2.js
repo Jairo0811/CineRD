@@ -4,6 +4,8 @@
  * En producción se muestran como borradores para películas sin Sinopsis SQL.
  * El candado de identidad ID + título + año evita mezclar fichas incorrectas.
  */
+import { getSinopsisFaseE2Final } from "./sinopsisCuradasFaseE2Final.js";
+
 export const SINOPSIS_EDITORIALES_FASE_E2 = Object.freeze({
   "15": {
     "tituloReferencia": "Tubérculo Gourmet",
@@ -325,7 +327,8 @@ const normalizar = (s) => String(s ?? "").normalize("NFD")
 export function getSinopsisFaseE2(pelicula) {
   if (!pelicula) return null;
   const item = SINOPSIS_EDITORIALES_FASE_E2[Number(pelicula.Id)];
-  if (!item || normalizar(item.tituloReferencia) !== normalizar(pelicula.Titulo)) return null;
+  if (!item) return getSinopsisFaseE2Final(pelicula);
+  if (normalizar(item.tituloReferencia) !== normalizar(pelicula.Titulo)) return null;
   if (Number(String(pelicula.FechaEstreno ?? "").slice(0, 4)) !== item.anioReferencia) return null;
   return item;
 }
