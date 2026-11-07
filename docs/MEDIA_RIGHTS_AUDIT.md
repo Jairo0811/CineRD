@@ -107,3 +107,10 @@ Los materiales nuevos se muestran automáticamente en `PosterOriginal` cuando la
 El verificador `scripts/verifyOriginalCoverCatalog.mjs` exige que cada ID del snapshot tenga un motivo único. Cuando se incorporen nuevas películas a la base, será necesario diseñar su motivo antes de compilar.
 
 **No confundir el número de motivos personalizados con el número de películas con editorial revisada**: los textos siguen requiriendo revisión humana por separado.
+
+
+## Revisión visual de 46 cubiertas (7 de noviembre de 2026)
+
+El catálogo `review` fue previsualizado localmente con capturas de `/peliculas` y `/peliculas/9`. Se confirmó que las 46 cubiertas SVG/CSS se ofrecen sin reproducir afiches oficiales. Se ajustó la tarjeta para que el control de hover «Ver película» no cubra el título de la **cubierta propia** (los carteles oficiales autorizados conservan el overlay), y se retiró el encabezado redundante que chocaba con el año en las tarjetas compactas. Los títulos largos ganaron aire con respecto al pie.
+
+La revisión detectó otra incidencia **de contenido, ajena al sistema de derechos**: `Lotoman` (ID 9) muestra `Infantil` en `Genero` y ninguna sinopsis independiente. Las fichas de Cinema Dominicano y CineDominicano.com documentan la obra como **Comedia**; además existen discrepancias entre fuentes respecto a la fecha del estreno, que deben contrastarse antes de modificarla en SQL Server. Registrar y corregir la clasificación en origen y volver a exportar el snapshot. No presentar la carencia de sinopsis como una licencia ni simular texto revisado.
