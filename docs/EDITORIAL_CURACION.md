@@ -25,9 +25,9 @@ Las URLs completas se encuentran en `frontend/src/data/editorialPeliculas.js`, s
 6. No confundir **citar hechos** con **tener licencia para reproducir** pósteres y fotografías.
 7. Antes de solicitar revisión de AdSense, verificar indexabilidad real en Cloudflare/Search Console y revisar al menos las principales fichas manualmente.
 
-## Auditoría pendiente de medios
+## Auditoría de medios iniciada
 
-Los 128 medios del catálogo público deben tener trazabilidad documental por archivo: origen, titular del derecho, alcance de uso, permiso o licencia para uso web/comercial, atribución exigida, fecha de comprobación y decisión. **Estado actual: permisos no verificados documentalmente en esta ronda.** No asumir que la mera disponibilidad pública de un póster o imagen autoriza reutilizarla.
+El inventario de las 128 imágenes del catálogo público ya está registrado en [`media-rights-ledger.csv`](./media-rights-ledger.csv): 82 fotografías de talentos y 46 medios de películas. Los 128 constan como `PENDIENTE`, no como autorizados. El procedimiento de verificación documental y comercial está en [`MEDIA_RIGHTS_AUDIT.md`](./MEDIA_RIGHTS_AUDIT.md). La mera disponibilidad pública de un póster o imagen no autoriza su reutilización; ninguna licencia individual fue confirmada en esta ronda.
 
 ## Validación técnica
 
