@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { EDITORIALES_PELICULAS } from "../frontend/src/data/editorialPeliculas.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "frontend", "dist");
@@ -35,6 +36,12 @@ for (const p of movies) {
   const ruta = "/peliculas/" + p.Id;
   const html = pagina(ruta, p.Titulo);
   exigir(html.includes('"@type":"Movie"'), "JSON-LD Movie ausente: " + ruta);
+  const editorial = EDITORIALES_PELICULAS[p.Id];
+  if (editorial) {
+    exigir(html.includes(editorial.es.titulo), "Título editorial ausente: " + ruta);
+    exigir(html.includes(editorial.es.parrafos[0]), "Contenido editorial ausente: " + ruta);
+    exigir(editorial.fuentes.every((f) => html.includes(f.url.replaceAll("&", "&amp;"))), "Fuentes editoriales ausentes: " + ruta);
+  }
   exigir(sitemap.includes("<loc>https://cinerd.pages.dev" + ruta + "</loc>"), "No está en sitemap: " + ruta);
 }
 for (const a of people) {

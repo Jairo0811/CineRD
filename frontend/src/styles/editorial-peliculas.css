@@ -1,0 +1,24 @@
+/* CineRD · Lecturas editoriales originales del archivo cinematográfico. */
+.film-editorial { border: 1px solid var(--cine-line, #dce4ee); border-radius: 20px; background: var(--cine-surface-1, #fff); padding: clamp(1.25rem, 3vw, 2.25rem); }
+.film-editorial .film-section-head { margin-bottom: 1.2rem; }
+.film-editorial-prose { max-width: 830px; }
+.film-editorial-prose p { line-height: 1.84; color: var(--cine-text-2, #46556a); margin-bottom: 1rem; }
+.film-editorial-sources { padding-top: 1.1rem; border-top: 1px solid var(--cine-line, #dce4ee); margin-top: 1.5rem; }
+.film-editorial-sources h3 { font-size: 1.08rem; color: var(--cine-text-1, #172033); }
+.film-editorial-sources ul { padding-left: 1.3rem; line-height: 1.8; }
+.film-editorial-sources a { color: var(--hist-accent, #1552a2); overflow-wrap: anywhere; }
+.film-editorial-status { font-size: .84rem; color: var(--cine-text-2, #46556a); font-style: italic; }
+.film-editorial-feature { margin: clamp(2.25rem, 5vw, 4.5rem) auto; padding: clamp(1.5rem, 4vw, 3rem); background: var(--cine-surface-1, #fff); border: 1px solid var(--cine-line, #dce4ee); border-radius: 22px; }
+.film-editorial-feature>header { max-width: 860px; margin-bottom: 1.3rem; }
+.film-editorial-feature h2 { color: var(--cine-text-1, #172033); font-family: var(--font-display, Georgia, serif); margin: .6rem 0; font-size: clamp(1.5rem, 3vw, 2.25rem); }
+.film-editorial-feature>header p { color: var(--cine-text-2, #46556a); }
+.film-editorial-feature-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.film-editorial-feature-card { padding: 1.35rem; border: 1px solid var(--cine-line, #dce4ee); background: var(--cine-surface-2, #f3f6fb); border-radius: 15px; }
+.film-editorial-feature-card small { color: var(--cine-text-2, #46556a); font-weight: 700; letter-spacing: .05em; }
+.film-editorial-feature-card h3 { margin: .7rem 0; font-size: clamp(1.1rem, 2vw, 1.45rem); line-height: 1.35; }
+.film-editorial-feature-card h3 a { color: var(--cine-text-1, #172033); text-decoration: none; }
+.film-editorial-feature-card h3 a:hover { text-decoration: underline; }
+.film-editorial-feature-card p { color: var(--cine-text-2, #46556a); margin-bottom: 1rem; }
+.film-editorial-feature-link { color: var(--hist-accent, #1552a2); font-weight: 700; }
+.film-editorial-feature-note { font-size: .84rem; font-style: italic; color: var(--cine-text-2, #46556a); margin-top: 1rem; }
+@media(max-width:650px) { .film-editorial-feature-grid { grid-template-columns: 1fr; } }

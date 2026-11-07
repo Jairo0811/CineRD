@@ -8,6 +8,7 @@ import { anioDe } from "../data/historiaCine";
 import CintaDecadas from "../components/historia/CintaDecadas";
 import LineaTiempoMini from "../components/historia/LineaTiempoMini";
 import DebutCinematografico from "../components/home/DebutCinematografico";
+import { editorialesDestacados } from "../data/editorialPeliculas";
 
 const resolverImagen = (ruta) => {
   if (!ruta) return null;
@@ -84,6 +85,24 @@ function HomePublica() {
     <section className="cinematic-hero"><div className="cinematic-flag-band" aria-hidden="true"/><div className="cinematic-hero-copy"><span className="public-eyebrow">{t("home.eyebrow")}</span><h1>{t("home.title")}</h1><p>{t("home.description")}</p><div className="public-hero-actions"><Link to="/peliculas" className="btn btn-primary btn-lg">{t("home.exploreMovies")}</Link><Link to="/actores" className="btn btn-outline-light btn-lg">{t("home.meetTalents")}</Link></div><div className="cinematic-stats" aria-label="CineRD"><div><strong>{peliculas.length}</strong><span>{t("home.movies")}</span></div><div><strong>{actores.length}</strong><span>{t("home.talents")}</span></div><div><strong>{peliculas.reduce((total,p)=>total+Number(p.CantidadActores||0),0)}</strong><span>{t("home.participations")}</span></div>{rangoAnios&&<div><strong>{rangoAnios}</strong><span>{t("home.coverage")}</span></div>}</div></div><div className="cinematic-hero-brand"><div className="cinematic-projector-beam"/><img src="/logo-cinerd.webp" alt="CineRD"/><span className="cinematic-caption">{t("home.catalogCaption")}</span></div></section>
 
     <LineaTiempoMini />
+
+    <section className="film-editorial-feature" aria-labelledby="film-editorial-feature-title">
+      <header>
+        <span className="catalog-eyebrow">{i18n.language?.startsWith("en")?"EDITORIAL · DOMINICAN FILM":"EDITORIAL · CINE DOMINICANO"}</span>
+        <h2 id="film-editorial-feature-title">{i18n.language?.startsWith("en")?"Four films, four ways of understanding Dominican cinema":"Cuatro películas para explorar nuestra historia cinematográfica"}</h2>
+        <p>{i18n.language?.startsWith("en")?"Explore sourced contextual essays connected to films in our archive.":"Explora lecturas originales con fuentes documentadas, vinculadas a películas del catálogo."}</p>
+      </header>
+      <div className="film-editorial-feature-grid">{editorialesDestacados.map(e=>{
+        const text=e[i18n.language?.startsWith("en")?"en":"es"];
+        return <article className="film-editorial-feature-card" key={e.id}>
+          <small>{e.anioReferencia} · {i18n.language?.startsWith("en")?"FILM CONTEXT":"CONTEXTO CINEMATOGRÁFICO"}</small>
+          <h3><Link to={`/peliculas/${e.id}`}>{e.tituloReferencia}</Link></h3>
+          <p>{text.titulo}</p>
+          <Link className="film-editorial-feature-link" to={`/peliculas/${e.id}`}>{i18n.language?.startsWith("en")?"Read context and references":"Leer contexto y fuentes"} →</Link>
+        </article>;
+      })}</div>
+      <p className="film-editorial-feature-note">{i18n.language?.startsWith("en")?"Editorial drafts awaiting final owner review.":"Borradores editoriales pendientes de revisión final del titular."}</p>
+    </section>
 
     <section className="decade-explorer" aria-labelledby="decade-explorer-title"><div className="cinematic-showcase-heading"><div><span className="public-eyebrow">{t("home.decadesEyebrow")}</span><h2 id="decade-explorer-title">{t("home.decadesTitle")}</h2></div></div><CintaDecadas peliculas={peliculas} /></section>
 
