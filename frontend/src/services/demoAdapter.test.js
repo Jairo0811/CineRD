@@ -89,6 +89,46 @@ describe("Netlify public catalog demo", () => {
     });
   });
 
+  it("muestra la foto existente del talento también en Créditos profesionales cuando el catálogo la permite", async () => {
+    const allowed = {
+      ...tables,
+      Actores: [{
+        Id: 36, NombreCompleto: "Ángel Muñíz", Sexo: "Masculino",
+        Profesion: "Actor / Director / Productor",
+        Foto: "/uploads/actores/1783308741507-Foto.jpeg",
+      }],
+      PeliculaCreditos: [{ Id: 2, PeliculaId: 1, ActorId: 36, TipoCredito: "DIRECTOR" }],
+    };
+    vi.stubGlobal("fetch", vi.fn(async () => ({
+      ok: true, json: async () => ({ format: "CineRD.PublicDemoCatalog", tables: allowed }),
+    })));
+    vi.resetModules();
+    const thisAdapter = (await import("./demoAdapter.js")).default;
+    const credits = await request(thisAdapter, "/peliculas/1/creditos");
+    expect(credits).toHaveLength(1);
+    expect(credits[0]).toMatchObject({
+      ActorId: 36, NombreCompleto: "Ángel Muñíz", Sexo: "Masculino",
+      TipoCredito: "DIRECTOR", Foto: "/uploads/actores/1783308741507-Foto.jpeg",
+    });
+  });
+
+  it("no filtra hacia Créditos profesionales una fotografía omitida en modo review", async () => {
+    const reviewCatalog = {
+      ...tables,
+      Actores: [{ Id: 36, NombreCompleto: "Ángel Muñíz", Sexo: "Masculino", Foto: null }],
+      PeliculaCreditos: [{ Id: 2, PeliculaId: 1, ActorId: 36, TipoCredito: "DIRECTOR" }],
+    };
+    vi.stubGlobal("fetch", vi.fn(async () => ({
+      ok: true, json: async () => ({ format: "CineRD.PublicDemoCatalog", tables: reviewCatalog }),
+    })));
+    vi.resetModules();
+    const thisAdapter = (await import("./demoAdapter.js")).default;
+    const credits = await request(thisAdapter, "/peliculas/1/creditos");
+    expect(credits[0].Foto).toBeNull();
+    expect(credits[0].Sexo).toBe("Masculino");
+    expect(credits[0].NombreCompleto).toBe("Ángel Muñíz");
+  });
+
   it("no admite escritura en la demo", async () => {
     await expect(adapter({ method: "post", url: "/api/galeria" }))
       .rejects.toMatchObject({ response: { status: 403 } });
