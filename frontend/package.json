@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node ../scripts/verifyMediaRightsLedger.mjs && node --test ../scripts/verifyMediaRightsLedger.test.mjs ../scripts/pilotRightsCatalog.test.mjs ../scripts/resolveMediaRightsBuildMode.test.mjs && node ../scripts/verifyOriginalCoverCatalog.mjs && node ../scripts/prepareNetlifyDemo.mjs",
+    "prebuild": "node ../scripts/checkAdActivation.mjs && node ../scripts/verifyMediaRightsLedger.mjs && node --test ../scripts/verifyMediaRightsLedger.test.mjs ../scripts/pilotRightsCatalog.test.mjs ../scripts/resolveMediaRightsBuildMode.test.mjs && node ../scripts/verifyOriginalCoverCatalog.mjs && node ../scripts/prepareNetlifyDemo.mjs",
     "build": "vite build",
     "postbuild": "node ../scripts/generateStaticPages.mjs && node ../scripts/verifyStaticPages.mjs && node ../scripts/verifyNetlifyDist.mjs && node ../scripts/verifySocialPreview.mjs",
     "lint": "eslint .",

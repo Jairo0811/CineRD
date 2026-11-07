@@ -132,3 +132,8 @@ Se completaron las nueve películas pendientes con textos originales en ES/EN y 
 ## Fases E-3, E-4 y E-5 — seguimiento
 
 Se añadió **contexto profesional derivado** de los registros de reparto/dirección/créditos en las 83 fichas de talentos y su versión SEO. Las siete correcciones de cuatro películas están **preparadas** con manifestación documentada y script SQL transaccional de ejecución manual, pero **NO se aplicaron al SQL Server local**. El inventario editorial contabiliza **58 piezas (46 sinopsis y 12 lecturas)**; no tienen aprobación humana por defecto. La modalidad `--strict` bloqueará la preparación hasta que se documenten aprobaciones legítimas. Consulte [FASES_E3_E4_E5.md](./FASES_E3_E4_E5.md). Los controles de imágenes siguen siendo independientes de la revisión de texto y la aprobación de Google.
+
+
+## Fase F-1 — Verificación documental antes de activar publicidad
+
+Se incorporó un reporte dinámico de preparación con **58 piezas editoriales**, siete correcciones SQL pendientes y una constancia manual obligatoria para Search Console, normativa/consentimiento, accesibilidad y aprobación del sitio en AdSense. Los anuncios ahora requieren opt-in explícito `VITE_ADSENSE_ENABLED=true`; un prebuild impide activarlos si falta evidencia. Por prudencia, su única ubicación futura es la portada, **después del contenido principal**, y no los catálogos de navegación o fichas que todavía dependen de borradores. Sin cambios a `ads.txt` ni la metaetiqueta de propiedad. Consultar [FASE_F_ADSENSE_PREFLIGHT.md](./FASE_F_ADSENSE_PREFLIGHT.md). **No declarar el sitio listo para monetizar hasta cerrar E-4/E-5 y las verificaciones externas reales.**

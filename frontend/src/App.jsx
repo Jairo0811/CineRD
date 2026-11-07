@@ -97,8 +97,6 @@ function App() {
         <Navbar />
 
         <main className="container py-4 app-main">
-          <AdSenseArea />
-
           <Suspense fallback={<PageLoader />}>
             <Routes>
               {/* ==========================
@@ -301,6 +299,8 @@ function App() {
               />
             </Routes>
           </Suspense>
+          {/* El contenido editorial debe preceder a la publicidad. */}
+          <AdSenseArea />
         </main>
 
         <Footer />

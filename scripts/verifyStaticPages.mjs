@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { EDITORIALES_PELICULAS } from "../frontend/src/data/editorialPeliculas.js";
+import { getSinopsisEditorial } from "../frontend/src/data/sinopsisCuradasFaseE.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "frontend", "dist");
@@ -36,6 +37,18 @@ for (const p of movies) {
   const ruta = "/peliculas/" + p.Id;
   const html = pagina(ruta, p.Titulo);
   exigir(html.includes('"@type":"Movie"'), "JSON-LD Movie ausente: " + ruta);
+  // Las 46 fichas deben tener una sinopsis o una explicación editorial real:
+  // un H1 y dos enlaces no constituyen contenido suficiente.
+  const sinopsis=String(p.Sinopsis||"").trim();
+  const curada=sinopsis?null:getSinopsisEditorial(p);
+  exigir(Boolean(sinopsis||curada), "Ficha sin sinopsis: "+ruta);
+  if(!sinopsis) {
+    exigir(html.includes("Sinopsis editorial de CineRD"),
+      "Falta contexto editorial en HTML inicial: "+ruta);
+    exigir(html.includes(curada.es.slice(0,52).replaceAll("&","&amp;")),
+      "Sinopsis editorial no prerenderizada: "+ruta);
+  }
+
   const editorial = EDITORIALES_PELICULAS[p.Id];
   if (editorial) {
     exigir(html.includes(editorial.es.titulo), "Título editorial ausente: " + ruta);
@@ -48,6 +61,9 @@ for (const a of people) {
   const ruta = "/actores/" + a.Id;
   const html = pagina(ruta, a.NombreArtistico || a.NombreCompleto);
   exigir(html.includes('"@type":"Person"'), "JSON-LD Person ausente: " + ruta);
+  exigir(html.includes("Trayectoria documentada en CineRD"),
+    "Falta resumen documental del talento en HTML inicial: "+ruta);
+
   exigir(sitemap.includes("<loc>https://cinerd.pages.dev" + ruta + "</loc>"), "No está en sitemap: " + ruta);
 }
 const urls = [...sitemap.matchAll(/<loc>/g)].length;

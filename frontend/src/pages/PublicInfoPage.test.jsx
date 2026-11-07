@@ -43,8 +43,9 @@ describe("Páginas informativas públicas", () => {
     for (const path of ["/privacidad", "/terminos", "/contacto", "/buscar", "/buscar?q=pelicula", "/actores/2", "/peliculas/1", "/admin"]) {
       expect(isAdEligiblePath(path)).toBe(false);
     }
-    for (const path of ["/", "/peliculas", "/actores"]) {
-      expect(isAdEligiblePath(path)).toBe(true);
+    for (const path of ["/peliculas", "/actores"]) {
+      expect(isAdEligiblePath(path)).toBe(false);
     }
+    expect(isAdEligiblePath("/")).toBe(true);
   });
 });

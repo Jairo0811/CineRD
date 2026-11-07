@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "description": "Sólo revisión manual con evidencia real. No marcar true sin comprobación.",
+  "editorialOwnerApproval": false,
+  "productionAuditPassed": false,
+  "searchConsoleReviewed": false,
+  "legalAndConsentReviewed": false,
+  "mobileAndAccessibilityReviewed": false,
+  "adsenseSiteApproved": false,
+  "reviewedBy": "",
+  "reviewedAt": "",
+  "notes": ""
+}

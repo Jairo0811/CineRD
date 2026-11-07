@@ -2,7 +2,9 @@ import { useEffect } from "react";
 
 const ADSENSE_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT?.trim();
 
-export const adsenseEnabled = Boolean(ADSENSE_CLIENT && /^ca-pub-\d+$/.test(ADSENSE_CLIENT));
+// La metaetiqueta de verificación y ads.txt NO activan publicidad.
+export const adsenseEnabled = import.meta.env.VITE_ADSENSE_ENABLED === "true" &&
+  Boolean(ADSENSE_CLIENT && /^ca-pub-\d+$/.test(ADSENSE_CLIENT));
 
 function AdSenseScript() {
   useEffect(() => {
