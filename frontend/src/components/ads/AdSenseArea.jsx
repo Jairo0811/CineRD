@@ -4,12 +4,10 @@ import AdSenseScript, { ADSENSE_CLIENT, adsenseEnabled } from "./AdSenseScript";
 
 const ADSENSE_SLOT = import.meta.env.VITE_ADSENSE_SLOT?.trim();
 
+// Publicidad solamente en portada editorial, nunca en listados de
+// navegación, búsquedas, perfiles no revisados o páginas sin contenido.
 const PUBLIC_AD_ROUTES = [
   /^\/$/,
-  // No colocar anuncios en búsquedas, páginas vacías ni fichas generadas
-  // automáticamente hasta su revisión editorial manual.
-  /^\/actores\/?$/,
-  /^\/peliculas\/?$/,
 ];
 
 export const isAdEligiblePath = (pathname) =>

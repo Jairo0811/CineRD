@@ -40,6 +40,8 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run editorial:audit
+      - run: node --test ../scripts/reportAdSenseReadiness.test.mjs
+      - run: node ../scripts/reportAdSenseReadiness.mjs
       - run: npm run editorial:review
       - run: node --test ../scripts/editorialReviewAudit.test.mjs
       - run: npm audit --omit=dev --audit-level=high
