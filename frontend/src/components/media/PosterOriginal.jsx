@@ -3,14 +3,11 @@
  * SVG/CSS propios, sin fotografías, logos de productoras ni arte de terceros.
  * El año no se repite visualmente: cada tarjeta ya muestra el suyo.
  */
-export const POSTER_VARIANTS = Object.freeze({
-  4: "coast",   // Sanky Panky
-  5: "rhythm",  // Perico Ripiao
-  16: "city",   // Nueba Yol
-  56: "bloom",  // La lucha de Ana
-});
+import EditorialCoverArtwork from "./EditorialCoverArtwork";
+import { getCoverTheme, POSTER_VARIANTS } from "../../data/posterCoverCatalog";
+export { POSTER_VARIANTS } from "../../data/posterCoverCatalog";
 
-function CoverArtwork({ variant }) {
+function CoverArtwork({ variant, peliculaId }) {
   switch (variant) {
     case "city":
       return <svg viewBox="0 0 280 240" fill="none" aria-hidden="true" focusable="false">
@@ -59,6 +56,7 @@ function CoverArtwork({ variant }) {
         <path className="cover-art-primary" d="M31 218h219" strokeWidth="2" />
       </svg>;
     default:
+      if (getCoverTheme(peliculaId)) return <EditorialCoverArtwork peliculaId={peliculaId} />;
       return <svg viewBox="0 0 280 240" fill="none" aria-hidden="true" focusable="false">
         <circle className="cover-art-primary" cx="140" cy="110" r="81" strokeWidth="3" />
         <circle className="cover-art-orbit" cx="140" cy="110" r="57" strokeWidth="1.5" />
@@ -81,14 +79,28 @@ export default function PosterOriginal({
 }) {
   const english = idioma?.startsWith("en");
   const variant = POSTER_VARIANTS[Number(peliculaId)] || "reel";
+  const coverTheme = getCoverTheme(peliculaId);
+  const coverStyle = coverTheme ? {
+    "--co-accent": coverTheme.accent,
+    "--co-back": coverTheme.back,
+    "--co-gold": coverTheme.gold,
+    "--co-haze": coverTheme.accent + "4d",
+  } : undefined;
+  const titleSizeClass = String(titulo ?? "").length > 35
+    ? "cinerd-poster-original--title-long"
+    : String(titulo ?? "").length > 24
+      ? "cinerd-poster-original--title-medium"
+      : "";
   const label = english
     ? "Original CineRD editorial cover for " + titulo + (anio ? " (" + anio + ")" : "") + ". Not an official movie poster."
     : "Cubierta editorial original de CineRD para " + titulo + (anio ? " (" + anio + ")" : "") + ". No es el cartel oficial.";
 
   return (
     <div
-      className={["cinerd-poster-original", "cinerd-poster-original--" + variant, className].filter(Boolean).join(" ")}
+      className={["cinerd-poster-original", "cinerd-poster-original--" + variant,
+        coverTheme && "cinerd-poster-original--archive", titleSizeClass, className].filter(Boolean).join(" ")}
       role="img"
+      style={coverStyle}
       aria-label={label}
       data-cover-variant={variant}
     >
@@ -97,7 +109,7 @@ export default function PosterOriginal({
         <span className="cinerd-poster-original-edition">{english ? "DOMINICAN FILM ARCHIVE" : "ARCHIVO DE CINE DOMINICANO"}</span>
       </div>
       <div className="cinerd-poster-original-art" aria-hidden="true">
-        <CoverArtwork variant={variant} />
+        <CoverArtwork variant={variant} peliculaId={peliculaId} />
       </div>
       <div className="cinerd-poster-original-copy" aria-hidden="true">
         <span className="cinerd-poster-original-rule" />

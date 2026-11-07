@@ -96,3 +96,14 @@ La exclusión funciona a nivel de **archivo estático de distribución**: elimin
 En todos los modos, `RESTRINGIDO` y `RETIRAR` ocultan la imagen inventariada; **PENDIENTE en el modo normal no se oculta** para preservar la configuración actual hasta aprobar el cambio visual. Solo `AUTORIZADO`, con evidencias verificadas por una persona y vigencia comercial, conserva un archivo en modo `review`.
 
 **Limitación:** no incluye una certificación de recursos decorativos, iconos, imágenes de `frontend/src/assets` o recursos externos enlazados. Requieren auditoría adicional. No es un sustituto de una revisión jurídica.
+
+
+## Archivo visual propio para todas las 46 producciones (Fase B, continuación)
+
+CineRD incorpora **42 motivos editoriales SVG/CSS nuevos**, cada uno asociado a un ID de película, junto a los cuatro motivos premium iniciales que se conservan sin cambios de composición. Las ilustraciones son geometría vectorial y tipografía propias: no reproducen afiches oficiales, fotografías, marcas, fotogramas ni imágenes ajenas. Se colorean con paletas distintas curadas por película.
+
+Los materiales nuevos se muestran automáticamente en `PosterOriginal` cuando la ficha no tiene imagen, por ejemplo al compilar con `VITE_MEDIA_RIGHTS_MODE=review`. **No cambia la política de derechos ni el ledger**; no se restablecen carteles sin licencia y no se activa `review` en Cloudflare mediante esta PR.
+
+El verificador `scripts/verifyOriginalCoverCatalog.mjs` exige que cada ID del snapshot tenga un motivo único. Cuando se incorporen nuevas películas a la base, será necesario diseñar su motivo antes de compilar.
+
+**No confundir el número de motivos personalizados con el número de películas con editorial revisada**: los textos siguen requiriendo revisión humana por separado.
