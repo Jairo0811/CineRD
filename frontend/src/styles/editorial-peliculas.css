@@ -22,3 +22,6 @@
 .film-editorial-feature-link { color: var(--hist-accent, #1552a2); font-weight: 700; }
 .film-editorial-feature-note { font-size: .84rem; font-style: italic; color: var(--cine-text-2, #46556a); margin-top: 1rem; }
 @media(max-width:650px) { .film-editorial-feature-grid { grid-template-columns: 1fr; } }
+
+/* Aviso claro en fichas con sinopsis original de CineRD aún no validada. */
+.cine-editorial-synopsis-note { margin-top: .8rem; font-style: italic; max-width: 65ch; }

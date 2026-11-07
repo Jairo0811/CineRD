@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { HITOS, FUENTES, anioDe } from "../frontend/src/data/historiaCine.js";
 import { SOBRE_CINERD } from "../frontend/src/data/sobreCineRD.js";
 import { getEditorialPelicula, editorialesDestacados } from "../frontend/src/data/editorialPeliculas.js";
+import { getSinopsisEditorial } from "../frontend/src/data/sinopsisCuradasFaseE.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const out = path.join(root, "frontend", "dist");
@@ -107,7 +108,10 @@ const contenidoPelicula = (p) => {
     ]),
     "</section>",
   ];
+  const sinopsisCurada = !quitarHtml(p.Sinopsis) ? getSinopsisEditorial(p) : null;
   if (quitarHtml(p.Sinopsis)) partes.push("<section><h2>Sinopsis registrada</h2><p>" + escapar(quitarHtml(p.Sinopsis)) + "</p></section>");
+  else if (sinopsisCurada) partes.push("<section><h2>Sinopsis editorial de CineRD</h2><p>" + escapar(sinopsisCurada.es) +
+    "</p><p><small>Texto original basado en fuentes, no es la sinopsis oficial. Borrador pendiente de revisión.</small></p></section>");
   const editorial = getEditorialPelicula(p);
   if (editorial) {
     partes.push('<section class="film-editorial"><h2>' + escapar(editorial.es.titulo) + "</h2>" +
@@ -152,8 +156,10 @@ function metadatosPelicula(p) {
   if (p.Director) data.director = { "@type": "Person", name: p.Director };
   if (p.Genero) data.genre = p.Genero;
   const editorial = getEditorialPelicula(p);
-  if (editorial) data.description = resumir(editorial.es.parrafos[0], 300);
-  else if (quitarHtml(p.Sinopsis)) data.description = resumir(p.Sinopsis, 300);
+  const sinopsis = !quitarHtml(p.Sinopsis) ? getSinopsisEditorial(p) : null;
+  if (quitarHtml(p.Sinopsis)) data.description = resumir(p.Sinopsis, 300);
+  else if (sinopsis) data.description = resumir(sinopsis.es, 300);
+  else if (editorial) data.description = resumir(editorial.es.parrafos[0], 300);
   return data;
 }
 function metadatosActor(a) {
@@ -211,7 +217,8 @@ pagina("/buscar", "Buscar películas y talentos | CineRD", "Consulta el buscador
 
 for (const p of peliculas) {
   const editorial = getEditorialPelicula(p);
-  const desc = (editorial ? editorial.es.parrafos[0] : quitarHtml(p.Sinopsis)) || (p.Titulo + ", película registrada en CineRD" +
+  const sinopsis = !quitarHtml(p.Sinopsis) ? getSinopsisEditorial(p) : null;
+  const desc = (quitarHtml(p.Sinopsis) || sinopsis?.es || editorial?.es.parrafos[0]) || (p.Titulo + ", película registrada en CineRD" +
     (anio(p) ? " (" + anio(p) + ")" : "") + (p.Director ? ", dirigida por " + p.Director : "") + ".");
   pagina(peliculaUrl(p), p.Titulo + (anio(p) ? " (" + anio(p) + ")" : "") + " | CineRD",
     desc, contenidoPelicula(p), metadatosPelicula(p));
