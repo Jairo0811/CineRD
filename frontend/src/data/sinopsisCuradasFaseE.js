@@ -6,6 +6,7 @@
  * en ID, título y año. No sustituyen los valores del snapshot/SQL Server.
  */
 import { getEditorialPelicula } from "./editorialPeliculas.js";
+import { getSinopsisFaseE2 } from "./sinopsisCuradasFaseE2.js";
 
 export const SINOPSIS_EDITORIALES_FASE_E = Object.freeze({
   4: {
@@ -61,10 +62,8 @@ export const SINOPSIS_EDITORIALES_FASE_E = Object.freeze({
 export function getSinopsisEditorial(pelicula) {
   const editorial = getEditorialPelicula(pelicula);
   const texto = SINOPSIS_EDITORIALES_FASE_E[Number(pelicula?.Id)];
-  if (!editorial || !texto) return null;
-  return {
-    ...texto,
-    estado: editorial.estado,
-    fuentes: editorial.fuentes,
-  };
+  if (editorial && texto) {
+    return { ...texto, estado: editorial.estado, fuentes: editorial.fuentes };
+  }
+  return getSinopsisFaseE2(pelicula);
 }
