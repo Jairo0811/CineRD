@@ -13,10 +13,29 @@ export const COLUMNS = [
   "file_path", "kind", "entity_id", "entity_name", "field", "source_url",
   "rights_holder", "permission_basis", "evidence_ref", "commercial_use_authorized",
   "attribution", "reviewed_on", "reviewed_by", "status", "notes",
+  "license_scope", "license_until",
 ];
 const STATUSES = new Set(["PENDIENTE", "AUTORIZADO", "RESTRINGIDO", "RETIRAR"]);
 const APPROVAL_BASIS = new Set(["PROPIEDAD", "LICENCIA", "PERMISO", "DOMINIO_PUBLICO"]);
 const SAFE_PATH = /^\/uploads\/(actores|peliculas|galerias)\/[^/.][^/]*$/i;
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+function validDate(value) {
+  if (!ISO_DATE.test(String(value || ""))) return false;
+  const d = new Date(value + "T00:00:00Z");
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === value;
+}
+
+/** Requiere revisión documental real: el CSV no verifica firmas o contratos. */
+export function isEffectiveCommercialLicense(row, today = new Date().toISOString().slice(0, 10)) {
+  if (row?.status !== "AUTORIZADO") return false;
+  if (!["PROPIEDAD", "LICENCIA", "PERMISO", "DOMINIO_PUBLICO"].includes(row.permission_basis)) return false;
+  if (!["rights_holder", "evidence_ref", "reviewed_by"].every(key => String(row[key] || "").trim())) return false;
+  if (row.commercial_use_authorized !== "SI" || row.license_scope !== "WEB_MONETIZADA") return false;
+  if (!validDate(row.reviewed_on) || row.reviewed_on > today) return false;
+  if (row.license_until === "SIN_VENCIMIENTO") return true;
+  return validDate(row.license_until) && row.license_until >= today;
+}
 
 export function readCsv(text) {
   const lines = text.replace(/^\uFEFF/, "").split(/\r?\n/).filter(line => line.trim() !== "");
@@ -98,8 +117,11 @@ export function auditRows(catalog, rows) {
       if (missing.length) errors.push("AUTORIZADO sin evidencia (" + missing.join(", ") + "): " + key);
       if (!APPROVAL_BASIS.has(row.permission_basis)) errors.push("Fundamento de licencia no aceptable: " + key);
       if (row.commercial_use_authorized !== "SI") errors.push("AUTORIZADO sin permiso comercial documentado: " + key);
-      if (row.reviewed_on && !/^\d{4}-\d{2}-\d{2}$/.test(row.reviewed_on)) {
+      if (row.reviewed_on && !validDate(row.reviewed_on)) {
         errors.push("Fecha de revisión inválida: " + key);
+      }
+      if (!isEffectiveCommercialLicense(row)) {
+        errors.push("AUTORIZADO sin uso web comercial explícito o con licencia vencida: " + key);
       }
     }
   }
