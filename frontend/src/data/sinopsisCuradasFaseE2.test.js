@@ -36,12 +36,10 @@ describe("CineRD · Fase E-2 / segunda tanda documentada", () => {
     expect(getSinopsisFaseE2(film).es).toContain("Puerto Rico");
   });
 
-  it("reduce de 33 a 9 las películas sin sinopsis registrada ni editorial", () => {
+  it("la tanda de 24 contribuye al total de 41 borradores de respaldo", () => {
     const fallback = films.filter(f=>!String(f.Sinopsis||"").trim() && getSinopsisEditorial(f));
     const missing = films.filter(f=>!String(f.Sinopsis||"").trim() && !getSinopsisEditorial(f));
-    expect(fallback).toHaveLength(32);
-    expect(missing).toHaveLength(9);
-    expect(missing.map(f=>f.Id).sort((a,b)=>a-b))
-      .toEqual([14,19,21,30,31,32,41,47,48]);
+    expect(fallback).toHaveLength(41);
+    expect(missing).toHaveLength(0);
   });
 });
