@@ -164,3 +164,10 @@ Las licencias de fotografías y carteles todavía requieren una revisión separa
 ## Inventario de licencias de imágenes (7 de noviembre de 2026)
 
 Se creó `docs/media-rights-ledger.csv` con 128 archivos visuales presentes en el catálogo (82 fotos de talentos y 46 imágenes de películas). **Todos están en estado `PENDIENTE`** hasta que el titular documente las evidencias de derechos y el alcance de uso comercial. El verificador `scripts/verifyMediaRightsLedger.mjs` se ejecuta antes del build y detecta inventario incompleto, entradas duplicadas y falsos estados autorizados. Esta comprobación técnica **no significa** que se hayan obtenido licencias. El procedimiento y sus límites están en [`MEDIA_RIGHTS_AUDIT.md`](./MEDIA_RIGHTS_AUDIT.md). La advertencia de AdSense sigue sin resolverse y no debe solicitarse una nueva revisión basándose solo en estos controles.
+
+
+## Vista previa opcional de sustitución de afiches prioritarios
+
+Se ha preparado `VITE_MEDIA_RIGHTS_MODE=pilot` (desactivado por defecto). El build piloto deja `Foto`/`Backdrop` vacíos para cuatro películas prioritarias (IDs 4, 5, 16 y 56) y evita enviar sus imágenes al artefacto estático de Cloudflare. React presenta cubiertas tipográficas originales, claramente distintas de los pósteres oficiales. Un job independiente `rights-pilot` comprueba este comportamiento. El uso normal de producción sigue sin alteraciones; los afiches originales permanecen en `backend/uploads`.
+
+Esto es una preparación para revisar alternativas, **no una prueba de autorización** ni una solución integral del rechazo AdSense, que fue por páginas de contenido de bajo valor. Todavía quedan 124 imágenes sin permisos documentados. Revisar [MEDIA_RIGHTS_PILOT.md](./MEDIA_RIGHTS_PILOT.md) antes de decidir un cambio visual en Cloudflare.
