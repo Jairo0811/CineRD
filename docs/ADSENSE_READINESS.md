@@ -171,3 +171,8 @@ Se creó `docs/media-rights-ledger.csv` con 128 archivos visuales presentes en e
 Se ha preparado `VITE_MEDIA_RIGHTS_MODE=pilot` (desactivado por defecto). El build piloto deja `Foto`/`Backdrop` vacíos para cuatro películas prioritarias (IDs 4, 5, 16 y 56) y evita enviar sus imágenes al artefacto estático de Cloudflare. React presenta cubiertas tipográficas originales, claramente distintas de los pósteres oficiales. Un job independiente `rights-pilot` comprueba este comportamiento. El uso normal de producción sigue sin alteraciones; los afiches originales permanecen en `backend/uploads`.
 
 Esto es una preparación para revisar alternativas, **no una prueba de autorización** ni una solución integral del rechazo AdSense, que fue por páginas de contenido de bajo valor. Todavía quedan 124 imágenes sin permisos documentados. Revisar [MEDIA_RIGHTS_PILOT.md](./MEDIA_RIGHTS_PILOT.md) antes de decidir un cambio visual en Cloudflare.
+
+
+## Cuatro fases de recuperación — noviembre de 2026
+
+Se implementó una segunda tanda de ocho textos editoriales originales (12 en total, aún pendientes de revisión), un modo `VITE_MEDIA_RIGHTS_MODE=review` opt-in para crear compilaciones sin imágenes con permisos pendientes, un auditor HTTP de Cloudflare y un reporte de preparación para la revisión de AdSense. Consulta [`ADSENSE_PLAN_A_D.md`](./ADSENSE_PLAN_A_D.md) para los requisitos y pendientes específicos. No se ha solicitado otra revisión ni cambiado la configuración de Cloudflare.

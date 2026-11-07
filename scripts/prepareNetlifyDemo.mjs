@@ -106,6 +106,7 @@ fs.writeFileSync(path.join(outPublic, 'demo', 'deploy-status.json'), JSON.string
   format: 'CineRD.PublicDemoDeploy',
   sourceCommit: process.env.COMMIT_REF || null,
   catalogGeneratedAtUtc: snapshot.generatedAtUtc,
+  mediaRightsMode: (process.env.VITE_MEDIA_RIGHTS_MODE || '').trim() || 'normal',
   mediaFilesCopied: copied,
   mediaCounts,
   mediaSha256: mediaChecksum,
