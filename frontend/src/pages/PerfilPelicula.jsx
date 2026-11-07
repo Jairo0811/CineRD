@@ -7,6 +7,7 @@ import { manejarErrorFotoTalento, obtenerFotoTalento } from "../utils/talentoPla
 import MusicaPelicula from "../components/peliculas/MusicaPelicula";
 import { anioDe, decadaDe } from "../data/historiaCine";
 import { getEditorialPelicula } from "../data/editorialPeliculas";
+import { getSinopsisEditorial } from "../data/sinopsisCuradasFaseE";
 import PosterOriginal from "../components/media/PosterOriginal";
 import FilmSectionHeading from "../components/peliculas/FilmSectionHeading";
 
@@ -38,6 +39,7 @@ function PerfilPelicula(){
  const fondo=backdrop||poster;
  const editorial=getEditorialPelicula(pelicula);
  const editorialIdioma=editorial?.[idiomaUi];
+ const sinopsisEditorial=!pelicula.Sinopsis ? getSinopsisEditorial(pelicula) : null;
  return <div className="table-page-container movie-profile-page film-page">
  <header className={`film-hero${backdrop?" has-backdrop":""}`}>
   {fondo&&<img className="film-hero-bg" src={fondo} alt="" aria-hidden="true"/>}
@@ -68,7 +70,7 @@ function PerfilPelicula(){
  </header>
 
  <section className="film-section film-overview">
-  <div className="film-synopsis"><span className="catalog-eyebrow">{t("movieProfile.history")}</span><h2>{t("movieProfile.synopsis")}</h2><p style={{whiteSpace:"pre-line"}}>{pelicula.Sinopsis||t("movieProfile.synopsisMissing")}</p>{pelicula.TraduccionAplicada&&<p className="film-note">{t("movieProfile.localizedNotice",{source:t(`translationSources.${pelicula.TipoFuenteTraduccion||"EDITORIAL"}`)})}</p>}</div>
+  <div className="film-synopsis"><span className="catalog-eyebrow">{t("movieProfile.history")}</span><h2>{t("movieProfile.synopsis")}</h2><p style={{whiteSpace:"pre-line"}}>{pelicula.Sinopsis||sinopsisEditorial?.[idiomaUi]||t("movieProfile.synopsisMissing")}</p>{sinopsisEditorial&&<p className="film-note cine-editorial-synopsis-note">{idiomaUi==="en"?"Original source-based CineRD synopsis. Editorial draft pending owner review; not the official distributor synopsis.":"Sinopsis original de CineRD basada en fuentes. Borrador pendiente de revisión editorial; no es la sinopsis oficial de la distribuidora."}</p>}{pelicula.TraduccionAplicada&&<p className="film-note">{t("movieProfile.localizedNotice",{source:t(`translationSources.${pelicula.TipoFuenteTraduccion||"EDITORIAL"}`)})}</p>}</div>
   <dl className="film-facts">{hechos.map(([k,v])=><div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
  </section>
 
