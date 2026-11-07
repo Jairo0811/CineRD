@@ -112,3 +112,8 @@ node scripts/auditProduction.mjs --require-review
 ```
 
 Objetivo: `review`, `0` medios no autorizados y auditoría 20/20. **No confundir el código de validación con aprobación de AdSense.**
+
+
+## Fase E — Calidad editorial
+
+Primer lote de 12 sinopsis originales bilingües, ocho visibles como respaldo de fichas sin argumento registrado. Los textos están marcados como borradores y no modifican SQL Server. Auditoría programática de 46 películas y 83 talentos. Lista priorizada de discrepancias de género/fecha con fuentes y procedimiento de corrección **desde SQL Server**: consultar [REVISION_EDITORIAL_FASE_E.md](./REVISION_EDITORIAL_FASE_E.md). Aprobar humanamente antes de una nueva solicitud a AdSense.
