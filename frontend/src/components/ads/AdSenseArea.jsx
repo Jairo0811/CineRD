@@ -6,11 +6,10 @@ const ADSENSE_SLOT = import.meta.env.VITE_ADSENSE_SLOT?.trim();
 
 const PUBLIC_AD_ROUTES = [
   /^\/$/,
-  /^\/buscar(?:\/|$)/,
+  // No colocar anuncios en búsquedas, páginas vacías ni fichas generadas
+  // automáticamente hasta su revisión editorial manual.
   /^\/actores\/?$/,
-  /^\/actores\/\d+\/?$/,
   /^\/peliculas\/?$/,
-  /^\/peliculas\/\d+\/?$/,
 ];
 
 export const isAdEligiblePath = (pathname) =>

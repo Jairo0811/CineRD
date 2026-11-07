@@ -7,7 +7,7 @@
     "dev": "vite",
     "prebuild": "node ../scripts/prepareNetlifyDemo.mjs",
     "build": "vite build",
-    "postbuild": "node ../scripts/verifyNetlifyDist.mjs && node ../scripts/verifySocialPreview.mjs",
+    "postbuild": "node ../scripts/generateStaticPages.mjs && node ../scripts/verifyStaticPages.mjs && node ../scripts/verifyNetlifyDist.mjs && node ../scripts/verifySocialPreview.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run"

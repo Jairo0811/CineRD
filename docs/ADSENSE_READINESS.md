@@ -17,13 +17,12 @@ Si falta cualquiera de esos valores, la aplicación funciona exactamente igual y
 Los bloques manuales se permiten únicamente en:
 
 - `/`
-- `/buscar`
 - `/actores`
-- `/actores/:id`
 - `/peliculas`
-- `/peliculas/:id`
 
 Las rutas de autenticación, recuperación, verificación, dashboards, edición, administración y reclamaciones no renderizan anuncios.
+
+Desde la revisión editorial de noviembre de 2026, **las búsquedas** (`/buscar`) y las **fichas de películas y talentos** (`/peliculas/:id`, `/actores/:id`) quedan igualmente excluidas de unidades manuales. El catálogo de fichas se genera desde datos y requiere curaduría humana individual antes de considerarse inventario publicitario elegible.
 
 ## Activación
 
@@ -114,3 +113,27 @@ CineRD incorpora rutas accesibles desde la demostración de Cloudflare Pages:
 El titular autorizó el uso temporal de `jairo_1829@hotmail.com` como correo público para consultas privadas en CineRD. Se muestra en `/contacto` con enlace `mailto:` y se puede sustituir sin editar código al configurar `VITE_CONTACT_EMAIL` durante la compilación de Cloudflare Pages. El correo se publica deliberadamente y podrá recibir mensajes no deseados. GitHub Issues sigue siendo público y no sirve para información sensible.
 
 **Requisitos aún pendientes antes de monetizar:** revisión jurídica de los textos publicados, validación operativa del correo de contacto y, posteriormente, su sustitución por un correo dedicado, confirmación de derechos de uso comercial de fotos/pósteres y proveedores, configuración de CMP cuando corresponda, aceptación de AdSense y activación deliberada de anuncios. Publicar estas páginas no equivale a una garantía de aprobación.
+
+
+## Incidencia de revisión AdSense (7 de noviembre de 2026)
+
+Google verificó la propiedad de `cinerd.pages.dev`, pero marcó el sitio como **requiere atención** por «Anuncios publicados por Google en pantallas sin contenido de publicadores» (contenido insuficiente o de bajo valor). La captura del titular no identifica URLs concretas. No se debe suponer que un único cambio técnico garantiza aprobación.
+
+### Mejoras técnicas preparadas
+
+- El build genera HTML público indexable sin requerir JavaScript para inicio, catálogos, historia y fichas de películas/talentos. La interfaz interactiva React sigue siendo la principal.
+- Metadatos únicos por ficha, canonicals, Open Graph, Twitter Card y datos estructurados `Movie`/`Person` limitados a datos presentes en el catálogo.
+- Sitemap construido desde `database/seeds/catalog.snapshot.json`, sin publicar rutas privadas ni buscador.
+- `/buscar` se sirve con `noindex,follow` en el HTML inicial y no recibe anuncios manuales.
+- Fichas automáticas sin curaduría individual tampoco reciben anuncios manuales; las unidades solo se habilitan después de aprobación y configuración.
+- Se preservan las fuentes ya investigadas de la cronología histórica. No se inventan biografías ni críticas.
+
+### Pendientes obligatorios antes de volver a solicitar revisión
+
+1. Inspeccionar desde fuera el HTML desplegado en Cloudflare y al menos varias fichas mediante Google Search Console / Inspección de URLs; verificar la indexabilidad y los códigos HTTP.
+2. Realizar **curaduría editorial manual** de las fichas más importantes: contexto, relevancia histórica, atribuciones verificadas, fuentes y redacción propia. La generación automática de HTML por sí sola no resuelve una sanción por contenido de bajo valor.
+3. Revisar individualmente derechos/licencias de fotos, pósteres, sinopsis y cualquier material de terceros, en especial el uso comercial.
+4. Comprobar que páginas vacías, errores, operaciones de usuario y navegación no muestren anuncios; documentar cualquier cambio en Auto Ads desde la consola de AdSense.
+5. Corregir enlaces rotos o datos incompletos, publicar las mejoras y solicitar revisión **solo después** de comprobar todo lo anterior.
+
+Referencia oficial: https://support.google.com/publisherpolicies/answer/11112688?hl=es
