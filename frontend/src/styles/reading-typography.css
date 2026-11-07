@@ -1,0 +1,31 @@
+/* CineRD · lectura editorial justificada.
+   El selector se limita al texto narrativo en páginas públicas: no afecta
+   títulos, botones, menús, enlaces de navegación, listas ni campos de formulario.
+   La última línea de cada párrafo permanece alineada al inicio. */
+
+/* Sobre CineRD, privacidad, términos y textos explicativos de contacto. */
+.cinerd-info-document .cinerd-info-section > p:not(.cinerd-info-note):not(.cinerd-info-caution),
+.cinerd-info-about > p,
+.cinerd-info-contact-card > p:not(.cinerd-info-note):not(.cinerd-info-caution),
+
+/* Fichas: sinopsis y artículos de análisis originales. */
+.film-synopsis > p:not(.film-note),
+.film-editorial-prose > p,
+.film-editorial-feature > header > p,
+.film-editorial-feature-card > p,
+
+/* Cronología: introducción y contenido narrativo de cada hito. */
+.history-hero > p,
+.history-era-header > p,
+.history-item-card > p,
+.history-archive > p:not(.history-empty),
+
+/* HTML indexable que se entrega antes de hidratar React (SEO/no-JS). */
+.cinerd-static main section > p:not(.film-editorial-status) {
+  text-align: justify;
+  text-align-last: start;
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+/* No justificar avisos breves, formularios ni etiquetas de acciones. */
