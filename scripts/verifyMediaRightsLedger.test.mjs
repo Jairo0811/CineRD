@@ -37,10 +37,25 @@ describe("registro de derechos", () => {
     Object.assign(copy[0], {
       status: "AUTORIZADO", rights_holder: "Titular documentado",
       permission_basis: "PERMISO", evidence_ref: "LIC-2026-001",
-      commercial_use_authorized: "SI", reviewed_on: "2026-11-07",
+      commercial_use_authorized: "SI", license_scope: "WEB_MONETIZADA",
+      license_until: "SIN_VENCIMIENTO", reviewed_on: "2026-11-07",
       reviewed_by: "Revisor editorial",
     });
     assert.deepEqual(auditRows(catalog, copy).errors, []);
+  });
+  it("rechaza permisos vencidos, caducidad imposible o ámbito no monetizado", () => {
+    const copy = records.map(r => ({ ...r }));
+    Object.assign(copy[0], {
+      status: "AUTORIZADO", rights_holder: "Titular documentado",
+      permission_basis: "PERMISO", evidence_ref: "LIC-2026-002",
+      commercial_use_authorized: "SI", license_scope: "WEB_MONETIZADA",
+      license_until: "2020-01-01", reviewed_on: "2026-11-07",
+      reviewed_by: "Revisor editorial",
+    });
+    assert.match(auditRows(catalog, copy).errors.join(" "), /licencia vencida/);
+    copy[0].license_until = "SIN_VENCIMIENTO";
+    copy[0].license_scope = "PERSONAL";
+    assert.match(auditRows(catalog, copy).errors.join(" "), /uso web comercial/);
   });
   it("rechaza rutas fuera de /uploads y valores de licencia no soportados", () => {
     const copy = records.map(r => ({ ...r }));

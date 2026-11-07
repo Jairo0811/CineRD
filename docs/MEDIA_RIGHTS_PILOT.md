@@ -81,3 +81,10 @@ El componente `PosterOriginal` tiene ahora cuatro ilustraciones vectoriales orig
 - **ID 56, La lucha de Ana:** flor simbólica y haces de luz (violeta/rosa).
 
 Para cualquier otra ficha sin imagen se utiliza una bobina abstracta genérica. Las cubiertas muestran el título, identidad editorial y motivos gráficos; **no repiten el año visualmente** porque la tarjeta ya tiene un marcador. El año permanece en la descripción accesible para lectores de pantalla. El código y las pruebas usan `peliculaId` para distinguir las variantes, sin heurísticas inestables sobre el título. El modo piloto continúa desactivado por defecto y no modifica archivos multimedia originales.
+
+
+## Licencias individuales posteriores a este piloto
+
+Cada cartel prioritario se evalúa por su **ruta exacta** y por el ID y campo de su película. En modo piloto, si el registro contiene un permiso válido en estado `AUTORIZADO`, con evidencia, titular, alcance `WEB_MONETIZADA` y vigencia `license_until`, **solo esa imagen** vuelve al catálogo y se copia al artefacto. Los demás carteles permanecen con las cubiertas propias.
+
+No hace falta cambiar el código o desactivar todo el modo piloto cuando una productora autorice uno de los cuatro afiches. Es suficiente registrar la licencia comprobada en `docs/media-rights-ledger.csv`, recompilar y comprobar. El documento privado con la autorización NO debe incluirse en GitHub. No existe actualmente ningún `AUTORIZADO` real.

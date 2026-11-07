@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRightsReviewCatalog } from './pilotRightsCatalog.mjs';
+import { readCsv, auditRows } from './verifyMediaRightsLedger.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const snapshotFile = path.join(root, 'database', 'seeds', 'catalog.snapshot.json');
@@ -31,7 +32,10 @@ if (snapshot.version >= 3 && EXTRA_TABLES.some(name => !Array.isArray(snapshot.t
 
 let tables = Object.fromEntries(BASIC_TABLES.map(name => [name, snapshot.tables[name]]));
 // Solo cuando se elige el modo piloto: referencias a carteles sin permiso pendiente.
-const review = createRightsReviewCatalog(tables, (process.env.VITE_MEDIA_RIGHTS_MODE || '').trim());
+const rightsRows = readCsv(fs.readFileSync(path.join(root, 'docs', 'media-rights-ledger.csv'), 'utf8'));
+const audit = auditRows(snapshot, rightsRows);
+if (audit.errors.length) throw new Error('Registro de derechos inválido: ' + audit.errors.join('; '));
+const review = createRightsReviewCatalog(tables, (process.env.VITE_MEDIA_RIGHTS_MODE || '').trim(), rightsRows);
 tables = review.tables;
 for (const resource of review.excludedPaths) {
   // El módulo piloto ha validado esta ruta de imagen.
@@ -40,7 +44,8 @@ for (const resource of review.excludedPaths) {
   // Retirar restos del build anterior sin tocar backend/ ni el snapshot SQL.
   fs.rmSync(path.join(outPublic, relative), { force: true });
 }
-if (review.excludedPaths.length) console.log('CineRD: ' + review.excludedPaths.length + ' carteles excluidos en vista piloto de derechos.');
+if (review.excludedPaths.length) console.log('CineRD: ' + review.excludedPaths.length + ' carteles excluidos del catálogo y archivos públicos.');
+if (review.authorizedPaths.length) console.log('CineRD: ' + review.authorizedPaths.length + ' carteles con registro documental vigente en el CSV.');
 for (const name of EXTRA_TABLES) {
   // Whitelist defensiva: no exponer automáticamente futuras columnas privadas.
   const rows = snapshot.tables[name] || [];
