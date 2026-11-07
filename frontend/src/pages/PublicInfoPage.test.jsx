@@ -39,9 +39,12 @@ describe("Páginas informativas públicas", () => {
     const email = screen.getByRole("link", { name: "jairo_1829@hotmail.com" });
     expect(email.getAttribute("href")).toBe("mailto:jairo_1829@hotmail.com");
   });
-  it("excluye todas las rutas legales de las superficies publicitarias", () => {
-    for (const path of ["/privacidad", "/terminos", "/contacto"]) {
+  it("excluye rutas legales, búsquedas y fichas sin revisión editorial de publicidad", () => {
+    for (const path of ["/privacidad", "/terminos", "/contacto", "/buscar", "/buscar?q=pelicula", "/actores/2", "/peliculas/1", "/admin"]) {
       expect(isAdEligiblePath(path)).toBe(false);
+    }
+    for (const path of ["/", "/peliculas", "/actores"]) {
+      expect(isAdEligiblePath(path)).toBe(true);
     }
   });
 });

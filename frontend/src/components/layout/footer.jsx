@@ -21,6 +21,7 @@ function Footer() {
           <nav className="cine-footer-links" aria-label={t("footer.explore")}>
             <strong>{t("footer.explore")}</strong>
             <Link to="/historia">{t("nav.history")}</Link>
+            <Link to="/sobre-cinerd">{i18n.language?.startsWith("en") ? "About CineRD" : "Sobre CineRD"}</Link>
             <Link to="/peliculas">{t("nav.movies")}</Link>
             <Link to="/actores">{t("nav.talents")}</Link>
           </nav>
