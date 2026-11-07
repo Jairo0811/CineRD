@@ -114,3 +114,10 @@ El verificador `scripts/verifyOriginalCoverCatalog.mjs` exige que cada ID del sn
 El catálogo `review` fue previsualizado localmente con capturas de `/peliculas` y `/peliculas/9`. Se confirmó que las 46 cubiertas SVG/CSS se ofrecen sin reproducir afiches oficiales. Se ajustó la tarjeta para que el control de hover «Ver película» no cubra el título de la **cubierta propia** (los carteles oficiales autorizados conservan el overlay), y se retiró el encabezado redundante que chocaba con el año en las tarjetas compactas. Los títulos largos ganaron aire con respecto al pie.
 
 La revisión detectó otra incidencia **de contenido, ajena al sistema de derechos**: `Lotoman` (ID 9) muestra `Infantil` en `Genero` y ninguna sinopsis independiente. Las fichas de Cinema Dominicano y CineDominicano.com documentan la obra como **Comedia**; además existen discrepancias entre fuentes respecto a la fecha del estreno, que deben contrastarse antes de modificarla en SQL Server. Registrar y corregir la clasificación en origen y volver a exportar el snapshot. No presentar la carencia de sinopsis como una licencia ni simular texto revisado.
+
+
+### Propagación de fotos de talentos en créditos profesionales
+
+El adaptador estático `demoAdapter.js` ahora devuelve `Foto`, `Sexo` y `Profesion` junto a los nombres del talento en `/peliculas/:id/creditos`, equivalente a la consulta principal de SQL Server. Anteriormente el adaptador perdía esos campos, por lo que se mostraba el placeholder **incluso cuando había una foto autorizada**.
+
+Se utiliza exclusivamente `tables.Actores` del **catálogo público ya filtrado**. Cuando `VITE_MEDIA_RIGHTS_MODE=review` elimina la foto sin permiso vigente, la sección de créditos también recibe `Foto: null`. Por tanto, arreglar este error de relación no restaura fotografías pendientes ni modifica el registro de derechos. Ejemplo: Ángel Muñíz, ID 36, conserva la referencia original de su imagen en el snapshot interno, pero sin autorización documentada sigue usando placeholder en la versión pública `review`.

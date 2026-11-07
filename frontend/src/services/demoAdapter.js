@@ -187,10 +187,19 @@ function getData(t, route, p, config) {
     }));
   }
   if ((match = route.match(/^\/peliculas\/(\d+)\/creditos$/))) {
-    return creditos.filter(c=>Number(c.PeliculaId)===Number(match[1])).map(c=>({
-      ...c, NombreCompleto:actorById(c.ActorId)?.NombreCompleto,
-      NombreArtistico:actorById(c.ActorId)?.NombreArtistico,
-    }));
+    // Misma proyección pública que el endpoint SQL: datos del talento del
+    // catálogo YA FILTRADO por la revisión de derechos (jamás del snapshot crudo).
+    return creditos.filter(c=>Number(c.PeliculaId)===Number(match[1])).map(c=>{
+      const a = actorById(c.ActorId);
+      return {
+        ...c,
+        NombreCompleto: a?.NombreCompleto ?? null,
+        NombreArtistico: a?.NombreArtistico ?? null,
+        Profesion: a?.Profesion ?? null,
+        Sexo: a?.Sexo ?? null,
+        Foto: a?.Foto ?? null,
+      };
+    });
   }
   if ((match = route.match(/^\/peliculas\/(\d+)\/traducciones$/))) {
     return traducciones.filter(t=>Number(t.PeliculaId)===Number(match[1]));
