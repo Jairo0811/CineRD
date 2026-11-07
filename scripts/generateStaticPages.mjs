@@ -8,6 +8,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { HITOS, FUENTES, anioDe } from "../frontend/src/data/historiaCine.js";
 import { SOBRE_CINERD } from "../frontend/src/data/sobreCineRD.js";
+import { getEditorialPelicula, editorialesDestacados } from "../frontend/src/data/editorialPeliculas.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const out = path.join(root, "frontend", "dist");
@@ -107,6 +108,14 @@ const contenidoPelicula = (p) => {
     "</section>",
   ];
   if (quitarHtml(p.Sinopsis)) partes.push("<section><h2>Sinopsis registrada</h2><p>" + escapar(quitarHtml(p.Sinopsis)) + "</p></section>");
+  const editorial = getEditorialPelicula(p);
+  if (editorial) {
+    partes.push('<section class="film-editorial"><h2>' + escapar(editorial.es.titulo) + "</h2>" +
+      editorial.es.parrafos.map((paragraph) => "<p>" + escapar(paragraph) + "</p>").join("") +
+      "<h3>Fuentes y lecturas complementarias</h3>" +
+      lista(editorial.fuentes.map((fuente) => '<a href="' + escapar(fuente.url) + '" rel="noopener noreferrer">' + escapar(fuente.titulo) + "</a>")) +
+      "<p>Borrador editorial basado en fuentes; pendiente de revisión final del titular.</p></section>");
+  }
   if (participantes.length) partes.push("<section><h2>Talentos vinculados a esta película</h2><p>Relaciones registradas en el catálogo de CineRD.</p>" +
     lista(participantes.map((a) => enlace(actorUrl(a), nombreActor(a)))) + "</section>");
   partes.push("<p>" + enlace("/peliculas", "Explorar más producciones dominicanas") +
@@ -142,7 +151,9 @@ function metadatosPelicula(p) {
   if (p.FechaEstreno) data.datePublished = String(p.FechaEstreno).slice(0, 10);
   if (p.Director) data.director = { "@type": "Person", name: p.Director };
   if (p.Genero) data.genre = p.Genero;
-  if (quitarHtml(p.Sinopsis)) data.description = resumir(p.Sinopsis, 300);
+  const editorial = getEditorialPelicula(p);
+  if (editorial) data.description = resumir(editorial.es.parrafos[0], 300);
+  else if (quitarHtml(p.Sinopsis)) data.description = resumir(p.Sinopsis, 300);
   return data;
 }
 function metadatosActor(a) {
@@ -166,6 +177,8 @@ const homeBody = cabecera("Inicio", "El cine dominicano en un solo lugar", descr
   '<section><h2>Producciones del catálogo</h2>' +
   lista(peliculasOrdenadas.slice(0, 12).map((p) => enlace(peliculaUrl(p), p.Titulo + (anio(p) ? " (" + anio(p) + ")" : "")))) +
   "</section>" +
+  '<section><h2>Lecturas y contexto del cine dominicano</h2><p>Cuatro fichas incorporan contexto editorial original sustentado en referencias verificables, pendiente de revisión final.</p>' +
+  lista(editorialesDestacados.map((e) => enlace("/peliculas/" + e.id, e.tituloReferencia + " (" + e.anioReferencia + "): " + e.es.titulo))) + "</section>" +
   '<section><h2>Acerca del proyecto</h2><p>CineRD es un archivo independiente y en desarrollo. El catálogo recoge información disponible y puede ampliarse o corregirse. ' +
   enlace("/contacto", "Puedes solicitar correcciones") + ".</p></section>";
 pagina("/", "CineRD | Películas, talentos e historia del cine dominicano", descripcionInicio, homeBody);
@@ -197,7 +210,8 @@ pagina("/buscar", "Buscar películas y talentos | CineRD", "Consulta el buscador
   "<p>" + enlace("/peliculas", "Ver películas") + " · " + enlace("/actores", "Ver talentos") + "</p>", null, true);
 
 for (const p of peliculas) {
-  const desc = quitarHtml(p.Sinopsis) || (p.Titulo + ", película registrada en CineRD" +
+  const editorial = getEditorialPelicula(p);
+  const desc = (editorial ? editorial.es.parrafos[0] : quitarHtml(p.Sinopsis)) || (p.Titulo + ", película registrada en CineRD" +
     (anio(p) ? " (" + anio(p) + ")" : "") + (p.Director ? ", dirigida por " + p.Director : "") + ".");
   pagina(peliculaUrl(p), p.Titulo + (anio(p) ? " (" + anio(p) + ")" : "") + " | CineRD",
     desc, contenidoPelicula(p), metadatosPelicula(p));

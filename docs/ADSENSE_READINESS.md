@@ -145,3 +145,17 @@ Se publica `/sobre-cinerd`, disponible en español e inglés y enlazada desde na
 ### URLs canónicas y HTML de Cloudflare Pages
 
 El generador produce `dist/peliculas/123.html` (que Cloudflare Pages sirve como `/peliculas/123`) en lugar de `dist/peliculas/123/index.html` (que podría redirigir a `/peliculas/123/`). Así, los enlaces SPA, la URL canónica y el sitemap comparten la misma versión sin barra final. Las rutas legales reciben además HTML inicial informativo y metadatos específicos, aunque React presenta su texto completo tras cargar.
+
+
+## Primera tanda editorial con fuentes (noviembre de 2026)
+
+Se incorporaron cuatro textos de contexto a las fichas cinematográficas, con fuentes enlazadas en React y en el HTML inicial:
+
+- **Nueba Yol: ¡Por Fin Llegó Balbuena!** (1995, ID 16): migración, campaña de difusión y estudio académico.
+- **Perico Ripiao** (2003, ID 5): música, burocracia y crítica social.
+- **Sanky Panky** (2007, ID 4): turismo, movilidad económica y humor.
+- **La Lucha de Ana** (2012, ID 56): duelo, desigualdad y búsqueda de justicia.
+
+Los textos son síntesis originales redactadas a partir de fuentes citadas. Se identifican explícitamente como **borradores pendientes de revisión del titular**, sin falsas declaraciones de revisión humana completada. No se importan sinopsis completas de terceros. Las fichas individuales **continúan excluidas de publicidad manual**, independientemente de si tienen contexto.
+
+Las licencias de fotografías y carteles todavía requieren una revisión separada; la cita de una fuente factual no concede derecho de reproducción de imágenes.

@@ -6,6 +6,7 @@ import { API_URL } from "../config/api";
 import { manejarErrorFotoTalento, obtenerFotoTalento } from "../utils/talentoPlaceholder";
 import MusicaPelicula from "../components/peliculas/MusicaPelicula";
 import { anioDe, decadaDe } from "../data/historiaCine";
+import { getEditorialPelicula } from "../data/editorialPeliculas";
 
 const resolverImagen = (ruta) => !ruta ? null : ruta.startsWith("http") ? ruta : `${API_URL}${ruta}`;
 const formatearDuracion = (minutos) => !minutos ? null : `${Math.floor(minutos / 60) ? `${Math.floor(minutos / 60)} h ` : ""}${minutos % 60} min`;
@@ -33,6 +34,8 @@ function PerfilPelicula(){
  ].filter(Boolean);
  const premiosGanados=nominaciones.filter(n=>n.Resultado==="GANADOR").length;
  const fondo=backdrop||poster;
+ const editorial=getEditorialPelicula(pelicula);
+ const editorialIdioma=editorial?.[idiomaUi];
  return <div className="table-page-container movie-profile-page film-page">
  <header className={`film-hero${backdrop?" has-backdrop":""}`}>
   {fondo&&<img className="film-hero-bg" src={fondo} alt="" aria-hidden="true"/>}
@@ -66,6 +69,19 @@ function PerfilPelicula(){
   <div className="film-synopsis"><span className="catalog-eyebrow">{t("movieProfile.history")}</span><h2>{t("movieProfile.synopsis")}</h2><p style={{whiteSpace:"pre-line"}}>{pelicula.Sinopsis||t("movieProfile.synopsisMissing")}</p>{pelicula.TraduccionAplicada&&<p className="film-note">{t("movieProfile.localizedNotice",{source:t(`translationSources.${pelicula.TipoFuenteTraduccion||"EDITORIAL"}`)})}</p>}</div>
   <dl className="film-facts">{hechos.map(([k,v])=><div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
  </section>
+
+ {editorial&&editorialIdioma&&<section className="film-section film-editorial" aria-labelledby="film-editorial-title">
+   <header className="film-section-head"><div>
+     <span className="catalog-eyebrow">{idiomaUi==="en"?"CONTEXT & FILM HISTORY":"CONTEXTO E HISTORIA DEL CINE"}</span>
+     <h2 id="film-editorial-title">{editorialIdioma.titulo}</h2>
+   </div></header>
+   <div className="film-editorial-prose">{editorialIdioma.parrafos.map((texto,i)=><p key={i}>{texto}</p>)}</div>
+   <div className="film-editorial-sources">
+     <h3>{idiomaUi==="en"?"References":"Fuentes y lecturas complementarias"}</h3>
+     <ul>{editorial.fuentes.map(f=><li key={f.url}><a href={f.url} target="_blank" rel="noopener noreferrer">{f.titulo}</a></li>)}</ul>
+     <p className="film-editorial-status">{idiomaUi==="en"?"Source-based editorial draft; final owner review pending.":"Borrador editorial basado en fuentes; pendiente de revisión final del titular."}</p>
+   </div>
+ </section>}
 
  {(youtubeId||pelicula.TrailerUrl)&&<section className="film-section"><header className="film-section-head"><span className="catalog-eyebrow">{t("movieProfile.audiovisual")}</span><h2>{t("movieProfile.trailer")}</h2></header>{youtubeId?<div className="ratio ratio-16x9 film-trailer"><iframe src={`https://www.youtube.com/embed/${youtubeId}`} title={`${t("movieProfile.trailer")}: ${pelicula.Titulo}`} allowFullScreen/></div>:<a href={pelicula.TrailerUrl} target="_blank" rel="noreferrer" className="btn btn-danger">{t("movieProfile.watchTrailer")}</a>}</section>}
 
