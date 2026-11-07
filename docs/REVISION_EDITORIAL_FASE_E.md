@@ -1,26 +1,26 @@
 # CineRD — Fase E: calidad editorial, sinopsis y datos
 
-**Inicio:** 7 de noviembre de 2026. **Estado:** lotes E-1 y E-2 incorporados como borradores pendientes de revisión humana.  
+**Inicio:** 7 de noviembre de 2026. **Estado:** sinopsis E-1 y E-2 completas para 46/46 fichas, con 41 borradores pendientes de revisión humana.  
 **Fuente interna:** `database/seeds/catalog.snapshot.json`, versión 3, exportado el 5 de noviembre de 2026.  
 **Fuentes externas:** consultar los enlaces verificables en este documento y en `frontend/src/data/editorialPeliculas*.js`.
 
 ## Resultado del diagnóstico
 
-| Indicador | Línea de base | Tras E-1 | Tras E-2 |
-|---|---:|---:|---:|
-| Películas | 46 | 46 | 46 |
-| Sinopsis registradas en SQL/snapshot | 5 | 5 | 5 |
-| Películas sin sinopsis registrada | 41 | 41 | 41 |
-| Sinopsis originales de respaldo disponibles | 0 | 8 | 32 |
-| Fichas sin sinopsis visible (registrada o curada) | 41 | 33 | 9 |
-| Editoriales contextuales en borrador | 12 | 12 | 12 |
-| Películas sin director | 3 | 3 | 3 |
-| Películas sin productora | 17 | 17 | 17 |
-| Películas sin género | 0 | 0 | 0 |
-| Talentos | 83 | 83 | 83 |
-| Talentos sin profesión | 5 | 5 | 5 |
-| Talentos sin fecha de nacimiento | 26 | 26 | 26 |
-| Talentos sin vínculos de reparto NI créditos | 0 | 0 | 0 |
+| Indicador | Línea de base | Tras E-1 | Tras E-2 lote 24 | Tras E-2 final |
+|---|---:|---:|---:|---:|
+| Películas | 46 | 46 | 46 | 46 |
+| Sinopsis registradas en SQL/snapshot | 5 | 5 | 5 | 5 |
+| Películas sin sinopsis registrada | 41 | 41 | 41 | 41 |
+| Sinopsis originales de respaldo disponibles | 0 | 8 | 32 | 41 |
+| Fichas sin sinopsis visible (registrada o curada) | 41 | 33 | 9 | 0 |
+| Editoriales contextuales en borrador | 12 | 12 | 12 | 12 |
+| Películas sin director | 3 | 3 | 3 | 3 |
+| Películas sin productora | 17 | 17 | 17 | 17 |
+| Películas sin género | 0 | 0 | 0 | 0 |
+| Talentos | 83 | 83 | 83 | 83 |
+| Talentos sin profesión | 5 | 5 | 5 | 5 |
+| Talentos sin fecha de nacimiento | 26 | 26 | 26 | 26 |
+| Talentos sin vínculos de reparto NI créditos | 0 | 0 | 0 | 0 |
 
 > Las ocho fichas mejoradas son las películas sin sinopsis registrada que pertenecen al lote de 12 borradores. La nueva sinopsis editorial **no se copia automáticamente a SQL Server**, no se presenta como oficial y conserva una señal visible de revisión pendiente. Los otros cuatro borradores también quedan preparados para una futura sustitución editorial autorizada.
 
@@ -74,7 +74,7 @@ Se prepararon resúmenes breves de trama para las 24 películas de esta tabla, b
 | 53 | La Musiquita por Dentro | https://cinemadominicano.com/la-musiquita-por-dentro-2019/ |
 | 54 | Los Paracaidistas | https://cinemadominicano.com/los-paracaidistas-2015/ |
 
-**Nueve fichas que todavía requieren investigación:** IDs **14, 19, 21, 30, 31, 32, 41, 47 y 48**. No escribir sinopsis especulativas para estos títulos. Revisar más de una fuente cuando existan contradicciones, especialmente con proyectos recientes.
+**Cierre de cobertura:** Los nueve títulos de esta lista ya cuentan con un borrador respaldado por una fuente (ver sección «Cierre E-2»). Persisten las validaciones de exactitud, la revisión humana y las discrepancias de metadatos.
 
 **Datos por revisar (no alterados):**
 - ID 24, *Sanky Panky 3*: director vacío y estreno `2018-03-18` en snapshot; ficha histórica: Eduardo «Transfor» Ortiz y estreno `2018-03-29`.
@@ -88,7 +88,32 @@ Se prepararon resúmenes breves de trama para las 24 películas de esta tabla, b
 
 **Advertencia:** estas discrepancias son **pistas de auditoría**, no hechos corregidos. Fuentes de fechas pueden distinguir premieres, funciones especiales, estrenos comerciales y festivales. Confirmar el criterio y corregir únicamente en SQL Server antes de regenerar el snapshot.
 
-**Fase E-2 y AdSense:** alcanzar 37 fichas con sinopsis (5 SQL + 32 borradores) **no garantiza calidad editorial suficiente ni aprobación de monetización**. Las sinopsis nuevas requieren revisión independiente, fuentes activas, lectura manual, y no sustituyen 12 análisis editoriales más profundos ni perfiles de talentos desarrollados.
+**Fase E-2 y AdSense:** alcanzar 46 fichas con sinopsis (5 SQL + 41 borradores) **no garantiza calidad editorial suficiente ni aprobación de monetización**. Las sinopsis nuevas requieren revisión independiente, fuentes activas, lectura manual, y no sustituyen 12 análisis editoriales más profundos ni perfiles de talentos desarrollados.
+
+
+## Cierre E-2 — Nueve sinopsis finales, bilingües
+
+Las nueve fichas restantes se documentaron con fuentes y recibieron resúmenes de nueva redacción. Se implementan en `frontend/src/data/sinopsisCuradasFaseE2Final.js`, integradas con `getSinopsisEditorial()`. Con estos textos se alcanza una **cobertura visible de 46/46 películas: cinco sinopsis registradas en SQL y 41 sinopsis editoriales todavía pendientes de aprobación humana**.
+
+| ID | Película | Fuente principal |
+|---:|---|---|
+| 14 | Los Rechazados | https://dgcine.gob.do/los-rechazados-operacion-submarino-ya-en-salas-de-cine-del-pais/ |
+| 19 | Carlota la Más Barrial | https://dgcine.gob.do/dgcine-participa-en-la-premiere-decarlota-la-mas-barrial-que-llegara-a-los-cines-este-28-de-agosto/ |
+| 21 | Medias Hermanas | https://caribbeancinemas.com/es/movie/2607/ |
+| 30 | El Diablo no duerme en su cama | https://cinemadominicano.com/el-diablo-no-duerme-en-su-cama-comedia-negra-de-amauris-perez/ |
+| 31 | Entiérrenlo Parao | https://www.imdb.com/es/title/tt34794158/ |
+| 32 | Los Rechazados 2: Operación Espacial | https://dgcine.gob.do/los-rechazados-2-lleva-la-comedia-y-la-ciencia-ficcion-a-nuevas-audiencias/ |
+| 41 | Malos padres | https://cinemadominicano.com/malos-padres-2023/ |
+| 47 | Pimp Bullies: Victimas de un Prostibulo | https://cinemadominicano.com/victimas-de-un-prostibulo-pimp-bullies-2011-2/ |
+| 48 | Al Fin y al Cabo | https://cinemadominicano.com/al-fin-y-al-cabo-2008/ |
+
+**Contradicciones adicionales que deben revisarse en SQL (sin editar):**
+- ID 32, *Los Rechazados 2*: snapshot `FechaEstreno=2026-09-13`; DGCINE indica estreno comercial `2026-08-13`, y director Yasser Michelén mientras SQL tiene `Director=null`.
+- ID 30, *El Diablo no duerme en su cama*: campo `Director=null`; Cinema Dominicano atribuye la dirección a Amauris Pérez. Verificar la fecha concreta de estreno antes de modificar.
+- ID 47, *Pimp Bullies*: género SQL `Acción`, mientras Cinema Dominicano clasifica `Drama/Thriller`. Registrar género(s) oficiales según criterio del catálogo.
+- ID 31, *Entiérrenlo Parao*: el resultado para 2025 y duración de largometraje puede coexistir con referencias a un cortometraje anterior. Comprobar que el registro corresponde a la obra de 2025, sin mezclar fichas.
+
+**Alcance:** las sinopsis fueron redactadas sin reproducir textualmente los argumentos de las fuentes. No equivalen a visionados ni a licencias de las obras, ni se certifica que los proveedores tengan datos perfectos. El código de la ficha solo presenta los borradores cuando `Sinopsis` SQL está ausente, con el rótulo `pendiente_revision` correspondiente.
 
 
 ## Discrepancias del catálogo que requieren corrección en origen (SQL)
@@ -117,7 +142,7 @@ Fuentes:
 
 ## Próximos lotes
 
-**E-2 — Sinopsis, lote final:** investigar los nueve títulos restantes (IDs 14, 19, 21, 30, 31, 32, 41, 47 y 48), sin inventar argumentos; documentar y corregir discrepancias de metadatos desde SQL Server.
+**E-2 — Sinopsis:** cobertura técnica completa (46/46). Revisar humanamente 41 borradores, comprobar sus fuentes y depurar discrepancias desde SQL Server. No confundir cobertura con aprobación editorial.
 
 **E-3 — Talentos:** revisar 83 perfiles; priorizar cinco sin profesión (IDs 54, 76, 88, 90, 93) y 26 sin fecha de nacimiento. **No inferir fechas ni hechos privados**. El perfil puede ser útil por filmografía y créditos sin inventar biografía personal.
 

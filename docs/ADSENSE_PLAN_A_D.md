@@ -122,3 +122,8 @@ Primer lote de 12 sinopsis originales bilingües, ocho visibles como respaldo de
 ## Fase E-2 — Segundo lote de sinopsis
 
 Se agregaron **24** resúmenes bilingües originales basados en fuentes históricas. El total de fichas con sinopsis SQL o respaldo editorial queda en **37 de 46**, de las cuales **32** dependen de borradores editoriales `pendiente_revision` y **cinco** conservan sinopsis SQL. **Nueve** títulos siguen sin sinopsis. La integración se hace por coincidencia estricta de ID, título y año; no cambia las tablas ni el registro de derechos. Revisar los textos y las discrepancias señaladas en [REVISION_EDITORIAL_FASE_E.md](./REVISION_EDITORIAL_FASE_E.md). Este avance **no** convierte CineRD en elegible automáticamente para AdSense.
+
+
+## Cierre de la Fase E-2 — 46/46 fichas con sinopsis
+
+Se completaron las nueve películas pendientes con textos originales en ES/EN y fuente asociada. **Cinco fichas contienen sinopsis registradas en SQL; otras 41 presentan sinopsis de respaldo en estado `pendiente_revision`**. Los textos no sustituyen SQL Server ni aseguran calidad suficiente para AdSense. DGCINE confirma, por ejemplo, un estreno diferente para `Los Rechazados 2`; consultar el registro de discrepancias y fuentes en [REVISION_EDITORIAL_FASE_E.md](./REVISION_EDITORIAL_FASE_E.md). El próximo trabajo es la revisión humana de los 41 textos, la corrección de metadatos y la Fase E-3 de talentos.
