@@ -1,26 +1,26 @@
 # CineRD — Fase E: calidad editorial, sinopsis y datos
 
-**Inicio:** 7 de noviembre de 2026. **Estado:** primera entrega técnica en revisión.  
+**Inicio:** 7 de noviembre de 2026. **Estado:** lotes E-1 y E-2 incorporados como borradores pendientes de revisión humana.  
 **Fuente interna:** `database/seeds/catalog.snapshot.json`, versión 3, exportado el 5 de noviembre de 2026.  
 **Fuentes externas:** consultar los enlaces verificables en este documento y en `frontend/src/data/editorialPeliculas*.js`.
 
 ## Resultado del diagnóstico
 
-| Indicador | Línea de base | Tras el lote E-1 |
-|---|---:|---:|
-| Películas | 46 | 46 |
-| Sinopsis registradas en SQL/snapshot | 5 | 5 (sin cambios) |
-| Películas sin sinopsis registrada | 41 | 41 |
-| Sinopsis originales de respaldo disponibles | 0 | 8 |
-| Fichas sin sinopsis visible (registrada o curada) | 41 | 33 |
-| Editoriales contextuales en borrador | 12 | 12 |
-| Películas sin director | 3 | 3 |
-| Películas sin productora | 17 | 17 |
-| Películas sin género | 0 | 0 |
-| Talentos | 83 | 83 |
-| Talentos sin profesión | 5 | 5 |
-| Talentos sin fecha de nacimiento | 26 | 26 |
-| Talentos sin vínculos de reparto NI créditos | 0 | 0 |
+| Indicador | Línea de base | Tras E-1 | Tras E-2 |
+|---|---:|---:|---:|
+| Películas | 46 | 46 | 46 |
+| Sinopsis registradas en SQL/snapshot | 5 | 5 | 5 |
+| Películas sin sinopsis registrada | 41 | 41 | 41 |
+| Sinopsis originales de respaldo disponibles | 0 | 8 | 32 |
+| Fichas sin sinopsis visible (registrada o curada) | 41 | 33 | 9 |
+| Editoriales contextuales en borrador | 12 | 12 | 12 |
+| Películas sin director | 3 | 3 | 3 |
+| Películas sin productora | 17 | 17 | 17 |
+| Películas sin género | 0 | 0 | 0 |
+| Talentos | 83 | 83 | 83 |
+| Talentos sin profesión | 5 | 5 | 5 |
+| Talentos sin fecha de nacimiento | 26 | 26 | 26 |
+| Talentos sin vínculos de reparto NI créditos | 0 | 0 | 0 |
 
 > Las ocho fichas mejoradas son las películas sin sinopsis registrada que pertenecen al lote de 12 borradores. La nueva sinopsis editorial **no se copia automáticamente a SQL Server**, no se presenta como oficial y conserva una señal visible de revisión pendiente. Los otros cuatro borradores también quedan preparados para una futura sustitución editorial autorizada.
 
@@ -42,6 +42,54 @@
 | 56 | La Lucha de Ana | https://cinemadominicano.com/la-lucha-de-ana-2012/ |
 
 **Control editorial:** cada sinopsis y su traducción requieren lectura, comparación de trama con las fuentes citadas y aprobación por el titular. No se afirma que las películas hayan sido visionadas. Si la base de datos contiene sinopsis, se usa esa sinopsis registrada y no se sustituye silenciosamente por el borrador.
+
+## Segunda tanda E-2 — 24 sinopsis originales bilingües
+
+Se prepararon resúmenes breves de trama para las 24 películas de esta tabla, basados en fuentes identificadas. Se integran en `frontend/src/data/sinopsisCuradasFaseE2.js`, cada entrada con **ID, título y año de referencia**, URL de fuente y estado `pendiente_revision`. Al tratarse de fichas sin sinopsis en SQL, ahora muestran un borrador claramente rotulado en español e inglés. Las versiones originales en `backend` y `database/seeds` permanecen intactas.
+
+| ID | Película | Fuente de argumento |
+|---:|---|---|
+| 15 | Tubérculo Gourmet | https://cinemadominicano.com/tuberculo-gourmet-2015/ |
+| 17 | Profe por Accidente | https://cinemadominicano.com/profe-por-accidente-2013/ |
+| 18 | Lotoman 2.0 | https://cinemadominicano.com/lotoman-2-0-2012/ |
+| 20 | Un Macho de Mujer | https://cinemadominicano.com/un-macho-de-mujer-2006/ |
+| 23 | Sanky Panky 2 | https://cinemadominicano.com/sanky-panky-2-2013/ |
+| 24 | Sanky Panky 3 | https://cinemadominicano.com/sanky-panky-3-29-marzo/ |
+| 25 | Sanky Panky 4: De Safari | https://cinemadominicano.com/sanky-panky-4-de-safari-2025/ |
+| 26 | Feo de día, Lindo de noche | https://cinemadominicano.com/feo-de-dia-lindo-de-noche-2012/ |
+| 27 | Lotoman 003: Volando Bajito | https://cinemadominicano.com/lotoman-003-volando-bajito-2014/ |
+| 28 | Teacher Mechy | https://caribbeancinemas.com/es/movie/8592/ |
+| 29 | Baño de Mujeres | https://cinemadominicano.com/bano-de-mujeres-2025/ |
+| 33 | Pueto Pa' Mi | https://cinemadominicano.com/pueto-pami-2015/ |
+| 34 | Los Super | https://cinemadominicano.com/los-super-2013/ |
+| 36 | Nueba Yol 3: Bajo la Nueva Ley | https://cinemadominicano.com/nueba-yol-3-bajo-la-nueva-ley-1997/ |
+| 38 | La casa del kilómetro 5 | https://cinemadominicano.com/la-casa-del-kilometro-5-2012/ |
+| 40 | Colao 2 | https://cinemadominicano.com/colao-2-2023/ |
+| 42 | Andrea | https://cinemadominicano.com/andrea-la-venganza-de-un-espiritu-2005/ |
+| 44 | Playball | https://cinemadominicano.com/play-ball-2008/ |
+| 49 | Los Locos también Piensan | https://cinemadominicano.com/los-locos-tambien-piensan-2005/ |
+| 50 | Hermanos | https://cinemadominicano.com/hermanos-2018/ |
+| 51 | Tubérculo Presidente | https://cinemadominicano.com/tuberculo-presidente-2016/ |
+| 52 | Dos policías en apuros | https://cinemadominicano.com/dos-policias-en-apuros-2016/ |
+| 53 | La Musiquita por Dentro | https://cinemadominicano.com/la-musiquita-por-dentro-2019/ |
+| 54 | Los Paracaidistas | https://cinemadominicano.com/los-paracaidistas-2015/ |
+
+**Nueve fichas que todavía requieren investigación:** IDs **14, 19, 21, 30, 31, 32, 41, 47 y 48**. No escribir sinopsis especulativas para estos títulos. Revisar más de una fuente cuando existan contradicciones, especialmente con proyectos recientes.
+
+**Datos por revisar (no alterados):**
+- ID 24, *Sanky Panky 3*: director vacío y estreno `2018-03-18` en snapshot; ficha histórica: Eduardo «Transfor» Ortiz y estreno `2018-03-29`.
+- ID 27, *Lotoman 003*: fecha `2014-03-15` en snapshot; ficha histórica: `2014-03-27`.
+- ID 36, *Nueba Yol 3*: fecha `1997-10-31` en snapshot; fuente histórica: `1997-10-23`.
+- ID 40, *Colao 2*: fecha `2023-12-07` en snapshot; fuente histórica: `2023-11-30`.
+- ID 42, *Andrea*: fecha `2005-08-16` en snapshot; ficha histórica: `2005-08-18`.
+- ID 44, *Playball*: género `Comedia` en snapshot frente a `Drama` en la ficha histórica; fecha `2008-02-01` frente a `2008-02-14`.
+- ID 50, *Hermanos*: género `Comedia` en snapshot frente a `Drama` en ficha histórica; considerar clasificación secundaria o combinada según otra fuente.
+- ID 28, *Teacher Mechy*: el director `Francisco Ernesto Perozo Balbuena` coincide con el crédito artístico `Frank Perozo`, aunque las formas del nombre difieran.
+
+**Advertencia:** estas discrepancias son **pistas de auditoría**, no hechos corregidos. Fuentes de fechas pueden distinguir premieres, funciones especiales, estrenos comerciales y festivales. Confirmar el criterio y corregir únicamente en SQL Server antes de regenerar el snapshot.
+
+**Fase E-2 y AdSense:** alcanzar 37 fichas con sinopsis (5 SQL + 32 borradores) **no garantiza calidad editorial suficiente ni aprobación de monetización**. Las sinopsis nuevas requieren revisión independiente, fuentes activas, lectura manual, y no sustituyen 12 análisis editoriales más profundos ni perfiles de talentos desarrollados.
+
 
 ## Discrepancias del catálogo que requieren corrección en origen (SQL)
 
@@ -69,7 +117,7 @@ Fuentes:
 
 ## Próximos lotes
 
-**E-2 — Sinopsis:** investigar las 33 películas que carecen incluso de borrador; escribir en español/inglés sin copiar sinopsis protegidas y adjuntar fuente.
+**E-2 — Sinopsis, lote final:** investigar los nueve títulos restantes (IDs 14, 19, 21, 30, 31, 32, 41, 47 y 48), sin inventar argumentos; documentar y corregir discrepancias de metadatos desde SQL Server.
 
 **E-3 — Talentos:** revisar 83 perfiles; priorizar cinco sin profesión (IDs 54, 76, 88, 90, 93) y 26 sin fecha de nacimiento. **No inferir fechas ni hechos privados**. El perfil puede ser útil por filmografía y créditos sin inventar biografía personal.
 

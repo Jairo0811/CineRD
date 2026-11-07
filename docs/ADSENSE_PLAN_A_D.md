@@ -117,3 +117,8 @@ Objetivo: `review`, `0` medios no autorizados y auditoría 20/20. **No confundir
 ## Fase E — Calidad editorial
 
 Primer lote de 12 sinopsis originales bilingües, ocho visibles como respaldo de fichas sin argumento registrado. Los textos están marcados como borradores y no modifican SQL Server. Auditoría programática de 46 películas y 83 talentos. Lista priorizada de discrepancias de género/fecha con fuentes y procedimiento de corrección **desde SQL Server**: consultar [REVISION_EDITORIAL_FASE_E.md](./REVISION_EDITORIAL_FASE_E.md). Aprobar humanamente antes de una nueva solicitud a AdSense.
+
+
+## Fase E-2 — Segundo lote de sinopsis
+
+Se agregaron **24** resúmenes bilingües originales basados en fuentes históricas. El total de fichas con sinopsis SQL o respaldo editorial queda en **37 de 46**, de las cuales **32** dependen de borradores editoriales `pendiente_revision` y **cinco** conservan sinopsis SQL. **Nueve** títulos siguen sin sinopsis. La integración se hace por coincidencia estricta de ID, título y año; no cambia las tablas ni el registro de derechos. Revisar los textos y las discrepancias señaladas en [REVISION_EDITORIAL_FASE_E.md](./REVISION_EDITORIAL_FASE_E.md). Este avance **no** convierte CineRD en elegible automáticamente para AdSense.
