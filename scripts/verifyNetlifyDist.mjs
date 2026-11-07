@@ -34,7 +34,14 @@ try {
   if (status.format !== 'CineRD.PublicDemoDeploy') {
     throw new Error('Netlify: demo/deploy-status.json no tiene el formato esperado.');
   }
-  if (process.env.COMMIT_REF && status.sourceCommit !== process.env.COMMIT_REF) {
+  if (process.env.CF_PAGES === '1' && process.env.CF_PAGES_BRANCH === 'main' &&
+      status.mediaRightsMode !== 'review') {
+    throw new Error('Cloudflare Pages main exige mediaRightsMode=review antes de publicar.');
+  }
+  if (process.env.CF_PAGES_COMMIT_SHA && status.sourceCommit !== process.env.CF_PAGES_COMMIT_SHA) {
+    throw new Error('Cloudflare Pages: el commit del manifiesto no coincide con CF_PAGES_COMMIT_SHA.');
+  }
+  if (process.env.COMMIT_REF && !process.env.CF_PAGES_COMMIT_SHA && status.sourceCommit !== process.env.COMMIT_REF) {
     throw new Error('Netlify: el commit del manifiesto no coincide con COMMIT_REF.');
   }
 

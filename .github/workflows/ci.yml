@@ -77,3 +77,37 @@ jobs:
         run: VITE_MEDIA_RIGHTS_MODE=review npm run build
       - name: Validate no unlicensed media enter the artifact
         run: node ../scripts/verifyRightsReviewBuild.mjs
+
+  cloudflare-production-review:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - name: Simulate production main on Cloudflare (without VITE_MEDIA_RIGHTS_MODE)
+        env:
+          CF_PAGES: "1"
+          CF_PAGES_BRANCH: main
+          CF_PAGES_COMMIT_SHA: ${{ github.sha }}
+        run: npm run build
+      - name: Verify the generated catalog cannot ship pending photos
+        run: node ../scripts/verifyRightsReviewBuild.mjs
+      - name: Assert production manifest's mode and commit
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          node --input-type=module -e '
+            import fs from "node:fs";
+            import assert from "node:assert/strict";
+            const p = JSON.parse(fs.readFileSync("dist/demo/deploy-status.json", "utf8"));
+            assert.equal(p.mediaRightsMode, "review");
+            assert.equal(p.sourceCommit, process.env.COMMIT_SHA);
+            assert.ok(Number.isInteger(p.mediaFilesCopied) && p.mediaFilesCopied >= 0);
+          '

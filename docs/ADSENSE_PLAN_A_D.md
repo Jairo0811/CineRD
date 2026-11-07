@@ -94,3 +94,21 @@ La auditoría comprueba HTTP, canonical, HTML inicial, sitemap, robots, noindex 
 **Informe de diagnóstico local:** `node scripts/reportAdSenseReadiness.mjs`.
 
 **Riesgo residual:** ocho textos más y retirar imágenes no garantizan aprobación: Google evalúa el valor del contenido y la experiencia total, no un número fijo de páginas.
+
+
+## Cloudflare Pages: producción segura por defecto (PR posterior)
+
+Como la compilación local en `review` se verificó varias veces, pero `https://cinerd.pages.dev/demo/deploy-status.json` seguía informando `normal` y 128 imágenes, **la rama `main` en Cloudflare Pages usa ahora automáticamente `review` durante el build de Git** si detecta `CF_PAGES=1` y `CF_PAGES_BRANCH=main`. Esas dos variables las inyecta Cloudflare. Se ignora cualquier variable `VITE_MEDIA_RIGHTS_MODE` distinta de `review` en esa combinación y se escribe una advertencia en el log. Las compilaciones locales y las ramas preview mantienen su modo solicitado (vacío, `pilot` o `review`).
+
+El catálogo y el manifiesto público usan **el mismo valor de modo resuelto** y registran el commit de `CF_PAGES_COMMIT_SHA` para comprobar qué compilación se publicó. El verificador `scripts/verifyNetlifyDist.mjs` impide finalizar un build de Cloudflare `main` si detecta un manifiesto que no esté en `review`.
+
+**Condición:** esto actúa solo en builds ejecutados por Cloudflare Pages con integración Git y `main` como rama publicada. Si el sitio se actualiza por carga manual, no se realiza una nueva compilación o apunta a otra rama, hay que corregir el proceso de publicación. No confirma que el dominio público esté actualizado hasta comprobar la URL en vivo.
+
+Tras el despliegue:
+
+```powershell
+Invoke-RestMethod "https://cinerd.pages.dev/demo/deploy-status.json?check=$(Get-Random)" | Select-Object mediaRightsMode, mediaFilesCopied, sourceCommit
+node scripts/auditProduction.mjs --require-review
+```
+
+Objetivo: `review`, `0` medios no autorizados y auditoría 20/20. **No confundir el código de validación con aprobación de AdSense.**
