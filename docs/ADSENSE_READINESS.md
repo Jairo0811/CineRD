@@ -159,3 +159,8 @@ Se incorporaron cuatro textos de contexto a las fichas cinematográficas, con fu
 Los textos son síntesis originales redactadas a partir de fuentes citadas. Se identifican explícitamente como **borradores pendientes de revisión del titular**, sin falsas declaraciones de revisión humana completada. No se importan sinopsis completas de terceros. Las fichas individuales **continúan excluidas de publicidad manual**, independientemente de si tienen contexto.
 
 Las licencias de fotografías y carteles todavía requieren una revisión separada; la cita de una fuente factual no concede derecho de reproducción de imágenes.
+
+
+## Inventario de licencias de imágenes (7 de noviembre de 2026)
+
+Se creó `docs/media-rights-ledger.csv` con 128 archivos visuales presentes en el catálogo (82 fotos de talentos y 46 imágenes de películas). **Todos están en estado `PENDIENTE`** hasta que el titular documente las evidencias de derechos y el alcance de uso comercial. El verificador `scripts/verifyMediaRightsLedger.mjs` se ejecuta antes del build y detecta inventario incompleto, entradas duplicadas y falsos estados autorizados. Esta comprobación técnica **no significa** que se hayan obtenido licencias. El procedimiento y sus límites están en [`MEDIA_RIGHTS_AUDIT.md`](./MEDIA_RIGHTS_AUDIT.md). La advertencia de AdSense sigue sin resolverse y no debe solicitarse una nueva revisión basándose solo en estos controles.

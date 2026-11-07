@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node ../scripts/prepareNetlifyDemo.mjs",
+    "prebuild": "node ../scripts/verifyMediaRightsLedger.mjs && node --test ../scripts/verifyMediaRightsLedger.test.mjs && node ../scripts/prepareNetlifyDemo.mjs",
     "build": "vite build",
     "postbuild": "node ../scripts/generateStaticPages.mjs && node ../scripts/verifyStaticPages.mjs && node ../scripts/verifyNetlifyDist.mjs && node ../scripts/verifySocialPreview.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
+    "rights:audit": "node ../scripts/verifyMediaRightsLedger.mjs",
     "test": "vitest run"
   },
   "dependencies": {
