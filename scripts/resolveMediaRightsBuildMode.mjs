@@ -3,9 +3,11 @@
  * deployment manifest. Cloudflare Pages supplies CF_PAGES and CF_PAGES_BRANCH
  * automatically on Git-integrated builds.
  *
- * All Cloudflare Pages deployments (main and preview branches) are fail-closed:
- * no unlicensed media should be distributed even when a mode is omitted or wrong.
- * Other build environments require an explicit review setting for safe output.
+ * Every Cloudflare Pages deployment (main AND preview branches) is fail-closed:
+ * unlicensed media cannot be distributed, even when an environment variable
+ * is missing or mistakenly requests "pilot"/"normal".
+ * Local development retains historical opt-in behavior. Any deployment on
+ * another host must explicitly set VITE_MEDIA_RIGHTS_MODE=review.
  */
 export function resolveMediaRightsBuildMode(env = process.env) {
   const requested = String(env.VITE_MEDIA_RIGHTS_MODE || "").trim();

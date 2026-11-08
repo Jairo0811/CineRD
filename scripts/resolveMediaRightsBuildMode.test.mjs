@@ -19,7 +19,7 @@ describe("CineRD / modo de derechos según entorno de compilación", () => {
       CF_PAGES:"1", CF_PAGES_BRANCH:"main", VITE_MEDIA_RIGHTS_MODE:"pilot"
     }), "review");
   });
-  it("obliga review en todas las ramas de preview incluso sin variable de modo", () => {
+  it("también obliga review en todas las ramas de preview", () => {
     for (const branch of ["feature/example", "feat/f2-editorial-review", "develop", ""]) {
       assert.equal(resolve({ CF_PAGES:"1", CF_PAGES_BRANCH:branch }), "review");
       assert.equal(resolve({
@@ -30,7 +30,7 @@ describe("CineRD / modo de derechos según entorno de compilación", () => {
       }), "review");
     }
   });
-  it("mantiene validación explícita fuera de Cloudflare", () => {
+  it("fuera de Cloudflare se exige review explícito para una compilación segura", () => {
     assert.equal(resolve({ CF_PAGES:"0", CF_PAGES_BRANCH:"main" }), "");
     assert.equal(resolve({ CF_PAGES:"0", VITE_MEDIA_RIGHTS_MODE:"review" }), "review");
     assert.throws(() => resolve({ VITE_MEDIA_RIGHTS_MODE:"normal" }), /inválido/);
