@@ -14,6 +14,8 @@
     "test": "vitest run",
     "editorial:audit": "node ../scripts/reportEditorialQuality.mjs",
     "editorial:review": "node ../scripts/editorialReviewAudit.mjs",
+    "editorial:readiness": "node ../scripts/editorialReadinessF23.mjs",
+    "editorial:readiness:strict": "node ../scripts/editorialReadinessF23.mjs --strict",
     "editorial:review:strict": "node ../scripts/editorialReviewAudit.mjs --strict"
   },
   "dependencies": {
