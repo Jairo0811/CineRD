@@ -73,16 +73,20 @@
       "status": "pendiente_revision",
       "deployment": "manual_only",
       "draftOrigin": "nueva_redaccion_f23",
-      "es": "Seis compañeros trabajan en un almacén de Santo Domingo cuyo propietario debe dejar el negocio por problemas de salud. Tras el cambio de administración, el local comienza a utilizarse en secreto para almacenar mercancía ilegal. Los empleados quedan atrapados en una situación que amenaza su estabilidad y deben encontrar una salida ante las consecuencias del negocio.",
-      "en": "Six coworkers at a warehouse in Santo Domingo face an unexpected change when the owner gives up the business because of health problems. The new management secretly turns the premises into a storage site for illegal goods. The employees are caught in a situation that threatens their livelihoods and must find a way through the resulting trouble.",
+      "es": "Don Pascual vende por motivos de salud un almacén de Santo Domingo, y sus seis empleados son contratados nuevamente por los compradores. Sin saberlo, continúan trabajando en un local que ahora se utiliza para guardar mercancía ilegal. Perseguidos por delincuentes y bajo sospecha de la policía, deberán encontrar cómo salir del enredo en medio de situaciones de acción y comedia.",
+      "en": "When Don Pascual sells his Santo Domingo warehouse because of health problems, its six employees are rehired by the new owners. Unaware that the premises are now being used to store illegal goods, they find themselves pursued by criminals and suspected by the police. To get out of trouble, they must come up with a plan amid a series of comic mishaps.",
       "sources": [
         "https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/",
         "https://cinemadominicano.com/el-plan-perfecto-2017/",
-        "https://paginasamarillas.com.do/es/movie/el-plan-perfecto/M5P1549"
+        "https://paginasamarillas.com.do/es/movie/el-plan-perfecto/M5P1549",
+        "https://lacronica.do/roberto-angel-salcedo-inicia-2017-estreno-plan-perfecto/",
+        "https://eldia.com.do/el-plan-perfecto-reune-buen-elenco/"
       ],
       "openQuestions": [
-        "Revisar con la productora el paso de almacén legítimo a depósito de mercancía ilegal.",
-        "La redacción actual evita afirmar que se demostró un robo o una estafa en todos los relatos disponibles."
+        "Contrastar con créditos finales o visionado la secuencia de venta y recontratación de los seis empleados; la prensa contemporánea documenta ambos hechos.",
+        "Verificar que los textos ES y EN no afirmen culpabilidad ni inocencia demostrada: la policía solo los considera sospechosos de complicidad.",
+        "Documentar la procedencia y condiciones de uso de la sinopsis SQL anterior, que coincide con agregadores; la mera existencia de las noticias no constituye licencia.",
+        "Resolver en el control independiente de metadatos la gala anterior y el estreno comercial del 19 de enero de 2017; el snapshot conserva la fecha histórica."
       ],
       "sourcePermissionStatus": "sin_evidencia_registrada",
       "reviewedBy": null,
