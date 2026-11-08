@@ -60,6 +60,26 @@ El ledger E-4 contiene **7 propuestas de modificación en 4 películas**. Todas 
 
 **Evaluación:** respaldo **institucional y de distribución alto** para los dos valores propuestos.
 
+## Paso E-4.1: comparar el snapshot con SQL Server real (solo lectura)
+
+La vista previa tradicional `catalog:corrections:preview` utiliza **el snapshot Git**; no puede demostrar que la base de datos actual siga teniendo los valores originales. Antes de decidir la aplicación debe ejecutarse en un entorno autorizado:
+
+```powershell
+npm --prefix backend run catalog:corrections:live:preview
+```
+
+El comando requiere credenciales locales `backend/.env`, confirma que `DB_DATABASE` corresponde a `CRUDPeliculas`, y ejecuta **exclusivamente consultas `SELECT` parametrizadas** para los cuatro IDs 9, 24, 30 y 32. No genera archivos, no inicia transacciones de actualización ni modifica permisos. **No imprimir ni compartir credenciales.**
+
+El resultado por campo puede ser `EXPECTED` (el SQL actual aún coincide con el valor anterior), `ALREADY` (ya contiene la propuesta; no volver a aplicar), `DRIFT` (tercer valor o título cambiado) o `MISSING` (película ausente). El informe es compatible con las siete correcciones y aborta con código no cero si alguna es `ALREADY`, `DRIFT` o `MISSING`, porque el lote E-4 actual exige **las siete preimágenes originales** antes de ejecutar.
+
+**No equivale a revisión humana ni a autorización para aplicar cambios.** Incluso 7/7 `EXPECTED` solo indica que los registros SQL pueden contrastarse con lo propuesto; todavía faltan las siete decisiones humanas, la normalización de `Transfor Ortiz`, la comprobación del backup restaurable y la ejecución controlada. La vista previa y su batería de pruebas pueden ejecutarse sin editar el catálogo:
+
+```powershell
+node --test backend/tests/previewEditorialCorrectionsLive.test.js
+npm --prefix backend run catalog:corrections:preview
+npm --prefix backend run catalog:corrections:approvals:preview
+```
+
 ## Lista para la decisión humana (sin completar)
 
 - [ ] Confirmé el alcance de `FechaEstreno` en CineRD: primer estreno comercial nacional, festival/premier u otro.
