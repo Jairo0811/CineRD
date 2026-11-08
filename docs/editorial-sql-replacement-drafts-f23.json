@@ -56,16 +56,21 @@
       "year": 2014,
       "status": "pendiente_revision",
       "deployment": "manual_only",
-      "draftOrigin": "borrador_editorial_fase_e",
-      "es": "Michael, Pedro, Mateo y Antonio trabajan en el área de fiscalización de un banco. Una noche desaparece una gran suma de dinero de la bóveda y los cuatro quedan bajo sospecha por encontrarse en el lugar. Entre presiones, desconfianza y situaciones disparatadas, intentan aclarar lo ocurrido.",
-      "en": "Michael, Pedro, Mateo and Antonio work in a bank's auditing department. When a large sum disappears from the vault one night, the four become suspects because they were present. Pressure, mistrust and comic complications surround their attempt to clear their names.",
+      "draftOrigin": "nueva_redaccion_f23",
+      "es": "Michael, Pedro, Mateo y Antonio trabajan en el área de fiscalización de un banco. Cuando desaparecen 150 millones de pesos de la bóveda, las sospechas recaen sobre ellos: los cuatro estaban en las instalaciones durante el robo. Mientras intentan aclarar lo sucedido y despejar las acusaciones, se ven envueltos en una cadena de complicaciones y situaciones cómicas.",
+      "en": "Michael, Pedro, Mateo and Antonio work in a bank's auditing department. When 150 million Dominican pesos are stolen from the vault, suspicion falls on the four men because they were on the premises during the robbery. As they try to find out what happened and clear their names, they get caught up in a series of complications and comic mishaps.",
       "sources": [
         "https://cinemadominicano.com/vamos-de-robo-2014/",
-        "https://cinedominicano.com/peliculasdominicanas/pelicula/vamos-de-robo-2014/"
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/vamos-de-robo-2014/",
+        "https://www.diariolibre.com/revista/vamos-de-robo-a-las-salas-de-cines-en-enero-BMDL406632",
+        "https://eldia.com.do/publico-valora-filme-vamos-de-robo/",
+        "https://www.diariolibre.com/amp/revista/cine/vamos-de-robo-DIDL447141"
       ],
       "openQuestions": [
-        "Corroborar denominaciones de cargos y personajes con créditos/fuentes primarias.",
-        "No afirmar la inocencia como hecho probado; el borrador habla de sospechas."
+        "Verificar mediante visionado, créditos o materiales de producción la relación exacta de los cuatro protagonistas con el departamento de fiscalización y el robo, sin suponer que fueron declarados inocentes o culpables.",
+        "Determinar documentalmente si la fecha 2014-01-15 en SQL representa una gala/función previa y si el estreno comercial dominicano debe registrarse como 2014-01-16; no cambiar SQL en esta revisión textual.",
+        "Revisar la equivalencia de los términos área de fiscalización / auditing department y la cuantía RD$150 millones en ambas versiones.",
+        "Determinar el origen, autoría y derechos de la sinopsis SQL previa, que coincide en redacción con descripciones de terceros; las noticias consultadas no conceden licencia textual."
       ],
       "sourcePermissionStatus": "sin_evidencia_registrada",
       "reviewedBy": null,
