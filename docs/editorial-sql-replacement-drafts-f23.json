@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "purpose": "Propuestas de sustitucion bilingue para las cinco sinopsis SQL de origen no acreditado. No se conectan a la interfaz ni se aprueban de forma automatica.",
+  "autoPublish": false,
+  "entries": {
+    "5": {
+      "filmId": 5,
+      "title": "Perico Ripiao",
+      "year": 2003,
+      "status": "pendiente_revision",
+      "deployment": "manual_only",
+      "draftOrigin": "borrador_editorial_fase_e",
+      "es": "Tres hombres permanecen encarcelados durante años por delitos menores y una cadena de negligencias burocráticas. Cuando consiguen escapar, emprenden el viaje para reencontrarse con sus familias llevando consigo una güira, un tambor y un acordeón. Su recorrido transforma una injusticia institucional en una aventura atravesada por música y humor.",
+      "en": "Three men spend years in prison for minor offenses because of bureaucratic neglect. After escaping, they set out to find their families with a güira, a drum and an accordion. Music and comedy accompany their journey through a story rooted in institutional injustice.",
+      "sources": [
+        "https://cinemadominicano.com/perico-ripiao-2003/",
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/perico-ripiao-2003/"
+      ],
+      "openQuestions": [
+        "Confirmar el dato exacto de años de encarcelamiento; el borrador evita fijar la cifra.",
+        "Comprobar nombres y relación de los personajes mediante créditos o visionado."
+      ],
+      "sourcePermissionStatus": "sin_evidencia_registrada",
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    "6": {
+      "filmId": 6,
+      "title": "Ladrones a Domicilio",
+      "year": 2008,
+      "status": "pendiente_revision",
+      "deployment": "manual_only",
+      "draftOrigin": "borrador_editorial_fase_e",
+      "es": "Bruno, profesor universitario y padre de familia, busca otra manera de costear los estudios de su hija cuando desaparece la posibilidad de una beca. Acepta un segundo trabajo vinculado al transporte de valores, pero acaba envuelto en una operación peligrosa. Su esfuerzo por progresar se enfrenta a una trama marcada por la corrupción.",
+      "en": "Bruno, a university lecturer and father, needs another way to finance his daughter's education after a scholarship becomes unavailable. He takes a second job involving armored cash transport but becomes caught in a dangerous scheme. His effort to provide for his family collides with corruption.",
+      "sources": [
+        "https://cinemadominicano.com/ladrones-a-domicilio-2008/",
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/ladrones-a-domicilio-2008/"
+      ],
+      "openQuestions": [
+        "Corroborar la distinción entre guardia de seguridad y conductor de transporte de valores; hay fuentes que describen el mismo segundo empleo con distinto detalle.",
+        "No atribuir al personaje hechos o escenas no documentados."
+      ],
+      "sourcePermissionStatus": "sin_evidencia_registrada",
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    "10": {
+      "filmId": 10,
+      "title": "Vamos de robo",
+      "year": 2014,
+      "status": "pendiente_revision",
+      "deployment": "manual_only",
+      "draftOrigin": "borrador_editorial_fase_e",
+      "es": "Michael, Pedro, Mateo y Antonio trabajan en el área de fiscalización de un banco. Una noche desaparece una gran suma de dinero de la bóveda y los cuatro quedan bajo sospecha por encontrarse en el lugar. Entre presiones, desconfianza y situaciones disparatadas, intentan aclarar lo ocurrido.",
+      "en": "Michael, Pedro, Mateo and Antonio work in a bank's auditing department. When a large sum disappears from the vault one night, the four become suspects because they were present. Pressure, mistrust and comic complications surround their attempt to clear their names.",
+      "sources": [
+        "https://cinemadominicano.com/vamos-de-robo-2014/",
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/vamos-de-robo-2014/"
+      ],
+      "openQuestions": [
+        "Corroborar denominaciones de cargos y personajes con créditos/fuentes primarias.",
+        "No afirmar la inocencia como hecho probado; el borrador habla de sospechas."
+      ],
+      "sourcePermissionStatus": "sin_evidencia_registrada",
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    "55": {
+      "filmId": 55,
+      "title": "El Plan Perfecto",
+      "year": 2017,
+      "status": "pendiente_revision",
+      "deployment": "manual_only",
+      "draftOrigin": "nueva_redaccion_f23",
+      "es": "Seis compañeros trabajan en un almacén de Santo Domingo cuyo propietario debe dejar el negocio por problemas de salud. Tras el cambio de administración, el local comienza a utilizarse en secreto para almacenar mercancía ilegal. Los empleados quedan atrapados en una situación que amenaza su estabilidad y deben encontrar una salida ante las consecuencias del negocio.",
+      "en": "Six coworkers at a warehouse in Santo Domingo face an unexpected change when the owner gives up the business because of health problems. The new management secretly turns the premises into a storage site for illegal goods. The employees are caught in a situation that threatens their livelihoods and must find a way through the resulting trouble.",
+      "sources": [
+        "https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/",
+        "https://cinemadominicano.com/el-plan-perfecto-2017/",
+        "https://paginasamarillas.com.do/es/movie/el-plan-perfecto/M5P1549"
+      ],
+      "openQuestions": [
+        "Revisar con la productora el paso de almacén legítimo a depósito de mercancía ilegal.",
+        "La redacción actual evita afirmar que se demostró un robo o una estafa en todos los relatos disponibles."
+      ],
+      "sourcePermissionStatus": "sin_evidencia_registrada",
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    "56": {
+      "filmId": 56,
+      "title": "La Lucha de Ana",
+      "year": 2012,
+      "status": "pendiente_revision",
+      "deployment": "manual_only",
+      "draftOrigin": "borrador_editorial_fase_e",
+      "es": "Ana mantiene a su hijo vendiendo flores en un mercado de Santo Domingo. Cuando el joven muere de forma violenta, la madre busca respuestas y justicia por las vías institucionales. Ante los obstáculos que encuentra, emprende una lucha personal que pone a prueba su resistencia.",
+      "en": "Ana supports her son by selling flowers at a market in Santo Domingo. After the young man is violently killed, she seeks answers and justice through official channels. Faced with obstacles, she begins a personal struggle that tests her resolve.",
+      "sources": [
+        "https://www.programaibermedia.com/proyectos/la-lucha-de-ana-2/",
+        "https://cinemadominicano.com/la-lucha-de-ana-2012/"
+      ],
+      "openQuestions": [
+        "Verificar el matiz entre muerte por accidente y violencia; se evita establecer una causa concreta.",
+        "No presentar la crítica institucional como el propósito declarado del director."
+      ],
+      "sourcePermissionStatus": "sin_evidencia_registrada",
+      "reviewedBy": null,
+      "reviewedAt": null
+    }
+  }
+}
