@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "description": "Referencias bibliograficas para sinopsis ya registradas en SQL Server. No constituyen aprobacion editorial ni licencias de reproduccion.",
+  "entries": {
+    "5": {
+      "title": "Perico Ripiao",
+      "year": 2003,
+      "fuentes": [
+        {
+          "titulo": "Cinema Dominicano — Perico Ripiao (2003)",
+          "url": "https://cinemadominicano.com/perico-ripiao-2003/"
+        },
+        {
+          "titulo": "CineDominicano — Perico ripiao (2003)",
+          "url": "https://cinedominicano.com/peliculasdominicanas/pelicula/perico-ripiao-2003/"
+        }
+      ]
+    },
+    "6": {
+      "title": "Ladrones a Domicilio",
+      "year": 2008,
+      "fuentes": [
+        {
+          "titulo": "Cinema Dominicano — Ladrones a Domicilio (2008)",
+          "url": "https://cinemadominicano.com/ladrones-a-domicilio-2008/"
+        },
+        {
+          "titulo": "CineDominicano — Ladrones a domicilio (2008)",
+          "url": "https://cinedominicano.com/peliculasdominicanas/pelicula/ladrones-a-domicilio-2008/"
+        }
+      ]
+    },
+    "10": {
+      "title": "Vamos de robo",
+      "year": 2014,
+      "fuentes": [
+        {
+          "titulo": "Cinema Dominicano — Vamos de robo (2014)",
+          "url": "https://cinemadominicano.com/vamos-de-robo-2014/"
+        },
+        {
+          "titulo": "CineDominicano — Vamos de robo (2014)",
+          "url": "https://cinedominicano.com/peliculasdominicanas/pelicula/vamos-de-robo-2014/"
+        }
+      ]
+    },
+    "55": {
+      "title": "El Plan Perfecto",
+      "year": 2017,
+      "fuentes": [
+        {
+          "titulo": "DGCINE — Mas de 50 mil personas han visto El Plan Perfecto",
+          "url": "https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/"
+        },
+        {
+          "titulo": "Cinema Dominicano — El Plan Perfecto (2017)",
+          "url": "https://cinemadominicano.com/el-plan-perfecto-2017/"
+        },
+        {
+          "titulo": "Paginas Amarillas — El Plan Perfecto",
+          "url": "https://paginasamarillas.com.do/es/movie/el-plan-perfecto/M5P1549"
+        }
+      ]
+    },
+    "56": {
+      "title": "La Lucha de Ana",
+      "year": 2012,
+      "fuentes": [
+        {
+          "titulo": "Programa Ibermedia — La Lucha de Ana",
+          "url": "https://www.programaibermedia.com/proyectos/la-lucha-de-ana-2/"
+        },
+        {
+          "titulo": "Cinema Dominicano — La Lucha de Ana (2012)",
+          "url": "https://cinemadominicano.com/la-lucha-de-ana-2012/"
+        }
+      ]
+    }
+  }
+}
