@@ -30,16 +30,21 @@
       "year": 2008,
       "status": "pendiente_revision",
       "deployment": "manual_only",
-      "draftOrigin": "borrador_editorial_fase_e",
-      "es": "Bruno, profesor universitario y padre de familia, busca otra manera de costear los estudios de su hija cuando desaparece la posibilidad de una beca. Acepta un segundo trabajo vinculado al transporte de valores, pero acaba envuelto en una operación peligrosa. Su esfuerzo por progresar se enfrenta a una trama marcada por la corrupción.",
-      "en": "Bruno, a university lecturer and father, needs another way to finance his daughter's education after a scholarship becomes unavailable. He takes a second job involving armored cash transport but becomes caught in a dangerous scheme. His effort to provide for his family collides with corruption.",
+      "draftOrigin": "nueva_redaccion_f23",
+      "es": "Bruno, profesor universitario, intenta financiar los estudios de su hija después de que se suspende el programa de becas de la institución donde enseña. Con ayuda de su compadre Biembo, consigue un empleo como conductor de un vehículo de transporte de valores. En su primera noche, él y sus acompañantes quedan atrapados en un robo organizado desde la propia compañía. Para escapar de la maniobra, Bruno deberá recurrir a su habilidad al volante mientras enfrenta una trama de corrupción.",
+      "en": "When the university where he teaches suspends its scholarship program, professor Bruno looks for another way to fund his daughter's education. With help from his friend Biembo, he takes a job driving a cash transport vehicle. On his first night, Bruno and his companions become caught in a robbery orchestrated from within the company. Escaping the scheme will test his driving skills as he confronts corruption.",
       "sources": [
         "https://cinemadominicano.com/ladrones-a-domicilio-2008/",
-        "https://cinedominicano.com/peliculasdominicanas/pelicula/ladrones-a-domicilio-2008/"
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/ladrones-a-domicilio-2008/",
+        "https://www.casamerica.es/cine/ladrones-domicilio",
+        "https://www.diariolibre.com/amp/revista/ladrones-a-domicilio-se-estrena-14-de-agosto-AADL25057",
+        "https://www.diariolibre.com/amp/revista/ladrones-a-domicilio-la-nueva-pelcula-del-director-ngel-muiz-YCDL23032"
       ],
       "openQuestions": [
-        "Corroborar la distinción entre guardia de seguridad y conductor de transporte de valores; hay fuentes que describen el mismo segundo empleo con distinto detalle.",
-        "No atribuir al personaje hechos o escenas no documentados."
+        "Verificar en créditos finales o visionado que la primera noche de Bruno como conductor de transporte de valores está representada tal como se describe en el material de estreno.",
+        "Contrastar la diferencia terminológica entre guardia de seguridad y chofer de transporte de valores; las fichas podrían resumir tareas del mismo empleo sin contradicción.",
+        "Revisar que la expresión robo organizado desde la propia compañía no sugiera culpabilidad de Bruno y que el inglés conserve esa distinción.",
+        "Identificar autoría y licencias del texto SQL anterior: varias fichas comparten redacción promocional y la presencia de fuentes no acredita derecho de reutilización."
       ],
       "sourcePermissionStatus": "sin_evidencia_registrada",
       "reviewedBy": null,
