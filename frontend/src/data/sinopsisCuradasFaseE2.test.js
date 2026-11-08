@@ -36,6 +36,17 @@ describe("CineRD · Fase E-2 / segunda tanda documentada", () => {
     expect(getSinopsisFaseE2(film).es).toContain("Puerto Rico");
   });
 
+  it("precisa la transformación nocturna de Lorenzo sin aprobar el borrador", () => {
+    const film = films.find(f => f.Id === 26);
+    const item = getSinopsisFaseE2(film);
+    expect(item).toBeTruthy();
+    expect(item.es).toContain("ocho de la noche hasta la medianoche");
+    expect(item.en).toContain("8 p.m. until midnight");
+    expect(item.es).not.toContain("ciertas horas del día");
+    expect(item.en).not.toContain("each day");
+    expect(item.estado).toBe("pendiente_revision");
+  });
+
   it("la tanda de 24 contribuye al total de 41 borradores de respaldo", () => {
     const fallback = films.filter(f=>!String(f.Sinopsis||"").trim() && getSinopsisEditorial(f));
     const missing = films.filter(f=>!String(f.Sinopsis||"").trim() && !getSinopsisEditorial(f));

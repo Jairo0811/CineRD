@@ -198,7 +198,7 @@
       "title": "Feo de día, Lindo de noche",
       "priority": "alta",
       "status": "pendiente_verificacion",
-      "observation": "Error de precisión potencial en ambos borradores: se dice «ciertas horas del día» / «a few hours each day», pero varias fuentes precisan el cambio de 8 p. m. a medianoche. Evitar interpretarlo como transformación diurna. Plantear una actualización editorial ES/EN tras revisión manual. Fecha SQL 2012-09-13 coincide.",
+      "observation": "F-2.3: corregida en los borradores ES/EN la referencia imprecisa a horas del día; ahora describe la transformación nocturna de 8 p. m. a medianoche, respaldada por Cinema Dominicano, Diario Libre y Prime Video. Quedan pendientes la revisión humana de exactitud, estilo, procedencia y versión editorial final. Incidencia original: Error de precisión potencial en ambos borradores: se dice «ciertas horas del día» / «a few hours each day», pero varias fuentes precisan el cambio de 8 p. m. a medianoche. Evitar interpretarlo como transformación diurna. Plantear una actualización editorial ES/EN tras revisión manual. Fecha SQL 2012-09-13 coincide.",
       "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE3.md"
     },
     {
