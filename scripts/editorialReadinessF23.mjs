@@ -80,11 +80,12 @@ export function assessEditorialReadiness({
     else errors.push("E-4 ha cambiado sin coincidencia de preimagen: "+key);
   }
 
-  const pendingIssues=issues.items.filter(i=>i.status==="pendiente_verificacion").length;
+  const pendingIssues=report.states.pending;
+  const resolvedIssues=report.states.resolved;
   const pendingEditorial=inventoryItems.length-e5Approved;
   const summary={
     editorial:{total:inventoryItems.length,approved:e5Approved,pending:pendingEditorial},
-    issues:{total:report.total,pending:pendingIssues,priorities:report.priorities},
+    issues:{total:report.total,pending:pendingIssues,resolved:resolvedIssues,priorities:report.priorities},
     sqlProvenance:{total:provenanceReport.total,withoutEvidence:provenanceReport.sinEvidencia,
       documentedPermissions:provenanceReport.acreditadas},
     sqlReplacementDrafts:{total:draftReport.total,pending:draftReport.pending,
@@ -126,7 +127,7 @@ function main(args=process.argv.slice(2)) {
     const s=result.summary;
     if(s) {
       console.log(`Editorial E-5: ${s.editorial.approved}/${s.editorial.total} aprobadas; ${s.editorial.pending} pendientes.`);
-      console.log(`Matriz: ${s.issues.total} observaciones; ${s.issues.pending} pendientes (${s.issues.priorities.alta} alta, ${s.issues.priorities.media} media, ${s.issues.priorities.baja} baja).`);
+      console.log(`Matriz: ${s.issues.total} observaciones; ${s.issues.pending} pendientes, ${s.issues.resolved} resueltas (${s.issues.priorities.alta} alta, ${s.issues.priorities.media} media, ${s.issues.priorities.baja} baja).`);
       console.log(`SQL: ${s.sqlReplacementDrafts.total} propuestas, ${s.sqlProvenance.withoutEvidence} sin evidencia de permiso, ${s.sqlMigration.validHumanReviewRecords} autorizaciones registradas válidas.`);
       console.log(`E-4: ${s.e4.pending} cambios pendientes; ${s.e4.appliedInSnapshot} reflejados en snapshot.`);
     }

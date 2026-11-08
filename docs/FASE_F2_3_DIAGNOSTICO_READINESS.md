@@ -15,7 +15,7 @@ Comprueba la integridad de la matriz F-2.3 y los registros SQL, aprovechando los
 | Control | Situación | Interpretación |
 |---|---|---|
 | Piezas E-5 | **0/58 aprobadas**; 58 pendientes | La cobertura de contraste NO es aprobación |
-| Matriz F-2.3 | **58/58 observaciones pendientes** | 18 de prioridad alta, 18 media, 22 baja |
+| Matriz F-2.3 | **58/58 observaciones pendientes; 0 resueltas** | 18 de prioridad alta, 18 media, 22 baja |
 | Procedencia de cinco sinopsis SQL | **5 sin evidencia de permiso de reproducción registrada** | No permite presumir infracción ni permiso |
 | Propuestas ES/EN SQL | **5 propuestas pendientes** | 0 publicadas automáticamente |
 | Aprobaciones para migración SQL | **0/5** | El generador reversible sigue bloqueado |
@@ -45,6 +45,12 @@ node --test scripts/editorialReadinessF23.test.mjs
 ```
 
 **No usar `--strict` como requisito de compilación pública mientras existan 58 revisiones pendientes**: su fallo actual es deliberado y significa que no debe declararse la fase concluida, no que el frontend esté averiado.
+
+## Incidencias resueltas frente a aprobaciones
+
+El diagnóstico muestra **dos contadores distintos**: `issues.pending` e `issues.resolved`. Solo una resolución humana atribuida, con fecha, fuentes HTTPS y fingerprint vigente, puede reducir el primero. El validador `verifyEditorialIssueMatrix.mjs` exige esos requisitos y rechaza cierres falsos o desactualizados.
+
+Una incidencia documental resuelta **no incrementa** `editorial.approved`; la aprobación de contenido continúa bajo el registro E-5. Asimismo, la disponibilidad de permisos SQL y la aprobación de migraciones siguen siendo controles separados. Con los registros actuales, los conteos permanecen en **58 pendientes / 0 resueltas / 0 aprobaciones E-5**.
 
 ## Flujo para resolver bloqueos
 

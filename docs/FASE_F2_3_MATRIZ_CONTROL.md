@@ -4,7 +4,7 @@
 
 ## Entregables
 
-- `docs/editorial-issues-f2.json`: 58 registros, cada uno vinculado a la sinopsis o contexto y al informe F-2.2 del que procede. `status: pendiente_verificacion` en todos.
+- `docs/editorial-issues-f2.json`: 58 registros, cada uno vinculado a la sinopsis o contexto y al informe F-2.2 del que procede. **Actualmente** todos conservan `status: pendiente_verificacion`; el validador admite futuros cierres `resuelta` únicamente con una decisión humana trazable, fuentes y fingerprint vigente.
 - `scripts/verifyEditorialIssueMatrix.mjs`: contrasta la matriz con el inventario de `editorialReviewAudit.mjs`, detecta duplicados, faltantes, referencias inexistentes, títulos inconsistentes, estados no permitidos y vínculos E-4 inválidos.
 - `scripts/verifyEditorialIssueMatrix.test.mjs`: cinco pruebas unitarias del validador.
 
@@ -27,6 +27,18 @@
 4. **Consistencia de trama y traducción**: **23** (Morena/Martha), **26** (horario del hechizo), **29** (Johana/Johanna); evaluar nuevas versiones ES/EN, fuentes oficiales y fidelidad argumental.
 5. **Análisis contextuales**: comprobar citas académicas, créditos y hechos históricos; distinguir explícitamente hechos y lecturas originales de CineRD, sin atribuir intenciones de dirección no documentadas.
 6. **Control legal y editorial**: los textos y las imágenes requieren verificaciones de procedencia separadas. Las **128 imágenes** siguen sin prueba de derechos comerciales registrada; AdSense continúa apagado.
+
+## Registro controlado del cierre de incidencias
+
+El validador de la matriz permite dos estados: `pendiente_verificacion` (sin campo `resolution`) y `resuelta` (exige `resolution`). Una incidencia solo podrá declararse resuelta **después de una revisión humana auténtica y documentada**, nunca a partir de la ejecución de pruebas.
+
+Para `resuelta` son obligatorios: `resolution.decision` (uno de `sin_cambio_justificado`, `correccion_verificada`, `incidencia_descartada`), `reviewedBy` atribuible, `reviewedAt` con zona horaria, `notes` sustanciales, al menos una URL HTTPS en `evidenceUrls` y `contentFingerprint` exactamente igual al fingerprint E-5 **vigente de esa pieza**. El estado `correccion_verificada` también exige `changeRef` HTTPS al cambio real.
+
+La huella puede consultarse en `node scripts/editorialReviewAudit.mjs --json`. Si cambia el texto o sus fuentes y la huella deja de coincidir, el cierre es **inválido** hasta una nueva verificación humana. No introducir nombres, fechas o permisos ficticios.
+
+**Cerrar una incidencia no significa aprobar su sinopsis o contexto**, ni acreditar propiedad intelectual, ni autorizar una migración SQL. Los libros `docs/editorial-approvals-e5.json`, `docs/editorial-provenance-sql-f23.json` y `docs/editorial-sql-migration-approvals-f23.json` mantienen sus barreras independientes.
+
+Los resultados del validador muestran `pending` y `resolved` por separado. **Estado real actual:** 58 pendientes y 0 resueltas.
 
 ## Flujo de resolución de cada observación
 

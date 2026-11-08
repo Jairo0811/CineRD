@@ -92,4 +92,27 @@ describe("CineRD F-2.3 / diagnóstico de preparación editorial",()=>{
     assert.equal(strict.status,1);
     assert.match(strict.stdout,/NO ESTA LISTA/);
   });
+  it("una resolución humana de F-2.3 reduce pendientes, sin aprobar textos E-5",()=>{
+    const c=original();
+    const issue=c.issues.items.find(x=>x.filmId===5 && x.kind==="sinopsis");
+    const current=c.inventoryItems.find(x=>x.filmId===5 && x.kind==="sinopsis");
+    issue.status="resuelta";
+    issue.resolution={
+      decision:"sin_cambio_justificado",
+      reviewedBy:"Revisor de prueba (sin firma real)",
+      reviewedAt:"2026-11-07T15:00:00-04:00",
+      notes:"Ejemplo exclusivo de regresión para verificar que la incidencia es independiente de la aprobación E-5.",
+      evidenceUrls:["https://example.org/review-evidence"],
+      contentFingerprint:current.fingerprint
+    };
+    const r=assessEditorialReadiness(c);
+    assert.deepEqual(r.errors,[]);
+    assert.equal(r.summary.issues.pending,57);
+    assert.equal(r.summary.issues.resolved,1);
+    assert.equal(r.summary.editorial.approved,0);
+    assert.equal(r.summary.editorial.pending,58);
+    assert.equal(r.ready,false);
+    assert.ok(r.blockers.some(x=>x.includes("Faltan aprobaciones E-5: 58")));
+  });
+
 });
