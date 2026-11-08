@@ -3,20 +3,19 @@
  * deployment manifest. Cloudflare Pages supplies CF_PAGES and CF_PAGES_BRANCH
  * automatically on Git-integrated builds.
  *
- * Public main is fail-closed: unlicensed media must not be published even if
- * a production environment variable was omitted or set to "normal".
- * Non-production builds retain historical opt-in behavior.
+ * All Cloudflare Pages deployments (main and preview branches) are fail-closed:
+ * no unlicensed media should be distributed even when a mode is omitted or wrong.
+ * Other build environments require an explicit review setting for safe output.
  */
 export function resolveMediaRightsBuildMode(env = process.env) {
   const requested = String(env.VITE_MEDIA_RIGHTS_MODE || "").trim();
-  const isCloudflareProduction = String(env.CF_PAGES || "") === "1"
-    && String(env.CF_PAGES_BRANCH || "") === "main";
+  const isCloudflarePages = String(env.CF_PAGES || "") === "1";
 
-  if (isCloudflareProduction) {
+  if (isCloudflarePages) {
     if (requested && requested !== "review") {
       console.warn(
-        "⚠ CineRD Cloudflare main: se ignora VITE_MEDIA_RIGHTS_MODE=" +
-        requested + "; producción obliga review para proteger medios sin permiso."
+        "⚠ CineRD Cloudflare Pages: se ignora VITE_MEDIA_RIGHTS_MODE=" +
+        requested + "; todos los despliegues obligan review para proteger medios sin permiso."
       );
     }
     return "review";
