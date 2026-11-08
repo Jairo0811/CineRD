@@ -39,10 +39,28 @@ describe("CineRD F-2.3 / diagnóstico de preparación editorial",()=>{
     assert.equal(r.summary.sqlProvenance.withoutEvidence,5);
     assert.equal(r.summary.sqlReplacementDrafts.pending,5);
     assert.equal(r.summary.sqlMigration.validHumanReviewRecords,0);
-    assert.equal(r.summary.e4.pending,7);
-    assert.equal(r.summary.e4.appliedInSnapshot,0);
+    assert.equal(r.summary.e4.total,7);
+    assert.equal(r.summary.e4.pending+r.summary.e4.appliedInSnapshot,7);
+    assert.ok(r.summary.e4.pending>=0 && r.summary.e4.appliedInSnapshot>=0);
     assert.deepEqual(r.summary.e4.authorizations,{valid:0,required:7,pending:7});
     assert.equal(r.documentaryOnly,true);
+  });
+  it("al exportar los siete valores propuestos E-4 desaparece el bloqueo de snapshot, no el de autorizaciones",()=>{
+    const c=original();
+    for(const row of c.e4.rows) {
+      const f=c.snapshot.tables.Peliculas.find(p=>p.Id===row.filmId);
+      f[row.field]=row.field==="FechaEstreno"
+        ? row.proposed+"T00:00:00.000Z" : row.proposed;
+    }
+    const r=assessEditorialReadiness(c);
+    assert.deepEqual(r.errors,[]);
+    assert.equal(r.summary.e4.pending,0);
+    assert.equal(r.summary.e4.appliedInSnapshot,7);
+    assert.equal(r.summary.e4.authorizations.pending,7);
+    assert.ok(r.blockers.some(x=>x.includes("Cambios E-4 sin autorización humana documentada: 7")));
+    assert.ok(!r.blockers.some(x=>x.includes("Ajustes E-4 pendientes en snapshot")));
+    assert.equal(r.summary.editorial.approved,0);
+    assert.equal(r.ready,false);
   });
   it("detecta matriz con duplicados y entradas omitidas",()=>{
     const c=original();
@@ -120,7 +138,7 @@ describe("CineRD F-2.3 / diagnóstico de preparación editorial",()=>{
   it("marca E-4 sin autorizaciones como bloqueo separado de la aplicación SQL",()=>{
     const r=assessEditorialReadiness(original());
     assert.ok(r.blockers.some(x=>x.includes("Cambios E-4 sin autorización humana documentada: 7")));
-    assert.ok(r.blockers.some(x=>x.includes("Ajustes E-4 pendientes en snapshot: 7")));
+    assert.equal(r.summary.e4.pending+r.summary.e4.appliedInSnapshot,7);
   });
   it("una autorización E-4 ficticia con huella inválida no cuenta como válida",()=>{
     const c=original();

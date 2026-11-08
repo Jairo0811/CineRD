@@ -51,7 +51,13 @@ function compareLiveRecords(rows, records) {
   }
   const counts=Object.fromEntries(["EXPECTED","ALREADY","DRIFT","MISSING"].map(s=>[
     s,items.filter(item=>item.status===s).length]));
-  return {databaseRows:groups.size,items,counts,hasDrift:counts.DRIFT>0||counts.MISSING>0||counts.ALREADY>0};
+  const hasDrift=counts.DRIFT>0||counts.MISSING>0;
+  const allAlready=items.length>0 && counts.ALREADY===items.length;
+  const partial=counts.ALREADY>0 && !allAlready;
+  return {
+    databaseRows:groups.size,items,counts,hasDrift,allAlready,partial,
+    unsafeToApply:hasDrift||counts.ALREADY>0
+  };
 }
 
 async function readLiveMovies(pool, ids) {
@@ -109,12 +115,18 @@ async function main() {
   console.log("Resultado: "+c.EXPECTED+" sin cambios; "+c.ALREADY+
     " ya propuestos; "+c.DRIFT+" distintos; "+c.MISSING+" ausentes.");
   if(report.hasDrift) {
-    console.error("✗ SQL no coincide completamente con la preimagen E-4. No ejecutar la actualización sin revisar.");
+    console.error("✗ Hay campos inesperados o películas ausentes en SQL. Revisar antes de sincronizar.");
+    process.exitCode=1;
+  } else if(report.allAlready) {
+    console.log("✓ Los 7 cambios E-4 YA ESTÁN en SQL Server. No ejecutar catalog:corrections:apply.");
+    console.log("→ El snapshot Git puede estar obsoleto: respaldarlo, ejecutar catalog:export, revisar el diff y catalog:validate.");
+    console.log("Esta comprobación no concede ni registra aprobaciones humanas.");
+  } else if(report.partial) {
+    console.error("✗ E-4 parcialmente aplicado en SQL. No ejecutar el lote completo ni exportar sin revisar diferencias.");
     process.exitCode=1;
   } else {
-    console.log("✓ Lectura terminada. No se modificó SQL ni se autorizaron correcciones.");
-    if(c.ALREADY>0)
-      console.log("⚠ Parte del catálogo ya difiere de la preimagen. La aplicación E-4 actual fallará y debe replantearse antes de proceder.");
+    console.log("✓ SQL contiene los valores originales; las correcciones siguen pendientes y requieren aprobaciones humanas.");
+    console.log("No se modificó SQL ni se autorizó ninguna corrección.");
   }
 }
 if(require.main===module)main().catch(e=>{console.error("✗ "+e.message);process.exitCode=1;});

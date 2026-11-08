@@ -60,6 +60,36 @@ El ledger E-4 contiene **7 propuestas de modificación en 4 películas**. Todas 
 
 **Evaluación:** respaldo **institucional y de distribución alto** para los dos valores propuestos.
 
+
+## Hallazgo posterior: los 7 valores ya están corregidos en SQL Server
+
+**Confirmación del usuario:** se ejecutó `npm --prefix backend run catalog:corrections:live:preview` contra `CRUDPeliculas` y los siete campos devolvieron **`ALREADY`**, con **0 `DRIFT`, 0 `MISSING`, 0 `EXPECTED`**. Así, la base consultada **ya contiene los siete valores propuestos por E-4** mientras que `database/seeds/catalog.snapshot.json` en la rama sigue con sus siete valores históricos.
+
+**Decisión operativa:** **NO ejecutar `catalog:corrections:apply` ni repetir `UPDATE` alguno**. La herramienta de consulta ahora trata los siete `ALREADY` como estado consistente de SQL que requiere **sincronizar el snapshot**, no como un fallo de integridad. Un estado mixto (`EXPECTED` y `ALREADY`) sigue bloqueando un lote de aplicación, y `DRIFT`/`MISSING` deben investigarse.
+
+### Siguiente intervención segura: exportar la versión de SQL ya existente
+
+Antes de exportar, revisar `git status --short` y guardar una copia del snapshot anterior en una carpeta ignorada por Git. Desde la raíz, en PowerShell:
+
+```powershell
+git status --short
+
+New-Item -ItemType Directory -Force .\database\seeds\backups
+Copy-Item .\database\seeds\catalog.snapshot.json (".\database\seeds\backups\catalog.before-e4-" + (Get-Date -Format "yyyyMMdd-HHmmss") + ".json")
+
+npm --prefix backend run catalog:export
+npm --prefix backend run catalog:validate
+
+git diff --stat -- database/seeds/catalog.snapshot.json
+npm --prefix frontend run editorial:readiness
+```
+
+El comando `catalog:export` **sobrescribe solo el archivo snapshot local con una exportación completa del SQL**, incluyendo otros datos y una nueva marca `generatedAtUtc`; puede generar cambios no relacionados con E-4. **No hacer commit, push ni merge hasta revisar el diff completo y comprobar que no incluye datos privados o cambios no previstos**. Si la validación informa archivos multimedia locales ausentes, registrar el aviso por separado; no asumir que las correcciones E-4 fallaron por ello.
+
+**Resultado esperado después de una exportación sin cambios inesperados:** E-4 muestra **7 valores reflejados en el snapshot, 0 ajustes pendientes por sincronizar**, pero **0/7 autorizaciones E-4 documentadas**. Los siete cambios ya existentes en SQL no generan retrospectivamente revisiones humanas ni justifican registrar firmas ficticias. La auditoría de E-5 seguirá requiriendo aprobación de la versión definitiva.
+
+Hasta conocer el diff, **F-2.3 permanece abierta**.
+
 ## Paso E-4.1: comparar el snapshot con SQL Server real (solo lectura)
 
 La vista previa tradicional `catalog:corrections:preview` utiliza **el snapshot Git**; no puede demostrar que la base de datos actual siga teniendo los valores originales. Antes de decidir la aplicación debe ejecutarse en un entorno autorizado:

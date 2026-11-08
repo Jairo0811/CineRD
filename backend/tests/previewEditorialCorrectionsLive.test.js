@@ -4,12 +4,19 @@ const ledger=require("../../docs/catalog-corrections-e4.json");
 const snapshot=require("../../database/seeds/catalog.snapshot.json");
 const {compareLiveRecords,readLiveMovies}=require("../scripts/previewEditorialCorrectionsLive");
 
+// Construct the historical E-4 preimage from the ledger, NOT from the snapshot.
+// After a legitimate SQL export, the snapshot may already contain all proposed values.
 const baseline=()=>[9,24,30,32].map(id=>{
   const f=snapshot.tables.Peliculas.find(x=>x.Id===id);
-  return {
+  const result={
     Id:f.Id,Titulo:f.Titulo,Genero:f.Genero,Director:f.Director,
     FechaEstreno:new Date(f.FechaEstreno)
   };
+  for(const row of ledger.rows.filter(x=>x.filmId===id)) {
+    result[row.field]=row.field==="FechaEstreno"
+      ? new Date(row.expected+"T00:00:00.000Z") : row.expected;
+  }
+  return result;
 });
 const inspect=records=>compareLiveRecords(ledger.rows,records);
 
@@ -28,7 +35,25 @@ test("E-4: detectar cambio ya aplicado sin volver a aplicar el lote completo",()
   const out=inspect(records);
   assert.equal(out.counts.ALREADY,1);
   assert.equal(out.counts.EXPECTED,6);
-  assert.equal(out.hasDrift,true);
+  assert.equal(out.hasDrift,false);
+  assert.equal(out.partial,true);
+  assert.equal(out.unsafeToApply,true);
+});
+
+test("E-4: siete ALREADY es éxito de lectura y requiere sincronizar snapshot",()=>{
+  const records=baseline();
+  for(const row of ledger.rows) {
+    const f=records.find(x=>x.Id===row.filmId);
+    f[row.field]=row.field==="FechaEstreno"
+      ? new Date(row.proposed+"T00:00:00.000Z") : row.proposed;
+  }
+  const out=inspect(records);
+  assert.equal(out.counts.ALREADY,7);
+  assert.equal(out.counts.EXPECTED,0);
+  assert.equal(out.hasDrift,false);
+  assert.equal(out.allAlready,true);
+  assert.equal(out.partial,false);
+  assert.equal(out.unsafeToApply,true);
 });
 
 test("E-4: detectar una discrepancia inesperada en nombre y fecha",()=>{
