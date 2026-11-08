@@ -22,6 +22,7 @@
     "catalog:corrections:approvals:preview": "node scripts/e4ApprovalGate.js",
     "catalog:corrections:preview": "node scripts/applyEditorialCorrections.js",
     "catalog:corrections:live:preview": "node scripts/previewEditorialCorrectionsLive.js",
+    "catalog:corrections:snapshot:verify": "node ../scripts/verifyE4SnapshotExport.cjs",
     "catalog:corrections:apply": "node scripts/applyEditorialCorrections.js --apply"
   },
   "keywords": [],
