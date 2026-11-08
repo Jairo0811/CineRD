@@ -50,15 +50,19 @@ function validateApproval(film,draft,approval) {
     "Falta justificacion editorial");
   return fp;
 }
-function sqlScript({film,oldValue,newValue,kind,fingerprint:fp}) {
+function sqlScript({film,oldValue,newValue,kind,fingerprint:fp,databaseName="CRUDPeliculas"}) {
   ensure(["UP","DOWN"].includes(kind) && oldValue!==newValue,"Transicion SQL invalida");
   const id=Number(film.Id),year=Number(String(film.FechaEstreno).slice(0,4));
   ensure(Number.isInteger(id) && id>0 && Number.isInteger(year) && year>=1900 && year<=2200,
     "ID o anio SQL invalidos");
+  ensure(typeof databaseName==="string" && /^[A-Za-z0-9_]+$/.test(databaseName),
+    "Nombre de base de datos no seguro");
   return `-- CineRD F-2.3 / ${kind} / film ${id} / ${fp}
 -- SOLO EJECUCION MANUAL CON BACKUP REAL DE SQL SERVER.
 -- Esta migracion cambia solo dbo.Peliculas.Sinopsis en espanol.
 SET XACT_ABORT ON;
+IF DB_NAME() <> ${literal(databaseName)}
+  THROW 51009, 'CineRD: base de datos incorrecta', 1;
 BEGIN TRY
   SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
   BEGIN TRANSACTION;
@@ -89,13 +93,13 @@ BEGIN CATCH
 END CATCH;
 `;
 }
-function createBundle(film,draft,approval) {
+function createBundle(film,draft,approval,databaseName="CRUDPeliculas") {
   validateDraft(film,draft);
   const fp=validateApproval(film,draft,approval);
   return {
     fingerprint:fp,
-    up:sqlScript({film,oldValue:film.Sinopsis,newValue:draft.es,kind:"UP",fingerprint:fp}),
-    down:sqlScript({film,oldValue:draft.es,newValue:film.Sinopsis,kind:"DOWN",fingerprint:fp}),
+    up:sqlScript({film,oldValue:film.Sinopsis,newValue:draft.es,kind:"UP",fingerprint:fp,databaseName}),
+    down:sqlScript({film,oldValue:draft.es,newValue:film.Sinopsis,kind:"DOWN",fingerprint:fp,databaseName}),
     meta:{filmId:Number(film.Id),title:film.Titulo,fingerprint:fp,
       originalHash:sha256(film.Sinopsis),replacementEsHash:sha256(draft.es),
       replacementEnHash:sha256(draft.en),
@@ -148,7 +152,7 @@ function main(argv=process.argv.slice(2)) {
   const film=films.find(f=>f.Id===args.filmId);
   const draft=drafts.entries[String(film.Id)];
   // Approval and full fingerprint validation must happen BEFORE generating SQL.
-  const bundle=createBundle(film,draft,approvals.get(film.Id));
+  const bundle=createBundle(film,draft,approvals.get(film.Id),snap.sourceDatabase);
   ensure(typeof args.backupFile==="string" && path.isAbsolute(args.backupFile),
     "Se requiere --backup-file con ruta absoluta a un respaldo SQL Server");
   const backup=fs.statSync(args.backupFile,{throwIfNoEntry:false});

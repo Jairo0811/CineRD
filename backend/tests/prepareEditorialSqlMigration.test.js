@@ -32,6 +32,7 @@ test("F-2.3 cambio en cualquier texto, fuentes o SQL invalida la huella",()=>{
 });
 test("F-2.3 aprobación atribuida genera UP y DOWN transaccionales reversibles",()=>{
   const bundle=createBundle(film,draft,approval());
+  assert.match(bundle.up,/IF DB_NAME\(\) <> N\x27CRUDPeliculas\x27/);
   assert.match(bundle.up,/BEGIN TRANSACTION/);
   assert.match(bundle.up,/COMMIT TRANSACTION/);
   assert.match(bundle.up,/ROLLBACK TRANSACTION/);

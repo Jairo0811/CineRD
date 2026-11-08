@@ -60,7 +60,7 @@ Antes de fusionar a `main` o desplegar cambios, revisar el diff del snapshot, la
 
 ## Garantías y limitaciones
 
-- Los SQL generados usan `SERIALIZABLE`, `UPDLOCK/HOLDLOCK`, `TRY/CATCH`, `XACT_ABORT`, comparación binaria del texto antiguo y validación de identidad ID/título/año; `@@ROWCOUNT` debe ser exactamente 1.
+- Los SQL generados comprueban `DB_NAME()` frente a `sourceDatabase` del snapshot, usan `SERIALIZABLE`, `UPDLOCK/HOLDLOCK`, `TRY/CATCH`, `XACT_ABORT`, comparación binaria del texto antiguo y validación de identidad ID/título/año; `@@ROWCOUNT` debe ser exactamente 1.
 - La migración aplica solo **ES** al campo SQL `Sinopsis`. El texto **EN** queda conservado en el expediente; ofrecer traducción en vivo requiere una decisión de arquitectura separada para `PeliculaTraducciones` o un mecanismo equivalente.
 - El simple hecho de aprobar un reemplazo no acredita automáticamente los derechos sobre la sinopsis SQL antigua. La evaluación de procedencia anterior permanece registrada.
 - El `fingerprint` de este procedimiento es para **autorizar una migración específica**; no sustituye el fingerprint de `editorialReviewAudit.mjs` ni las aprobaciones de E-5.
