@@ -21,11 +21,21 @@ describe("CineRD · Fase E-2 / segunda tanda documentada", () => {
       expect(item.en.length).toBeGreaterThan(105);
       expect(originalText.has(item.es)).toBe(false);
       originalText.add(item.es);
-      expect(item.fuentes).toHaveLength(1);
-      const source = item.fuentes[0].url;
-      expect(new URL(source).protocol).toBe("https:");
+      expect(item.fuentes).toHaveLength(id === 23 ? 2 : 1);
+      for (const source of item.fuentes) expect(new URL(source.url).protocol).toBe("https:");
       expect(item.tituloReferencia).toBe(film.Titulo);
     }
+  });
+
+  it("Sanky Panky 2 mantiene Morena como pareja según distribuidora sin aprobar el texto", () => {
+    const film = films.find(f => f.Id === 23);
+    const item = getSinopsisFaseE2(film);
+    expect(item.es).toContain("Morena intenta");
+    expect(item.es).toContain("regreso de Martha");
+    expect(item.en).toContain("Morena hopes");
+    expect(item.en).toContain("return of Martha");
+    expect(item.fuentes.map(f => f.url)).toContain("https://caribbeancinemas.com/movie/3959/");
+    expect(item.estado).toBe("pendiente_revision");
   });
 
   it("rechaza fichas cuyo ID, título o año no coincide", () => {

@@ -165,9 +165,9 @@
       "filmId": 23,
       "kind": "sinopsis",
       "title": "Sanky Panky 2",
-      "priority": "alta",
+      "priority": "media",
       "status": "pendiente_verificacion",
-      "observation": "Contradicción de fuentes: una reseña del mismo medio describe a Martha como la novia actual de Genaro, frente a Morena en la ficha histórica. Comprobar con créditos, productora o visionado antes de aprobar la relación entre personajes. Además, la ficha emplea el título extendido «Sanky Panky 2: Objetivo Italia».",
+      "observation": "F-2.3: la distribuidora Caribbean Cinemas identifica a La Morena como novia actual de Genaro y el regreso de Martha como desencadenante de enredos (https://caribbeancinemas.com/movie/3959/). La ficha histórica y UC3M coinciden. La reseña que llama Martha «novia» es discrepante: prevalece la descripción de distribución para el borrador. Texto ES/EN conservado; añadida fuente primaria de distribución. Siguen pendientes revisión editorial humana, procedencia y eventual alias «Objetivo Italia». Incidencia original en F-2.2, lote 2.",
       "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE2.md"
     },
     {

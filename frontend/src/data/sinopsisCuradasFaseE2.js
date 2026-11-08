@@ -69,6 +69,10 @@ export const SINOPSIS_EDITORIALES_FASE_E2 = Object.freeze({
       {
         "titulo": "Ficha histórica / fuente del argumento",
         "url": "https://cinemadominicano.com/sanky-panky-2-2013/"
+      },
+      {
+        "titulo": "Caribbean Cinemas — ficha de distribución Sanky Panky 2",
+        "url": "https://caribbeancinemas.com/movie/3959/"
       }
     ]
   },

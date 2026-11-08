@@ -14,8 +14,8 @@
 
 | Prioridad | Piezas | Criterio de actuación |
 |---|---:|---|
-| ALTA | 19 | Resolver primero dudas de procedencia SQL, precisión argumental importante y discrepancias de producción/estreno |
-| MEDIA | 17 | Aclarar fuentes contrapuestas, matices editoriales y variaciones de títulos o fechas |
+| ALTA | 18 | Resolver primero dudas de procedencia SQL, precisión argumental importante y discrepancias de producción/estreno |
+| MEDIA | 18 | Aclarar fuentes contrapuestas, matices editoriales y variaciones de títulos o fechas |
 | BAJA | 22 | Verificar redacción, precisión y fuentes en el pase editorial final |
 | **TOTAL** | **58** | **46 sinopsis + 12 contextos** |
 
@@ -46,6 +46,6 @@ npm --prefix frontend run editorial:review
 git diff --check
 ```
 
-Con la situación actual, el validador debe mostrar **58 registros: 19 alta, 17 media, 22 baja**, sin duplicados ni faltantes. La auditoría editorial E-5 debe seguir mostrando **0 aprobadas y 58 pendientes**.
+Con la situación actual, el validador debe mostrar **58 registros: 18 alta, 18 media, 22 baja**, sin duplicados ni faltantes. La auditoría editorial E-5 debe seguir mostrando **0 aprobadas y 58 pendientes**.
 
 **F-2.3 no termina aquí.** Estos controles hacen trazables las observaciones. Falta resolver las discrepancias con evidencia suficiente, decidir y aplicar cambios legítimos, revisar la redacción final y preparar el proceso de firma humana de F-2.4.

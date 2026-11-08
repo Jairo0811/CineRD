@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "description": "Investigacion preliminar de procedencia para las cinco sinopsis SQL existentes. Similaridad textual no determina autoria ni infraccion y no certifica permisos.",
+  "entries": {
+    "5": {
+      "filmId": 5,
+      "title": "Perico Ripiao",
+      "year": 2003,
+      "textOriginStatus": "por_identificar",
+      "reusePermissionStatus": "sin_evidencia_registrada",
+      "observedOverlap": "muy_alta",
+      "comparisonSources": [
+        "https://www.lavanguardia.com/peliculas-series/peliculas/perico-ripiao-25000",
+        "https://www.playpilot.com/us-es/movie/perico-ripiao-pptiDQV/"
+      ],
+      "researchNote": "Redacción y estructura del resumen SQL prácticamente iguales a catálogos externos; diferencias ortográficas como güira/güiro. Autor de origen y derechos sin determinar.",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "permissionEvidence": []
+    },
+    "6": {
+      "filmId": 6,
+      "title": "Ladrones a Domicilio",
+      "year": 2008,
+      "textOriginStatus": "por_identificar",
+      "reusePermissionStatus": "sin_evidencia_registrada",
+      "observedOverlap": "muy_alta",
+      "comparisonSources": [
+        "https://www.cine.com/pelicula/ladrones-a-domicilio",
+        "https://www.diariolibre.com/revista/ladrones-a-domicilio-se-estrena-14-de-agosto-AADL25057"
+      ],
+      "researchNote": "Correspondencia casi literal, incluso con errores de acentuación, respecto de fichas y reseñas difundidas externamente. No se acredita quién escribió primero.",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "permissionEvidence": []
+    },
+    "10": {
+      "filmId": 10,
+      "title": "Vamos de robo",
+      "year": 2014,
+      "textOriginStatus": "por_identificar",
+      "reusePermissionStatus": "sin_evidencia_registrada",
+      "observedOverlap": "muy_alta",
+      "comparisonSources": [
+        "https://www.elcaribe.com.do/sin-categoria/ldquovamos-robordquo-asalto-risas/",
+        "https://www.justwatch.com/mx/pelicula/vamos-de-robo"
+      ],
+      "researchNote": "Redacción muy cercana o idéntica a la sinopsis incluida en una reseña periodística y agregadores cinematográficos. No acredita titularidad.",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "permissionEvidence": []
+    },
+    "55": {
+      "filmId": 55,
+      "title": "El Plan Perfecto",
+      "year": 2017,
+      "textOriginStatus": "por_identificar",
+      "reusePermissionStatus": "sin_evidencia_registrada",
+      "observedOverlap": "muy_alta",
+      "comparisonSources": [
+        "https://tv.apple.com/us/movie/el-plan-perfecto/umc.cmc.1xuuyzufrx91vsnxjqt3q4zqb?l=es",
+        "https://watch.plex.tv/es/movie/el-plan-perfecto"
+      ],
+      "researchNote": "Coincidencia literal con la descripción de distribución de Apple TV y otros agregadores. Debe comprobarse la licencia o sustituirse con un texto propio revisado.",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "permissionEvidence": []
+    },
+    "56": {
+      "filmId": 56,
+      "title": "La Lucha de Ana",
+      "year": 2012,
+      "textOriginStatus": "por_identificar",
+      "reusePermissionStatus": "sin_evidencia_registrada",
+      "observedOverlap": "muy_alta",
+      "comparisonSources": [
+        "https://dgcine.gob.do/programacion-cinemateca-sobre-ruedas-centro-cultural-narciso-gonzalez-2/",
+        "https://cinemadominicano.com/la-lucha-de-ana-2012/"
+      ],
+      "researchNote": "Coincidencia muy alta de construcción y formulaciones con DGCINE y catálogos; el texto SQL tiene adiciones no suficientes para demostrar redacción original.",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "permissionEvidence": []
+    }
+  }
+}
