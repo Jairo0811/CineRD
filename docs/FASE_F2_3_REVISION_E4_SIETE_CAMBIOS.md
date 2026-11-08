@@ -80,7 +80,7 @@ El ledger E-4 contiene **7 propuestas de modificación en 4 películas**. Todas 
 ## Procedimiento técnico existente
 
 - Vista previa: `npm --prefix backend run catalog:corrections:preview`.
-- El script `backend/scripts/applyEditorialCorrections.js` exige `--apply --confirm-db-backup`, se conecta a **SQL Server local** y comprueba valores originales bajo transacción `SERIALIZABLE`, guarda preimagen y realiza cambios. La confirmación por flag **no prueba por sí sola** la existencia de un respaldo restaurable; es tarea del administrador.
+- El script `backend/scripts/applyEditorialCorrections.js` conserva la transacción `SERIALIZABLE`, los controles de valores anteriores y la preimagen. **Ahora** también incorpora `e4ApprovalGate.js`, que bloquea la conexión hasta acreditar registros de revisión de los siete campos, base de datos correcta y un `.bak` local existente. La existencia del archivo **no prueba que sea restaurable**; véase `docs/FASE_F2_3_CONTROL_APROBACION_E4.md`.
 - No ejecutar `catalog:import:replace`, no editar `database/seeds/catalog.snapshot.json` manualmente y no sobreescribir cambios ajenos.
 - Tras ejecutar legítimamente en un futuro: `npm --prefix backend run catalog:export` y `npm --prefix backend run catalog:validate`; comprobar diff y renovar los fingerprints de E-5 cuando los datos que afectan a identidad o fuentes cambien.
 - El validador de F-2.3 aún debe mostrar **7 ajustes E-4 pendientes**, **58 observaciones F-2.3 abiertas**, **0 revisiones E-5** y **0 aprobaciones para migración SQL de sinopsis**.

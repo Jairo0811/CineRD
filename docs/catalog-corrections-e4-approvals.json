@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "description": "Autorizaciones humanas E-4 por campo. Inicialmente vacío: NO crear aprobaciones ficticias. Una huella vincula director/género/fecha, valor antiguo y nuevo, película, fuentes y base de datos. No es firma criptográfica.",
+  "approvals": []
+}

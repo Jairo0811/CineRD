@@ -19,6 +19,7 @@ const original=()=>({
   approvals:read("docs/editorial-approvals-e5.json"),
   migrationApprovals:read("docs/editorial-sql-migration-approvals-f23.json"),
   e4:read("docs/catalog-corrections-e4.json"),
+  e4Approvals:read("docs/catalog-corrections-e4-approvals.json"),
   sqlSources:read("docs/editorial-sources-sql-f2.json"),
   curatedDrafts:SINOPSIS_EDITORIALES_FASE_E,
   reportExists:p=>fs.existsSync(path.join(root,p))
@@ -40,6 +41,7 @@ describe("CineRD F-2.3 / diagnóstico de preparación editorial",()=>{
     assert.equal(r.summary.sqlMigration.validHumanReviewRecords,0);
     assert.equal(r.summary.e4.pending,7);
     assert.equal(r.summary.e4.appliedInSnapshot,0);
+    assert.deepEqual(r.summary.e4.authorizations,{valid:0,required:7,pending:7});
     assert.equal(r.documentaryOnly,true);
   });
   it("detecta matriz con duplicados y entradas omitidas",()=>{
@@ -113,6 +115,26 @@ describe("CineRD F-2.3 / diagnóstico de preparación editorial",()=>{
     assert.equal(r.summary.editorial.pending,58);
     assert.equal(r.ready,false);
     assert.ok(r.blockers.some(x=>x.includes("Faltan aprobaciones E-5: 58")));
+  });
+
+  it("marca E-4 sin autorizaciones como bloqueo separado de la aplicación SQL",()=>{
+    const r=assessEditorialReadiness(original());
+    assert.ok(r.blockers.some(x=>x.includes("Cambios E-4 sin autorización humana documentada: 7")));
+    assert.ok(r.blockers.some(x=>x.includes("Ajustes E-4 pendientes en snapshot: 7")));
+  });
+  it("una autorización E-4 ficticia con huella inválida no cuenta como válida",()=>{
+    const c=original();
+    c.e4Approvals.approvals=[{
+      filmId:9,field:"Genero",status:"aprobado",fingerprint:"incorrecta",
+      reviewer:"Revisor de prueba",reviewedAt:"2026-11-08T00:00:00-04:00",
+      sourcesChecked:true,fieldMeaningReviewed:true,changeAuthorized:true,
+      notes:"Solo un ejemplo de regresión; no se ha producido una revisión real.",
+      evidenceUrls:["https://cinemadominicano.com/lotoman-2011/"]
+    }];
+    const r=assessEditorialReadiness(c);
+    assert.match(r.errors.join(" | "),/Autorizaciones E-4/);
+    assert.equal(r.summary.e4.authorizations.valid,0);
+    assert.equal(r.ready,false);
   });
 
 });

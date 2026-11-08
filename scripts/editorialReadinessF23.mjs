@@ -12,6 +12,7 @@ import { verifySqlProvenanceLedger } from "./verifyEditorialSqlProvenance.mjs";
 import { validateSqlSynopsisDrafts } from "./verifyEditorialSqlReplacementDrafts.mjs";
 import { SINOPSIS_EDITORIALES_FASE_E } from "../frontend/src/data/sinopsisCuradasFaseE.js";
 import migration from "../backend/scripts/prepareEditorialSqlMigration.js";
+import e4ApprovalGate from "../backend/scripts/e4ApprovalGate.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root,file), "utf8"));
@@ -20,13 +21,14 @@ const dateOrValue = (field,value) => field === "FechaEstreno"
 
 export function assessEditorialReadiness({
   inventoryItems, snapshot, issues, provenance, drafts,
-  approvals, migrationApprovals, e4, sqlSources, curatedDrafts,
+  approvals, migrationApprovals, e4, e4Approvals, sqlSources, curatedDrafts,
   reportExists = () => true
 }) {
   const errors = [];
   if (!Array.isArray(inventoryItems) || !Array.isArray(snapshot?.tables?.Peliculas) ||
       !Array.isArray(issues?.items) || !Array.isArray(approvals?.approvals) ||
-      !Array.isArray(migrationApprovals?.approvals) || !Array.isArray(e4?.rows)) {
+      !Array.isArray(migrationApprovals?.approvals) || !Array.isArray(e4?.rows) ||
+      !Array.isArray(e4Approvals?.approvals)) {
     return { ready: false, errors: ["Documentos de control editorial incompletos"] };
   }
   const films = snapshot.tables.Peliculas;
@@ -80,6 +82,13 @@ export function assessEditorialReadiness({
     else errors.push("E-4 ha cambiado sin coincidencia de preimagen: "+key);
   }
 
+  let e4Authorizations={valid:0,required:e4.rows.length,pending:e4.rows.length};
+  try {
+    e4Authorizations=e4ApprovalGate.verifyApprovalLedger(e4Approvals,e4.rows,snapshot,{requireAll:false});
+  } catch(e) {
+    errors.push("Autorizaciones E-4: "+e.message);
+  }
+
   const pendingIssues=report.states.pending;
   const resolvedIssues=report.states.resolved;
   const pendingEditorial=inventoryItems.length-e5Approved;
@@ -92,7 +101,7 @@ export function assessEditorialReadiness({
       publishedAutomatically:draftReport.autoPublished},
     sqlMigration:{total:sqlFilms.length,validHumanReviewRecords:validMigrationApprovals,
       pending:sqlFilms.length-validMigrationApprovals},
-    e4:e4Status
+    e4:{...e4Status,authorizations:e4Authorizations}
   };
   const blockers=[];
   if(errors.length)blockers.push("Inconsistencias en registros: "+errors.length);
@@ -102,6 +111,7 @@ export function assessEditorialReadiness({
   if(draftReport.pending)blockers.push("Propuestas SQL en revisión: "+draftReport.pending);
   if(sqlFilms.length-validMigrationApprovals)blockers.push("Migraciones SQL sin aprobación atribuida: "+(sqlFilms.length-validMigrationApprovals));
   if(e4Status.pending)blockers.push("Ajustes E-4 pendientes en snapshot: "+e4Status.pending);
+  if(e4Authorizations.pending)blockers.push("Cambios E-4 sin autorización humana documentada: "+e4Authorizations.pending);
   const ready=errors.length===0 && blockers.length===0;
   return {ready,documentaryOnly:true,errors,summary,blockers};
 }
@@ -117,6 +127,7 @@ function main(args=process.argv.slice(2)) {
     approvals:read("docs/editorial-approvals-e5.json"),
     migrationApprovals:read("docs/editorial-sql-migration-approvals-f23.json"),
     e4:read("docs/catalog-corrections-e4.json"),
+    e4Approvals:read("docs/catalog-corrections-e4-approvals.json"),
     sqlSources:read("docs/editorial-sources-sql-f2.json"),
     curatedDrafts:SINOPSIS_EDITORIALES_FASE_E,
     reportExists:p=>fs.existsSync(path.join(root,p)),
@@ -129,7 +140,7 @@ function main(args=process.argv.slice(2)) {
       console.log(`Editorial E-5: ${s.editorial.approved}/${s.editorial.total} aprobadas; ${s.editorial.pending} pendientes.`);
       console.log(`Matriz: ${s.issues.total} observaciones; ${s.issues.pending} pendientes, ${s.issues.resolved} resueltas (${s.issues.priorities.alta} alta, ${s.issues.priorities.media} media, ${s.issues.priorities.baja} baja).`);
       console.log(`SQL: ${s.sqlReplacementDrafts.total} propuestas, ${s.sqlProvenance.withoutEvidence} sin evidencia de permiso, ${s.sqlMigration.validHumanReviewRecords} autorizaciones registradas válidas.`);
-      console.log(`E-4: ${s.e4.pending} cambios pendientes; ${s.e4.appliedInSnapshot} reflejados en snapshot.`);
+      console.log(`E-4: ${s.e4.pending} cambios pendientes; ${s.e4.appliedInSnapshot} reflejados en snapshot; ${s.e4.authorizations.valid}/${s.e4.authorizations.required} autorizaciones registradas.`);
     }
     for(const e of result.errors)console.error("✗ "+e);
     for(const b of result.blockers)console.log("• "+b);
