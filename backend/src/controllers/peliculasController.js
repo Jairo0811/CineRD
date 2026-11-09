@@ -1,4 +1,5 @@
 const { sql, poolPromise } = require("../config/db");
+const { ErrorValidacionCatalogo, normalizarTmdbId, resolverTmdbIdEdicion } = require("../utils/catalogoValidacion");
 
 const normalizarEntero = (valor) => {
   if (valor === null || valor === undefined || valor.toString().trim() === "") return null;
@@ -132,7 +133,7 @@ const crearPelicula = async (req, res) => {
       return res.status(400).json({ mensaje: "Título, género y fecha de estreno son obligatorios" });
     }
 
-    const tmdbIdNormalizado = normalizarEntero(TMDbId);
+    const tmdbIdNormalizado = normalizarTmdbId(TMDbId);
     const Foto = req.file ? `/uploads/peliculas/${req.file.filename}` : null;
     const pool = await poolPromise;
 
@@ -161,6 +162,7 @@ const crearPelicula = async (req, res) => {
 
     res.status(201).json({ mensaje: "Película registrada correctamente", pelicula: resultado.recordset[0] });
   } catch (error) {
+    if (error instanceof ErrorValidacionCatalogo) return res.status(400).json({ mensaje: error.message });
     console.error("Error al registrar la película:", error);
 
     if (error.message.includes("UQ_Peliculas_Titulo") || error.message.includes("UNIQUE KEY")) {
@@ -190,7 +192,7 @@ const actualizarPelicula = async (req, res) => {
       return res.status(400).json({ mensaje: "Título, género y fecha de estreno son obligatorios" });
     }
 
-    const tmdbIdNormalizado = normalizarEntero(TMDbId);
+    const tmdbIdNormalizado = normalizarTmdbId(TMDbId);
     const pool = await poolPromise;
 
     const peliculaTmdbExistente = await verificarTmdbIdDisponible({ pool, tmdbId: tmdbIdNormalizado, peliculaId: id });
@@ -204,7 +206,7 @@ const actualizarPelicula = async (req, res) => {
     if (!peliculaActual.recordset.length) return res.status(404).json({ mensaje: "Película no encontrada" });
 
     const Foto = req.file ? `/uploads/peliculas/${req.file.filename}` : peliculaActual.recordset[0].Foto || null;
-    const tmdbIdFinal = tmdbIdNormalizado ?? peliculaActual.recordset[0].TMDbId ?? null;
+    const tmdbIdFinal = resolverTmdbIdEdicion(TMDbId, peliculaActual.recordset[0].TMDbId);
 
     const resultado = await pool.request()
       .input("Id", sql.Int, id)
@@ -234,6 +236,7 @@ const actualizarPelicula = async (req, res) => {
 
     res.json({ mensaje: "Película actualizada correctamente", pelicula: resultado.recordset[0] });
   } catch (error) {
+    if (error instanceof ErrorValidacionCatalogo) return res.status(400).json({ mensaje: error.message });
     console.error("Error al actualizar la película:", error);
     if (error.message.includes("UQ_Peliculas_Titulo") || error.message.includes("UNIQUE KEY")) {
       return res.status(409).json({ mensaje: "Ya existe una película con ese título" });
