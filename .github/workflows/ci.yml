@@ -44,6 +44,8 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run editorial:audit
+      - name: Probar cola humana de 7 cambios E-4 y 58 textos E-5 sin firmas
+        run: node --test ../scripts/prepareClosureEditorial.test.mjs
       - run: node --test ../scripts/reportAdSenseReadiness.test.mjs
       - name: Test production API and monetization gates (offline)
         run: node --test ../scripts/reportProductionCommercial.test.mjs
