@@ -145,7 +145,7 @@ test("F-2.3 lote: una única transacción para cinco cambios y preimagen antes d
       events.push("preimage");
     }
   };
-  const result=await applyBatch({batch:b,options,env,sqlDriver:driver,fsApi:filesystem});
+  const result=await applyBatch({batch:b,options,env,sqlDriver:driver,fsApi:filesystem,logger:{log:()=>{}}});
   assert.deepEqual(result,{updated:5});
   assert.equal(events.filter(x=>x==="begin").length,1);
   assert.equal(events.filter(x=>x==="commit").length,1);
@@ -160,11 +160,11 @@ test("F-2.3 lote: una diferencia SQL o fallo de escritura revierte todos los cam
     statSync,mkdirSync:()=>{},writeFileSync:()=>{}
   };
   const altered=simulatedDriver({drift:true});
-  await assert.rejects(()=>applyBatch({batch:b,options,env,sqlDriver:altered.driver,fsApi:filesystem}),/original cambió/);
+  await assert.rejects(()=>applyBatch({batch:b,options,env,sqlDriver:altered.driver,fsApi:filesystem,logger:{log:()=>{}}}),/original cambió/);
   assert.ok(altered.events.includes("rollback"));
   assert.ok(!altered.events.some(x=>x.startsWith("update:")));
   const failed=simulatedDriver({failOnId:10});
-  await assert.rejects(()=>applyBatch({batch:b,options,env,sqlDriver:failed.driver,fsApi:filesystem}),/simulated write failure/);
+  await assert.rejects(()=>applyBatch({batch:b,options,env,sqlDriver:failed.driver,fsApi:filesystem,logger:{log:()=>{}}}),/simulated write failure/);
   assert.ok(failed.events.includes("rollback"));
   assert.ok(!failed.events.includes("commit"));
 });

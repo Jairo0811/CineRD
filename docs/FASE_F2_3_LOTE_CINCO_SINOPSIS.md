@@ -83,3 +83,31 @@ Fuentes:
 - **Git:** no agregar carpetas sin seguimiento como `backend-dotnet/` ni `CineRD-Netlify-Demo-Patch/`.
 
 **Estado al publicar este documento:** se entregan las cinco nuevas tramas bilingües y la posibilidad de un solo lote SQL seguro. La aplicación efectiva depende de controles humanos pendientes.
+
+## 6. Estado posterior al primer lote de pruebas: simulación ≠ actualización SQL
+
+El usuario ejecutó 13 pruebas correctamente con `node --test` y después `catalog:synopses:batch -- --show`. La frase `Cinco sinopsis españolas cambiadas en UNA transacción SQL` que apareció **dentro de las pruebas** provenía de un driver SQL y filesystem **simulados**, con firmas ficticias creadas únicamente en memoria de los tests. **No constituye prueba de cambio en la base real**, ni certifica que se generó un .bak restaurable. Los tests ahora silencian esos logs simulados.
+
+Para evitar una eventual repetición del hallazgo E-4 —SQL real actualizado antes que el snapshot—, se incorporó una consulta de diagnóstico en un solo comando:
+
+```powershell
+npm --prefix backend run catalog:synopses:live:preview
+```
+
+El diagnóstico conecta al `CRUDPeliculas` configurado localmente y ejecuta **un único SELECT con cinco parámetros ID**, para las películas 5, 6, 10, 55, 56. No hace `UPDATE`, `INSERT`, `DELETE`, transacciones de escritura, creación de archivos ni registro de aprobaciones. Compara exactamente el texto, nombre y fecha del SQL actual contra la sinopsis histórica del snapshot y el candidato ES de Git:
+
+- `ORIGINAL`: SQL mantiene la sinopsis anterior; técnicamente coincide con la preimagen para el lote, **pero todavía faltan las autorizaciones**.
+- `ALREADY`: SQL ya tiene la nueva sinopsis ES; no aplicar de nuevo.
+- `DRIFT`: SQL, título o fecha no coincide; bloquear y revisar.
+- `MISSING`: falta un ID; bloquear y revisar.
+
+**Cinco ORIGINAL** o **cinco ALREADY** son estados coherentes para el diagnóstico (no aprobación); mezclas o discrepancias bloquean la continuación. No se imprimen textos SQL ni credenciales para evitar exposiciones innecesarias.
+
+Antes de ejecutar, correr la batería nueva:
+
+```powershell
+node --test backend/tests/previewEditorialSynopsesLive.test.js backend/tests/applyEditorialSynopsesBatch.test.js
+npm --prefix backend run catalog:synopses:live:preview
+```
+
+**La autorización para publicar ES/EN y actualizar SQL es un proceso distinto**: con el libro de aprobaciones todavía vacío, `--apply` seguirá bloqueado. El archivo `.bak` debe ser un respaldo SQL auténtico y su restauración debe verificarse por el administrador; no se deduce eso de un nombre de archivo.

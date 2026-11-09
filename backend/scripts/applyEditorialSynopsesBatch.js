@@ -104,11 +104,11 @@ function checkPreimages(batch,results) {
   return true;
 }
 
-async function applyBatch({batch,options,env,sqlDriver=sql,fsApi=fs}) {
+async function applyBatch({batch,options,env,sqlDriver=sql,fsApi=fs,logger=console}) {
   const gate=assertBatchGate({batch,options,env,statSync:fsApi.statSync});
   for(const key of ["DB_SERVER","DB_USER","DB_PASSWORD"])ensure(env[key],"Falta "+key);
   // A .bak existing on disk does NOT establish successful restore.
-  console.log("✓ Cinco revisiones atribuidas y .bak localizado. Su restaurabilidad debe verificarse externamente.");
+  logger.log("✓ Cinco revisiones atribuidas y .bak localizado. Su restaurabilidad debe verificarse externamente.");
   const pool=new sqlDriver.ConnectionPool({
     server:env.DB_SERVER,user:env.DB_USER,password:env.DB_PASSWORD,
     database:env.DB_DATABASE,port:Number(env.DB_PORT||1433),
@@ -142,7 +142,7 @@ async function applyBatch({batch,options,env,sqlDriver=sql,fsApi=fs}) {
       filmIds:EXPECTED_IDS,fingerprints:batch.items.map(({film,fingerprint})=>({filmId:film.Id,fingerprint})),
       preimages:results
     },null,2)+"\n",{flag:"wx",mode:0o600});
-    console.log("✓ Preimagen local archivada: "+path.relative(root,target));
+    logger.log("✓ Preimagen local archivada: "+path.relative(root,target));
     for(const {film,draft} of batch.items) {
       const request=new sqlDriver.Request(tx);
       const r=await request.input("filmId",sqlDriver.Int,film.Id)
@@ -152,8 +152,8 @@ async function applyBatch({batch,options,env,sqlDriver=sql,fsApi=fs}) {
     }
     await tx.commit();
     began=false;
-    console.log("✓ Cinco sinopsis españolas cambiadas en UNA transacción SQL.");
-    console.log("→ Reexportar snapshot, validarlo y revisar el diff. Las propuestas EN siguen independientes.");
+    logger.log("✓ Cinco sinopsis españolas cambiadas en UNA transacción SQL.");
+    logger.log("→ Reexportar snapshot, validarlo y revisar el diff. Las propuestas EN siguen independientes.");
     return {updated:5};
   } catch(e) {
     if(began) {try {await tx.rollback()}catch {/* SQL connection may be broken */}}
