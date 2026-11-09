@@ -99,3 +99,33 @@ Este visor:
 Las cubiertas propias `PosterOriginal` continúan representando las 46 películas
 en el sitio público donde el archivo original no está autorizado. El visor
 únicamente permite revisarlas lado a lado durante la terminación local del producto.
+
+
+## Cierre técnico implementado (tanda de permisos, multimedia y TMDb)
+
+- [x] Los administradores conservan edición de cualquier ficha, y un talento `TALENTO_VERIFICADO` solo puede actualizar **su propio perfil vinculado y activo**: doble verificación SQL, incluido el UPDATE.
+- [x] Por seguridad, el titular solo puede editar nombre artístico, profesión, enlaces oficiales y fotografía; identidad legal, nacimiento, sexo, estado vital y TMDb continúan bajo revisión editorial. El formulario indica las restricciones.
+- [x] Los enlaces públicos de talentos rechazan esquemas `javascript:`, `data:`, `file:` y URLs con credenciales.
+- [x] Las fotografías nuevas utilizan UUID; si el INSERT/UPDATE del catálogo falla o se interrumpe la respuesta, se retira exclusivamente el archivo nuevo. No borrar los 128 originales anteriores.
+- [x] La acción **Desvincular TMDb** de una película persiste `NULL` en SQL cuando el campo se envía vacío; si una integración antigua omite el campo, conserva el identificador previo.
+- [x] Pruebas en Node y Vitest de permisos, URLs, edición personal, limpieza de archivos, TMDb y bloqueo visual de campos de identidad.
+
+Los tests de esos módulos usan mocks/fixtures: **no confirman aún un recorrido real contra tu SQL Server**.
+
+## Diagnóstico automático local — solo lectura
+
+Con el servidor de Node.js levantado en `127.0.0.1:3000` y SQL Server configurado localmente:
+
+```powershell
+node scripts/auditLocalCineRD.mjs
+node scripts/auditLocalCineRD.mjs --json
+```
+
+El auditor consulta solo `GET /health`, `GET /ready`, el catálogo de películas y talentos, una ficha de cada tipo y tres rutas privadas anónimas (deben devolver 401). Rechaza URL de auditoría que no sea `http://localhost` o `http://127.0.0.1`.
+
+Resultados:
+- `API_STOPPED`: no hay API local accesible.
+- `INCOMPLETE`: API presente, pero SQL o una ruta comprobada no está lista.
+- `SMOKE_PASS`: **pasa la lectura y el control anónimo**, no significa `LOCAL_READY`. Deben ejecutarse las operaciones CRUD y cuentas con usuarios de pruebas, backup comprobado y revisión visual manual.
+
+No ejecuta operaciones de escritura, no migra ni reemplaza SQL y no cambia el sitio en Cloudflare.
