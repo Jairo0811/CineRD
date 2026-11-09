@@ -3,6 +3,7 @@ import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import { useEffect, useMemo, useRef, useState } from "react";
 import api from "../services/api";
 import { resolveMediaUrl } from "../config/api";
+import { validarArchivoImagen } from "../utils/validarArchivoImagen";
 import PeliculaTraduccionesPanel from "../components/peliculas/PeliculaTraduccionesPanel";
 import PeliculaCreditosPanel from "../components/peliculas/PeliculaCreditosPanel";
 import { ordenarAlfabeticamente } from "../utils/ordenAlfabetico";
@@ -113,6 +114,8 @@ function FormularioPelicula() {
   const manejarFoto = (e) => {
     const archivo = e.target.files?.[0];
     if (!archivo) return;
+    const errorArchivo = validarArchivoImagen(archivo);
+    if (errorArchivo) { alert(errorArchivo); e.target.value = ""; return; }
     if (vistaPrevia?.startsWith("blob:")) URL.revokeObjectURL(vistaPrevia);
     setFoto(archivo);
     setVistaPrevia(URL.createObjectURL(archivo));
