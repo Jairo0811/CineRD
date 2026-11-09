@@ -27,6 +27,7 @@ for (const name of ctrlPaths) {
 
 const databaseRole=new Map([[1,"ADMINISTRADOR"],[2,"TALENTO_VERIFICADO"],[3,"USUARIO"]]);
 const databaseState=new Map([[1,"ACTIVO"],[2,"ACTIVO"],[3,"ACTIVO"]]);
+const databaseVersion=new Map([[1,1],[2,1],[3,1]]);
 const dbPath=require.resolve("../src/config/db");
 saved.set(dbPath,require.cache[dbPath]);
 require.cache[dbPath]={
@@ -41,7 +42,7 @@ require.cache[dbPath]={
             if(q.includes("FROM dbo.Usuarios WHERE Id=@UsuarioId")) {
               const id=Number(vars.UsuarioId);
               const role=databaseRole.get(id);
-              return {recordset:role?[{Rol:role,Estado:databaseState.get(id)}]:[]};
+              return {recordset:role?[{Rol:role,Estado:databaseState.get(id),SesionVersion:databaseVersion.get(id)}]:[]};
             }
             assert.match(q,/TU.Estado = N'ACTIVO'/);
             const ok = Number(vars.UsuarioId)===2 && Number(vars.ActorId)===11
@@ -66,7 +67,7 @@ app.use("/api/solicitudes-creditos",require("../src/routes/solicitudesCreditoRou
 const server=app.listen(0,"127.0.0.1");
 const ready=new Promise(resolve=>server.once("listening",resolve));
 const url=(p)=>"http://127.0.0.1:"+server.address().port+p;
-const token=(role,id)=>jwt.sign({id,rol:role},process.env.JWT_ACCESS_SECRET,{expiresIn:"5m"});
+const token=(role,id,sv=1)=>jwt.sign({id,rol:role,sv},process.env.JWT_ACCESS_SECRET,{expiresIn:"5m"});
 const tAdmin=token("ADMINISTRADOR",1);
 const tUser=token("USUARIO",3);
 const tTalent=token("TALENTO_VERIFICADO",2);
@@ -164,6 +165,25 @@ test("cuenta eliminada deja de autenticar con JWT existente",async()=>{
   } finally {
     databaseRole.set(3,"USUARIO");
   }
+});
+
+test("reset de password invalida access JWT vigente mediante version de sesion",async()=>{
+  const tokenAnterior=tUser;
+  databaseVersion.set(3,2);
+  try {
+    assert.equal((await call("GET","/api/auth/perfil",tokenAnterior)).status,403);
+    assert.equal((await call("GET","/api/verificaciones/mis-solicitudes",tokenAnterior)).status,403);
+    const tokenNuevo=token("USUARIO",3,2);
+    assert.equal((await call("GET","/api/auth/perfil",tokenNuevo)).status,200);
+    assert.equal((await call("GET","/api/verificaciones/mis-solicitudes",tokenNuevo)).status,200);
+  } finally {
+    databaseVersion.set(3,1);
+  }
+});
+
+test("tokens sin version de sesion se rechazan durante migracion de seguridad",async()=>{
+  const legado=jwt.sign({id:3,rol:"USUARIO"},process.env.JWT_ACCESS_SECRET,{expiresIn:"5m"});
+  assert.equal((await call("GET","/api/auth/perfil",legado)).status,401);
 });
 
 test("token falso y expirado retornan 401; no se ejecuta controlador",async()=>{
