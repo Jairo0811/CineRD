@@ -82,6 +82,7 @@ function quoteSqlIdentifier(value) {
 async function runBackup(plan) {
   const { sql, poolPromise } = require("../src/config/db");
   const pool = await poolPromise;
+  try {
   const db = await pool.request().query("SELECT DB_NAME() AS Nombre, DATABASEPROPERTYEX(DB_NAME(), 'Status') AS Estado");
   if (db.recordset[0]?.Nombre !== plan.database || db.recordset[0]?.Estado !== "ONLINE") {
     throw new Error("La conexión SQL no apunta a la base esperada y online");
@@ -112,6 +113,9 @@ async function runBackup(plan) {
     .query("RESTORE VERIFYONLY FROM DISK = @BackupPath WITH FILE = @BackupPosition, CHECKSUM");
   return { database: plan.database, verified: true, position: Number(last.Position),
     backupFile: plan.file, restoreTested: false };
+  } finally {
+    await pool.close();
+  }
 }
 
 async function main(argv = process.argv.slice(2), env = process.env) {
