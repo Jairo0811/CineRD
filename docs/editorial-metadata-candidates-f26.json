@@ -1,0 +1,169 @@
+{
+  "version": 1,
+  "edition": "F-2.6",
+  "createdOn": "2026-11-08",
+  "scope": "datos y metadatos de ocho incidencias ALTAS",
+  "automaticApply": false,
+  "approvalsCreated": false,
+  "items": [
+    {
+      "filmId": 27,
+      "kind": "sinopsis",
+      "title": "Lotoman 003: Volando Bajito",
+      "state": "PENDIENTE_DECISION_HUMANA",
+      "applyAuthorized": false,
+      "confidence": "alta",
+      "proposals": [
+        {
+          "field": "FechaEstreno",
+          "from": "2014-03-15",
+          "to": "2014-03-27",
+          "requires": "confirmar criterio FechaEstreno como estreno comercial RD"
+        }
+      ],
+      "sources": [
+        "https://cinedominicano.com/anuncian-estreno-de-lotoman-003-volando-bajito/",
+        "https://cinemadominicano.com/lotoman-003-volando-bajito-2014/"
+      ],
+      "notes": "Anuncio de producción/distribución previo y ficha registran 27 marzo. Definir FechaEstreno como apertura comercial dominicana."
+    },
+    {
+      "filmId": 31,
+      "kind": "sinopsis",
+      "title": "Entiérrenlo Parao",
+      "state": "PENDIENTE_DECISION_HUMANA",
+      "applyAuthorized": false,
+      "confidence": "insuficiente",
+      "proposals": [],
+      "sources": [
+        "https://acento.com.do/cine/es-esto-lo-que-viene-en-el-cine-dominicano-en-2025-9446002.html",
+        "https://dominicanfilmfestivalny.com/noticia.php?lang=es&slug=entierrenlo-parao-dffnyc-2026",
+        "https://ronnicastillo.com/"
+      ],
+      "notes": "5 junio 2025 fue pronóstico de prensa, no evidencia definitiva de estreno comercial; festival 2026 confirma premiere internacional. Mantener hasta fuente de exhibición comercial en RD."
+    },
+    {
+      "filmId": 36,
+      "kind": "sinopsis",
+      "title": "Nueba Yol 3: Bajo la Nueva Ley",
+      "state": "PENDIENTE_DECISION_HUMANA",
+      "applyAuthorized": false,
+      "confidence": "media",
+      "proposals": [
+        {
+          "field": "FechaEstreno",
+          "from": "1997-10-31",
+          "to": "1997-10-23",
+          "requires": "confirmar criterio FechaEstreno como estreno comercial RD"
+        }
+      ],
+      "sources": [
+        "https://cinemadominicano.com/nueba-yol-3-bajo-la-nueva-ley-1997/",
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/nueba-yol-3-bajo-la-nueva-ley-1997/"
+      ],
+      "notes": "Ambos portales tienen procedencia editorial relacionada; el título 'Nueba Yol 3' convive con la descripción 'segunda parte'. Confirmar fecha y secuencia en créditos, cartelera o archivo contemporáneo."
+    },
+    {
+      "filmId": 40,
+      "kind": "sinopsis",
+      "title": "Colao 2",
+      "state": "PENDIENTE_DECISION_HUMANA",
+      "applyAuthorized": false,
+      "confidence": "alta",
+      "proposals": [
+        {
+          "field": "FechaEstreno",
+          "from": "2023-12-07",
+          "to": "2023-11-30",
+          "requires": "confirmar criterio FechaEstreno como estreno comercial RD"
+        }
+      ],
+      "sources": [
+        "https://caribbeancinemas.com/es/movie/8897/",
+        "https://www.diariolibre.com/revista/cine/2023/11/28/colao-2-llega-a-los-cines-esta-semana/2535792"
+      ],
+      "notes": "Cartelera de exhibidor y prensa contemporánea confirman 30 noviembre. Mantener género Comedia: Caribbean Cinemas la clasifica Comedia/Romance, por lo que no hay fundamento para sustituirlo por Drama."
+    },
+    {
+      "filmId": 42,
+      "kind": "sinopsis",
+      "title": "Andrea",
+      "state": "PENDIENTE_DECISION_HUMANA",
+      "applyAuthorized": false,
+      "confidence": "alta",
+      "proposals": [
+        {
+          "field": "FechaEstreno",
+          "from": "2005-08-16",
+          "to": "2005-08-18",
+          "requires": "confirmar criterio FechaEstreno como estreno comercial RD"
+        }
+      ],
+      "sources": [
+        "https://www.diariolibre.com/amp/revista/expectativas-con-el-estreno-de-andrea-FYDL71689",
+        "https://cinemadominicano.com/andrea-la-venganza-de-un-espiritu-2005/",
+        "https://www.imdb.com/es/title/tt0493211/fullcredits/"
+      ],
+      "notes": "La noticia del 18 agosto describe premiere del día anterior y salida a salas, compatible con estreno comercial el día 18. Director Roger en prensa/ficha y Rogert en IMDb: NO proponer cambio de nombre sin créditos."
+    },
+    {
+      "filmId": 44,
+      "kind": "sinopsis",
+      "title": "Playball",
+      "state": "PENDIENTE_DECISION_HUMANA",
+      "applyAuthorized": false,
+      "confidence": "alta",
+      "proposals": [
+        {
+          "field": "FechaEstreno",
+          "from": "2008-02-01",
+          "to": "2008-02-14",
+          "requires": "confirmar criterio FechaEstreno como estreno comercial RD"
+        }
+      ],
+      "sources": [
+        "https://www.diariolibre.com/revista/jugadores-de-beisbol-debutarn-en-el-cine-con-playball-la-nueva-cinta-de-alfonso-rodrguez-1-BKDL4164",
+        "https://cinemadominicano.com/play-ball-2008/",
+        "https://www.imdb.com/title/tt1165327/"
+      ],
+      "notes": "Preestrenos 11 y 13 febrero, salida comercial registrada 14 febrero. Género Drama en catálogo histórico y 'comedia' en crítica contemporánea: no cambiar el género ni título sin criterio de taxonomía."
+    },
+    {
+      "filmId": 47,
+      "kind": "sinopsis",
+      "title": "Pimp Bullies: Victimas de un Prostibulo",
+      "state": "PENDIENTE_DECISION_HUMANA",
+      "applyAuthorized": false,
+      "confidence": "mixta",
+      "proposals": [],
+      "sources": [
+        "https://cinemadominicano.com/victimas-de-un-prostibulo-pimp-bullies-2011-2/",
+        "https://vix.com/es-es/detail/video-3987340",
+        "https://www.diariolibre.com/amp/revista/cartelera-94-NLDL306391"
+      ],
+      "notes": "Cinema Dominicano la clasifica Drama/Thriller mientras ViX incluye Drama, Acción y Crimen. Acción no queda refutada; definir género principal vs etiquetas secundarias. Fecha 22 septiembre 2011 coincide. Nombre comercial de exhibición usa Pimp Bullies: Víctimas de un prostíbulo."
+    },
+    {
+      "filmId": 56,
+      "kind": "contexto",
+      "title": "La Lucha de Ana",
+      "state": "PENDIENTE_DECISION_HUMANA",
+      "applyAuthorized": false,
+      "confidence": "alta",
+      "proposals": [
+        {
+          "field": "FechaEstreno",
+          "from": "2012-04-13",
+          "to": "2012-05-24",
+          "requires": "confirmar criterio FechaEstreno como estreno comercial RD"
+        }
+      ],
+      "sources": [
+        "https://www.diariolibre.com/revista/cine/la-lucha-por-un-mejor-cine-DIDL336401",
+        "https://www.diariolibre.com/revista/cine/la-lucha-de-ana-FIDL337543",
+        "https://www.programaibermedia.com/proyectos/la-lucha-de-ana-2/"
+      ],
+      "notes": "Diario Libre 17 mayo anuncia apertura 24 mayo y reseña del propio 24 mayo confirma contexto de estreno. Ibermedia solo acredita año 2012; no inferir subvenciones ni fecha de esa ficha."
+    }
+  ]
+}
