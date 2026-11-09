@@ -79,8 +79,8 @@ function quoteSqlIdentifier(value) {
   return "[" + value.replace(/]/g, "]]") + "]";
 }
 
-async function runBackup(plan) {
-  const { sql, poolPromise } = require("../src/config/db");
+async function runBackup(plan, { getDb = () => require("../src/config/db") } = {}) {
+  const { sql, poolPromise } = getDb();
   const pool = await poolPromise;
   try {
   const db = await pool.request().query("SELECT DB_NAME() AS Nombre, DATABASEPROPERTYEX(DB_NAME(), 'Status') AS Estado");
