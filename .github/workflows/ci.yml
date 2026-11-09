@@ -59,6 +59,8 @@ jobs:
         run: node ../scripts/reportHighPriorityEditorial.mjs
       - name: Test high-priority triage without changing approvals
         run: node --test ../scripts/reportHighPriorityEditorial.test.mjs
+      - name: Verify explicit approvals for 3 release dates and safe manual SQL
+        run: node --test ../scripts/verifyF23ApprovedDates.test.mjs
       - name: Validate integrated 1-4 release checks without forging sign-offs
         run: node --test ../scripts/releaseReadiness14.test.cjs
       - name: Report all four gates (informational while human reviews are pending)
