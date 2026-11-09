@@ -3,6 +3,7 @@ import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import { useEffect, useRef, useState } from "react";
 import api from "../services/api";
 import { resolveMediaUrl } from "../config/api";
+import { validarArchivoImagen } from "../utils/validarArchivoImagen";
 
 import ActorFormFields from "../components/actores/ActorFormFields";
 import { prepararFechaParaInput } from "../utils/fechas";
@@ -92,6 +93,8 @@ function FormularioActor() {
   const manejarFoto = (e) => {
     const archivo = e.target.files?.[0];
     if (!archivo) return;
+    const errorArchivo = validarArchivoImagen(archivo);
+    if (errorArchivo) { alert(errorArchivo); e.target.value = ""; return; }
     if (vistaPrevia?.startsWith("blob:")) URL.revokeObjectURL(vistaPrevia);
     setFoto(archivo);
     setVistaPrevia(URL.createObjectURL(archivo));
