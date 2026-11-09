@@ -25,3 +25,6 @@
 
 /* Aviso claro en fichas con sinopsis original de CineRD aún no validada. */
 .cine-editorial-synopsis-note { margin-top: .8rem; font-style: italic; max-width: 65ch; }
+
+/* Triaje factual en fichas públicas: no oculta información ni presupone aprobación. */
+.film-release-review-note { margin: .75rem 0 0; padding: .65rem .9rem; border-inline-start: 3px solid var(--hist-accent, #4a80cc); background: color-mix(in srgb, var(--hist-accent, #4a80cc) 11%, transparent); border-radius: .45rem; font-size: .86rem; line-height: 1.5; max-width: 68ch; }

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node ../scripts/checkAdActivation.mjs && node ../scripts/verifyMediaRightsLedger.mjs && node --test ../scripts/verifyMediaRightsLedger.test.mjs ../scripts/pilotRightsCatalog.test.mjs ../scripts/resolveMediaRightsBuildMode.test.mjs && node ../scripts/verifyOriginalCoverCatalog.mjs && node ../scripts/prepareNetlifyDemo.mjs",
+    "prebuild": "node ../scripts/checkAdActivation.mjs && node ../scripts/verifyPublicEditorialWarnings.mjs && node ../scripts/verifyMediaRightsLedger.mjs && node --test ../scripts/verifyMediaRightsLedger.test.mjs ../scripts/pilotRightsCatalog.test.mjs ../scripts/resolveMediaRightsBuildMode.test.mjs && node ../scripts/verifyOriginalCoverCatalog.mjs && node ../scripts/prepareNetlifyDemo.mjs",
     "build": "vite build",
     "postbuild": "node ../scripts/generateStaticPages.mjs && node ../scripts/verifyStaticPages.mjs && node ../scripts/verifyNetlifyDist.mjs && node ../scripts/verifySocialPreview.mjs",
     "lint": "eslint .",
@@ -17,7 +17,8 @@
     "editorial:readiness": "node ../scripts/editorialReadinessF23.mjs",
     "editorial:readiness:strict": "node ../scripts/editorialReadinessF23.mjs --strict",
     "editorial:review:strict": "node ../scripts/editorialReviewAudit.mjs --strict",
-    "release:check": "node ../scripts/releaseReadiness14.cjs"
+    "release:check": "node ../scripts/releaseReadiness14.cjs",
+    "editorial:public:verify": "node ../scripts/verifyPublicEditorialWarnings.mjs"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",
