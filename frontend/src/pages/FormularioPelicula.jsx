@@ -1,7 +1,8 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import EncabezadoPagina from "../components/ui/EncabezadoPagina";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import api from "../services/api";
+import { resolveMediaUrl } from "../config/api";
 import PeliculaTraduccionesPanel from "../components/peliculas/PeliculaTraduccionesPanel";
 import PeliculaCreditosPanel from "../components/peliculas/PeliculaCreditosPanel";
 import { ordenarAlfabeticamente } from "../utils/ordenAlfabetico";
@@ -33,7 +34,6 @@ function FormularioPelicula() {
   const navigate = useNavigate();
   const { id } = useParams();
   const esEdicion = Boolean(id);
-  const API_URL = "http://localhost:3000";
 
   const [formulario, setFormulario] = useState({
     TMDbId: "",
@@ -48,6 +48,8 @@ function FormularioPelicula() {
 
   const [foto, setFoto] = useState(null);
   const [vistaPrevia, setVistaPrevia] = useState(null);
+  const [guardando, setGuardando] = useState(false);
+  const guardandoRef = useRef(false);
   const [directores, setDirectores] = useState([]);
   const [resultadosTmdb, setResultadosTmdb] = useState([]);
   const [buscandoTmdb, setBuscandoTmdb] = useState(false);
@@ -95,7 +97,7 @@ function FormularioPelicula() {
         Sinopsis: pelicula.Sinopsis || "",
         IdiomaOriginal: pelicula.IdiomaOriginal || "",
       });
-      if (pelicula.Foto) setVistaPrevia(`${API_URL}${pelicula.Foto}`);
+      setVistaPrevia(resolveMediaUrl(pelicula.Foto));
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.mensaje || "Error al cargar la película");
@@ -195,6 +197,7 @@ function FormularioPelicula() {
 
   const guardarPelicula = async (e) => {
     e.preventDefault();
+    if (guardandoRef.current) return;
     const titulo = formulario.Titulo.trim();
     if (!titulo || !formulario.Genero || !formulario.FechaEstreno) {
       return alert("Título, género y fecha de estreno son obligatorios");
@@ -213,6 +216,8 @@ function FormularioPelicula() {
     }).forEach(([clave, valor]) => datos.append(clave, valor));
     if (foto) datos.append("Foto", foto);
 
+    guardandoRef.current = true;
+    setGuardando(true);
     try {
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       if (esEdicion) {
@@ -226,6 +231,9 @@ function FormularioPelicula() {
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.mensaje || error.response?.data?.error || "Error al guardar la película");
+    } finally {
+      guardandoRef.current = false;
+      setGuardando(false);
     }
   };
 
@@ -276,7 +284,7 @@ function FormularioPelicula() {
           <PeliculaCreditosPanel peliculaId={Number(id)} />
         </> : <div className="alert alert-light border mt-4 mb-0"><strong>🌐 Datos avanzados:</strong> guarda primero la película y luego podrás registrar traducciones y créditos profesionales estructurados desde la pantalla de edición.</div>}
 
-        <div className="d-flex gap-2 flex-wrap mt-4"><button type="submit" className="btn btn-primary">Guardar</button><Link to="/peliculas" className="btn btn-secondary">Cancelar</Link></div>
+        <div className="d-flex gap-2 flex-wrap mt-4"><button type="submit" className="btn btn-primary" disabled={guardando}>{guardando ? "Guardando..." : "Guardar"}</button><Link to="/peliculas" className="btn btn-secondary">Cancelar</Link></div>
       </div>
     </form>
   </div>;
