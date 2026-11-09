@@ -22,6 +22,8 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run catalog:validate
+      - name: Validate F-2.7 metadata candidates (offline / no SQL)
+        run: npm run catalog:metadata:validate
       - run: npm audit --omit=dev --audit-level=high
 
   frontend:
@@ -144,6 +146,8 @@ jobs:
         run: npm test
       - name: Validate catalog on Windows
         run: npm run catalog:validate
+      - name: Validate F-2.7 metadata on Windows (offline)
+        run: npm run catalog:metadata:validate
 
   netlify-production-review:
     runs-on: ubuntu-latest

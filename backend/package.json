@@ -27,7 +27,9 @@
     "catalog:synopses:batch": "node scripts/applyEditorialSynopsesBatch.js",
     "catalog:synopses:live:preview": "node scripts/previewEditorialSynopsesLive.js",
     "catalog:synopses:review:packet": "node scripts/prepareEditorialBatchReview.js",
-    "catalog:synopses:review:decisions": "node scripts/recordEditorialBatchDecisions.js"
+    "catalog:synopses:review:decisions": "node scripts/recordEditorialBatchDecisions.js",
+    "catalog:metadata:validate": "node scripts/previewEditorialMetadataLive.js --offline",
+    "catalog:metadata:live:preview": "node scripts/previewEditorialMetadataLive.js"
   },
   "keywords": [],
   "author": "",
