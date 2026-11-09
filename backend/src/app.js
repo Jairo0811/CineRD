@@ -17,6 +17,7 @@ const { poolPromise } = require("./config/db");
 const { requestContext, errorHandler } = require("./middlewares/observability");
 const { sanitizeErrorResponses } = require("./middlewares/sanitizeErrors");
 const { crearPoliticaCors } = require("./config/cors");
+const { createPublicUploadGuard } = require("./middlewares/publicUploadsRights");
 
 const app = express();
 app.disable("x-powered-by");
@@ -37,7 +38,7 @@ app.use(crearPoliticaCors().middleware);
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 
-app.use("/uploads", express.static(uploadsDir, { dotfiles: "deny", fallthrough: false, index: false }));
+app.use("/uploads", createPublicUploadGuard(), express.static(uploadsDir, { dotfiles: "deny", fallthrough: false, index: false }));
 
 app.get("/", (req, res) => res.json({ mensaje: "API de CineRD funcionando correctamente" }));
 app.get("/health", (req, res) => res.status(200).json({ status: "ok", service: "cinerd-api", requestId: req.requestId }));

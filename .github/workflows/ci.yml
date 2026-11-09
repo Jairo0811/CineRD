@@ -43,6 +43,10 @@ jobs:
       - run: npm test
       - run: npm run editorial:audit
       - run: node --test ../scripts/reportAdSenseReadiness.test.mjs
+      - name: Test production API and monetization gates (offline)
+        run: node --test ../scripts/reportProductionCommercial.test.mjs
+      - name: Report production and AdSense blockers without enabling ads
+        run: node ../scripts/reportProductionCommercial.mjs
       - run: node ../scripts/reportAdSenseReadiness.mjs
       - run: npm run editorial:review
       - name: Triage 18 high-priority editorial observations (read-only)
