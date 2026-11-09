@@ -135,6 +135,37 @@ test("un JWT válido pierde autorización inmediatamente tras bloqueo o revocaci
   databaseRole.set(2,"TALENTO_VERIFICADO");
 });
 
+test("cuenta BLOQUEADA no puede consultar rutas solo autenticadas con JWT anterior",async()=>{
+  databaseState.set(3,"BLOQUEADO");
+  try {
+    for (const path of ["/api/auth/perfil","/api/verificaciones/mis-solicitudes"]) {
+      assert.equal((await call("GET",path,tUser)).status,403,"BLOQUEADO "+path);
+    }
+    assert.equal((await call("GET","/api/verificaciones/mi-perfil",tUser)).status,403);
+  } finally {
+    databaseState.set(3,"ACTIVO");
+  }
+});
+
+test("cambio de rol invalida JWT viejo incluso para rutas sin restriccion de rol",async()=>{
+  databaseRole.set(3,"ADMINISTRADOR");
+  try {
+    assert.equal((await call("GET","/api/auth/perfil",tUser)).status,403);
+    assert.equal((await call("GET","/api/verificaciones/mis-solicitudes",tUser)).status,403);
+  } finally {
+    databaseRole.set(3,"USUARIO");
+  }
+});
+
+test("cuenta eliminada deja de autenticar con JWT existente",async()=>{
+  databaseRole.delete(3);
+  try {
+    assert.equal((await call("GET","/api/auth/perfil",tUser)).status,403);
+  } finally {
+    databaseRole.set(3,"USUARIO");
+  }
+});
+
 test("token falso y expirado retornan 401; no se ejecuta controlador",async()=>{
   const expired=jwt.sign({id:1,rol:"ADMINISTRADOR"},process.env.JWT_ACCESS_SECRET,{expiresIn:-1});
   for(const bad of ["aaa.bbb.ccc",expired]) {
