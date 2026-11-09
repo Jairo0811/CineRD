@@ -127,6 +127,33 @@ function evaluateFourAreas({editorial,media,staticEvidence,checks=[]}) {
   };
 }
 
+/**
+ * Extract TAP test failures before the npm summary; the tail of node --test
+ * commonly shows only the final successful test and hides the actual failure.
+ * No files or secrets are persisted to Git by this diagnostic.
+ */
+function summarizeCommandFailure(output, exitCode, limit=3200) {
+  const lines=String(output||"").replace(/\x1B\[[0-9;]*m/g,"").split(/\r?\n/);
+  const failures=[];
+  for(let i=0;i<lines.length;i++) {
+    if(!/^\s*(?:not ok\s+\d+\s+-|✖\s)/.test(lines[i]))continue;
+    const excerpt=[];
+    for(let j=i;j<lines.length && j<i+38;j++) {
+      const current=lines[j];
+      if(j>i && /^\s*(?:ok|not ok)\s+\d+\s+-/.test(current))break;
+      excerpt.push(current);
+      if(j>i && /^\s*\.\.\.\s*$/.test(current))break;
+    }
+    failures.push(excerpt.join("\n").trim());
+    if(failures.length>=3)break;
+  }
+  if(failures.length)return "Código "+exitCode+" — FALLO REAL:\n"+
+    failures.join("\n\n").slice(0,limit);
+  const hints=lines.filter(l=>/^\s*(?:#\s*fail\b|error:|failureType:|npm error)/i.test(l));
+  if(hints.length)return "Código "+exitCode+": "+hints.join("\n").slice(0,limit);
+  return "Código "+exitCode+": "+lines.join("\n").slice(-Math.min(limit,1400));
+}
+
 function runCommand(name,command,args,env=process.env) {
   const p=spawnSync(command,args,{cwd:root,env,encoding:"utf8",timeout:300000,maxBuffer:4*1024*1024});
   const details=((p.stdout||"")+"\n"+(p.stderr||"")).trim();
@@ -134,7 +161,7 @@ function runCommand(name,command,args,env=process.env) {
     name,
     status:p.status===0&&!p.error?"PASS":"FAIL",
     detail:p.error?String(p.error.message):(p.status===0?"Prueba completada":
-      "Código "+p.status+": "+details.slice(-450)),
+      summarizeCommandFailure(details,p.status)),
     output:details
   };
 }
@@ -277,4 +304,4 @@ if(require.main===module) main().catch(err=>{
   console.error("✗ Auditoría 1–4: "+err.message);
   process.exitCode=1;
 });
-module.exports={parseArgs,collectStaticEvidence,evaluateFourAreas,runCommand,runFullValidation,runOnlineChecks,main};
+module.exports={parseArgs,collectStaticEvidence,evaluateFourAreas,summarizeCommandFailure,runCommand,runFullValidation,runOnlineChecks,main};

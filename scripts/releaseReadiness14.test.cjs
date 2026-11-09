@@ -1,6 +1,6 @@
 const {test}=require("node:test");
 const assert=require("node:assert/strict");
-const {parseArgs,collectStaticEvidence,evaluateFourAreas}=require("./releaseReadiness14.cjs");
+const {parseArgs,collectStaticEvidence,evaluateFourAreas,summarizeCommandFailure}=require("./releaseReadiness14.cjs");
 
 const editorial={
   errors:[],
@@ -98,4 +98,33 @@ test("1–4: verifica controles estáticos, sin consultar secretos",()=>{
     app:"",workflow:"",render:"",backendEnvExample:"",rightsMode:""
   });
   assert.equal(no.errors.length,9);
+});
+
+test("1–4: informa el fallo real de TAP aunque el resumen termine en pruebas correctas",()=>{
+  const log=[
+    "TAP version 13",
+    "ok 1 - primera",
+    "not ok 2 - falla en Windows",
+    "  ---",
+    "  duration_ms: 3.5",
+    "  failureType: 'testCodeFailure'",
+    "  error: 'Expected values to be strictly equal:'",
+    "  expected: 1",
+    "  actual: 2",
+    "  ...",
+    "ok 111 - crearAccessToken preserva la identidad",
+    "ok 112 - crearAccessToken falla sin secreto",
+    "# tests 112",
+    "# pass 111",
+    "# fail 1"
+  ].join("\n");
+  const summary=summarizeCommandFailure(log,1);
+  assert.match(summary,/not ok 2 - falla en Windows/);
+  assert.match(summary,/expected: 1/);
+  assert.doesNotMatch(summary,/crearAccessToken/);
+});
+
+test("1–4: error no-TAP también se refleja, sin ocultarlo tras el final del log",()=>{
+  assert.match(summarizeCommandFailure("npm error Error: ECONNRESET\nnpm error code ENETUNREACH",1),/npm error/);
+  assert.match(summarizeCommandFailure("fallo sin formato conocido",1),/fallo sin formato conocido/);
 });

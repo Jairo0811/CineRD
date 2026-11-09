@@ -84,3 +84,21 @@ node scripts/releaseReadiness14.cjs --strict
 - **Finalmente**: verificar el backend activo, Cloudflare, copia restaurable, correo y monitoreo. Solo después considerar el cierre de producción y la monetización.
 
 **Política de seguridad:** no registrar datos personales sensibles, contraseñas, contratos privados ni archivos `.bak` en GitHub. No automatizar decisiones humanas ni ejecutar SQL con credenciales de prueba sobre producción.
+
+## Incidencia de ejecución local (8 de noviembre de 2026)
+
+La prueba conjunta del usuario confirmó: backend **111/112** pruebas aprobadas, frontend/lint/build seguro aprobados, snapshot SQL real de cinco películas intacto y auditoría de Cloudflare pasada. **Se desconoce la prueba backend fallida**: la primera versión del verificador solo imprimió las últimas 450 posiciones del log TAP y mostró dos pruebas JWT que sí habían pasado. No atribuir ese fallo a JWT, SQL, Sharp o Windows sin el bloque exacto \`not ok\`.
+
+Se corrigió \`scripts/releaseReadiness14.cjs\` para mostrar las líneas \`not ok\`, el error de aserción y el contexto del primer fallo, con pruebas de regresión del formateo. También se agregó un job \`backend-windows\` a GitHub Actions para comprobar Node 22 con Windows; no significa que ese job ya haya pasado.
+
+**Para conocer la causa sin repetir instalaciones ni frontend completo, ejecutar una vez desde PowerShell:**
+
+\`\`\`powershell
+& {
+  git pull --ff-only origin feat/f2-editorial-review
+  if ($LASTEXITCODE -ne 0) { throw 'Falló git pull' }
+  npm --prefix backend test
+}
+\`\`\`
+
+El resultado de \`npm test\` contiene el bloque \`not ok\` con el nombre de la prueba. Con ese dato se debe corregir exactamente la causa y repetir la batería. Los **2 avisos moderados backend y 1 frontend** emitidos por \`npm ci\` ameritan \`npm audit\`, pero no ejecutar \`npm audit fix --force\` indiscriminadamente: puede introducir cambios incompatibles.
