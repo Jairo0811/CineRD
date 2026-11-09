@@ -12,11 +12,14 @@ async function probar({ usuario, actorId = "7", activo = true, dbError = false }
         input(nombre, _tipo, valor) { parametros[nombre] = valor; return this; },
         async query(sqlText) {
           consultas += 1;
+          if (dbError) throw new Error("SQL no disponible");
+          if (sqlText.includes("FROM dbo.Usuarios WHERE Id=@UsuarioId")) {
+            return { recordset: activo ? [{ Rol: "ADMINISTRADOR", Estado: "ACTIVO" }] : [] };
+          }
           assert.match(sqlText, /TU\.Estado = N'ACTIVO'/);
           assert.match(sqlText, /U\.Estado = N'ACTIVO'/);
           assert.match(sqlText, /TU\.UsuarioId = @UsuarioId/);
           assert.match(sqlText, /TU\.ActorId = @ActorId/);
-          if (dbError) throw new Error("SQL no disponible");
           return { recordset: activo ? [{ ActorId: Number(actorId) }] : [] };
         },
       };
@@ -43,7 +46,13 @@ test("administrador puede editar perfiles sin consultar la tabla de vinculacione
   const r = await probar({ usuario: { id: 1, rol: "ADMINISTRADOR" } });
   assert.equal(r.status, 200);
   assert.equal(r.data.modo, "administrador");
-  assert.equal(r.consultas, 0);
+  assert.equal(r.consultas, 1);
+});
+
+test("administrador revocado o bloqueado es rechazado con su JWT antiguo", async () => {
+  const r = await probar({ usuario: { id: 1, rol: "ADMINISTRADOR" }, activo: false });
+  assert.equal(r.status, 403);
+  assert.equal(r.consultas, 1);
 });
 
 test("talento con vínculo activo puede editar únicamente su propio perfil", async () => {
