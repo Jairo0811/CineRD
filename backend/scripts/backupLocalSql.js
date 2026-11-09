@@ -12,7 +12,6 @@
  */
 const fs = require("node:fs");
 const path = require("node:path");
-const { fileURLToPath } = require("node:url");
 const ROOT = path.resolve(__dirname, "../..");
 
 function assertBackupFile(filepath, { mustNotExist = false } = {}) {
@@ -21,15 +20,17 @@ function assertBackupFile(filepath, { mustNotExist = false } = {}) {
       (!path.isAbsolute(filepath) && !path.win32.isAbsolute(filepath))) {
     throw new Error("Se requiere ruta absoluta a un archivo .bak");
   }
-  const normalized = path.resolve(filepath);
   if (!path.win32.isAbsolute(filepath) || filepath.startsWith("\\\\") ||
       filepath.startsWith("//")) {
     throw new Error("Por seguridad, usa una ruta absoluta local del servidor SQL, ej. D:\\SQLBackups\\CineRD-fecha.bak");
   }
-  const posix = path.resolve(filepath);
-  const rel = path.relative(ROOT, posix);
-  if (rel === "" || (!rel.startsWith("..") && !path.isAbsolute(rel))) {
-    throw new Error("El respaldo no puede guardarse dentro del repositorio");
+  // La comparación de carpetas se hace en Windows; Linux CI solo analiza
+  // la sintaxis de rutas Windows sin tocar el filesystem del usuario.
+  if (process.platform === "win32") {
+    const rel = path.relative(ROOT, path.resolve(filepath));
+    if (rel === "" || (!rel.startsWith("..") && !path.isAbsolute(rel))) {
+      throw new Error("El respaldo no puede guardarse dentro del repositorio");
+    }
   }
   if (mustNotExist && fs.existsSync(filepath)) {
     throw new Error("El archivo ya existe: elige un nombre .bak nuevo para esta ejecución");
@@ -89,7 +90,9 @@ async function runBackup(plan) {
   // NOINIT añade un conjunto de backup sin destruir los anteriores.
   // Rechazar nombre existente en la PC local; la ruta debe ser accesible por
   // la cuenta del servicio SQL Server para que BACKUP no falle.
-  await pool.request()
+  const backupRequest = pool.request();
+  backupRequest.timeout = 600000;
+  await backupRequest
     .input("BackupPath", sql.NVarChar(4000), plan.file)
     .query("BACKUP DATABASE " + quoteSqlIdentifier(plan.database) +
       " TO DISK = @BackupPath WITH COPY_ONLY, CHECKSUM, NOINIT, STATS = 10");
