@@ -68,3 +68,34 @@ Comprobar `http://localhost:3000/health`, `http://localhost:3000/ready` y `http:
 ## Criterio de salida de este ciclo
 
 **`LOCAL_READY`** solo cuando no existan defectos críticos abiertos, los comandos automáticos pasen y se complete con evidencia el recorrido funcional con una base local de pruebas. **`COMMERCIAL_READY` es una evaluación distinta**: exige derechos, revisión editorial/legal y, posteriormente, infraestructura y aprobación AdSense. No inferirla de `LOCAL_READY`.
+
+
+## Galería de originales antiguos — revisión visual local sin nube
+
+El sitio público `cinerd.pages.dev` permanece en modo `review`: no publica
+fotos de talentos ni carteles de películas de `backend/uploads` que aún figuren
+con derechos comerciales `PENDIENTE`. Los medios no se han borrado: el snapshot
+actual referencia **82 fotografías de talentos** y **46 pósteres** originales.
+
+Para **ver los 128 archivos en tu propio equipo, incluso sin SQL Server activo**,
+desde la raíz de CineRD ejecuta:
+
+```powershell
+node scripts/previewLocalMedia.mjs
+```
+
+Abre `http://127.0.0.1:4348`. Verás pestañas **Todos**, **Talentos** y
+**Películas**, con los archivos originales que todavía constan en el catálogo.
+Cierra con `Ctrl+C` en PowerShell.
+
+Este visor:
+- Escucha **exclusivamente en `127.0.0.1`**, nunca `0.0.0.0`.
+- No requiere API, SQL, nube ni anuncios.
+- Lee directamente `backend/uploads`, no copia a `frontend/public` ni `dist`.
+- Solo sirve rutas exactas del inventario de catálogo, no evidencia privada.
+- No cambia `media-rights-ledger.csv`, `main` ni los despliegues.
+- **No se debe exponer con túneles, proxies, port forwarding ni alojar públicamente.**
+
+Las cubiertas propias `PosterOriginal` continúan representando las 46 películas
+en el sitio público donde el archivo original no está autorizado. El visor
+únicamente permite revisarlas lado a lado durante la terminación local del producto.
