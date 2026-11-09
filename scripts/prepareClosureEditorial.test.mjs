@@ -23,6 +23,10 @@ test("cola E-4/E-5: 7 cambios y 58 textos, todos sin aprobaciones fingidas",()=>
   assert.equal(markdown.includes("APROBADO AUTOMÁTICAMENTE"),false);
   assert.ok(markdown.includes("Lotoman"));
   assert.ok(markdown.includes("Fingerprint SHA-256"));
+  assert.ok(markdown.includes("#### Texto español de la versión en revisión"));
+  assert.ok(markdown.includes("#### Texto inglés de la versión en revisión"));
+  assert.ok(markdown.includes("#### Referencias registradas"));
+  assert.ok(markdown.includes("SIN TEXTO EN: comprobar el flujo SQL"));
   assert.ok(markdown.includes("128 imágenes"));
 });
 
