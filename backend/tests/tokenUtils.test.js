@@ -30,6 +30,7 @@ test("crearAccessToken preserva la identidad y el rol esperados", () => {
       Nombre: "Talento Prueba",
       Email: "talento@example.com",
       Rol: "TALENTO_VERIFICADO",
+      SesionVersion: 3,
     },
     { secret, expiresIn: "5m" },
   );
@@ -39,7 +40,20 @@ test("crearAccessToken preserva la identidad y el rol esperados", () => {
   assert.equal(payload.nombre, "Talento Prueba");
   assert.equal(payload.email, "talento@example.com");
   assert.equal(payload.rol, "TALENTO_VERIFICADO");
+  assert.equal(payload.sv, 3);
   assert.ok(payload.exp > payload.iat);
+});
+
+test("crearAccessToken exige una version de sesion valida", () => {
+  const secret="cine-rd-ci-session-version-secret";
+  assert.throws(
+    () => crearAccessToken({ Id: 42, Rol: "USUARIO" }, { secret }),
+    /SesionVersion vigente es obligatoria/
+  );
+  assert.throws(
+    () => crearAccessToken({ Id: 42, Rol: "USUARIO", SesionVersion: 0 }, { secret }),
+    /SesionVersion vigente es obligatoria/
+  );
 });
 
 test("crearAccessToken falla si no existe un secreto JWT", () => {
