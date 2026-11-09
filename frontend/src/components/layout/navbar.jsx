@@ -152,6 +152,11 @@ function Navbar() {
               </NavLink>
             </li>
             <li className="nav-item">
+              <NavLink className={obtenerClaseNav} to="/avances" onClick={cerrarMenuMovil}>
+                {idiomaActual === "en" ? "Progress" : "Avances"}
+              </NavLink>
+            </li>
+            <li className="nav-item">
               <NavLink className={obtenerClaseNav} to="/sobre-cinerd" onClick={cerrarMenuMovil}>
                 {idiomaActual === "en" ? "About" : "Acerca de"}
               </NavLink>
