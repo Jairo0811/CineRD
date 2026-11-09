@@ -232,3 +232,9 @@ humanas atribuibles, y los textos E-5 hasta su propia revisión independiente.
 - Revisión editorial: inventario y cola preparados; decisiones de personas
   revisoras **pendientes**. No marcar `LOCAL_READY` por CI sin el ejercicio E2E.
 - `main`, Cloudflare, AdSense y los 128 archivos originales no se alteraron.
+
+### Cierre adicional de seguridad local
+
+El servidor de desarrollo ahora escucha en `127.0.0.1` si `HOST` no está configurada; producción sigue con `0.0.0.0` por defecto para contenedores. Si el log de `npm --prefix backend run dev` todavía muestra `0.0.0.0`, revisa en tu propio `backend/.env` si hay una variable `HOST` explícita. No compartas el contenido completo del `.env`.
+
+Antes de autorizar cualquier acción protegida, el backend vuelve a consultar en `dbo.Usuarios` el rol y estado `ACTIVO`: un JWT vigente no conserva permisos de una cuenta bloqueada o degradada. La edición de fichas por un administrador también exige esa verificación. El cierre editorial privado ahora incluye textos reales ES/EN y referencias registradas para que la persona revisora pueda cotejarlos sin buscar cada archivo manualmente. **Estos cambios requieren repetir la auditoría local después del próximo `git pull`**.
