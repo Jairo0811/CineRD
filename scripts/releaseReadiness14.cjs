@@ -165,7 +165,7 @@ function runFullValidation(log=console.log) {
 
 async function runOnlineChecks(log=console.log, env=process.env) {
   const checks=[runCommand("Cloudflare production",process.execPath,
-    ["scripts/auditProduction.mjs","--require-review"])];
+    ["scripts/auditProduction.mjs","--require-review","--skip-ads"])];
   if(env.CINERD_API_ORIGIN) {
     const raw=String(env.CINERD_API_ORIGIN).trim().replace(/\/+$/,"");
     let allowed=false;
