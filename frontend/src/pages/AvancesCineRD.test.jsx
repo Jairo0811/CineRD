@@ -39,6 +39,8 @@ describe("CineRD / galería de avances pública", () => {
   it("muestra métricas reales del catálogo, portada y estado de demo", async () => {
     montar();
     expect(await screen.findByText("Películas catalogadas")).toBeTruthy();
+    expect(screen.getByAltText("Logo oficial de CineRD").getAttribute("src")).toBe("/logo-cinerd.webp");
+    expect(screen.queryByText("RD", { selector: ".cinerd-avances-side strong" })).toBeNull();
     expect(screen.getAllByText("2")).toHaveLength(2);
     expect(screen.getByText("3")).toBeTruthy();
     expect(screen.getByText(/Catálogo de consulta y solo lectura/)).toBeTruthy();
