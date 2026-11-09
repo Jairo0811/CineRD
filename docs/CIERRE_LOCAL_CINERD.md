@@ -129,3 +129,106 @@ Resultados:
 - `SMOKE_PASS`: **pasa la lectura y el control anónimo**, no significa `LOCAL_READY`. Deben ejecutarse las operaciones CRUD y cuentas con usuarios de pruebas, backup comprobado y revisión visual manual.
 
 No ejecuta operaciones de escritura, no migra ni reemplaza SQL y no cambia el sitio en Cloudflare.
+
+
+## Cierre solicitado: puntos 1-3 — SQL, CRUD, permisos y expediente editorial
+
+El usuario confirmó el 9/11/2026: API local 200, SQL Server \`ready\` 200,
+46 películas, 83 talentos y 3 rutas anónimas 401; auditoría \`SMOKE_PASS\`.
+**Estos resultados son de lectura**, no un backup ni aprobación editorial.
+
+### 1. Respaldo SQL verificable y CRUD aislado
+
+Vista previa de respaldo, **no escribe ni conecta**:
+
+\`\`\`powershell
+npm --prefix backend run sql:backup:preview
+\`\`\`
+
+Solo cuando el operador tenga una carpeta en el **servidor de SQL Server** con
+permisos para el servicio (ej.: \`D:\SQLBackups\`), crea un nombre de archivo
+**nuevo** y ejecuta en PowerShell desde la raíz:
+
+\`\`\`powershell
+$env:CINERD_SQL_BACKUP_CONFIRM = "YES"
+npm --prefix backend run sql:backup -- --backup --confirm-backup --database CRUDPeliculas --file "D:\SQLBackups\CineRD-20261109-UNICO.bak"
+Remove-Item Env:\CINERD_SQL_BACKUP_CONFIRM
+\`\`\`
+
+El script se niega a ejecutar sin flags y variable de confirmación, comprueba
+\`DB_DATABASE\`, ejecuta \`BACKUP DATABASE WITH COPY_ONLY,CHECKSUM,NOINIT\`,
+inspecciona \`RESTORE HEADERONLY\` y ejecuta \`RESTORE VERIFYONLY WITH CHECKSUM\`.
+**RESTORE VERIFYONLY NO sustituye restaurar de verdad el backup en otra base.**
+No modificar ni trasladar el archivo \`.bak\` al repositorio.
+
+Después, **en SSMS**, restaura ese \`.bak\` en una base **diferente** llamada
+\`CRUDPeliculas_E2E\`, reubicando los archivos \`.mdf/.ldf\` mediante el cuadro
+\`Files / Relocate all files to folder\`. Verifica que conserva las tablas y
+que **NO** se ha usado \`WITH REPLACE\` sobre \`CRUDPeliculas\` principal.
+La restauración aislada puede contener cuentas reales: úsala sin red pública,
+con permisos restringidos y no compartas ni publiques datos personales.
+
+Vista previa sin SQL:
+
+\`\`\`powershell
+npm --prefix backend run crud:e2e:preview
+\`\`\`
+
+Solo cuando exista y esté verificada **la base aislada** en el mismo servidor
+configurado por \`backend/.env\` (el \`DB_DATABASE\` del proceso se sobrescribe,
+sin modificar el archivo):
+
+\`\`\`powershell
+$env:DB_DATABASE = "CRUDPeliculas_E2E"
+$env:CINERD_E2E_CONFIRM = "CRUDPeliculas_E2E"
+npm --prefix backend run crud:e2e -- --run --confirm-isolated-db CRUDPeliculas_E2E
+Remove-Item Env:\DB_DATABASE
+Remove-Item Env:\CINERD_E2E_CONFIRM
+\`\`\`
+
+El script ejecuta **13 operaciones** sobre tablas de película, talento,
+reparto, créditos y galería bajo **una única transacción revertida
+obligatoriamente**. Comprueba de nuevo \`DB_NAME()\` antes de comenzar.
+Requiere \`DB_DATABASE\` coincidente con el nombre E2E y no permite usar
+\`CRUDPeliculas\`. No activa backend web ni escribe en la base principal.
+**Esto prueba SQL directo**, no los formularios ni todas las rutas HTTP.
+
+### 2. Seguridad y permisos
+
+\`backend/tests/routeRoleMatrix.test.js\` monta los **routers reales de Express**
+y el middleware JWT verdadero, pero reemplaza controladores y SQL por stubs.
+Valida rutas administrativas de escritura, accesos anónimos (401), usuarios sin
+permisos (403), talentos verificados, titular del perfil y JWT inválidos.
+Es apto para CI Linux/Windows; **no crea ni modifica datos SQL**.
+
+Revisión MANUAL pendiente contra el servidor local en la copia E2E:
+registro/login, email de confirmación y recuperación, renovación/revocación
+de refresh tokens, vinculación/revocación de talentos, reclamaciones de
+participación y límites con las tres cuentas de prueba.
+No colocar credenciales en el chat, Git ni capturas públicas.
+
+### 3. Cola editorial E-4 + E-5, sin alterar aprobaciones
+
+\`\`\`powershell
+node scripts/prepareClosureEditorial.mjs
+node scripts/prepareClosureEditorial.mjs --create
+node scripts/editorialReadinessF23.mjs --json
+npm --prefix backend run catalog:corrections:live:preview
+\`\`\`
+
+\`--create\` construye una planilla privada en
+\`backend/private/editorial/CIERRE_E4_E5_REVISION_HUMANA.md\` (ignorada por Git);
+**no sobrescribe** si ya existe. Incluye las **7 propuestas E-4** con fuentes,
+valores previos/nuevos y criterio de estreno, y los **58 textos E-5** por
+prioridad con observación, fuente/huella vigente y casillas vacías para decisión.
+Ninguna ejecución genera firmas, aprobaciones, licencias ni cambios SQL.
+Las siete correcciones E-4 siguen bloqueadas por
+\`docs/catalog-corrections-e4-approvals.json\` hasta siete autorizaciones
+humanas atribuibles, y los textos E-5 hasta su propia revisión independiente.
+
+**Estado honesto de cierre:**
+- Automatización del backup, gate CRUD de SQL y matriz de roles: implementados,
+  pendientes de ejecución real en la computadora/instancia SQL del usuario.
+- Revisión editorial: inventario y cola preparados; decisiones de personas
+  revisoras **pendientes**. No marcar \`LOCAL_READY\` por CI sin el ejercicio E2E.
+- \`main\`, Cloudflare, AdSense y los 128 archivos originales no se alteraron.
