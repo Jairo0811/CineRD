@@ -39,14 +39,15 @@ function assertBackupFile(filepath, { mustNotExist = false } = {}) {
 }
 
 function parseArgs(argv) {
-  const allowed = new Set(["--backup", "--confirm-backup", "--database", "--file"]);
-  const options = { apply: false, confirm: false, database: null, file: null };
+  const allowed = new Set(["--backup", "--confirm-backup", "--verify-existing", "--database", "--file"]);
+  const options = { apply: false, confirm: false, verify: false, database: null, file: null };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (!allowed.has(arg)) throw new Error("Argumento no admitido: " + arg);
-    if (arg === "--backup" || arg === "--confirm-backup") {
+    if (arg === "--backup" || arg === "--confirm-backup" || arg === "--verify-existing") {
       if (arg === "--backup") options.apply = true;
-      else options.confirm = true;
+      else if (arg === "--confirm-backup") options.confirm = true;
+      else options.verify = true;
       continue;
     }
     const value = argv[++i];
@@ -58,6 +59,20 @@ function parseArgs(argv) {
 }
 
 function validateBackupGate(opts, env) {
+  if (opts.verify) {
+    if (opts.apply || opts.confirm || env.NODE_ENV === "production") {
+      throw new Error("Verificación bloqueada: no combinar con creación ni ejecutar en producción");
+    }
+    const database = String(env.DB_DATABASE || "").trim();
+    if (!database || database !== opts.database ||
+        ["master", "model", "msdb", "tempdb"].includes(database.toLowerCase())) {
+      throw new Error("La base para verificar debe coincidir exactamente con DB_DATABASE y no ser de sistema");
+    }
+    if (!env.DB_SERVER || !env.DB_USER || !env.DB_PASSWORD) {
+      throw new Error("Faltan credenciales de SQL Server");
+    }
+    return { mode: "VERIFY_EXISTING", database, file: assertBackupFile(opts.file) };
+  }
   if (!opts.apply) return { mode: "PREVIEW" };
   if (!opts.confirm || env.CINERD_SQL_BACKUP_CONFIRM !== "YES" ||
       env.NODE_ENV === "production") {
@@ -79,6 +94,57 @@ function quoteSqlIdentifier(value) {
   return "[" + value.replace(/]/g, "]]") + "]";
 }
 
+function describeSqlError(error) {
+  const parts = [];
+  const seen = new Set();
+  const add = item => {
+    const msg = typeof item?.message === "string" ? item.message.trim() : "";
+    if (!msg || seen.has(msg)) return;
+    seen.add(msg);
+    const num = Number.isInteger(item.number) ? "SQL " + item.number + ": " : "";
+    parts.push(num + msg);
+  };
+  add(error);
+  for (const item of error?.precedingErrors || []) add(item);
+  for (const item of error?.originalError?.precedingErrors || []) add(item);
+  add(error?.originalError?.info);
+  add(error?.cause);
+  return parts.join(" | ") || "Error SQL no identificado";
+}
+
+async function verifyOnPool(pool, sql, plan) {
+  const headers = await pool.request()
+    .input("BackupPath", sql.NVarChar(4000), plan.file)
+    .query("RESTORE HEADERONLY FROM DISK = @BackupPath");
+  const sets = headers.recordset || [];
+  const last = sets[sets.length - 1];
+  if (!last || last.DatabaseName !== plan.database || Number(last.BackupType) !== 1 ||
+      !Number.isInteger(Number(last.Position)) || Number(last.Position) <= 0) {
+    throw new Error("La cabecera del respaldo no corresponde a una copia completa de la base solicitada");
+  }
+  await pool.request()
+    .input("BackupPath", sql.NVarChar(4000), plan.file)
+    .input("BackupPosition", sql.Int, Number(last.Position))
+    .query("RESTORE VERIFYONLY FROM DISK = @BackupPath WITH FILE = @BackupPosition, CHECKSUM");
+  return { database: plan.database, verified: true, position: Number(last.Position),
+    backupFile: plan.file, restoreTested: false };
+}
+
+async function verifyExistingBackup(plan, { getDb = () => require("../src/config/db") } = {}) {
+  if (plan.mode !== "VERIFY_EXISTING") throw new Error("Verificación existente no autorizada");
+  const { sql, poolPromise } = getDb();
+  const pool = await poolPromise;
+  try {
+    const db = await pool.request().query("SELECT DB_NAME() AS Nombre");
+    if (db.recordset[0]?.Nombre !== plan.database) {
+      throw new Error("La conexión SQL no apunta a la base solicitada");
+    }
+    return await verifyOnPool(pool, sql, plan);
+  } finally {
+    await pool.close();
+  }
+}
+
 async function runBackup(plan, { getDb = () => require("../src/config/db") } = {}) {
   const { sql, poolPromise } = getDb();
   const pool = await poolPromise;
@@ -98,21 +164,7 @@ async function runBackup(plan, { getDb = () => require("../src/config/db") } = {
     .query("BACKUP DATABASE " + quoteSqlIdentifier(plan.database) +
       " TO DISK = @BackupPath WITH COPY_ONLY, CHECKSUM, NOINIT, STATS = 10");
 
-  const headers = await pool.request()
-    .input("BackupPath", sql.NVarChar(4000), plan.file)
-    .query("RESTORE HEADERONLY FROM DISK = @BackupPath");
-  const sets = headers.recordset || [];
-  const last = sets[sets.length - 1];
-  if (!last || last.DatabaseName !== plan.database || Number(last.BackupType) !== 1 ||
-      !Number.isInteger(Number(last.Position)) || Number(last.Position) <= 0) {
-    throw new Error("La cabecera del respaldo no corresponde a una copia completa de la base solicitada");
-  }
-  await pool.request()
-    .input("BackupPath", sql.NVarChar(4000), plan.file)
-    .input("BackupPosition", sql.Int, Number(last.Position))
-    .query("RESTORE VERIFYONLY FROM DISK = @BackupPath WITH FILE = @BackupPosition, CHECKSUM");
-  return { database: plan.database, verified: true, position: Number(last.Position),
-    backupFile: plan.file, restoreTested: false };
+  return await verifyOnPool(pool, sql, plan);
   } finally {
     await pool.close();
   }
@@ -121,6 +173,11 @@ async function runBackup(plan, { getDb = () => require("../src/config/db") } = {
 async function main(argv = process.argv.slice(2), env = process.env) {
   const opts = parseArgs(argv);
   const plan = validateBackupGate(opts, env);
+  if (opts.verify) {
+    const report = await verifyExistingBackup(plan);
+    console.log(JSON.stringify({ status: "BACKUP_VERIFIED", ...report }, null, 2));
+    return report;
+  }
   if (!opts.apply) {
     console.log("CineRD SQL — PREVIEW. No se conectó ni escribió nada.");
     console.log("Para respaldar: configura CINERD_SQL_BACKUP_CONFIRM=YES y usa " +
@@ -131,11 +188,12 @@ async function main(argv = process.argv.slice(2), env = process.env) {
   const report = await runBackup(plan);
   console.log(JSON.stringify({ status: "BACKUP_VERIFIED", ...report }, null, 2));
   console.log("PENDIENTE: probar una restauración real sobre una base aislada.");
+  console.log("Si la verificación falla después de BACKUP, no crees otro: usa --verify-existing con la misma ruta.");
   return report;
 }
 
 if (require.main === module) {
   require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
-  main().catch(error => { console.error("CineRD SQL: " + error.message); process.exitCode = 1; });
+  main().catch(error => { console.error("CineRD SQL: " + describeSqlError(error)); process.exitCode = 1; });
 }
-module.exports = { parseArgs, validateBackupGate, quoteSqlIdentifier, assertBackupFile, runBackup, main };
+module.exports = { parseArgs, validateBackupGate, quoteSqlIdentifier, assertBackupFile, describeSqlError, verifyExistingBackup, runBackup, main };
