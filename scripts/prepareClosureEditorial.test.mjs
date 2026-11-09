@@ -28,6 +28,11 @@ test("cola E-4/E-5: 7 cambios y 58 textos, todos sin aprobaciones fingidas",()=>
   assert.ok(markdown.includes("#### Referencias registradas"));
   assert.ok(markdown.includes("SIN TEXTO EN: comprobar el flujo SQL"));
   assert.ok(markdown.includes("128 imágenes"));
+  assert.ok(markdown.includes("Valor anterior documentado E-4: 2011-03-10"));
+  assert.ok(markdown.includes("Valor observado en snapshot (NO SQL Server): 2011-01-20"));
+  assert.ok(markdown.includes("Estado del snapshot: PROPUESTA_PRESENTE_EN_SNAPSHOT_SIN_AUTORIZACION"));
+  assert.ok(markdown.includes("Estado SQL Server original: verificar con SELECT independiente"));
+  assert.equal(markdown.includes("- Valor actual: 2011-03-10"),false);
 });
 
 test("sin escritura de permisos; packet privado no puede sobrescribirse",()=>{
@@ -49,4 +54,22 @@ test("un inventario incoherente impide crear paquete engañoso",()=>{
   assert.throws(()=>buildEditorialPacket({
     changes:[],items:[{filmId:4,kind:"sinopsis",fingerprint:"a"}],issues:[],
   }),/no coincide/);
+});
+
+test("el paquete no afirma que el snapshot sea SQL real ni acepta divergencia silenciosa",()=>{
+  const proposal={
+    filmId:9,title:"Lotoman",field:"Genero",
+    expected:"Infantil",proposed:"Comedia",
+    sources:["https://example.invalid/fuente"]
+  };
+  const render=(snapshotFilms)=>buildEditorialPacket({
+    changes:[proposal],items:[],issues:[],snapshotFilms
+  });
+  const approved=render([{Id:9,Titulo:"Lotoman",Genero:"Comedia"}]);
+  assert.ok(approved.markdown.includes("PROPUESTA_PRESENTE_EN_SNAPSHOT_SIN_AUTORIZACION"));
+  assert.equal(approved.summary.e4Pending,1);
+  const historical=render([{Id:9,Titulo:"Lotoman",Genero:"Infantil"}]);
+  assert.ok(historical.markdown.includes("VALOR_ANTERIOR_EN_SNAPSHOT"));
+  assert.throws(()=>render([{Id:9,Titulo:"Lotoman",Genero:"Thriller"}]),/ni propuesto/);
+  assert.throws(()=>render([{Id:9,Titulo:"Otra película",Genero:"Comedia"}]),/identidad/);
 });
