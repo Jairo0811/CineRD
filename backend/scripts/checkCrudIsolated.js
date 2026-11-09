@@ -38,6 +38,7 @@ async function runIsolatedCrud(plan, { getDb = () => require("../src/config/db")
   if (plan.mode !== "ROLLBACK_E2E") throw new Error("No se permiten escrituras sin gate E2E");
   const { sql, poolPromise } = getDb();
   const pool = await poolPromise;
+  try {
   const identity = await pool.request().query("SELECT DB_NAME() AS Nombre");
   if (identity.recordset[0]?.Nombre !== plan.database) {
     throw new Error("El pool apunta a otra base: la prueba E2E se cancela");
@@ -115,6 +116,9 @@ async function runIsolatedCrud(plan, { getDb = () => require("../src/config/db")
   // No confundir ROLLBACK con certificación de restauración de un .bak.
   return { status: "CRUD_TX_ROLLBACK_PASS", database: plan.database,
     operations: checks, rolledBack: true, productionUntouched: true };
+  } finally {
+    await pool.close?.();
+  }
 }
 
 async function main(argv=process.argv.slice(2),env=process.env) {
