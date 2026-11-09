@@ -1,5 +1,6 @@
 const { sql, poolPromise } = require("../config/db");
 const { normalizarEnlacesPublicos, validarTextoPublico, ValidacionPerfilError } = require("../utils/perfilTalentoValidation");
+const { ErrorValidacionCatalogo, normalizarTmdbId, resolverTmdbIdEdicion } = require("../utils/catalogoValidacion");
 
 const normalizarFecha = (fecha) => {
   if (!fecha || fecha.toString().trim() === "") return null;
@@ -124,7 +125,7 @@ const crearActor = async (req, res) => {
       throw error;
     }
     const NombreCompleto = construirNombreCompleto(nombresNormalizados, apellidosNormalizados);
-    const tmdbIdNormalizado = normalizarEntero(TMDbId);
+    const tmdbIdNormalizado = normalizarTmdbId(TMDbId);
     const estaVivoNormalizado = EstaVivo === true || EstaVivo === "true";
     if (!estaVivoNormalizado && !normalizarFecha(FechaFallecimiento)) return res.status(400).json({ mensaje: "Debe indicar la fecha de fallecimiento" });
     const pool = await poolPromise;
@@ -145,6 +146,7 @@ const crearActor = async (req, res) => {
       OUTPUT INSERTED.* VALUES (@TMDbId,@Nombres,@Apellidos,@NombreCompleto,@NombreArtistico,@Profesion,@FechaNacimiento,@AnioNacimiento,@Sexo,@EstaVivo,@FechaFallecimiento,@Foto,@InstagramUrl,@FacebookUrl,@TikTokUrl,@YouTubeUrl,@SpotifyUrl,@XUrl,@SitioWebUrl)`);
     res.status(201).json({ mensaje: "Actor registrado correctamente", actor: resultado.recordset[0] });
   } catch (error) {
+    if (error instanceof ErrorValidacionCatalogo) return res.status(400).json({ mensaje: error.message });
     console.error("Error al registrar el actor:", error);
     res.status(500).json({ mensaje: "Error al registrar el actor", error: error.message });
   }
@@ -165,13 +167,13 @@ const actualizarActor = async (req, res) => {
       throw error;
     }
     const NombreCompleto = construirNombreCompleto(nombresNormalizados, apellidosNormalizados);
-    const tmdbIdNormalizado = normalizarEntero(TMDbId);
+    const tmdbIdNormalizado = normalizarTmdbId(TMDbId);
     const estaVivoNormalizado = EstaVivo === true || EstaVivo === "true";
     if (!estaVivoNormalizado && !normalizarFecha(FechaFallecimiento)) return res.status(400).json({ mensaje: "Debe indicar la fecha de fallecimiento" });
     const pool = await poolPromise;
     const actorActual = await pool.request().input("Id", sql.Int, id).query(`SELECT Id,TMDbId,Foto FROM Actores WHERE Id=@Id`);
     if (!actorActual.recordset.length) return res.status(404).json({ mensaje: "Actor no encontrado" });
-    const tmdbIdFinal = tmdbIdNormalizado ?? actorActual.recordset[0].TMDbId ?? null;
+    const tmdbIdFinal = resolverTmdbIdEdicion(TMDbId, actorActual.recordset[0].TMDbId);
     const actorTmdbExistente = await verificarTmdbIdDisponible({ pool, tmdbId: tmdbIdFinal, actorId: id });
     if (actorTmdbExistente) return res.status(409).json({ mensaje: "Este perfil de TMDb ya está vinculado con otro talento", actor: actorTmdbExistente });
     const actorNombreExistente = await verificarNombreExistente({ pool, nombreCompleto: NombreCompleto, actorId: id });
@@ -190,6 +192,7 @@ const actualizarActor = async (req, res) => {
       OUTPUT INSERTED.* WHERE Id=@Id`);
     res.json({ mensaje: "Actor actualizado correctamente", actor: resultado.recordset[0] });
   } catch (error) {
+    if (error instanceof ErrorValidacionCatalogo) return res.status(400).json({ mensaje: error.message });
     console.error("Error al actualizar el actor:", error);
     res.status(500).json({ mensaje: "Error al actualizar el actor", error: error.message });
   }
