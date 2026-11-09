@@ -31,6 +31,10 @@ function FormularioActor() {
   const navigate = useNavigate();
   const { id } = useParams();
   const esEdicion = Boolean(id);
+  const esTalentoPropio = esEdicion && (() => {
+    try { return JSON.parse(localStorage.getItem("cineRdUsuario") || "null")?.rol === "TALENTO_VERIFICADO"; }
+    catch { return false; }
+  })();
 
   const [formulario, setFormulario] = useState(formularioInicial);
   const [foto, setFoto] = useState(null);
@@ -150,13 +154,15 @@ function FormularioActor() {
     <EncabezadoPagina
       eyebrow="TALENTOS"
       titulo={esEdicion ? "Editar talento" : "Nuevo talento"}
-      descripcion="Registra o actualiza el perfil profesional y su información biográfica."
+      descripcion={esTalentoPropio
+        ? "Puedes actualizar tu nombre artístico, profesión, enlaces y fotografía. Los datos de identidad necesitan revisión editorial."
+        : "Registra o actualiza el perfil profesional y su información biográfica."}
       volverA="/actores"
       volverTexto="← Volver a Talentos"
     />
     <form onSubmit={guardarActor} className="card mt-3 shadow"><div className="card-body">
       {formulario.TMDbId && <div className="alert alert-success">✅ Talento vinculado con TMDb. ID: <strong>{formulario.TMDbId}</strong></div>}
-      <ActorFormFields formulario={formulario} onChange={manejarCambio} onChangeEstadoVida={cambiarEstadoVida} onFotoChange={manejarFoto} vistaPrevia={vistaPrevia}/>
+      <ActorFormFields formulario={formulario} onChange={manejarCambio} onChangeEstadoVida={cambiarEstadoVida} onFotoChange={manejarFoto} vistaPrevia={vistaPrevia} bloquearIdentidad={esTalentoPropio}/>
       <div className="d-flex gap-2 flex-wrap mt-4"><button type="submit" className="btn btn-primary" disabled={guardando}>{guardando ? "Guardando..." : "Guardar"}</button><Link to="/actores" className="btn btn-secondary">Cancelar</Link></div>
     </div></form>
   </div>;
