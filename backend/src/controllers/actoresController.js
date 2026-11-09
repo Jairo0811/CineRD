@@ -1,4 +1,5 @@
 const { sql, poolPromise } = require("../config/db");
+const { normalizarEnlacesPublicos, validarTextoPublico, ValidacionPerfilError } = require("../utils/perfilTalentoValidation");
 
 const normalizarFecha = (fecha) => {
   if (!fecha || fecha.toString().trim() === "") return null;
@@ -116,6 +117,12 @@ const crearActor = async (req, res) => {
     const nombresNormalizados = normalizarTexto(Nombres);
     const apellidosNormalizados = normalizarTexto(Apellidos);
     if (!nombresNormalizados || !Sexo) return res.status(400).json({ mensaje: "Nombres y sexo son obligatorios" });
+    try {
+      normalizarEnlacesPublicos(req.body);
+    } catch (error) {
+      if (error instanceof ValidacionPerfilError) return res.status(400).json({ mensaje: error.message });
+      throw error;
+    }
     const NombreCompleto = construirNombreCompleto(nombresNormalizados, apellidosNormalizados);
     const tmdbIdNormalizado = normalizarEntero(TMDbId);
     const estaVivoNormalizado = EstaVivo === true || EstaVivo === "true";
@@ -151,6 +158,12 @@ const actualizarActor = async (req, res) => {
     const nombresNormalizados = normalizarTexto(Nombres);
     const apellidosNormalizados = normalizarTexto(Apellidos);
     if (!nombresNormalizados || !Sexo) return res.status(400).json({ mensaje: "Nombres y sexo son obligatorios" });
+    try {
+      normalizarEnlacesPublicos(req.body);
+    } catch (error) {
+      if (error instanceof ValidacionPerfilError) return res.status(400).json({ mensaje: error.message });
+      throw error;
+    }
     const NombreCompleto = construirNombreCompleto(nombresNormalizados, apellidosNormalizados);
     const tmdbIdNormalizado = normalizarEntero(TMDbId);
     const estaVivoNormalizado = EstaVivo === true || EstaVivo === "true";
@@ -182,6 +195,77 @@ const actualizarActor = async (req, res) => {
   }
 };
 
+
+/**
+ * Los talentos verificados pueden actualizar su presencia profesional.
+ * No pueden editar identidad legal, fecha de nacimiento, sexo, estado vital,
+ * ni la vinculación TMDb: esos datos siguen bajo control editorial.
+ * La vinculación activa se confirma nuevamente en el propio UPDATE (TOCTOU).
+ */
+const actualizarMiPerfilTalento = async (req, res) => {
+  if (req.edicionTalento !== "propio") {
+    return res.status(403).json({ mensaje: "No tiene permiso para editar este perfil" });
+  }
+  const id = Number(req.params.id);
+  const usuarioId = Number(req.usuario?.id);
+  if (!Number.isSafeInteger(id) || id <= 0 || !Number.isSafeInteger(usuarioId) || usuarioId <= 0) {
+    return res.status(400).json({ mensaje: "Identificador de perfil inválido" });
+  }
+
+  let nombreArtistico;
+  let profesion;
+  let enlaces;
+  try {
+    nombreArtistico = validarTextoPublico(req.body.NombreArtistico, "Nombre artístico", 150);
+    profesion = validarTextoPublico(req.body.Profesion, "Profesión", 100);
+    enlaces = normalizarEnlacesPublicos(req.body);
+  } catch (error) {
+    if (error instanceof ValidacionPerfilError) return res.status(400).json({ mensaje: error.message });
+    throw error;
+  }
+
+  try {
+    const pool = await poolPromise;
+    const current = await pool.request().input("Id", sql.Int, id)
+      .query("SELECT Id,Foto FROM dbo.Actores WHERE Id=@Id");
+    if (!current.recordset.length) {
+      return res.status(404).json({ mensaje: "Talento no encontrado" });
+    }
+    const foto = req.file ? `/uploads/actores/${req.file.filename}` : current.recordset[0].Foto || null;
+    const request = pool.request()
+      .input("Id", sql.Int, id).input("UsuarioId", sql.Int, usuarioId)
+      .input("NombreArtistico", sql.NVarChar(150), nombreArtistico)
+      .input("Profesion", sql.NVarChar(100), profesion)
+      .input("Foto", sql.NVarChar(255), foto);
+    for (const [campo, valor] of Object.entries(enlaces)) {
+      request.input(campo, sql.NVarChar(300), valor);
+    }
+    const result = await request.query(`
+      UPDATE dbo.Actores SET
+        NombreArtistico=@NombreArtistico, Profesion=@Profesion, Foto=@Foto,
+        InstagramUrl=@InstagramUrl, FacebookUrl=@FacebookUrl, TikTokUrl=@TikTokUrl,
+        YouTubeUrl=@YouTubeUrl, SpotifyUrl=@SpotifyUrl, XUrl=@XUrl,
+        SitioWebUrl=@SitioWebUrl
+      OUTPUT INSERTED.*
+      WHERE Id=@Id
+        AND EXISTS (
+          SELECT 1 FROM dbo.TalentosUsuarios TU
+          INNER JOIN dbo.Usuarios U ON U.Id=TU.UsuarioId
+          WHERE TU.ActorId=@Id AND TU.UsuarioId=@UsuarioId
+            AND TU.Estado=N'ACTIVO'
+            AND U.Estado=N'ACTIVO' AND U.Rol=N'TALENTO_VERIFICADO'
+        )
+    `);
+    if (!result.recordset.length) {
+      return res.status(403).json({ mensaje: "La vinculación del talento ya no está activa" });
+    }
+    return res.json({ mensaje: "Perfil profesional actualizado", actor: result.recordset[0] });
+  } catch (error) {
+    console.error("Error al actualizar perfil profesional:", error);
+    return res.status(500).json({ mensaje: "Error al actualizar el perfil profesional" });
+  }
+};
+
 const eliminarActor = async (req, res) => {
   const transaction = new sql.Transaction(await poolPromise);
   try {
@@ -200,4 +284,4 @@ const eliminarActor = async (req, res) => {
   }
 };
 
-module.exports = { obtenerActores, obtenerActorPorId, crearActor, actualizarActor, eliminarActor };
+module.exports = { obtenerActores, obtenerActorPorId, crearActor, actualizarActor, actualizarMiPerfilTalento, eliminarActor };
