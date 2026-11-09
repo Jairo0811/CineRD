@@ -28,6 +28,7 @@ function renderRoute(path, pattern, element) {
 }
 
 beforeEach(() => {
+  window.localStorage.clear();
   vi.stubGlobal("alert", vi.fn());
   api.get.mockReset();
   api.post.mockReset();
@@ -82,6 +83,27 @@ describe("CineRD / formularios locales de catálogo", () => {
     fireEvent.submit(form);
     await waitFor(() => expect(api.post).toHaveBeenCalledTimes(1));
     expect(screen.getByRole("button", { name: "Guardando..." }).disabled).toBe(true);
+  });
+
+  it("titular verificado solo edita su presencia profesional, no datos de identidad", async () => {
+    window.localStorage.setItem("cineRdUsuario", JSON.stringify({ rol: "TALENTO_VERIFICADO" }));
+    api.get.mockResolvedValue({
+      data: {
+        Id: 8, Nombres: "María", Apellidos: "Rodríguez",
+        Sexo: "Femenino", EstaVivo: true,
+        FechaNacimiento: "1990-01-01", NombreArtistico: "María",
+        Profesion: "Actriz", InstagramUrl: "https://instagram.com/maria",
+      },
+    });
+    const { container } = renderRoute("/actores/8", "/actores/:id", <FormularioActor />);
+    await waitFor(() => expect(container.querySelector('[name="Nombres"]').value).toBe("María"));
+    for (const campo of ["Nombres", "Apellidos", "FechaNacimiento", "AnioNacimiento", "Sexo", "EstaVivo"]) {
+      expect(container.querySelector(`[name="${campo}"]`).disabled).toBe(true);
+    }
+    for (const campo of ["NombreArtistico", "Profesion", "InstagramUrl", "Foto"]) {
+      expect(container.querySelector(`[name="${campo}"]`).disabled).toBe(false);
+    }
+    expect(screen.getByText(/Los datos de identidad necesitan revisión editorial/)).toBeTruthy();
   });
 
   it("evita crear dos talentos si se envía el formulario dos veces mientras se guarda", async () => {
