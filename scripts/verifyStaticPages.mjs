@@ -24,6 +24,7 @@ function pagina(ruta, texto) {
 }
 pagina("/", "El cine dominicano");
 pagina("/historia", "Historia del cine dominicano");
+pagina("/avances", "CineRD: avances del archivo de cine dominicano");
 pagina("/sobre-cinerd", "Sobre CineRD");
 pagina("/privacidad", "Política de Privacidad");
 pagina("/terminos", "Términos de Uso");
@@ -66,6 +67,10 @@ for (const a of people) {
 
   exigir(sitemap.includes("<loc>https://cinerd.pages.dev" + ruta + "</loc>"), "No está en sitemap: " + ruta);
 }
+exigir(sitemap.includes("<loc>https://cinerd.pages.dev/avances</loc>"), "No figura /avances en sitemap");
+const avancesHtml = leer("avances.html");
+exigir(avancesHtml.includes('property="og:url" content="https://cinerd.pages.dev/avances"'), "Open Graph /avances incorrecto");
+exigir(avancesHtml.includes('https://cinerd.pages.dev/share-cinerd-v1.jpg'), "Falta imagen social de CineRD");
 const urls = [...sitemap.matchAll(/<loc>/g)].length;
-exigir(urls === movies.length + people.length + 8, "Cantidad de sitemap incorrecta: " + urls);
+exigir(urls === movies.length + people.length + 9, "Cantidad de sitemap incorrecta: " + urls);
 console.log("✓ SEO: " + (movies.length + people.length) + " fichas prerenderizadas, canonical/metadatos/esquemas, buscador noindex y " + urls + " URLs.");
