@@ -9,8 +9,14 @@ const crearAccessToken = (usuario, { secret, expiresIn = "15m" } = {}) => {
   const jwtSecret = secret || process.env.JWT_ACCESS_SECRET;
   if (!jwtSecret) throw new Error("JWT_ACCESS_SECRET es obligatorio");
 
+  const version = usuario.SesionVersion ?? usuario.sesionVersion;
+  if (!Number.isSafeInteger(version) || version < 1) {
+    throw new Error("SesionVersion vigente es obligatoria para emitir access tokens");
+  }
+
   return jwt.sign(
     {
+      sv: version,
       id: usuario.Id ?? usuario.id,
       email: usuario.Email ?? usuario.email,
       rol: usuario.Rol ?? usuario.rol,
