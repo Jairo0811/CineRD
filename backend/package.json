@@ -26,7 +26,8 @@
     "catalog:corrections:apply": "node scripts/applyEditorialCorrections.js --apply",
     "catalog:synopses:batch": "node scripts/applyEditorialSynopsesBatch.js",
     "catalog:synopses:live:preview": "node scripts/previewEditorialSynopsesLive.js",
-    "catalog:synopses:review:packet": "node scripts/prepareEditorialBatchReview.js"
+    "catalog:synopses:review:packet": "node scripts/prepareEditorialBatchReview.js",
+    "catalog:synopses:review:decisions": "node scripts/recordEditorialBatchDecisions.js"
   },
   "keywords": [],
   "author": "",

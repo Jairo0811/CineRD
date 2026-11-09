@@ -127,3 +127,33 @@ Crea **un único archivo Markdown local** en `backend/backups/editorial/review-f
 **La creación de este expediente no constituye aprobación**, ni es un mecanismo de firma criptográfica. La persona revisora debe verificar el argumento, autoría/originalidad, idioma, condiciones de uso, fechas y evidencia de cada una de las cinco películas. Una decisión conjunta puede organizarse en un solo documento, pero el gate de la actualización SQL exige **cinco decisiones atribuibles individualmente**, con huellas actuales y permisos comprobados en `docs/editorial-sql-migration-approvals-f23.json`. Nunca rellenar campos basándose solo en pruebas automáticas. Un archivo .bak debe probarse restaurable fuera del proyecto.
 
 **Todavía no ejecutar el lote con `--apply`.** Después de una revisión real, la operación SQL en lote sigue disponible y se ejecutará en una única transacción sobre las cinco sinopsis españolas. Las cinco traducciones inglesas seguirán un flujo independiente.
+
+## 8. Una plantilla única de decisiones humanas y registro explícito (nuevo)
+
+Tras generar el expediente conjunto `cinerd-five-c53e7094d64b9983.md`, crear **una sola hoja JSON local** con las cinco huellas de revisión:
+
+```powershell
+npm --prefix backend run catalog:synopses:review:decisions
+```
+
+La herramienta genera `backend/backups/editorial/review-f23/cinerd-five-decisions-<hash>.json` en directorio excluido de Git. El archivo inicia con **cinco entradas `decision: pendiente`**, `reviewer=null`, `reviewedAt=null`, seis controles `false` y `evidence=[]`. No se sobrescribe si ya contiene anotaciones.
+
+La revisión de exactitud, traducción, autoría y derechos **debe realizarla una persona**, contrastando el expediente y fuentes. Para una película realmente aprobada, completar los campos `decision=aprobado`, `reviewer`, `reviewedAt` con zona horaria, las seis casillas de control, `notes` motivadas y referencias de evidencia `https://...`, rutas absolutas o relativas. Las referencias a fuentes públicas NO equivalen a autorización de reproducción; `rightsReviewed=true` solo corresponde si se revisaron las condiciones reales del contenido. Si un punto no está resuelto, conservar `pendiente` y **no registrar autorizaciones**.
+
+Para comprobar **sin escribir** el libro:
+
+```powershell
+npm --prefix backend run catalog:synopses:review:decisions -- --check
+```
+
+Si hay cinco decisiones reales y completas, y el revisor decide explícitamente registrarlas:
+
+```powershell
+npm --prefix backend run catalog:synopses:review:decisions -- --record-reviewed
+```
+
+La opción `--record-reviewed` es **distinta de `--apply`**: verifica identidades, cinco huellas vigentes, controles y referencias y escribe exclusivamente `docs/editorial-sql-migration-approvals-f23.json`. No conecta a SQL, no modifica `Sinopsis` ni concede licencias. **No usar con datos inventados.** La herramienta se niega a sobrescribir un libro con decisiones previas; los conflictos requieren revisión humana.
+
+El archivo de aprobaciones es **versionado en Git y puede publicar nombres/evidencias**. Revisar privacidad antes de hacer cualquier commit. No pegar al chat documentos de licencia confidenciales ni credenciales. El registro no constituye una firma digital ni prueba criptográfica de identidad.
+
+**Después**, verificar de nuevo los cinco valores SQL mediante el único `catalog:synopses:live:preview`; el responsable deberá obtener y probar restaurable un respaldo SQL Server `.bak` y autorizar separadamente la aplicación del lote. No ejecutar todavía `--apply`.
