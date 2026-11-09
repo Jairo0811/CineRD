@@ -21,6 +21,8 @@ jobs:
           cache-dependency-path: backend/package-lock.json
       - run: npm ci
       - run: npm test
+      - name: Probar auditoría de integración local de solo lectura (sin SQL)
+        run: node --test ../scripts/auditLocalCineRD.test.mjs
       - run: npm run catalog:validate
       - name: Validate F-2.7 metadata candidates (offline / no SQL)
         run: npm run catalog:metadata:validate
@@ -150,6 +152,8 @@ jobs:
         run: npm ci
       - name: Run backend tests on Windows
         run: npm test
+      - name: Test read-only local audit on Windows
+        run: node --test ../scripts/auditLocalCineRD.test.mjs
       - name: Validate catalog on Windows
         run: npm run catalog:validate
       - name: Validate F-2.7 metadata on Windows (offline)
