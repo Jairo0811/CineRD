@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { CREDITOS_FOTOGRAFICOS } from "../../data/fotosLibresTalentos";
+import { DEMO_MODE } from "../../config/api";
 
 function Footer() {
   const { t, i18n } = useTranslation();
@@ -41,6 +43,18 @@ function Footer() {
         <div className="cine-footer-attribution">
           {t("footer.tmdb")}
         </div>
+
+        {DEMO_MODE && <details className="cine-footer-photo-credits mt-3">
+          <summary>{i18n.language?.startsWith("en") ? "Photo credits and licenses" : "Créditos y licencias de fotografías"} ({CREDITOS_FOTOGRAFICOS.length})</summary>
+          <p className="small mt-2 mb-2">{i18n.language?.startsWith("en")
+            ? "Selected talent photos are hosted by Wikimedia Commons under the specified Creative Commons licenses. Original uploaded photos with pending rights are not published."
+            : "Algunas fotos de talentos proceden de Wikimedia Commons bajo las licencias Creative Commons indicadas. Las fotografías originales con derechos pendientes continúan sin publicarse."}</p>
+          <ul className="list-unstyled small mb-0">
+            {CREDITOS_FOTOGRAFICOS.map((foto) => <li key={foto.id} className="mb-1">
+              {foto.nombre} · {foto.autor} · <a href={foto.fuente} target="_blank" rel="noopener noreferrer">{foto.archivo}</a> · <a href={foto.enlaceLicencia} target="_blank" rel="noopener noreferrer">{foto.licencia}</a>
+            </li>)}
+          </ul>
+        </details>}
       </div>
     </footer>
   );
