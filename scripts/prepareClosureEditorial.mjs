@@ -38,9 +38,15 @@ function draftBody(item) {
 
 const text=x=>String(x??"").replace(/[\r\n|]/g," ").trim();
 
-export function buildEditorialPacket({changes,items,issues,approvedE4=[],approvedE5=[]}) {
+const normField=(field,value)=>value==null||value===""?null:
+  field==="FechaEstreno"?String(value).slice(0,10):String(value).trim();
+const valueLabel=value=>value==null||value===""?"(sin dato)":text(value);
+
+export function buildEditorialPacket({changes,items,issues,approvedE4=[],approvedE5=[],
+  snapshotFilms=snapshot.tables.Peliculas}) {
   if(!Array.isArray(changes)||!Array.isArray(items)||!Array.isArray(issues)||
-      !Array.isArray(approvedE4)||!Array.isArray(approvedE5)) {
+      !Array.isArray(approvedE4)||!Array.isArray(approvedE5)||
+      !Array.isArray(snapshotFilms)) {
     throw Error("Los documentos editoriales deben incluir los arreglos exigidos");
   }
   const e4Keys=new Set(changes.map(x=>x.filmId+":"+x.field));
@@ -73,12 +79,30 @@ export function buildEditorialPacket({changes,items,issues,approvedE4=[],approve
     "",
     "## E-4 — datos del catálogo, sin aplicar cambios SQL",
     "",
+    "Los valores en snapshot NO prueban por sí solos el estado de SQL Server.",
+    "Verificar SQL Server ORIGINAL mediante SELECT antes de firmar decisiones.",
+    "",
   ];
   for(const c of pendingE4) {
+    const film=snapshotFilms.find(x=>Number(x.Id)===c.filmId);
+    if(!film || String(film.Titulo||"").trim().toLowerCase()!==String(c.title).trim().toLowerCase()) {
+      throw Error("E-4 no coincide con la identidad de la película en snapshot: "+c.filmId+"/"+c.field);
+    }
+    const current=normField(c.field,film[c.field]);
+    const expected=normField(c.field,c.expected);
+    const proposed=normField(c.field,c.proposed);
+    if(current!==expected && current!==proposed) {
+      throw Error("E-4 no coincide con valor anterior ni propuesto en snapshot: "+c.filmId+"/"+c.field);
+    }
+    const snapshotStatus=current===proposed?
+      "PROPUESTA_PRESENTE_EN_SNAPSHOT_SIN_AUTORIZACION":"VALOR_ANTERIOR_EN_SNAPSHOT";
     lines.push("### [ ] "+c.filmId+" · "+text(c.title)+" — "+c.field);
     lines.push("");
-    lines.push("- Valor actual: "+text(c.expected));
-    lines.push("- Propuesta: "+text(c.proposed));
+    lines.push("- Valor anterior documentado E-4: "+valueLabel(c.expected));
+    lines.push("- Propuesta E-4: "+valueLabel(c.proposed));
+    lines.push("- Valor observado en snapshot (NO SQL Server): "+valueLabel(film[c.field]));
+    lines.push("- Estado del snapshot: "+snapshotStatus);
+    lines.push("- Estado SQL Server original: verificar con SELECT independiente; no inferir del snapshot.");
     if(c.field==="FechaEstreno")lines.push("- Confirmar criterio: estreno comercial en cines dominicanos (no premiere)");
     for(const source of c.sources)lines.push("- Fuente por comprobar: "+source);
     lines.push("- [ ] Hechos y fuentes contrastados manualmente");
