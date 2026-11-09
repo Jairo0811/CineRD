@@ -6,17 +6,13 @@
 function createAutorizarEdicionTalento(options = {}) {
   return async (req, res, next) => {
     const rol = req.usuario?.rol;
-    if (rol === "ADMINISTRADOR") {
-      req.edicionTalento = "administrador";
-      return next();
-    }
-    if (rol !== "TALENTO_VERIFICADO") {
+    if (rol !== "ADMINISTRADOR" && rol !== "TALENTO_VERIFICADO") {
       return res.status(403).json({ mensaje: "No tiene permisos para editar este talento" });
     }
 
     const actorId = Number(req.params.id);
     const usuarioId = Number(req.usuario?.id);
-    if (!Number.isSafeInteger(actorId) || actorId <= 0 ||
+    if ((rol !== "ADMINISTRADOR" && (!Number.isSafeInteger(actorId) || actorId <= 0)) ||
         !Number.isSafeInteger(usuarioId) || usuarioId <= 0) {
       return res.status(400).json({ mensaje: "Identificador de perfil inválido" });
     }
@@ -27,6 +23,17 @@ function createAutorizarEdicionTalento(options = {}) {
       const db = options.getPool && options.sql ? null : require("../config/db");
       const pool = await (options.getPool ? options.getPool() : db.poolPromise);
       const sql = options.sql || db.sql;
+      if (rol === "ADMINISTRADOR") {
+        const admin = await pool.request()
+          .input("UsuarioId", sql.Int, usuarioId)
+          .query("SELECT Rol, Estado FROM dbo.Usuarios WHERE Id=@UsuarioId");
+        if (admin.recordset?.[0]?.Rol !== "ADMINISTRADOR" ||
+            admin.recordset[0].Estado !== "ACTIVO") {
+          return res.status(403).json({ mensaje: "La cuenta ya no tiene permisos administrativos" });
+        }
+        req.edicionTalento = "administrador";
+        return next();
+      }
       const result = await pool.request()
         .input("UsuarioId", sql.Int, usuarioId)
         .input("ActorId", sql.Int, actorId)
