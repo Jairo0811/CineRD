@@ -163,8 +163,15 @@ export default function AvancesCineRD() {
             <div><strong>{participaciones}</strong><span>{c.links}</span></div>
           </div>
         </div>
-        <div className="cinerd-avances-side" aria-hidden="true">
-          <span>CINERD</span><strong>RD</strong><small>FILM · PEOPLE · HERITAGE</small>
+        <div className="cinerd-avances-side">
+          <img
+            src="/logo-cinerd.webp"
+            alt="Logo oficial de CineRD"
+            className="cinerd-avances-logo"
+            loading="eager"
+            decoding="async"
+          />
+          <small>FILM · PEOPLE · HERITAGE</small>
         </div>
       </header>
 
