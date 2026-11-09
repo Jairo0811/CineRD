@@ -43,6 +43,10 @@ jobs:
       - run: node --test ../scripts/reportAdSenseReadiness.test.mjs
       - run: node ../scripts/reportAdSenseReadiness.mjs
       - run: npm run editorial:review
+      - name: Validate integrated 1-4 release checks without forging sign-offs
+        run: node --test ../scripts/releaseReadiness14.test.cjs
+      - name: Report all four gates (informational while human reviews are pending)
+        run: node ../scripts/releaseReadiness14.cjs --json
       - run: node --test ../scripts/editorialReviewAudit.test.mjs
       - run: npm audit --omit=dev --audit-level=high
       - run: npm run build

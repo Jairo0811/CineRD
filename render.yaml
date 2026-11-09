@@ -18,9 +18,9 @@ services:
       - key: HOST
         value: 0.0.0.0
       - key: FRONTEND_URLS
-        value: https://cinerd.netlify.app
+        value: https://cinerd.pages.dev,https://cinerd.netlify.app
       - key: PUBLIC_APP_URL
-        value: https://cinerd.netlify.app
+        value: https://cinerd.pages.dev
       - key: UPLOADS_DIR
         value: /var/data/uploads
       - key: PRIVATE_STORAGE_DIR
