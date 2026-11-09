@@ -42,7 +42,8 @@ const rotarRefreshToken = async (tokenActual) => {
           u.Email,
           u.Rol,
           u.Estado,
-          u.EmailVerificado
+          u.EmailVerificado,
+          u.SesionVersion
         FROM dbo.RefreshTokens rt WITH (UPDLOCK, ROWLOCK)
         INNER JOIN dbo.Usuarios u ON u.Id = rt.UsuarioId
         WHERE rt.TokenHash = @TokenHash
