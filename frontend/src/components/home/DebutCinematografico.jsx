@@ -30,7 +30,7 @@ export default function DebutCinematografico({ debuts = [], cargando = false, er
               <article className="cinematic-debut-card" key={`${debut.ActorId}-${debut.PeliculaId}`}>
                 <Link to={`/actores/${debut.ActorId}`} className="cinematic-debut-portrait" aria-label={t("home.debutsViewTalent", { name: nombre })}>
                   <img
-                    src={obtenerFotoTalento({ Foto: debut.FotoTalento, Sexo: debut.Sexo })}
+                    src={obtenerFotoTalento({ Id: debut.ActorId, Foto: debut.FotoTalento, Sexo: debut.Sexo })}
                     alt={nombre}
                     loading="lazy"
                     onError={(event) => manejarErrorFotoTalento(event, debut.Sexo)}
