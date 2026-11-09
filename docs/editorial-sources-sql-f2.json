@@ -13,6 +13,10 @@
         {
           "titulo": "CineDominicano — Perico ripiao (2003)",
           "url": "https://cinedominicano.com/peliculasdominicanas/pelicula/perico-ripiao-2003/"
+        },
+        {
+          "titulo": "FilmAffinity — Ficha y variante documental de 7 años de encarcelamiento",
+          "url": "https://www.filmaffinity.com/es/fullcredits.php?movie_id=452681"
         }
       ]
     },
@@ -105,6 +109,14 @@
         {
           "titulo": "Cinema Dominicano — La Lucha de Ana (2012)",
           "url": "https://cinemadominicano.com/la-lucha-de-ana-2012/"
+        },
+        {
+          "titulo": "DGCINE — Cinemateca Sobre Ruedas, La lucha de Ana",
+          "url": "https://dgcine.gob.do/programacion-cinemateca-sobre-ruedas-centro-cultural-narciso-gonzalez-2/"
+        },
+        {
+          "titulo": "CineDominicano — La lucha de Ana (2012)",
+          "url": "https://cinedominicano.com/peliculasdominicanas/pelicula/la-lucha-de-ana-2012/"
         }
       ]
     }

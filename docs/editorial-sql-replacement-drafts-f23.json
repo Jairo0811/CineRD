@@ -9,16 +9,18 @@
       "year": 2003,
       "status": "pendiente_revision",
       "deployment": "manual_only",
-      "draftOrigin": "borrador_editorial_fase_e",
-      "es": "Tres hombres permanecen encarcelados durante años por delitos menores y una cadena de negligencias burocráticas. Cuando consiguen escapar, emprenden el viaje para reencontrarse con sus familias llevando consigo una güira, un tambor y un acordeón. Su recorrido transforma una injusticia institucional en una aventura atravesada por música y humor.",
-      "en": "Three men spend years in prison for minor offenses because of bureaucratic neglect. After escaping, they set out to find their families with a güira, a drum and an accordion. Music and comedy accompany their journey through a story rooted in institutional injustice.",
+      "draftOrigin": "nueva_redaccion_f23",
+      "es": "En la República Dominicana de los años setenta, tres hombres pasan años encarcelados por delitos menores mientras los trámites penitenciarios prolongan su encierro. Cuando encuentran la oportunidad de escapar, salen en busca de sus familias llevando consigo una güira, un tambor y un acordeón. La música acompaña su viaje de regreso, marcado por los contratiempos y el humor.",
+      "en": "In 1970s Dominican Republic, three men remain imprisoned for years over minor offenses as bureaucratic delays prolong their confinement. When they finally get a chance to escape, they set off to reunite with their families, carrying a güira, a drum and an accordion. Music accompanies their journey home through setbacks and comic situations.",
       "sources": [
         "https://cinemadominicano.com/perico-ripiao-2003/",
-        "https://cinedominicano.com/peliculasdominicanas/pelicula/perico-ripiao-2003/"
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/perico-ripiao-2003/",
+        "https://www.filmaffinity.com/es/fullcredits.php?movie_id=452681"
       ],
       "openQuestions": [
-        "Confirmar el dato exacto de años de encarcelamiento; el borrador evita fijar la cifra.",
-        "Comprobar nombres y relación de los personajes mediante créditos o visionado."
+        "Las fuentes disponibles discrepan sobre siete o diez años de encarcelamiento; el texto evita una cifra hasta conseguir prueba primaria o visionado.",
+        "Confirmar mediante créditos o visionado la relación y nombres de los tres protagonistas; evitar inventar aventuras específicas fuera de la trama documentada.",
+        "Registrar procedencia y autoría de la sinopsis anterior y comprobar derechos antes de la sustitución; el nuevo texto no hereda licencias de las fuentes citadas."
       ],
       "sourcePermissionStatus": "sin_evidencia_registrada",
       "reviewedBy": null,
@@ -108,16 +110,20 @@
       "year": 2012,
       "status": "pendiente_revision",
       "deployment": "manual_only",
-      "draftOrigin": "borrador_editorial_fase_e",
-      "es": "Ana mantiene a su hijo vendiendo flores en un mercado de Santo Domingo. Cuando el joven muere de forma violenta, la madre busca respuestas y justicia por las vías institucionales. Ante los obstáculos que encuentra, emprende una lucha personal que pone a prueba su resistencia.",
-      "en": "Ana supports her son by selling flowers at a market in Santo Domingo. After the young man is violently killed, she seeks answers and justice through official channels. Faced with obstacles, she begins a personal struggle that tests her resolve.",
+      "draftOrigin": "nueva_redaccion_f23",
+      "es": "Ana vende flores en el Mercado Nuevo de Santo Domingo para sostener a su único hijo. Cuando el joven es asesinado, acude a las instituciones en busca de justicia. Sin obtener la respuesta que espera por las vías legales, se enfrenta a la posibilidad de actuar por su cuenta. Su dolor y su determinación impulsan una lucha que pondrá a prueba sus convicciones.",
+      "en": "Ana sells flowers at Santo Domingo's Mercado Nuevo to support her only son. When he is murdered, she turns to the authorities in search of justice. Unable to obtain the answers she seeks through legal channels, she considers taking matters into her own hands. Grief and determination drive her struggle as her convictions are put to the test.",
       "sources": [
         "https://www.programaibermedia.com/proyectos/la-lucha-de-ana-2/",
-        "https://cinemadominicano.com/la-lucha-de-ana-2012/"
+        "https://cinemadominicano.com/la-lucha-de-ana-2012/",
+        "https://dgcine.gob.do/programacion-cinemateca-sobre-ruedas-centro-cultural-narciso-gonzalez-2/",
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/la-lucha-de-ana-2012/"
       ],
       "openQuestions": [
-        "Verificar el matiz entre muerte por accidente y violencia; se evita establecer una causa concreta.",
-        "No presentar la crítica institucional como el propósito declarado del director."
+        "El texto habla de asesinato según Ibermedia y Cinema Dominicano, sin establecer un mecanismo accidental concreto que las fuentes describen ambiguamente.",
+        "Corroborar mediante visionado el punto exacto donde fracasan las vías institucionales antes de que Ana considere actuar por su cuenta; evitar inferir cómo concluye su búsqueda.",
+        "Registrar procedencia original y derechos del texto SQL previo, además de revisar el nuevo texto español e inglés por un responsable.",
+        "El estreno comercial histórico consta como 24 de mayo de 2012 en Cinema Dominicano, pero SQL conserva 13 de abril; decidir por procedimiento independiente de metadatos."
       ],
       "sourcePermissionStatus": "sin_evidencia_registrada",
       "reviewedBy": null,

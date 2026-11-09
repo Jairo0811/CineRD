@@ -23,7 +23,8 @@
     "catalog:corrections:preview": "node scripts/applyEditorialCorrections.js",
     "catalog:corrections:live:preview": "node scripts/previewEditorialCorrectionsLive.js",
     "catalog:corrections:snapshot:verify": "node ../scripts/verifyE4SnapshotExport.cjs",
-    "catalog:corrections:apply": "node scripts/applyEditorialCorrections.js --apply"
+    "catalog:corrections:apply": "node scripts/applyEditorialCorrections.js --apply",
+    "catalog:synopses:batch": "node scripts/applyEditorialSynopsesBatch.js"
   },
   "keywords": [],
   "author": "",
