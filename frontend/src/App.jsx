@@ -25,6 +25,7 @@ import DemoUnavailable from "./pages/DemoUnavailable";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 
 const Actores = lazy(() => import("./pages/Actores"));
+const AvancesCineRD = lazy(() => import("./pages/AvancesCineRD"));
 const Peliculas = lazy(() => import("./pages/Peliculas"));
 const Busqueda = lazy(() => import("./pages/Busqueda"));
 const Historia = lazy(() => import("./pages/Historia"));
@@ -105,6 +106,7 @@ function App() {
                  ========================== */}
 
               <Route path="/" element={<HomePublica />} />
+              <Route path="/avances" element={<AvancesCineRD />} />
 
               <Route path="/buscar" element={<Busqueda />} />
 
