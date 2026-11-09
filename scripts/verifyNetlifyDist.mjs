@@ -34,9 +34,10 @@ try {
   if (status.format !== 'CineRD.PublicDemoDeploy') {
     throw new Error('Netlify: demo/deploy-status.json no tiene el formato esperado.');
   }
-  if (process.env.CF_PAGES === '1' && process.env.CF_PAGES_BRANCH === 'main' &&
-      status.mediaRightsMode !== 'review') {
-    throw new Error('Cloudflare Pages main exige mediaRightsMode=review antes de publicar.');
+  const isNetlifyDeploy = String(process.env.NETLIFY || '').toLowerCase() === 'true';
+  const isCloudflareDeploy = process.env.CF_PAGES === '1';
+  if ((isCloudflareDeploy || isNetlifyDeploy) && status.mediaRightsMode !== 'review') {
+    throw new Error('Despliegues Cloudflare/Netlify exigen mediaRightsMode=review antes de publicar.');
   }
   if (process.env.CF_PAGES_COMMIT_SHA && status.sourceCommit !== process.env.CF_PAGES_COMMIT_SHA) {
     throw new Error('Cloudflare Pages: el commit del manifiesto no coincide con CF_PAGES_COMMIT_SHA.');

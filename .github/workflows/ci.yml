@@ -140,3 +140,35 @@ jobs:
         run: npm test
       - name: Validate catalog on Windows
         run: npm run catalog:validate
+
+  netlify-production-review:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - name: Simulate Netlify deploy with unsafe pilot requested
+        env:
+          NETLIFY: "true"
+          CONTEXT: deploy-preview
+          VITE_MEDIA_RIGHTS_MODE: pilot
+          COMMIT_REF: ${{ github.sha }}
+        run: npm run build
+      - name: Verify protected deployment contains no pending images
+        run: node ../scripts/verifyRightsReviewBuild.mjs
+      - name: Confirm Netlify mode is forced to review
+        run: |
+          node --input-type=module -e '
+            import fs from "node:fs";
+            import assert from "node:assert/strict";
+            const status=JSON.parse(fs.readFileSync("dist/demo/deploy-status.json","utf8"));
+            assert.equal(status.mediaRightsMode,"review");
+            assert.equal(status.mediaFilesCopied,0);
+          '

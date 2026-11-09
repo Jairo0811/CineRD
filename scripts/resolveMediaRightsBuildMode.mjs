@@ -3,21 +3,24 @@
  * deployment manifest. Cloudflare Pages supplies CF_PAGES and CF_PAGES_BRANCH
  * automatically on Git-integrated builds.
  *
- * Every Cloudflare Pages deployment (main AND preview branches) is fail-closed:
- * unlicensed media cannot be distributed, even when an environment variable
- * is missing or mistakenly requests "pilot"/"normal".
- * Local development retains historical opt-in behavior. Any deployment on
- * another host must explicitly set VITE_MEDIA_RIGHTS_MODE=review.
+ * Cloudflare Pages and Netlify deployments (production AND preview branches)
+ * are fail-closed. Both build providers force 'review' even if VITE_MEDIA_RIGHTS_MODE
+ * is unset or requests an unsafe value.
+ * Local development retains opt-in behavior; other hosts must explicitly set
+ * VITE_MEDIA_RIGHTS_MODE=review.
  */
 export function resolveMediaRightsBuildMode(env = process.env) {
   const requested = String(env.VITE_MEDIA_RIGHTS_MODE || "").trim();
   const isCloudflarePages = String(env.CF_PAGES || "") === "1";
+  // Netlify documenta NETLIFY=true en cada build, incluidos Deploy Previews.
+  const isNetlify = String(env.NETLIFY || "").toLowerCase() === "true";
 
-  if (isCloudflarePages) {
+  if (isCloudflarePages || isNetlify) {
     if (requested && requested !== "review") {
       console.warn(
-        "⚠ CineRD Cloudflare Pages: se ignora VITE_MEDIA_RIGHTS_MODE=" +
-        requested + "; todos los despliegues obligan review para proteger medios sin permiso."
+        "⚠ CineRD " + (isCloudflarePages ? "Cloudflare Pages" : "Netlify") +
+        ": se ignora VITE_MEDIA_RIGHTS_MODE=" + requested +
+        "; todos los despliegues obligan review para proteger medios sin permiso."
       );
     }
     return "review";

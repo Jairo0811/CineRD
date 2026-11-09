@@ -30,6 +30,16 @@ describe("CineRD / modo de derechos según entorno de compilación", () => {
       }), "review");
     }
   });
+  it("Netlify fuerza review en producción, deploy-preview y branch-deploy", () => {
+    for (const context of ["production", "deploy-preview", "branch-deploy", "dev"]) {
+      for (const requested of ["", "pilot", "normal", "review"]) {
+        assert.equal(resolve({
+          NETLIFY:"true", CONTEXT:context, VITE_MEDIA_RIGHTS_MODE:requested,
+        }), "review");
+      }
+    }
+    assert.equal(resolve({ NETLIFY:"false", VITE_MEDIA_RIGHTS_MODE:"pilot" }), "pilot");
+  });
   it("fuera de Cloudflare se exige review explícito para una compilación segura", () => {
     assert.equal(resolve({ CF_PAGES:"0", CF_PAGES_BRANCH:"main" }), "");
     assert.equal(resolve({ CF_PAGES:"0", VITE_MEDIA_RIGHTS_MODE:"review" }), "review");

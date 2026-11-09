@@ -102,3 +102,14 @@ Se corrigió \`scripts/releaseReadiness14.cjs\` para mostrar las líneas \`not o
 \`\`\`
 
 El resultado de \`npm test\` contiene el bloque \`not ok\` con el nombre de la prueba. Con ese dato se debe corregir exactamente la causa y repetir la batería. Los **2 avisos moderados backend y 1 frontend** emitidos por \`npm ci\` ameritan \`npm audit\`, pero no ejecutar \`npm audit fix --force\` indiscriminadamente: puede introducir cambios incompatibles.
+
+## Protección de medios en Netlify heredado (noviembre 2026)
+
+El despliegue principal de CineRD es Cloudflare Pages, pero `netlify.toml` mantiene una ruta de publicación anterior. Se detectó que Netlify no estaba forzado por código al modo de derechos `review`, por lo que una compilación heredada podía distribuir imágenes marcadas `PENDIENTE`. No se afirma que el sitio público las esté exponiendo actualmente; no se verificó su estado HTTP en vivo.
+
+- `scripts/resolveMediaRightsBuildMode.mjs` fuerza `review` si detecta `NETLIFY=true` o `CF_PAGES=1`, tanto en producción como en previews, e ignora `pilot`/valores inseguros en estos entornos.
+- `netlify.toml` declara además `VITE_MEDIA_RIGHTS_MODE=review`; Netlify documenta el indicador de compilación `NETLIFY=true` como variable predefinida. Esto solo entra en vigor en la siguiente compilación y publicación, no limpia retrospectivamente despliegues antiguos.
+- `verifyNetlifyDist.mjs` exige `review` en todos los despliegues detectados de Cloudflare y Netlify.
+- CI ejecuta una simulación de Netlify de preview con `VITE_MEDIA_RIGHTS_MODE=pilot` y comprueba que se produzca el catálogo `review`, sin las 128 imágenes pendientes.
+
+**Persisten:** no hay licencias inventadas ni revisiones aprobadas. Hay que confirmar en las URLs públicas de Netlify y Cloudflare que el build nuevo está desplegado, sin rutas antiguas cacheadas.
