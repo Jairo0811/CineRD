@@ -238,3 +238,58 @@ humanas atribuibles, y los textos E-5 hasta su propia revisión independiente.
 El servidor de desarrollo ahora escucha en `127.0.0.1` si `HOST` no está configurada; producción sigue con `0.0.0.0` por defecto para contenedores. Si el log de `npm --prefix backend run dev` todavía muestra `0.0.0.0`, revisa en tu propio `backend/.env` si hay una variable `HOST` explícita. No compartas el contenido completo del `.env`.
 
 Antes de autorizar cualquier acción protegida, el backend vuelve a consultar en `dbo.Usuarios` el rol y estado `ACTIVO`: un JWT vigente no conserva permisos de una cuenta bloqueada o degradada. La edición de fichas por un administrador también exige esa verificación. El cierre editorial privado ahora incluye textos reales ES/EN y referencias registradas para que la persona revisora pueda cotejarlos sin buscar cada archivo manualmente. **Estos cambios requieren repetir la auditoría local después del próximo `git pull`**.
+
+
+### Diagnóstico sin duplicar backup: RESTORE HEADERONLY 3013
+
+Si BACKUP DATABASE terminó pero falló RESTORE HEADERONLY, **no repetir el backup**:
+el .bak puede haberse creado. Para el respaldo del 9/11/2026:
+
+~~~powershell
+$backupFile = "C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\Backup\CineRD-20261109-100853.bak"
+Test-Path -LiteralPath $backupFile
+Get-Item -LiteralPath $backupFile | Select-Object FullName,Length,LastWriteTime
+~~~
+
+Después, en SSMS, con una cuenta con permisos de consulta del historial:
+
+~~~sql
+SELECT TOP (5) s.database_name, s.backup_start_date, s.backup_finish_date,
+       s.type, s.is_copy_only, s.has_backup_checksums,
+       m.physical_device_name
+FROM msdb.dbo.backupset s
+INNER JOIN msdb.dbo.backupmediafamily m ON m.media_set_id=s.media_set_id
+WHERE s.database_name=N'CRUDPeliculas'
+  AND m.physical_device_name LIKE N'%CineRD-20261109-100853.bak'
+ORDER BY s.backup_finish_date DESC;
+~~~
+
+Que aparezca el backup en msdb **no significa aún que sea restaurable**.
+En SSMS ejecutar lo siguiente y revisar los errores anteriores a 3013:
+
+~~~sql
+RESTORE HEADERONLY
+  FROM DISK=N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\Backup\CineRD-20261109-100853.bak';
+-- Ejecutar solo si HEADERONLY tiene éxito:
+RESTORE VERIFYONLY
+  FROM DISK=N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\Backup\CineRD-20261109-100853.bak'
+  WITH CHECKSUM;
+~~~
+
+Microsoft indica que RESTORE HEADERONLY requiere permiso CREATE DATABASE.
+El usuario SQL con rol db_backupoperator puede crear el backup y aun así
+carecer del permiso para inspeccionar la cabecera. También puede ser un problema
+de archivo, ruta o E/S; el código 3013 por sí solo no indica la causa.
+No conceder sysadmin de forma automática: comparar la identidad de SSMS
+con DB_USER de la API y resolver mediante DBA con permisos mínimos.
+Referencia: https://learn.microsoft.com/en-us/sql/t-sql/statements/restore-statements-headeronly-transact-sql
+
+Con la rama actualizada, el siguiente comando solo verifica el archivo existente:
+
+~~~powershell
+npm --prefix backend run sql:backup -- --verify-existing --database CRUDPeliculas --file "$backupFile"
+~~~
+
+Este modo no ejecuta BACKUP DATABASE ni sobrescribe el archivo: consulta SQL,
+HEADERONLY y VERIFYONLY; ahora además imprime los errores anteriores a 3013
+cuando el driver los proporciona.
