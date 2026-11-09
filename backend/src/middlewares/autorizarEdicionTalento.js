@@ -3,10 +3,7 @@
  * El cliente nunca decide a qué ActorId pertenece una cuenta.
  * Todas las consultas usan parámetros SQL (y validación de roles en servidor).
  */
-function createAutorizarEdicionTalento({
-  getPool = async () => require("../config/db").poolPromise,
-  sql = require("../config/db").sql,
-} = {}) {
+function createAutorizarEdicionTalento(options = {}) {
   return async (req, res, next) => {
     const rol = req.usuario?.rol;
     if (rol === "ADMINISTRADOR") {
@@ -25,7 +22,11 @@ function createAutorizarEdicionTalento({
     }
 
     try {
-      const pool = await getPool();
+      // Cargar el driver solo durante una petición real, no al importar
+      // este módulo en CI sin credenciales SQL configuradas.
+      const db = options.getPool && options.sql ? null : require("../config/db");
+      const pool = await (options.getPool ? options.getPool() : db.poolPromise);
+      const sql = options.sql || db.sql;
       const result = await pool.request()
         .input("UsuarioId", sql.Int, usuarioId)
         .input("ActorId", sql.Int, actorId)
