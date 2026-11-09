@@ -8,11 +8,34 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { inventory } from "./editorialReviewAudit.mjs";
+import { getEditorialPelicula } from "../frontend/src/data/editorialPeliculas.js";
+import { getSinopsisEditorial } from "../frontend/src/data/sinopsisCuradasFaseE.js";
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
 const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),"utf8"));
 const privateFile=path.join(root,"backend/private/editorial/CIERRE_E4_E5_REVISION_HUMANA.md");
 const priority={alta:0,media:1,baja:2};
+const snapshot=read("database/seeds/catalog.snapshot.json");
+const sqlSources=read("docs/editorial-sources-sql-f2.json");
+function draftBody(item) {
+  const film=snapshot.tables.Peliculas.find(x=>Number(x.Id)===Number(item.filmId));
+  if(!film)throw Error("Falta película para revisión "+item.filmId);
+  if(item.kind==="sinopsis") {
+    const sql=String(film.Sinopsis??"").trim();
+    if(sql) {
+      return {es:sql,en:"",sources:(sqlSources.entries?.[String(film.Id)]?.fuentes||[]).map(x=>x.url)};
+    }
+    const draft=getSinopsisEditorial(film);
+    if(!draft)throw Error("Falta sinopsis ES/EN para "+film.Id);
+    return {es:draft.es,en:draft.en,sources:(draft.fuentes||[]).map(x=>x.url)};
+  }
+  const editorial=getEditorialPelicula(film);
+  if(!editorial)throw Error("Falta contexto ES/EN para "+film.Id);
+  return {es:editorial.es.parrafos.join("\n\n"),
+    en:editorial.en.parrafos.join("\n\n"),
+    sources:(editorial.fuentes||[]).map(x=>x.url)};
+}
+
 const text=x=>String(x??"").replace(/[\r\n|]/g," ").trim();
 
 export function buildEditorialPacket({changes,items,issues,approvedE4=[],approvedE5=[]}) {
@@ -77,6 +100,17 @@ export function buildEditorialPacket({changes,items,issues,approvedE4=[],approve
     lines.push("- Fingerprint SHA-256 de la pieza vigente: "+item.fingerprint);
     lines.push("- Fuentes: "+item.fuentes+" / caracteres ES: "+item.caracteresEs+" / EN: "+item.caracteresEn);
     if(item.faltanFuentes)lines.push("- ADVERTENCIA: no hay fuente HTTPS registrada");
+    const draft=draftBody(item);
+    lines.push("");
+    lines.push("#### Texto español de la versión en revisión","");
+    lines.push(draft.es || "SIN TEXTO ES","");
+    lines.push("#### Texto inglés de la versión en revisión","");
+    lines.push(draft.en || "SIN TEXTO EN: comprobar el flujo SQL antes de publicar","");
+    if(draft.sources.length) {
+      lines.push("#### Referencias registradas (se deben comprobar)","");
+      draft.sources.forEach(link=>lines.push("- "+link));
+      lines.push("");
+    }
     lines.push("- [ ] Revisar trama y hechos en fuente primaria");
     lines.push("- [ ] Revisar los textos ES/EN y sus inferencias");
     lines.push("- [ ] Revisar derechos, atribución y versión publicada");
