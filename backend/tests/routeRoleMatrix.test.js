@@ -71,8 +71,7 @@ async function call(method,path,tkn) {
   return {status:response.status,body:await response.json()};
 }
 
-test("rutas reales: anónimo y usuarios sin rol no pueden mutar catálogo, galería ni revisar",async t=>{
-  t.after(()=>server.close());
+test("rutas reales: anónimo y usuarios sin rol no pueden mutar catálogo, galería ni revisar",async()=>{
   const endpoints=[
     ["POST","/api/peliculas"],["PUT","/api/peliculas/3"],
     ["DELETE","/api/peliculas/3"],
@@ -119,7 +118,8 @@ test("token falso y expirado retornan 401; no se ejecuta controlador",async()=>{
   }
 });
 
-test.after(()=>{
+test.after(async()=>{
+  await new Promise(resolve=>server.close(resolve));
   for(const [id,previous] of saved) {
     if(previous) require.cache[id]=previous;
     else delete require.cache[id];
