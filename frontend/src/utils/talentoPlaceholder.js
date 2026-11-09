@@ -6,7 +6,8 @@
  * No confundir la presencia de un fallback propio con licencia para las fotos
  * reales: siguen sujetas al ledger docs/media-rights-ledger.csv.
  */
-import { API_URL } from "../config/api";
+import { API_URL, DEMO_MODE } from "../config/api";
+import { obtenerFotoLibreTalento } from "../data/fotosLibresTalentos";
 
 function crearRetratoVectorial(acento) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="400" viewBox="0 0 320 400">
@@ -59,6 +60,12 @@ export function obtenerFotoTalento(talento) {
     talento?.ImagenUrl || talento?.ProfilePath || "";
   if (typeof foto === "string" && foto.trim() !== "")
     return construirUrlFoto(foto);
+  // Sólo en el catálogo estático: seis fotografías con licencia CC y
+  // atribución accesible desde el pie de página. No aprueba fotos locales.
+  if (DEMO_MODE) {
+    const libre = obtenerFotoLibreTalento(talento?.Id);
+    if (libre) return libre.imagen;
+  }
   return obtenerPlaceholderPorSexo(talento?.Sexo);
 }
 
