@@ -30,6 +30,7 @@ async function probar({ usuario, actorId = "7", activo = true, dbError = false }
   app.put("/actores/:id", (req, res, next) => { req.usuario = usuario; next(); }, guard,
     (req, res) => res.json({ autorizado: true, modo: req.edicionTalento }));
   const server = app.listen(0, "127.0.0.1");
+  await new Promise(resolve => server.once("listening", resolve));
   try {
     const response = await fetch(`http://127.0.0.1:${server.address().port}/actores/${actorId}`, { method: "PUT" });
     return { status: response.status, data: await response.json(), consultas, parametros };
