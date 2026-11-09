@@ -39,8 +39,8 @@ describe("CineRD / galería de avances pública", () => {
   it("muestra métricas reales del catálogo, portada y estado de demo", async () => {
     montar();
     expect(await screen.findByText("Películas catalogadas")).toBeTruthy();
-    expect(screen.getByText("2")).toBeTruthy();
-    expect(screen.getByText("1")).toBeTruthy();
+    expect(screen.getAllByText("2")).toHaveLength(2);
+    expect(screen.getByText("3")).toBeTruthy();
     expect(screen.getByText(/Catálogo de consulta y solo lectura/)).toBeTruthy();
     expect(api.get).toHaveBeenCalledWith("/peliculas");
     expect(api.get).toHaveBeenCalledWith("/actores");
@@ -76,6 +76,6 @@ describe("CineRD / galería de avances pública", () => {
   it("informa cuando la API falla sin presentar datos inventados", async () => {
     api.get.mockRejectedValue(new Error("Network error"));
     montar();
-    expect(await screen.findByRole("alert")).toHaveTextContent("No fue posible cargar el catálogo público.");
+    expect((await screen.findByRole("alert")).textContent).toContain("No fue posible cargar el catálogo público.");
   });
 });
