@@ -25,6 +25,8 @@ for (const name of ctrlPaths) {
   require.cache[id]={id,filename:id,loaded:true,exports:new Proxy({}, { get:()=>handler })};
 }
 
+const databaseRole=new Map([[1,"ADMINISTRADOR"],[2,"TALENTO_VERIFICADO"],[3,"USUARIO"]]);
+const databaseState=new Map([[1,"ACTIVO"],[2,"ACTIVO"],[3,"ACTIVO"]]);
 const dbPath=require.resolve("../src/config/db");
 saved.set(dbPath,require.cache[dbPath]);
 require.cache[dbPath]={
@@ -36,8 +38,14 @@ require.cache[dbPath]={
         return {
           input(n,t,v){vars[n]=v;return this;},
           async query(q){
+            if(q.includes("FROM dbo.Usuarios WHERE Id=@UsuarioId")) {
+              const id=Number(vars.UsuarioId);
+              const role=databaseRole.get(id);
+              return {recordset:role?[{Rol:role,Estado:databaseState.get(id)}]:[]};
+            }
             assert.match(q,/TU.Estado = N'ACTIVO'/);
-            const ok = Number(vars.UsuarioId)===2 && Number(vars.ActorId)===11;
+            const ok = Number(vars.UsuarioId)===2 && Number(vars.ActorId)===11
+              && databaseRole.get(2)==="TALENTO_VERIFICADO" && databaseState.get(2)==="ACTIVO";
             return {recordset:ok?[{ActorId:11}]:[]};
           },
         };
@@ -109,6 +117,22 @@ test("solicitud de verificación solo USUARIO; perfil y reclamación solo TALENT
   assert.equal((await call("GET","/api/solicitudes-creditos/mias",tTalent)).status,200);
   assert.equal((await call("GET","/api/solicitudes-creditos/mias",tUser)).status,403);
   assert.equal((await call("GET","/api/solicitudes-creditos/mias",null)).status,401);
+});
+
+test("un JWT válido pierde autorización inmediatamente tras bloqueo o revocación en SQL",async()=>{
+  databaseRole.set(1,"USUARIO");
+  assert.equal((await call("DELETE","/api/peliculas/3",tAdmin)).status,403);
+  assert.equal((await call("PUT","/api/actores/11",tAdmin)).status,403);
+  databaseRole.set(1,"ADMINISTRADOR");
+
+  databaseState.set(1,"BLOQUEADO");
+  assert.equal((await call("POST","/api/galeria",tAdmin)).status,403);
+  databaseState.set(1,"ACTIVO");
+
+  databaseRole.set(2,"USUARIO");
+  assert.equal((await call("PUT","/api/actores/11",tTalent)).status,403);
+  assert.equal((await call("GET","/api/verificaciones/mi-perfil",tTalent)).status,403);
+  databaseRole.set(2,"TALENTO_VERIFICADO");
 });
 
 test("token falso y expirado retornan 401; no se ejecuta controlador",async()=>{
