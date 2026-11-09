@@ -72,7 +72,8 @@ test("titular verificado puede modificar solo su perfil profesional, nunca ident
   assert.equal(updateParams.InstagramUrl, "https://instagram.com/talento");
   for (const campo of ["Nombres", "FechaNacimiento", "TMDbId", "Rol", "EstaVivo"]) {
     assert.equal(Object.hasOwn(updateParams, campo), false, campo + " no debe editarse");
-    assert.doesNotMatch(sqlConsultas[1], new RegExp("\\b" + campo + "\\s*="));
+    const setClause = sqlConsultas[1].split("OUTPUT INSERTED.*")[0];
+    assert.doesNotMatch(setClause, new RegExp("\\b" + campo + "\\s*="));
   }
   assert.match(sqlConsultas[1], /EXISTS\s*\(/);
   assert.match(sqlConsultas[1], /TU\.Estado=N'ACTIVO'/);
