@@ -111,3 +111,19 @@ npm --prefix backend run catalog:synopses:live:preview
 ```
 
 **La autorización para publicar ES/EN y actualizar SQL es un proceso distinto**: con el libro de aprobaciones todavía vacío, `--apply` seguirá bloqueado. El archivo `.bak` debe ser un respaldo SQL auténtico y su restauración debe verificarse por el administrador; no se deduce eso de un nombre de archivo.
+
+## 7. Un solo expediente privado para las cinco revisiones humanas
+
+El diagnóstico del usuario confirmó el **8 de noviembre de 2026** que `CRUDPeliculas` contiene **5/5 sinopsis ORIGINALES**, ninguna propuesta nueva, **0 discrepancias y 0 ausentes**. Las 14 pruebas del lote y consulta SQL real pasaron. Eso verifica la preimagen, pero **no da autorización de publicación**.
+
+Para evitar crear expedientes película por película, el nuevo comando:
+
+```powershell
+npm --prefix backend run catalog:synopses:review:packet
+```
+
+Crea **un único archivo Markdown local** en `backend/backups/editorial/review-f23/`, excluido de Git, que incluye las cinco sinopsis SQL actuales, propuestas ES y EN, fuentes, observaciones, huellas y **casillas vacías de verificación**. Si ya existe un expediente con las mismas huellas, no sobrescribe ni borra anotaciones humanas. Para imprimir el contenido sin crear archivo: `npm --prefix backend run catalog:synopses:review:packet -- --show`.
+
+**La creación de este expediente no constituye aprobación**, ni es un mecanismo de firma criptográfica. La persona revisora debe verificar el argumento, autoría/originalidad, idioma, condiciones de uso, fechas y evidencia de cada una de las cinco películas. Una decisión conjunta puede organizarse en un solo documento, pero el gate de la actualización SQL exige **cinco decisiones atribuibles individualmente**, con huellas actuales y permisos comprobados en `docs/editorial-sql-migration-approvals-f23.json`. Nunca rellenar campos basándose solo en pruebas automáticas. Un archivo .bak debe probarse restaurable fuera del proyecto.
+
+**Todavía no ejecutar el lote con `--apply`.** Después de una revisión real, la operación SQL en lote sigue disponible y se ejecutará en una única transacción sobre las cinco sinopsis españolas. Las cinco traducciones inglesas seguirán un flujo independiente.
