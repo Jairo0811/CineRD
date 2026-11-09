@@ -1,7 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const {
-  parseArgs, validateBackupGate, assertBackupFile, quoteSqlIdentifier, runBackup,
+  parseArgs, validateBackupGate, assertBackupFile, quoteSqlIdentifier, describeSqlError, verifyExistingBackup, runBackup,
 } = require("../scripts/backupLocalSql");
 
 const env = {
@@ -10,7 +10,7 @@ const env = {
   DB_SERVER: "localhost", DB_USER: "example", DB_PASSWORD: "not-a-secret",
   CINERD_SQL_BACKUP_CONFIRM: "YES",
 };
-const request = { apply: true, confirm: true, database: "CRUDPeliculas",
+const request = { apply: true, confirm: true, verify: false, database: "CRUDPeliculas",
   file: "D:\\SQLBackups\\CineRD-20990101-120000.bak" };
 
 test("backup default es preview sin SQL ni archivos", () => {
@@ -109,4 +109,49 @@ test("RESTORE VERIFYONLY no se ejecuta ni marca éxito si cabecera no coincide",
     {getDb:db.getDb}),/cabecera del respaldo no corresponde/);
   assert.equal(db.events.length,3);
   assert.equal(db.closed(),true);
+});
+
+
+test("verificar .bak existente exige nombre de base y no solicita backup nuevo", () => {
+  const args = parseArgs(["--verify-existing", "--database", "CRUDPeliculas",
+    "--file", "D:\\SQLBackups\\CineRD-20990101-120000.bak"]);
+  assert.deepEqual(validateBackupGate(args, env), {
+    mode: "VERIFY_EXISTING",
+    database: "CRUDPeliculas", file: args.file,
+  });
+  assert.throws(() => validateBackupGate({...args, apply: true}, env), /bloqueada/);
+  assert.throws(() => validateBackupGate({...args, confirm: true}, env), /bloqueada/);
+  assert.throws(() => validateBackupGate(args, {...env, NODE_ENV:"production"}), /bloqueada/);
+  assert.throws(() => validateBackupGate(args, {...env, DB_DATABASE:"master"}), /La base/);
+});
+
+test("verificación existente solo usa SELECT, HEADERONLY y VERIFYONLY (sin BACKUP ni escrituras)", async () => {
+  const db=fakeBackupDb();
+  const report=await verifyExistingBackup({
+    mode:"VERIFY_EXISTING", database:"CRUDPeliculas",
+    file:"D:\\SQLBackups\\respaldo-existente.bak",
+  },{getDb:db.getDb});
+  assert.equal(report.verified,true);
+  assert.equal(db.closed(),true);
+  assert.equal(db.events.length,3);
+  assert.ok(db.events.every(x=>!x.query.startsWith("BACKUP DATABASE")));
+  assert.match(db.events[1].query,/RESTORE HEADERONLY/);
+  assert.match(db.events[2].query,/RESTORE VERIFYONLY/);
+});
+
+test("errores SQL preservan detalles previos al mensaje 3013",()=>{
+  const e=new Error("RESTORE HEADERONLY is terminating abnormally.");
+  e.number=3013;
+  e.precedingErrors=[Object.assign(new Error("CREATE DATABASE permission denied"),{number:262})];
+  assert.match(describeSqlError(e),/SQL 3013/);
+  assert.match(describeSqlError(e),/SQL 262.*CREATE DATABASE permission denied/);
+});
+
+test("verificación existente también rechaza cabecera de otra base",async()=>{
+  const db=fakeBackupDb({wrongHeader:true});
+  await assert.rejects(()=>verifyExistingBackup({
+    mode:"VERIFY_EXISTING",database:"CRUDPeliculas",file:"D:\\bk.bak"
+  },{getDb:db.getDb}),/cabecera del respaldo/);
+  assert.equal(db.closed(),true);
+  assert.equal(db.events.length,2);
 });
