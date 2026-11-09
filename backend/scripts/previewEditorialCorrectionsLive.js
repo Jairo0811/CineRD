@@ -60,6 +60,32 @@ function compareLiveRecords(rows, records) {
   };
 }
 
+/**
+ * Compare the CURRENT versioned snapshot against live SQL values.
+ * Expected historical values in the E-4 ledger are NOT the snapshot.
+ * No changes are made to either source.
+ */
+function compareSnapshotToLive(report, snapshot) {
+  if(!report || !Array.isArray(report.items) || !Array.isArray(snapshot?.tables?.Peliculas))
+    throw Error("Datos insuficientes para contraste SQL/snapshot");
+  const films=new Map(snapshot.tables.Peliculas.map(f=>[Number(f.Id),f]));
+  const items=report.items.map(i=>{
+    const film=films.get(Number(i.filmId));
+    const snapshotCurrent=film?compared(i.field,film[i.field]):null;
+    const sqlCurrent=i.status==="MISSING"?null:compared(i.field,i.current);
+    const identityOk=Boolean(film && normalize(film.Titulo)===normalize(i.title));
+    const match=identityOk && i.status!=="MISSING" && i.status!=="DRIFT" &&
+      snapshotCurrent===sqlCurrent;
+    return {...i,snapshotCurrent,match};
+  });
+  return {
+    items,
+    matched:items.filter(i=>i.match).length,
+    mismatched:items.filter(i=>!i.match).length,
+    allAligned:items.length>0&&items.every(i=>i.match)
+  };
+}
+
 async function readLiveMovies(pool, ids) {
   const results=[];
   for (const id of ids) {
@@ -104,22 +130,29 @@ async function main() {
   } finally {
     await pool.close();
   }
+  const alignment=compareSnapshotToLive(report,snapshot);
   console.log("CineRD E-4 / consulta SQL Server (SOLO LECTURA)");
   console.log("Base: "+snapshot.sourceDatabase+"; campos inspeccionados: "+report.items.length);
-  for(const i of report.items) {
+  for(const i of alignment.items) {
     const val=x=>x===null?"NULL":String(x);
     console.log("  ["+i.status+"] #"+i.filmId+" "+i.title+" / "+i.field+
-      ": SQL="+val(i.current)+" | snapshot="+val(i.expected)+" | propuesto="+val(i.proposed));
+      ": SQL="+val(i.current)+" | snapshot_actual="+val(i.snapshotCurrent)+
+      " | anterior_E4="+val(i.expected)+" | propuesto="+val(i.proposed)+
+      " | coinciden="+(i.match?"SI":"NO"));
   }
+  console.log("Alineación SQL/snapshot: "+alignment.matched+"/"+alignment.items.length+" campos coincidentes.");
   const c=report.counts;
   console.log("Resultado: "+c.EXPECTED+" sin cambios; "+c.ALREADY+
     " ya propuestos; "+c.DRIFT+" distintos; "+c.MISSING+" ausentes.");
   if(report.hasDrift) {
     console.error("✗ Hay campos inesperados o películas ausentes en SQL. Revisar antes de sincronizar.");
     process.exitCode=1;
+  } else if(!alignment.allAligned) {
+    console.error("✗ SQL Server y snapshot no coinciden en "+alignment.mismatched+" campos E-4. Revisar diferencias; no aplicar ni reexportar automáticamente.");
+    process.exitCode=1;
   } else if(report.allAlready) {
-    console.log("✓ Los 7 cambios E-4 YA ESTÁN en SQL Server. No ejecutar catalog:corrections:apply.");
-    console.log("→ El snapshot Git puede estar obsoleto: respaldarlo, ejecutar catalog:export, revisar el diff y catalog:validate.");
+    console.log("✓ Los 7 cambios E-4 YA ESTÁN en SQL Server Y en el snapshot versionado. No ejecutar catalog:corrections:apply.");
+    console.log("✓ No hace falta reexportar para estos 7 campos. Las aprobaciones humanas E-4 siguen pendientes de documentar.");
     console.log("Esta comprobación no concede ni registra aprobaciones humanas.");
   } else if(report.partial) {
     console.error("✗ E-4 parcialmente aplicado en SQL. No ejecutar el lote completo ni exportar sin revisar diferencias.");
@@ -130,4 +163,4 @@ async function main() {
   }
 }
 if(require.main===module)main().catch(e=>{console.error("✗ "+e.message);process.exitCode=1;});
-module.exports={compareLiveRecords,readLiveMovies};
+module.exports={compareLiveRecords,compareSnapshotToLive,readLiveMovies};

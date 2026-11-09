@@ -2,7 +2,7 @@ const {test}=require("node:test");
 const assert=require("node:assert/strict");
 const ledger=require("../../docs/catalog-corrections-e4.json");
 const snapshot=require("../../database/seeds/catalog.snapshot.json");
-const {compareLiveRecords,readLiveMovies}=require("../scripts/previewEditorialCorrectionsLive");
+const {compareLiveRecords,compareSnapshotToLive,readLiveMovies}=require("../scripts/previewEditorialCorrectionsLive");
 
 // Construct the historical E-4 preimage from the ledger, NOT from the snapshot.
 // After a legitimate SQL export, the snapshot may already contain all proposed values.
@@ -40,7 +40,7 @@ test("E-4: detectar cambio ya aplicado sin volver a aplicar el lote completo",()
   assert.equal(out.unsafeToApply,true);
 });
 
-test("E-4: siete ALREADY es éxito de lectura y requiere sincronizar snapshot",()=>{
+test("E-4: siete ALREADY es éxito de lectura y no autoriza reaplicar",()=>{
   const records=baseline();
   for(const row of ledger.rows) {
     const f=records.find(x=>x.Id===row.filmId);
@@ -101,4 +101,43 @@ test("E-4: las consultas a SQL usan exclusivamente SELECT parametrizados",async(
     assert.equal(x.q,"SELECT Id,Titulo,Genero,Director,FechaEstreno FROM dbo.Peliculas WHERE Id=@id");
     assert.ok(!/UPDATE|INSERT|DELETE|EXEC|DROP/i.test(x.q));
   }
+});
+
+test("E-4: SQL ALREADY y snapshot actualizado coinciden en los siete campos",()=>{
+  const records=baseline();
+  for(const row of ledger.rows) {
+    const f=records.find(x=>x.Id===row.filmId);
+    f[row.field]=row.field==="FechaEstreno"?
+      new Date(row.proposed+"T00:00:00.000Z"):row.proposed;
+  }
+  const result=compareSnapshotToLive(inspect(records),snapshot);
+  assert.equal(result.matched,7);
+  assert.equal(result.mismatched,0);
+  assert.equal(result.allAligned,true);
+  const lotoman=result.items.find(x=>x.filmId===9&&x.field==="Genero");
+  assert.equal(lotoman.snapshotCurrent,"Comedia");
+  assert.equal(lotoman.expected,"Infantil");
+  assert.equal(lotoman.current,"Comedia");
+});
+
+test("E-4: SQL original y snapshot propuesto NO coinciden, sin cambiar datos",()=>{
+  const result=compareSnapshotToLive(inspect(baseline()),snapshot);
+  assert.equal(result.matched,0);
+  assert.equal(result.mismatched,7);
+  assert.equal(result.allAligned,false);
+  assert.equal(snapshot.tables.Peliculas.find(x=>x.Id===9).Genero,"Comedia");
+});
+
+test("E-4: un valor SQL inesperado tampoco se considera alineado",()=>{
+  const records=baseline();
+  for(const row of ledger.rows) {
+    const f=records.find(x=>x.Id===row.filmId);
+    f[row.field]=row.field==="FechaEstreno"?
+      new Date(row.proposed+"T00:00:00.000Z"):row.proposed;
+  }
+  records.find(x=>x.Id===9).Genero="Drama";
+  const result=compareSnapshotToLive(inspect(records),snapshot);
+  assert.equal(result.mismatched,1);
+  assert.equal(result.allAligned,false);
+  assert.ok(result.items.some(x=>x.filmId===9&&x.field==="Genero"&&!x.match));
 });

@@ -81,3 +81,11 @@ El informe comprueba identidad de películas, observa el snapshot, agrupa las 18
 - Libro E-4 **0/7** autorizaciones acreditadas; un snapshot actualizado NO equivale a licencia ni a autorización retroactiva.
 - Cinco propuestas de reemplazo SQL siguen sin aplicarse y con derechos/documentación humanos pendientes.
 - **No fusionar como producción comercial** solo porque pase CI o un script informativo.
+
+## Contraste efectivo SQL Server / snapshot (8 de noviembre de 2026)
+
+El responsable ejecutó el 8/11/2026 `npm --prefix backend run catalog:corrections:live:preview` desde su equipo con base `CRUDPeliculas`. **Los 7 campos E-4 regresaron `ALREADY`**, sin `DRIFT` ni `MISSING`. La verificación documental del repositorio comprobó además que los **7 valores propuestos ya constan en el snapshot actual**. Por tanto, **no ejecutar `catalog:corrections:apply`, ni reexportar el catálogo por estos siete valores**.
+
+Se corrigió el formato de salida del verificador para distinguir `snapshot_actual` (valor versionado real) de `anterior_E4` (preimagen histórica registrada en el expediente). El nuevo contraste **comparará SQL y snapshot directamente** y señalará diferencias antes de recomendar ninguna actuación.
+
+**Trazabilidad administrativa pendiente:** las siete autorizaciones E-4 **no constan** en el libro. No se sabe desde la comprobación cuándo, cómo o por quién se aplicaron los siete valores; el hecho de encontrarlos en SQL no permite fabricar una aprobación retroactiva. Las 5 incidencias altas E-4 no se cierran automáticamente, ni cambian las 0/58 aprobaciones E-5.
