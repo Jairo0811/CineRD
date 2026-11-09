@@ -48,6 +48,8 @@ jobs:
       - name: Report production and AdSense blockers without enabling ads
         run: node ../scripts/reportProductionCommercial.mjs
       - run: node ../scripts/reportAdSenseReadiness.mjs
+      - name: Test local-only original media viewer (without SQL or publication)
+        run: node --test ../scripts/previewLocalMedia.test.mjs
       - run: npm run editorial:review
       - name: Triage 18 high-priority editorial observations (read-only)
         run: node ../scripts/reportHighPriorityEditorial.mjs
