@@ -1,7 +1,8 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import EncabezadoPagina from "../components/ui/EncabezadoPagina";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import api from "../services/api";
+import { resolveMediaUrl } from "../config/api";
 
 import ActorFormFields from "../components/actores/ActorFormFields";
 import { prepararFechaParaInput } from "../utils/fechas";
@@ -30,12 +31,12 @@ function FormularioActor() {
   const navigate = useNavigate();
   const { id } = useParams();
   const esEdicion = Boolean(id);
-  const API_URL = "http://localhost:3000";
 
   const [formulario, setFormulario] = useState(formularioInicial);
   const [foto, setFoto] = useState(null);
   const [vistaPrevia, setVistaPrevia] = useState(null);
   const [guardando, setGuardando] = useState(false);
+  const guardandoRef = useRef(false);
 
   useEffect(() => { if (esEdicion) obtenerActor(); }, [id]);
   useEffect(() => () => { if (vistaPrevia?.startsWith("blob:")) URL.revokeObjectURL(vistaPrevia); }, [vistaPrevia]);
@@ -63,7 +64,7 @@ function FormularioActor() {
         XUrl: actor.XUrl || "",
         SitioWebUrl: actor.SitioWebUrl || "",
       });
-      if (actor.Foto) setVistaPrevia(`${API_URL}${actor.Foto}`);
+      setVistaPrevia(resolveMediaUrl(actor.Foto));
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.mensaje || "Error al cargar el actor");
@@ -127,10 +128,11 @@ function FormularioActor() {
 
   const guardarActor = async (e) => {
     e.preventDefault();
-    if (!validarFormulario()) return;
+    if (guardandoRef.current || !validarFormulario()) return;
     const datos = construirFormData();
+    guardandoRef.current = true;
+    setGuardando(true);
     try {
-      setGuardando(true);
       if (esEdicion) await api.put(`/actores/${id}`, datos, { headers: { "Content-Type": "multipart/form-data" } });
       else await api.post("/actores", datos, { headers: { "Content-Type": "multipart/form-data" } });
       alert(esEdicion ? "Actor actualizado correctamente" : "Actor registrado correctamente");
@@ -138,7 +140,10 @@ function FormularioActor() {
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.mensaje || error.response?.data?.error || "Error al guardar el actor");
-    } finally { setGuardando(false); }
+    } finally {
+      guardandoRef.current = false;
+      setGuardando(false);
+    }
   };
 
   return <div className="form-page-container">
