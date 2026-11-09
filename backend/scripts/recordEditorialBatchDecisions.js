@@ -126,7 +126,7 @@ function recordReviewed(template,packets,hash,ledger,{fsApi=fs,ledgerFile=path.j
 function parseArgs(args){
   ensure(args.length===0||(args.length===1&&["--check","--record-reviewed"].includes(args[0])),
     "Uso: catalog:synopses:review:decisions [--check|--record-reviewed]");
-  return {mode:args[0]??"template"};
+  return {mode:args[0]==="--check"?"check":args[0]==="--record-reviewed"?"record":"template"};
 }
 
 function main(args=process.argv.slice(2)){

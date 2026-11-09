@@ -85,8 +85,8 @@ test("F-2.3: no se sobrescribe una hoja de decisiones preexistente",()=>{
 });
 test("F-2.3: registrar decisiones exige flag explícito y libro sin autorizaciones previas",()=>{
  assert.deepEqual(parseArgs([]),{mode:"template"});
- assert.deepEqual(parseArgs(["--check"]),{mode:"--check"});
- assert.deepEqual(parseArgs(["--record-reviewed"]),{mode:"--record-reviewed"});
+ assert.deepEqual(parseArgs(["--check"]),{mode:"check"});
+ assert.deepEqual(parseArgs(["--record-reviewed"]),{mode:"record"});
  assert.throws(()=>parseArgs(["--apply"]),/Uso:/);
  assert.throws(()=>parseArgs(["--approve"]),/Uso:/);
  assert.throws(()=>parseArgs(["--record-reviewed","--apply"]),/Uso:/);
