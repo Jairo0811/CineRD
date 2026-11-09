@@ -1,7 +1,7 @@
 # CineRD — Paquete de decisión editorial para ocho fechas (F-2.3)
 
 **Fecha:** 2026-11-09 · **Rama:** `feat/f2-editorial-review` · **PR:** #55  
-**Estado:** **8 PROPUESTAS PENDIENTES DE DECISIÓN HUMANA**, no autorizadas ni aplicadas.  
+**Estado:** **3 FECHAS APROBADAS POR EL TITULAR** (#10, #40, #55); **5 PENDIENTES DE DECISIÓN** (#27, #36, #42, #44, #56); **0 CAMBIOS SQL APLICADOS**.  
 **Objeto:** resolver la fecha de **estreno comercial en cines de República Dominicana**. La fecha de gala, festival, reseña, distribución internacional o preestreno no reemplaza esa definición.
 
 ## Evidencia técnica previa
@@ -10,17 +10,21 @@ El propietario ejecutó `SELECT` el 2026-11-09 en la base SQL Server original `C
 
 Para repetir una comprobación sin cambiar nada: **`database/scripts/f23_preflight_fechas_estreno_8_readonly.sql`**. El script identifica los ocho registros por ID/título y muestra el valor actual y el candidato. **Solo consulta**.
 
-## Decisiones de revisión — NO completar automáticamente
+## Decisiones de revisión — no completar automáticamente
+
+**Aprobación expresada el 2026-11-09:** ante la pregunta específica sobre las tres fechas de *Vamos de robo*, *Colao 2* y *El Plan Perfecto*, el titular respondió «aprobadas». La decisión está registrada en `docs/f23-approved-release-dates-2026-11-09.json`. Se refiere a **los tres valores de fecha**, no al género, director, sinopsis ni a otras cinco propuestas. No consta fecha exacta UTC, firma adicional, declaración individual de revisión de URLs ni ejecución SQL; esos datos **no se inventan**. Los tres cambios ya se pueden preparar para aplicación manual, tras respaldo verificable y lectura del script, pero todavía **NO se han aplicado**.
+
+**Script protegido de aplicación/reversión manual:** `database/scripts/f23_fechas_3_aprobadas_manual_up_down.sql`. Por defecto muestra previa (`@Apply=0`) y no modifica datos. Exige un backup completo reciente con CHECKSUM, comprobación de integridad, verificación de preimagen y transacción para ejecutar UP o DOWN manualmente.
 
 | ID | Película | Fecha actual en SQL | Candidata | Principal evidencia y evaluación | Decisión |
 |---:|---|---|---|---|---|
-| 10 | Vamos de robo | 2014-01-15 | **2014-01-16** | [Diario Libre (crónica 20/01/2014)](https://www.diariolibre.com/amp/revista/cine/vamos-de-robo-DIDL447141) habla de taquilla en primera noche, jueves 16; evidencia contemporánea fuerte | PENDIENTE |
+| 10 | Vamos de robo | 2014-01-15 | **2014-01-16** | [Diario Libre (crónica 20/01/2014)](https://www.diariolibre.com/amp/revista/cine/vamos-de-robo-DIDL447141) habla de taquilla en primera noche, jueves 16; evidencia contemporánea fuerte | APROBADA POR TITULAR; NO APLICADA EN SQL |
 | 27 | Lotoman 003: Volando Bajito | 2014-03-15 | **2014-03-27** | [Ficha Cinema Dominicano](https://cinemadominicano.com/lotoman-003-volando-bajito-2014/) y [gala previa](https://cinemadominicano.com/orange-cinema-realiza-gala-premier-de-lotoman-003/); concordancia | PENDIENTE |
 | 36 | Nueba Yol 3: Bajo la Nueva Ley | 1997-10-31 | **1997-10-23** | [Ficha Cinema Dominicano](https://cinemadominicano.com/nueba-yol-3-bajo-la-nueva-ley-1997/); **pedir otra evidencia primaria** por antigüedad y falta de cartelera | PENDIENTE |
-| 40 | Colao 2 | 2023-12-07 | **2023-11-30** | [Anuncio de Caribbean Cinemas citado por Cinema Dominicano](https://cinemadominicano.com/colao-2-llega-a-los-cines-dominicanos/); lanzamiento en RD | PENDIENTE |
+| 40 | Colao 2 | 2023-12-07 | **2023-11-30** | [Anuncio de Caribbean Cinemas citado por Cinema Dominicano](https://cinemadominicano.com/colao-2-llega-a-los-cines-dominicanos/); lanzamiento en RD | APROBADA POR TITULAR; NO APLICADA EN SQL |
 | 42 | Andrea | 2005-08-16 | **2005-08-18** | [Ficha Cinema Dominicano](https://cinemadominicano.com/andrea-la-venganza-de-un-espiritu-2005/); **pedir confirmación independiente** | PENDIENTE |
 | 44 | Playball | 2008-02-01 | **2008-02-14** | [Ficha Cinema Dominicano](https://cinemadominicano.com/play-ball-2008/); archivo [catálogo de cine dominicano](https://cinemadominicano.com/wp-content/uploads/2022/02/CDELM.pdf); revisar si son fuentes independientes | PENDIENTE |
-| 55 | El Plan Perfecto | 2017-01-17 | **2017-01-19** | [DGCINE, 06/02/2017](https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/) confirma explícitamente estreno en todos los cines RD; evidencia institucional | PENDIENTE |
+| 55 | El Plan Perfecto | 2017-01-17 | **2017-01-19** | [DGCINE, 06/02/2017](https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/) confirma explícitamente estreno en todos los cines RD; evidencia institucional | APROBADA POR TITULAR; NO APLICADA EN SQL |
 | 56 | La Lucha de Ana | 2012-04-13 | **2012-05-24** | [Ficha Cinema Dominicano](https://cinemadominicano.com/la-lucha-de-ana-2012/); [Ibermedia](https://www.programaibermedia.com/proyectos/la-lucha-de-ana-2/) no certifica el día; pedir otra evidencia del estreno | PENDIENTE |
 
 ### Categorías de decisión permitidas para una revisión REAL
@@ -31,7 +35,7 @@ Cada campo debe ser decidido **individualmente** por la persona revisora:
 - **MANTENER_ACTUAL**: hay evidencia fundada de que el SQL actual responde al criterio; documentar el motivo y la fuente.
 - **REQUIERE_MAS_EVIDENCIA**: no hacer cambios; solicitar registro de distribuidor, cartelera, DGCINE o créditos apropiados.
 
-El presente documento **no realiza** ninguna de estas decisiones. Las ocho filas conservan **PENDIENTE** y no se altera `docs/catalog-corrections-e4-approvals.json`, `docs/editorial-approvals-e5.json` ni `docs/editorial-issues-f2.json`.
+**Tres decisiones expresas ya registradas:** #10, #40 y #55; las otras cinco filas mantienen **PENDIENTE**. No se altera `docs/catalog-corrections-e4-approvals.json` (libro E-4 de otras siete correcciones), `docs/editorial-approvals-e5.json` ni `docs/editorial-issues-f2.json`. Ninguna decisión de fecha implica automáticamente la aprobación de una sinopsis o el cierre de una incidencia.
 
 ## Campos de acta (rellenar manualmente, sin fabricar firmas)
 
@@ -56,9 +60,9 @@ El presente documento **no realiza** ninguna de estas decisiones. Las ocho filas
 
 ## Procedimiento posterior, condicionado a autorizaciones efectivas
 
-1. Registrar las ocho decisiones reales; no equiparar investigación documental a autorización.
-2. Para las filas autorizadas como `APROBAR_CANDIDATA`, generar **un script SQL diferente**, protegido por ID, título, valor anterior, transacción, `OUTPUT`, respaldo y reversión, dirigido **solo a la base original con autorización explícita**.
+1. Conservar las tres decisiones expresas registradas y solicitar revisión/decisión independiente de las otras cinco; no equiparar investigación documental a autorización.
+2. Para las tres filas autorizadas se ha preparado el script manual UP/DOWN indicado arriba: protegido por ID, título, valor anterior, transacción, `OUTPUT`, respaldo real con CHECKSUM y reversión. Ejecutar únicamente tras la revisión del archivo, confirmación de backup y selección deliberada de `@Apply=1`.
 3. Reexportar snapshot desde SQL real mediante el procedimiento del proyecto, **no editar datos manualmente**, y actualizar trazabilidad/correcciones nuevas; ampliar tests/avisos públicos si corresponde.
 4. Correr todos los jobs de CI antes de integrar la PR #55, que permanece DRAFT. Ni una CI verde equivale a licencia de terceros o permiso para monetizar.
 
-**Garantías de este paquete:** documentación y verificación de lectura solamente. **0 actualizaciones SQL; 0 decisiones humanas autocompletadas; 0 aprobaciones nuevas.**
+**Garantías:** **0 actualizaciones SQL realizadas por estas tareas**; **3 decisiones explícitas del titular registradas**, **5 pendientes**, **0 firmas ficticias**, **0 aprobaciones automáticas E-4/E-5**.
