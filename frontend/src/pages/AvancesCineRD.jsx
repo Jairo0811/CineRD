@@ -208,7 +208,7 @@ export default function AvancesCineRD() {
                     <article className="cinerd-avances-card" key={"a-" + actor.Id}>
                       <Link to={"/actores/" + actor.Id} aria-label={c.seeTalent + ": " + nombre} className="cinerd-avances-visual cinerd-avances-portrait">
                         <img src={obtenerFotoTalento(actor)} alt={nombre} loading="lazy" onError={(event) => manejarErrorFotoTalento(event, actor.Sexo)} />
-                        <span className="cinerd-avances-number">{Number(actor.CantidadPeliculas || 0)} {c.filmCredits.toLowerCase()}</span>
+                        <span className="cinerd-avances-number">{Number(actor.CantidadPeliculas || 0)} {c.works}</span>
                       </Link>
                       <div className="cinerd-avances-card-body">
                         <small>{fotoCc ? c.photo : c.fallback}</small>
