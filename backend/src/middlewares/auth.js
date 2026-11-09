@@ -23,7 +23,8 @@ const createAuthGuard = (getDb = () => require("../config/db")) => async (req, r
   }
 
   const userId = Number(payload?.id);
-  if (!Number.isSafeInteger(userId) || userId <= 0 || typeof payload?.rol !== "string") {
+  if (!Number.isSafeInteger(userId) || userId <= 0 || typeof payload?.rol !== "string" ||
+      !Number.isSafeInteger(payload?.sv) || payload.sv < 1) {
     return res.status(401).json({ mensaje: "Token inválido o expirado" });
   }
 
@@ -32,14 +33,15 @@ const createAuthGuard = (getDb = () => require("../config/db")) => async (req, r
     const { sql, poolPromise } = getDb();
     const pool = await poolPromise;
     const result = await pool.request().input("UsuarioId", sql.Int, userId)
-      .query("SELECT Rol, Estado FROM dbo.Usuarios WHERE Id=@UsuarioId");
+      .query("SELECT Rol, Estado, SesionVersion FROM dbo.Usuarios WHERE Id=@UsuarioId");
     current = result.recordset?.[0];
   } catch (error) {
     console.error("Error verificando sesión vigente en SQL Server:", error);
     return res.status(503).json({ mensaje: "No fue posible validar la sesión" });
   }
 
-  if (!current || current.Estado !== "ACTIVO" || current.Rol !== payload.rol) {
+  if (!current || current.Estado !== "ACTIVO" || current.Rol !== payload.rol ||
+      current.SesionVersion !== payload.sv) {
     return res.status(403).json({ mensaje: "La sesión ya no tiene permisos vigentes" });
   }
 
