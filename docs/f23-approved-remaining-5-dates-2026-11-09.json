@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "edition": "F-2.3-SEGUNDO-LOTE",
+  "consentRecordedDate": "2026-11-09",
+  "consentSource": "El titular escribió «apruebalas todas» en respuesta al lote de cinco fechas que incluía explícitamente Nueba Yol 3.",
+  "scope": "Exclusivamente cinco modificaciones FechaEstreno en CRUDPeliculas: películas 27, 36, 42, 44, 56.",
+  "decisionStatus": "APROBADAS_POR_TITULAR_PENDIENTES_APLICACION_SQL",
+  "humanApprovalByOwner": true,
+  "sqlApplied": false,
+  "backupForThisBatchVerified": false,
+  "snapshotSynchronized": false,
+  "reviewerFullName": null,
+  "reviewedAtExactUtc": null,
+  "attestation": "La confirmación autoriza las cinco propuestas; no equivale a revisión individual de enlaces ni certificación independiente del dato histórico, ni a firma adicional o autorización de otras piezas editoriales.",
+  "scientificCaveat": "Nueba Yol 3 tiene fecha dominicana 1997-10-23 en dos fuentes editorialmente relacionadas, pero no se obtuvo cartelera contemporánea independiente. IMDb muestra 1997-10-31 para EE.UU., otra jurisdicción; no desmiente el posible estreno dominicano anterior.",
+  "decisions": [
+    {
+      "filmId": 27,
+      "title": "Lotoman 003: Volando Bajito",
+      "field": "FechaEstreno",
+      "currentSql": "2014-03-15",
+      "approvedNewValue": "2014-03-27",
+      "decision": "APROBAR_CANDIDATA",
+      "sourceConfidence": "alta",
+      "independentCommercialEvidenceVerified": true,
+      "sourceUrls": [
+        "https://www.diariolibre.com/revista/cine/orange-cinemas-har-hoy-gala-premier-de-lotoman-003-IODL539111",
+        "https://www.diariolibre.com/amp/revista/cine/orange-cinema-realiz-la-gala-premier-de-lotoman-003-en-el-teatro-nacional-GJDL542411"
+      ]
+    },
+    {
+      "filmId": 36,
+      "title": "Nueba Yol 3: Bajo la Nueva Ley",
+      "field": "FechaEstreno",
+      "currentSql": "1997-10-31",
+      "approvedNewValue": "1997-10-23",
+      "decision": "APROBAR_CANDIDATA",
+      "sourceConfidence": "sin_fuente_primaria_independiente",
+      "independentCommercialEvidenceVerified": false,
+      "sourceUrls": [
+        "https://cinemadominicano.com/nueba-yol-3-bajo-la-nueva-ley-1997/",
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/nueba-yol-3-bajo-la-nueva-ley-1997/",
+        "https://www.imdb.com/title/tt0128376/"
+      ]
+    },
+    {
+      "filmId": 42,
+      "title": "Andrea",
+      "field": "FechaEstreno",
+      "currentSql": "2005-08-16",
+      "approvedNewValue": "2005-08-18",
+      "decision": "APROBAR_CANDIDATA",
+      "sourceConfidence": "alta",
+      "independentCommercialEvidenceVerified": true,
+      "sourceUrls": [
+        "https://www.diariolibre.com/revista/andrea-un-film-de-bajo-costo-y-alta-expectativa-CADL70488",
+        "https://www.diariolibre.com/revista/pelculas-BYDL71470"
+      ]
+    },
+    {
+      "filmId": 44,
+      "title": "Playball",
+      "field": "FechaEstreno",
+      "currentSql": "2008-02-01",
+      "approvedNewValue": "2008-02-14",
+      "decision": "APROBAR_CANDIDATA",
+      "sourceConfidence": "media_alta",
+      "independentCommercialEvidenceVerified": true,
+      "sourceUrls": [
+        "https://www.diariolibre.com/revista/jugadores-de-bisbol-debutarn-en-el-cine-con-playball-la-nueva-cinta-de-alfonso-rodrguez-1-BKDL4164",
+        "https://cinemadominicano.com/play-ball-2008/"
+      ]
+    },
+    {
+      "filmId": 56,
+      "title": "La Lucha de Ana",
+      "field": "FechaEstreno",
+      "currentSql": "2012-04-13",
+      "approvedNewValue": "2012-05-24",
+      "decision": "APROBAR_CANDIDATA",
+      "sourceConfidence": "alta",
+      "independentCommercialEvidenceVerified": true,
+      "sourceUrls": [
+        "https://www.diariolibre.com/amp/revista/cine/la-lucha-por-un-mejor-cine-DIDL336401",
+        "https://www.diariolibre.com/revista/cine/la-lucha-de-ana-FIDL337543"
+      ]
+    }
+  ]
+}
