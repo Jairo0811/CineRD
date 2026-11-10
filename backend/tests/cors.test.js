@@ -33,6 +33,18 @@ test("producción sin FRONTEND_URLS no abre nada por defecto", () => {
   assert.equal(esOrigenPermitido(undefined), true, "sin cabecera Origin (health checks, curl) se permite");
 });
 
+test("producción: omite hasta los orígenes inseguros configurados explícitamente", () => {
+  const {esOrigenPermitido}=silenciar(()=>crearPoliticaCors({
+    NODE_ENV:"production",
+    FRONTEND_URLS:"https://cinerd.pages.dev,http://cinerd.netlify.app,http://localhost:5173,https://10.0.0.9,https://example.org/api,https://x:y@example.org"
+  }));
+  assert.equal(esOrigenPermitido("https://cinerd.pages.dev"),true);
+  for(const origin of ["http://cinerd.netlify.app","http://localhost:5173",
+      "https://10.0.0.9","https://example.org/api","https://example.org"]) {
+    assert.equal(esOrigenPermitido(origin),false,origin);
+  }
+});
+
 test("desarrollo: acepta localhost y redes privadas en el puerto del frontend, pero no otros sitios", () => {
   const { esOrigenPermitido } = crearPoliticaCors({ NODE_ENV: "development" });
   assert.equal(esOrigenPermitido("http://localhost:5173"), true);
