@@ -10,7 +10,7 @@
   "originalSevenE4ApprovalsUnaffected": true,
   "executableChangesApplied": true,
   "databaseBackupVerified": true,
-  "otherFiveDatesStillPending": true,
+  "otherFiveDatesStillPending": false,
   "decisions": [
     {
       "filmId": 10,
@@ -74,5 +74,7 @@
     "gitPushReported": true,
     "sourceEvidence": "Salida PowerShell proporcionada por titular",
     "caveat": "No representa lectura SELECT independiente posmigración ni autorización de imágenes; 128 archivos excluidos del build review."
-  }
+  },
+  "otherFiveDatesApprovedPendingSql": true,
+  "secondBatchApprovalRecord": "docs/f23-approved-remaining-5-dates-2026-11-09.json"
 }
