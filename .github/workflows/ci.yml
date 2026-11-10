@@ -46,6 +46,12 @@ jobs:
       - run: npm run editorial:audit
       - name: Probar cola humana de 7 cambios E-4 y 58 textos E-5 sin firmas
         run: node --test ../scripts/prepareClosureEditorial.test.mjs
+      - name: Test parallel E4 SQL E5 and production dashboard (read only)
+        run: node --test ../scripts/reportParallelClosure.test.mjs
+      - name: Verify E4 and SQL synopsis preflight cannot mutate data
+        run: node --test ../scripts/verifyParallelClosureSql.test.mjs
+      - name: Report three parallel closure tracks without human sign-offs
+        run: node ../scripts/reportParallelClosure.mjs
       - run: node --test ../scripts/reportAdSenseReadiness.test.mjs
       - name: Test production API and monetization gates (offline)
         run: node --test ../scripts/reportProductionCommercial.test.mjs
