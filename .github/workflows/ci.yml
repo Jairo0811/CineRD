@@ -61,6 +61,8 @@ jobs:
         run: node --test ../scripts/reportHighPriorityEditorial.test.mjs
       - name: Verify explicit approvals for 3 release dates and safe manual SQL
         run: node --test ../scripts/verifyF23ApprovedDates.test.mjs
+      - name: Validate 5 additional owner-approved dates and safe manual backup/migration
+        run: node --test ../scripts/verifyF23Remaining5.test.mjs
       - name: Test post-SQL snapshot diff guard for only 3 approved release dates
         run: node --test ../scripts/verifyF23ThreeDateSnapshot.test.cjs
       - name: Validate integrated 1-4 release checks without forging sign-offs
