@@ -26,11 +26,21 @@ Este informe separa lo que se puede dejar implementado en GitHub de verificacion
 
 ### Entregables técnicos y salvaguardas
 
-- `render.yaml` define servicio Node, `/ready` como health check, disco `/var/data` con uploads y private en directorios separados, TLS SQL y configuración de CORS. **Despliegue automático desactivado (`autoDeployTrigger: off`)**.
+- `render.yaml` define servicio Node, `/ready` como health check, disco `/var/data` con uploads y private en directorios separados, TLS SQL y configuración de CORS. **Despliegue automático desactivado (`autoDeployTrigger: off`)**. Usa la **raíz del monorepo** (sin `rootDir: backend`) para disponer en build/runtime de `backend/`, `docs/`, `database/` y `scripts/`; ejecuta `npm --prefix backend ci --omit=dev` y `npm --prefix backend start`.
 - En cada **build** de Render se ejecuta el control de inventario de derechos; antes de arrancar, `node scripts/auditProductionEnv.js --strict` valida las **15 variables mínimas** sin imprimir secretos. **Si faltan, el servidor no inicia**.
 - `/health` acredita liveness del proceso; `/ready` requiere conexión SQL real. Ni una prueba unitaria, ni una simple respuesta HTTP 200 de otra aplicación prueban SQL de CineRD.
 - **SQL Server no se aprovisiona con el blueprint:** se necesita servidor externo persistente con TLS, firewall/ACL, backups y credenciales de mínimo privilegio. Render ofrece Postgres gestionado, no equivalencia automática con el stack existente SQL Server de CineRD. No sustituir el motor por Postgres mediante una bandera.
 - **Costo/operación:** el blueprint usa web `starter` + disco persistente de 5 GB; Render requiere servicio web de pago para disco. No crear servicio facturable ni habilitar auto-deploy sin revisar costo/aceptar plan. Ver [documentación oficial de discos](https://render.com/docs/disks).
+
+### Inspección de My Workspace en Render (2026-11-10)
+
+- Workspace confirmado: `My Workspace` (`tea-dac1o1gu01pc73fgfc20`).
+- Único servicio web existente: `eventix`, plan `free`, repositorio `Jairo0811/Eventix`, región Oregon, sin cambios por esta intervención.
+- CineRD **todavía no tiene servicio web en Render**. Tampoco hay instancias Render Postgres ni Key Value.
+- **Costos orientativos según tarifa Render de consulta:** servicio web de entrada `$7 USD/mes` y disco persistente `$0.25 USD/GB/mes`: **5 GB = $1.25 USD/mes**; base Render del blueprint **$8.25 USD/mes** sin SQL Server externo, tráfico excedente, dominio o extras. El costo exacto debe verificarse antes de provisionar y podrá variar.
+- Render Postgres no equivale a SQL Server. No se detectó ni creó SQL Server externo.
+- **Corrección de prevención:** la configuración anterior `rootDir: backend` escondía a Render archivos fuera de esa carpeta; el Blueprint ahora usa la raíz del repositorio, los comandos prefijados a `backend` y controles de derechos desde `scripts/`. [Render monorepo](https://render.com/docs/monorepo-support).
+- **No crear servicios facturables sin aprobación expresa de la cuota y del SQL externo.**
 
 ### Pasos de activación que requieren acceso a cuentas
 
