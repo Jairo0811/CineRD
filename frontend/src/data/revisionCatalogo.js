@@ -9,7 +9,7 @@ export const REVISIONES_PUBLICAS = Object.freeze({
   27: { titulo:"Lotoman 003: Volando Bajito", tipo:"fecha", fechaActual:"2014-03-15" },
   31: { titulo:"Entiérrenlo Parao", tipo:"fecha_sin_confirmar", fechaActual:"2025-06-05" },
   36: { titulo:"Nueba Yol 3: Bajo la Nueva Ley", tipo:"fecha", fechaActual:"1997-10-31" },
-  40: { titulo:"Colao 2", tipo:"fecha", fechaActual:"2023-12-07" },
+  40: { titulo:"Colao 2", tipo:"fecha", fechaActual:"2023-12-07", fechaAprobada:"2023-11-30" },
   42: { titulo:"Andrea", tipo:"fecha", fechaActual:"2005-08-16" },
   44: { titulo:"Playball", tipo:"fecha", fechaActual:"2008-02-01" },
   47: { titulo:"Pimp Bullies: Victimas de un Prostibulo", tipo:"genero", fechaActual:"2011-09-22" },
@@ -23,6 +23,11 @@ const normaliza = value => String(value ?? "")
 export function obtenerAvisoRevision(pelicula, idioma="es") {
   const revision=REVISIONES_PUBLICAS[Number(pelicula?.Id)];
   if(!revision || normaliza(pelicula?.Titulo)!==normaliza(revision.titulo))return null;
+  // #40: F-2.3 documenta aprobación humana y migración SQL. El aviso de
+  // fecha se retira SOLO cuando el snapshot publicado refleja la fecha aprobada.
+  // Si aún contiene la fecha histórica u otra divergencia, conservar aviso.
+  if(revision.fechaAprobada &&
+     String(pelicula?.FechaEstreno ?? "").slice(0,10)===revision.fechaAprobada)return null;
   const english=String(idioma).startsWith("en");
   // La revisión no se elimina automáticamente si el dato cambia en SQL:
   // solo una comprobación editorial humana puede cerrar la observación.
