@@ -11,7 +11,7 @@
 | 5 | Perico Ripiao | Se confirma el núcleo de tres presos, fuga, música y búsqueda de familiares; el tiempo de prisión difiere entre fuentes | Mantener **sin número de años**; solicitar testimonio primario/visionado antes de detalles adicionales | PENDIENTE |
 | 6 | Ladrones a Domicilio | Prensa contemporánea y Casa de América respaldan expresamente que Bruno es **chofer de transporte de valores**; otras fichas lo llaman **guardia de seguridad** | Conservar la especificidad con atribución a prensa de estreno; revisar ES/EN y secuencia de hechos mediante visionado | PENDIENTE |
 | 10 | Vamos de robo | El trabajo bancario de Michael/Pedro/Mateo/Antonio y los RD$150 millones están respaldados | Mantener la distinción entre **sospechosos** y culpables; revisar afirmaciones sobre la investigación o exoneración posterior | PENDIENTE |
-| 55 | El Plan Perfecto | Está respaldada la venta por salud, seis trabajadores y acopio ilegal bajo nueva administración; **no está acreditada aquí la recontratación explícita** | Corregir u obtener evidencia para «son contratados nuevamente»; revisar también persecución y sospecha policial antes de afirmarlas | PENDIENTE |
+| 55 | El Plan Perfecto | **Recontratación y persecuciones respaldadas** en La Crónica, elCaribe y crítica contemporánea; falta aval de autoría y revisión ES/EN | Borrador ES/EN reformulado como propuesta, con siete fuentes; contrastar escenas por visionado, derechos y fidelidad | PENDIENTE |
 | 56 | La Lucha de Ana | Ibermedia respalda a Ana como florista y la búsqueda de justicia por su hijo asesinado; la fuente catalográfica menciona vías legales | Mantener incertidumbre sobre desenlace y evitar causalidades o mecanismos concretos del fallecimiento | PENDIENTE |
 
 ## 5 — Perico Ripiao (2003)
@@ -36,15 +36,19 @@
 - **Decisión sugerida:** mantener como propuesta, comprobar equivalencia de ES «fiscalización» y EN «auditing department» y obtener revisión editorial de procedencia.
 - Fuentes: [Cinema Dominicano](https://cinemadominicano.com/vamos-de-robo-2014/); [CineDominicano](https://cinedominicano.com/peliculasdominicanas/pelicula/vamos-de-robo-2014/).
 
-## 55 — El Plan Perfecto (2017)
+## 55 — El Plan Perfecto (2017): rectificación de evidencia y borrador revisado
 
-- DGCINE documenta que Don Pascual dispone cerrar/vender el almacén por salud; bajo una nueva administración, el lugar se emplea clandestinamente para mercancía ilegal. La fuente también menciona **seis compañeros de trabajo**.
-- **Hallazgo importante:** la frase ES «sus seis empleados son contratados nuevamente por los compradores» y la EN «its six employees are rehired by the new owners» no están demostradas de forma específica por las fuentes aquí contrastadas. La referencia a persecución por delincuentes y sospecha policial tampoco está acreditada en las dos fichas consultadas.
-- **Propuesta de sustitución para revisión, NO autorizada:** 
-  - ES: «Cuando Don Pascual vende por motivos de salud un almacén de Santo Domingo, los seis empleados se ven envueltos en problemas: bajo la nueva administración, el local comienza a utilizarse clandestinamente para almacenar mercancía ilegal.»
-  - EN: «When health problems lead Don Pascual to sell his Santo Domingo warehouse, the six employees become caught up in trouble: under new management, the premises begin to be used secretly to store illegal goods.»
-- Esta reformulación **no fue incorporada** a `editorial-sql-replacement-drafts-f23.json`. Primero hace falta revisión humana, contraste ES/EN y nueva huella si se aprueba su adopción. La revisión de la fecha 19/01/2017 pertenece al cierre F2.3 ya ejecutado.
-- Fuentes: [DGCINE (2017)](https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/); [Cinema Dominicano](https://cinemadominicano.com/el-plan-perfecto-2017/).
+**Rectificación del análisis inicial:** en el corte anterior se afirmó que no había constancia específica de recontratación y persecución. Una búsqueda posterior identificó fuentes contemporáneas que **sí las respaldan**: [La Crónica](https://lacronica.do/roberto-angel-salcedo-inicia-2017-estreno-plan-perfecto/) describe a los seis empleados recontratados, y [elCaribe](https://www.elcaribe.com.do/sin-categoria/el-plan-perfecto-en-gala-premier/) relata una nueva oferta de empleo por Vicente. Una [crítica de Cinema Dominicano](https://cinemadominicano.com/el-plan-perfecto-imperfecto-plan/) también refiere la persecución policial. La fuente institucional [DGCINE](https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/) avala el cierre por salud y la conversión del almacén en acopio clandestino.
+
+**Borrador bilingüe ahora registrado en `docs/editorial-sql-replacement-drafts-f23.json`, NO aprobado:**
+
+- **ES:** «Por problemas de salud, Don Pascual vende el almacén de Santo Domingo donde trabajan seis compañeros. El nuevo dueño los contrata nuevamente, sin que ellos sepan que el local se utiliza para almacenar mercancía ilegal. Cuando el engaño sale a la luz, quedan entre las presiones de los responsables del negocio y las sospechas de la policía. Los seis intentarán salir del aprieto en una sucesión de enredos de comedia y acción.»
+- **EN:** «Health problems lead Don Pascual to sell his Santo Domingo warehouse, where six coworkers earn their living. The new owner rehires them, but they do not realize the premises are being used to store illegal goods. When the deception comes to light, they find themselves caught between pressure from the people behind the operation and police suspicions. The six try to find a way out amid escalating comic and action-filled complications.»
+
+- **Control editorial:** no atribuir culpabilidad probada ni absolución; corroborar acciones concretas mediante visionado, revisar autonomía redaccional y fidelidad ES/EN. El borrador se modificó con `reviewedBy=null`, `reviewedAt=null`, `status=pendiente_revision`, `deployment=manual_only`.
+- **Control histórico:** el estreno comercial **2017-01-19** ya fue corregido en F2.3; esta revisión no modifica fechas.
+- **Control de derechos:** las fuentes periodísticas no conceden licencia sobre sus textos; se requiere evaluación humana de autoría y condiciones de uso de la sinopsis SQL previa.
+- **Fingerprint:** todo cambio del borrador ES/EN o de sus fuentes altera la huella propuesta. No se generan firmas ni migraciones sin consentimiento documentado.
 
 ## 56 — La Lucha de Ana (2012)
 
@@ -60,4 +64,4 @@ Para que una propuesta pase de `pendiente_revision` a una decisión humana atrib
 
 **No se ha verificado:** el texto SQL íntegro comparado por similitud con todas sus fuentes (la captura solo mostró longitud y hash parcial), visionado de las cinco películas, firma de revisor, titularidad de los textos o aprobación comercial.
 
-**Corte:** 5/5 sinopsis SQL presentes según SSMS; **0/5 sustituciones aprobadas**. Prioridad siguiente: resolver el ajuste de #55, completar revisión humana por obra y avanzar en la primera oleada de 18 piezas E-5 sin aprobarlas de manera automática.
+**Corte actualizado:** 5/5 sinopsis SQL presentes según SSMS y un borrador bilingüe #55 reformulado con fuentes contrastadas; **0/5 sustituciones aprobadas**. Prioridad siguiente: revisión humana atribuida, matriz E-4 de siete campos y oleada alta de 18 piezas E-5.
