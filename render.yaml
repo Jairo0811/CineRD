@@ -4,10 +4,10 @@ services:
     runtime: node
     plan: starter
     rootDir: backend
-    buildCommand: npm ci --omit=dev
-    startCommand: npm start
+    buildCommand: npm ci --omit=dev && node ../scripts/verifyMediaRightsLedger.mjs
+    startCommand: node scripts/auditProductionEnv.js --strict && npm start
     healthCheckPath: /ready
-    autoDeploy: true
+    autoDeployTrigger: off
     disk:
       name: cinerd-storage
       mountPath: /var/data
