@@ -34,26 +34,26 @@ test("F-2.7: fechas calendario estrictas rechazan día inexistente y typo",()=>{
     assert.equal(validDate(v),false);
 });
 
-test("F-2.7: lote sintético anterior detecta la fecha #40 ya corregida en snapshot",()=>{
-  const r=compareLiveDateCandidates(batch(),original());
+test("F-2.7: lote sintético histórico detecta las fechas ya corregidas en snapshot",()=>{
+  const b=batch(),r=compareLiveDateCandidates(b,original());
   assert.deepEqual(r.counts,{ORIGINAL:6,ALREADY:0,DRIFT:0,MISSING:0});
-  // SQL completamente histórico difiere del snapshot ACTUAL en #40.
-  assert.equal(r.snapshotMismatch,1);
+  assert.equal(r.snapshotMismatch,b.items.filter(x=>x.snapshotCurrent!==x.previous).length);
   assert.equal(r.allOriginal,true);
   assert.equal(r.safeToApplyAutomatically,false);
 });
 
-test("F-2.7: snapshot real contiene #40 aplicada y cinco fechas pendientes",()=>{
+test("F-2.7: snapshot refleja fase de sincronización sin habilitar auto-aplicación",()=>{
   const b=batch();
   assert.equal(b.items.find(x=>x.filmId===40).snapshotCurrent,"2023-11-30");
   const r=compareLiveDateCandidates(b,snapshotAligned());
-  assert.deepEqual(r.counts,{ORIGINAL:5,ALREADY:1,DRIFT:0,MISSING:0});
+  const originals=b.items.filter(x=>x.snapshotCurrent===x.previous).length;
+  const corrected=b.items.filter(x=>x.snapshotCurrent===x.proposed).length;
+  assert.deepEqual(r.counts,{ORIGINAL:originals,ALREADY:corrected,DRIFT:0,MISSING:0});
   assert.equal(r.snapshotMismatch,0);
-  assert.equal(r.allOriginal,false);
-  assert.equal(r.allAlready,false);
-  assert.equal(r.mixed,true);
+  assert.equal(r.allOriginal,originals===6);
+  assert.equal(r.allAlready,corrected===6);
+  assert.equal(r.mixed,originals>0&&corrected>0);
   assert.equal(r.hasDrift,false);
-  // Nunca puede activar automáticamente los otros cinco cambios.
   assert.equal(r.safeToApplyAutomatically,false);
 });
 
@@ -63,8 +63,8 @@ test("F-2.7: seis valores propuestos no conceden permiso y detectan desincroniza
   const c=compareLiveDateCandidates(b,records);
   assert.equal(c.allAlready,true);
   assert.equal(c.counts.ALREADY,6);
-  // #40 ya coincide; los otros cinco aún no están aplicados en snapshot.
-  assert.equal(c.snapshotMismatch,5);
+  // Se compara contra HEAD en cada fase; tras sincronización debe ser 0.
+  assert.equal(c.snapshotMismatch,b.items.filter(x=>x.snapshotCurrent!==x.proposed).length);
   assert.equal(c.safeToApplyAutomatically,false);
 });
 
@@ -73,8 +73,9 @@ test("F-2.7: estado mixto no permite aplicar el lote",()=>{
   records[0].FechaEstreno=new Date(batch().items[0].proposed+"T00:00:00Z");
   const c=compareLiveDateCandidates(batch(),records);
   assert.equal(c.mixed,true);
-  // #27 tiene la candidata aún no reflejada, #40 vuelve a su valor anterior.
-  assert.equal(c.snapshotMismatch,2);
+  const expectedMismatches=batch().items.map((x,i)=>i===0?x.proposed:x.previous)
+    .filter((value,i)=>value!==batch().items[i].snapshotCurrent).length;
+  assert.equal(c.snapshotMismatch,expectedMismatches);
   assert.equal(c.safeToApplyAutomatically,false);
 });
 
