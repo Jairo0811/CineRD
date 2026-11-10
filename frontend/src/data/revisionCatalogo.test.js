@@ -31,6 +31,33 @@ describe("CineRD · avisos de integridad editorial pública",()=>{
       Id:40,Titulo:"Colao 2",FechaEstreno:"2023-12-01T00:00:00Z"
     },"es")).toMatch(/revisión/);
   });
+  it("las cuatro fechas F23 con respaldo mantienen aviso antiguo y lo retiran con la aprobada",()=>{
+    const rows=[
+      [27,"Lotoman 003: Volando Bajito","2014-03-15","2014-03-27"],
+      [42,"Andrea","2005-08-16","2005-08-18"],
+      [44,"Playball","2008-02-01","2008-02-14"],
+      [56,"La Lucha de Ana","2012-04-13","2012-05-24"]
+    ];
+    for(const [Id,Titulo,previous,approved] of rows){
+      expect(REVISIONES_PUBLICAS[Id].fechaActual).toBe(previous);
+      expect(REVISIONES_PUBLICAS[Id].fechaAprobada).toBe(approved);
+      expect(obtenerAvisoRevision({Id,Titulo,FechaEstreno:previous+"T00:00:00.000Z"},"es"))
+        .toMatch(/revisión editorial/);
+      expect(obtenerAvisoRevision({Id,Titulo,FechaEstreno:approved+"T00:00:00.000Z"},"es")).toBeNull();
+      expect(obtenerAvisoRevision({Id,Titulo,FechaEstreno:approved+"T00:00:00.000Z"},"en")).toBeNull();
+      expect(obtenerAvisoRevision({Id,Titulo,FechaEstreno:"2000-01-01T00:00:00.000Z"},"es"))
+        .toMatch(/revisión editorial/);
+    }
+  });
+  it("Nueba Yol 3 mantiene advertencia histórica incluso con fecha aprobada",()=>{
+    const Id=36,Titulo="Nueba Yol 3: Bajo la Nueva Ley";
+    expect(REVISIONES_PUBLICAS[36].fechaAprobada).toBe("1997-10-23");
+    expect(REVISIONES_PUBLICAS[36].evidenciaIndependientePendiente).toBe(true);
+    for(const FechaEstreno of ["1997-10-31T00:00:00Z","1997-10-23T00:00:00Z"]){
+      expect(obtenerAvisoRevision({Id,Titulo,FechaEstreno},"es")).toMatch(/revisión editorial/);
+      expect(obtenerAvisoRevision({Id,Titulo,FechaEstreno},"en")).toMatch(/editorial verification/);
+    }
+  });
   it("evita avisos en películas ajenas o con título incorrecto",()=>{
     expect(obtenerAvisoRevision({Id:40,Titulo:"Otra película"})).toBeNull();
     expect(obtenerAvisoRevision({Id:999,Titulo:"Colao 2"})).toBeNull();
