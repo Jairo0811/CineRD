@@ -13,6 +13,7 @@ const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),"utf8"));
 const dossier=read("docs/editorial-metadata-candidates-f26.json");
 const snapshot=read("database/seeds/catalog.snapshot.json");
 const f23Approval=read("docs/f23-approved-release-dates-2026-11-09.json");
+const f23Second=read("docs/f23-approved-remaining-5-dates-2026-11-09.json");
 const ensure=(ok,message)=>{if(!ok)throw Error(message)};
 const normalize=s=>String(s??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"")
   .toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
@@ -33,37 +34,47 @@ function verify() {
     ensure(film && normalize(aviso.titulo)===normalize(entry.title) &&
       normalize(film.Titulo)===normalize(entry.title),
       "Título o ID desactualizado en alerta pública #"+entry.filmId);
-    // El inventario F-2.6 conserva su estado original; la aprobación y
-    // aplicación #40 se documentan exclusivamente por el expediente F-2.3.
-    // Durante el tránsito Git old snapshot -> export local, aceptar solo
-    // fecha anterior o aprobada. No tolerar un tercer valor ni eliminar alertas ajenas.
-    if(entry.filmId===40) {
-      const decision=f23Approval.decisions?.find(x=>x.filmId===40);
-      ensure(f23Approval.executableChangesApplied===true &&
-        decision?.field==="FechaEstreno" && decision.decision==="APROBAR_CANDIDATA" &&
-        decision.currentSql==="2023-12-07" &&
-        decision.approvedNewValue==="2023-11-30" &&
-        f23Approval.executionEvidence?.affectedIds?.includes(40) &&
-        entry.state==="PENDIENTE_DECISION_HUMANA" && entry.applyAuthorized===false &&
-        entry.proposals.length===1 && entry.proposals[0].field==="FechaEstreno" &&
+    // F-2.6 es expediente HISTORICO: sus seis observaciones siguen siendo
+    // entradas válidas. La aprobación real consta por separado en F-2.3.
+    // Entre SQL y Git HEAD se permite SOLO fecha antigua o fecha aprobada.
+    // #36 sigue advirtiendo aunque ya se incorpore su fecha aprobada:
+    // no existe corroboración primaria independiente del estreno RD en 1997.
+    if(entry.proposals.length===1) {
+      const first=entry.filmId===40;
+      const approval=first ? f23Approval : f23Second;
+      const decision=approval.decisions?.find(x=>x.filmId===entry.filmId);
+      ensure((first ? approval.executableChangesApplied===true :
+        approval.sqlApplied===true && approval.backupForThisBatchVerified===true) &&
+        approval.executionEvidence?.affectedIds?.includes(entry.filmId) &&
+        decision?.field==="FechaEstreno" &&
+        decision.decision==="APROBAR_CANDIDATA" &&
+        entry.state==="PENDIENTE_DECISION_HUMANA" &&
+        entry.applyAuthorized===false &&
+        entry.proposals.length===1 &&
+        entry.proposals[0].field==="FechaEstreno" &&
         entry.proposals[0].from===decision.currentSql &&
         entry.proposals[0].to===decision.approvedNewValue &&
-        aviso.tipo==="fecha" && aviso.fechaActual===decision.currentSql &&
-        aviso.fechaAprobada===decision.approvedNewValue,
-        "F-2.3 y F-2.6 no concuerdan para Colao 2");
+        aviso.tipo==="fecha" &&
+        aviso.fechaActual===decision.currentSql &&
+        aviso.fechaAprobada===decision.approvedNewValue &&
+        (entry.filmId===36 ? aviso.evidenciaIndependientePendiente===true :
+          aviso.evidenciaIndependientePendiente!==true),
+        "F-2.3/F-2.6 no concuerdan con #"+entry.filmId);
       const date=String(film.FechaEstreno).slice(0,10);
       ensure(date===decision.currentSql || date===decision.approvedNewValue,
-        "Colao 2 tiene una fecha fuera de la transición aprobada");
-      if(date===decision.approvedNewValue) {
-        ensure(obtenerAvisoRevision(film,"es")===null &&
-          obtenerAvisoRevision(film,"en")===null,
-          "No se retiró el aviso de fecha ya corregida #40");
-        corrected++;
-      } else {
+        "Fecha del catálogo fuera de transición aprobada #"+entry.filmId);
+      const shouldKeepWarning=date!==decision.approvedNewValue ||
+        aviso.evidenciaIndependientePendiente===true;
+      if(shouldKeepWarning) {
         ensure(obtenerAvisoRevision(film,"es") &&
           obtenerAvisoRevision(film,"en"),
-          "Se retiró un aviso antes de que el snapshot recoja la corrección #40");
+          "Aviso retirado antes de completar revisión editorial #"+entry.filmId);
         dates++;
+      } else {
+        ensure(obtenerAvisoRevision(film,"es")===null &&
+          obtenerAvisoRevision(film,"en")===null,
+          "Aviso de fecha corregida sigue presente #"+entry.filmId);
+        corrected++;
       }
       continue;
     }
@@ -72,15 +83,9 @@ function verify() {
     ensure(entry.state==="PENDIENTE_DECISION_HUMANA" &&
       entry.applyAuthorized===false,
       "Estado editorial cambió; revisar y actualizar señal pública #"+entry.filmId);
-    const expectedType=entry.proposals.length===1 ? "fecha" :
-      entry.filmId===31 ? "fecha_sin_confirmar" : "genero";
+    const expectedType=entry.filmId===31 ? "fecha_sin_confirmar" : "genero";
     ensure(aviso.tipo===expectedType,"Tipo de observación incorrecto #"+entry.filmId);
-    if(entry.proposals.length===1) {
-      dates++;
-      ensure(entry.proposals[0].field==="FechaEstreno" &&
-        entry.proposals[0].from===aviso.fechaActual,
-        "La fecha propuesta no coincide con el aviso #"+entry.filmId);
-    }else retained++;
+    retained++;
     ensure(obtenerAvisoRevision(film,"es") &&
       obtenerAvisoRevision(film,"en"),
       "Aviso público ausente en ES/EN #"+entry.filmId);
