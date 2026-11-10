@@ -53,6 +53,13 @@ test("ABC: elimina una ficha E5 y el gate detecta omisión",()=>{
   assert.ok(r.errors.some(x=>x.includes("E5: expediente ausente 4:sinopsis")));
 });
 
+test("ABC: Render no puede aislar backend del inventario común de medios",()=>{
+  const p=sample();
+  p.render=p.render.replace("    runtime: node","    runtime: node\n    rootDir: backend");
+  const r=inspectABC(p);
+  assert.ok(r.errors.some(x=>x.includes("monorepo completo")));
+});
+
 test("ABC: Render no puede activar autodeploy por defecto",()=>{
   const p=sample();
   p.render=p.render.replace("autoDeployTrigger: off","autoDeployTrigger: commit");
