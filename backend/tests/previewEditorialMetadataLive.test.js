@@ -13,6 +13,9 @@ const batch = () => validateDossier(dossier,snapshot,matrix,e4);
 const original = () => batch().items.map(x => ({
   Id:x.filmId,Titulo:x.title,FechaEstreno:new Date(x.previous+"T00:00:00.000Z")
 }));
+const snapshotAligned = () => batch().items.map(x => ({
+  Id:x.filmId,Titulo:x.title,FechaEstreno:new Date(x.snapshotCurrent+"T00:00:00.000Z")
+}));
 
 test("F-2.7: expediente tiene exactamente seis fechas, dos retenciones y cero autorizaciones",()=>{
   const b=batch();
@@ -31,11 +34,26 @@ test("F-2.7: fechas calendario estrictas rechazan día inexistente y typo",()=>{
     assert.equal(validDate(v),false);
 });
 
-test("F-2.7: estados de seis fechas anteriores y no-aplicación",()=>{
+test("F-2.7: lote sintético anterior detecta la fecha #40 ya corregida en snapshot",()=>{
   const r=compareLiveDateCandidates(batch(),original());
   assert.deepEqual(r.counts,{ORIGINAL:6,ALREADY:0,DRIFT:0,MISSING:0});
-  assert.equal(r.snapshotMismatch,0);
+  // SQL completamente histórico difiere del snapshot ACTUAL en #40.
+  assert.equal(r.snapshotMismatch,1);
   assert.equal(r.allOriginal,true);
+  assert.equal(r.safeToApplyAutomatically,false);
+});
+
+test("F-2.7: snapshot real contiene #40 aplicada y cinco fechas pendientes",()=>{
+  const b=batch();
+  assert.equal(b.items.find(x=>x.filmId===40).snapshotCurrent,"2023-11-30");
+  const r=compareLiveDateCandidates(b,snapshotAligned());
+  assert.deepEqual(r.counts,{ORIGINAL:5,ALREADY:1,DRIFT:0,MISSING:0});
+  assert.equal(r.snapshotMismatch,0);
+  assert.equal(r.allOriginal,false);
+  assert.equal(r.allAlready,false);
+  assert.equal(r.mixed,true);
+  assert.equal(r.hasDrift,false);
+  // Nunca puede activar automáticamente los otros cinco cambios.
   assert.equal(r.safeToApplyAutomatically,false);
 });
 
@@ -45,7 +63,8 @@ test("F-2.7: seis valores propuestos no conceden permiso y detectan desincroniza
   const c=compareLiveDateCandidates(b,records);
   assert.equal(c.allAlready,true);
   assert.equal(c.counts.ALREADY,6);
-  assert.equal(c.snapshotMismatch,6);
+  // #40 ya coincide; los otros cinco aún no están aplicados en snapshot.
+  assert.equal(c.snapshotMismatch,5);
   assert.equal(c.safeToApplyAutomatically,false);
 });
 
@@ -54,7 +73,8 @@ test("F-2.7: estado mixto no permite aplicar el lote",()=>{
   records[0].FechaEstreno=new Date(batch().items[0].proposed+"T00:00:00Z");
   const c=compareLiveDateCandidates(batch(),records);
   assert.equal(c.mixed,true);
-  assert.equal(c.snapshotMismatch,1);
+  // #27 tiene la candidata aún no reflejada, #40 vuelve a su valor anterior.
+  assert.equal(c.snapshotMismatch,2);
   assert.equal(c.safeToApplyAutomatically,false);
 });
 
