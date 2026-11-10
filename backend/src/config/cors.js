@@ -21,7 +21,7 @@ const esOrigenSeguroProduccion = (origin) => {
       url.pathname === "/" && !url.search && !url.hash &&
       url.origin === origin &&
       !["localhost", "127.0.0.1", "[::1]", "::1"].includes(host) &&
-      !/^(10\\.|192\\.168\\.|172\\.(1[6-9]|2\\d|3[0-1])\\.)/.test(host);
+      !/^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/.test(host);
   } catch { return false; }
 };
 
