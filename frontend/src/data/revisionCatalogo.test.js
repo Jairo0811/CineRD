@@ -18,10 +18,18 @@ describe("CineRD · avisos de integridad editorial pública",()=>{
     expect(obtenerAvisoRevision(f,"en")).toMatch(/release date displayed is under editorial verification/);
     expect(obtenerAvisoRevision(f,"es")).not.toContain("2023-11-30");
   });
-  it("conserva el aviso si SQL cambió, hasta revisión humana real",()=>{
+  it("retira el aviso de Colao 2 solo cuando la fecha aprobada está publicada",()=>{
+    expect(REVISIONES_PUBLICAS[40].fechaActual).toBe("2023-12-07");
+    expect(REVISIONES_PUBLICAS[40].fechaAprobada).toBe("2023-11-30");
     expect(obtenerAvisoRevision({
       Id:40,Titulo:"Colao 2",FechaEstreno:"2023-11-30T00:00:00Z"
-    })).toMatch(/revisión/);
+    },"es")).toBeNull();
+    expect(obtenerAvisoRevision({
+      Id:40,Titulo:"Colao 2",FechaEstreno:"2023-11-30T00:00:00Z"
+    },"en")).toBeNull();
+    expect(obtenerAvisoRevision({
+      Id:40,Titulo:"Colao 2",FechaEstreno:"2023-12-01T00:00:00Z"
+    },"es")).toMatch(/revisión/);
   });
   it("evita avisos en películas ajenas o con título incorrecto",()=>{
     expect(obtenerAvisoRevision({Id:40,Titulo:"Otra película"})).toBeNull();
