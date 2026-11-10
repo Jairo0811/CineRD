@@ -22,8 +22,13 @@ test('3 aprobaciones explícitas, sin inventar firmas ni autorizar otras 5',()=>
   assert.ok(manifest.decisions.every(x=>x.evidenceUrls.length>=1 && x.evidenceUrls.every(u=>new URL(u).protocol==='https:')));
   assert.equal(manifest.reviewerFullName,null);
   assert.equal(manifest.reviewedAtExactUtc,null);
-  assert.equal(manifest.executableChangesApplied,false);
-  assert.equal(manifest.databaseBackupVerified,false);
+  assert.equal(manifest.executableChangesApplied,true);
+  assert.equal(manifest.databaseBackupVerified,true);
+  assert.equal(manifest.executionEvidence.type,'Capturas de resultados SQL Server Management Studio proporcionadas por el titular');
+  assert.equal(manifest.executionEvidence.reportedResult,'EJECUCION_MANUAL_CONFIRMADA');
+  assert.deepEqual(manifest.executionEvidence.affectedIds,[10,40,55]);
+  assert.equal(manifest.independentPostMigrationSqlSelectVerified,false);
+  assert.equal(manifest.snapshotExportSynchronized,false);
   assert.equal(manifest.originalSevenE4ApprovalsUnaffected,true);
   assert.equal(manifest.otherFiveDatesStillPending,true);
   assert.equal(otherLedger.approvals.length,0);
@@ -77,14 +82,14 @@ test('script manual falla cerrado por defecto y protege integridad/reversión',(
   assert.ok(!sql.includes('CRUDPeliculas_E2E];'));
 });
 
-test('informe mantiene cinco pendientes, tres aceptadas y no afirma UPDATE ejecutado',()=>{
+test('informe mantiene cinco pendientes y registra tres ejecuciones reportadas por SSMS',()=>{
   const report=read('docs/FASE_F2_3_PAQUETE_DECISIONES_8_FECHAS_2026-11-09.md');
   assert.ok(report.includes('3 FECHAS APROBADAS POR EL TITULAR'));
   assert.ok(report.includes('5 PENDIENTES DE DECISIÓN'));
-  assert.ok(report.includes('0 CAMBIOS SQL APLICADOS'));
+  assert.ok(report.includes('3 CAMBIOS SQL APLICADOS SEGÚN CAPTURA SSMS'));
   for(const id of [10,40,55]){
     const line=report.split('\n').find(x=>x.startsWith(`| ${id} |`));
-    assert.ok(line?.includes('APROBADA POR TITULAR; NO APLICADA EN SQL'));
+    assert.ok(line?.includes('APROBADA Y APLICADA SEGÚN SSMS'));
   }
   for(const id of [27,36,42,44,56]){
     const line=report.split('\n').find(x=>x.startsWith(`| ${id} |`));
