@@ -14,7 +14,7 @@ const manifest=JSON.parse(read('docs/f23-approved-release-dates-2026-11-09.json'
 const sql=read('database/scripts/f23_fechas_3_aprobadas_manual_up_down.sql');
 const otherLedger=JSON.parse(read('docs/catalog-corrections-e4-approvals.json'));
 
-test('3 aprobaciones explícitas, sin inventar firmas ni autorizar otras 5',()=>{
+test('3 fechas del primer lote aplicadas; 5 aprobaciones registradas por separado',()=>{
   assert.equal(manifest.version,1);
   assert.equal(manifest.consentRecordedDate,'2026-11-09');
   assert.deepEqual(manifest.decisions.map(x=>x.filmId),[10,40,55]);
@@ -35,7 +35,9 @@ test('3 aprobaciones explícitas, sin inventar firmas ni autorizar otras 5',()=>
   assert.match(manifest.snapshotExportEvidence.gitCommit,/^[a-f0-9]{40}$/);
   assert.equal(manifest.snapshotExportEvidence.gitPath,'database/seeds/catalog.snapshot.json');
   assert.equal(manifest.originalSevenE4ApprovalsUnaffected,true);
-  assert.equal(manifest.otherFiveDatesStillPending,true);
+  assert.equal(manifest.otherFiveDatesStillPending,false);
+  assert.equal(manifest.otherFiveDatesApprovedPendingSql,true);
+  assert.equal(manifest.secondBatchApprovalRecord,'docs/f23-approved-remaining-5-dates-2026-11-09.json');
   assert.equal(otherLedger.approvals.length,0);
 });
 
@@ -87,10 +89,10 @@ test('script manual falla cerrado por defecto y protege integridad/reversión',(
   assert.ok(!sql.includes('CRUDPeliculas_E2E];'));
 });
 
-test('informe mantiene cinco pendientes y registra tres ejecuciones reportadas por SSMS',()=>{
+test('informe mantiene cinco fechas pendientes de SQL y tres ejecuciones reportadas por SSMS',()=>{
   const report=read('docs/FASE_F2_3_PAQUETE_DECISIONES_8_FECHAS_2026-11-09.md');
   assert.ok(report.includes('3 FECHAS APROBADAS POR EL TITULAR'));
-  assert.ok(report.includes('5 PENDIENTES DE DECISIÓN'));
+  assert.ok(report.includes('5 APROBADAS POR EL TITULAR PENDIENTES DE APLICACIÓN SQL'));
   assert.ok(report.includes('3 CAMBIOS SQL APLICADOS SEGÚN CAPTURA SSMS'));
   for(const id of [10,40,55]){
     const line=report.split('\n').find(x=>x.startsWith(`| ${id} |`));
@@ -98,6 +100,6 @@ test('informe mantiene cinco pendientes y registra tres ejecuciones reportadas p
   }
   for(const id of [27,36,42,44,56]){
     const line=report.split('\n').find(x=>x.startsWith(`| ${id} |`));
-    assert.ok(line?.endsWith('PENDIENTE |'));
+    assert.ok(line?.endsWith('APROBADA POR TITULAR; SQL PENDIENTE |'));
   }
 });
