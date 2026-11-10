@@ -1,7 +1,7 @@
 {
   "format": "CineRD.CatalogSnapshot",
   "version": 3,
-  "generatedAtUtc": "2026-11-08T10:36:30.957Z",
+  "generatedAtUtc": "2026-11-10T01:12:51.030Z",
   "sourceDatabase": "CRUDPeliculas",
   "tables": {
     "Actores": [
@@ -2000,7 +2000,7 @@
         "Id": 10,
         "Titulo": "Vamos de robo",
         "Genero": "Comedia",
-        "FechaEstreno": "2014-01-15T00:00:00.000Z",
+        "FechaEstreno": "2014-01-16T00:00:00.000Z",
         "Foto": "/uploads/peliculas/1787434127535-Foto.jpeg",
         "Director": "Roberto Ángel  Salcedo Sanz",
         "Productora": "Producciones Coral",
@@ -2540,7 +2540,7 @@
         "Id": 40,
         "Titulo": "Colao 2",
         "Genero": "Comedia",
-        "FechaEstreno": "2023-12-07T00:00:00.000Z",
+        "FechaEstreno": "2023-11-30T00:00:00.000Z",
         "Foto": "/uploads/peliculas/1783798771714-Foto.jpeg",
         "Director": "Francisco Ernesto Perozo Balbuena",
         "Productora": null,
@@ -2800,7 +2800,7 @@
         "Id": 55,
         "Titulo": "El Plan Perfecto",
         "Genero": "Comedia",
-        "FechaEstreno": "2017-01-17T00:00:00.000Z",
+        "FechaEstreno": "2017-01-19T00:00:00.000Z",
         "Foto": "/uploads/peliculas/1793841671768-Foto.jpeg",
         "Director": "Roberto Ángel  Salcedo Sanz",
         "Productora": null,
