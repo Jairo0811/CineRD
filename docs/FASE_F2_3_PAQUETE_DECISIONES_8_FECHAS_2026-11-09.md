@@ -1,7 +1,7 @@
 # CineRD — Paquete de decisión editorial para ocho fechas (F-2.3)
 
 **Fecha:** 2026-11-09 · **Rama:** `feat/f2-editorial-review` · **PR:** #55  
-**Estado:** **3 FECHAS APROBADAS POR EL TITULAR** (#10, #40, #55), **3 CAMBIOS SQL APLICADOS SEGÚN CAPTURA SSMS**; **5 PENDIENTES DE DECISIÓN** (#27, #36, #42, #44, #56). Snapshot exportado y sincronizado en GitHub (`f93db85`); solo queda pendiente SELECT independiente posmigración.  
+**Estado:** **3 FECHAS APROBADAS POR EL TITULAR** (#10, #40, #55), **3 CAMBIOS SQL APLICADOS SEGÚN CAPTURA SSMS**; **5 APROBADAS POR EL TITULAR PENDIENTES DE APLICACIÓN SQL** (#27, #36, #42, #44, #56). Snapshot exportado y sincronizado en GitHub (`f93db85`); solo queda pendiente SELECT independiente posmigración.  
 **Objeto:** resolver la fecha de **estreno comercial en cines de República Dominicana**. La fecha de gala, festival, reseña, distribución internacional o preestreno no reemplaza esa definición.
 
 ## Evidencia técnica previa
@@ -12,6 +12,10 @@ Para repetir una comprobación sin cambiar nada: **`database/scripts/f23_preflig
 
 ## Decisiones de revisión — no completar automáticamente
 
+**Segundo lote, aprobado el 2026-11-09:** el titular escribió «apruebalas todas» en respuesta a las cinco fechas candidatas #27, #36, #42, #44 y #56. Las cinco quedan **APROBADAS POR EL TITULAR, SIN APLICAR EN SQL**. Registro: `docs/f23-approved-remaining-5-dates-2026-11-09.json`. La solicitud **incluye explícitamente #36** pese al aviso de evidencia independiente insuficiente; se registra la autorización sin inventar que la cartelera dominicana de 1997 haya sido comprobada. Para #36, Cinema Dominicano y CineDominicano comparten información editorial y el 31/10/1997 de IMDb corresponde a estreno de **Estados Unidos**, no demuestra el estreno comercial dominicano. Antes de ejecución manual conviene obtener fuente primaria local de octubre de 1997.
+
+**Respaldo independiente y segunda migración manual, ambos sin ejecutar:** `database/scripts/f23_backup_nuevas_5_fechas_manual.sql` y `database/scripts/f23_fechas_5_aprobadas_manual_up_down.sql`. La migración arranca con `@Apply=0` y no aplica automáticamente los cambios; exige copia NUEVA `CRUDPeliculas_F23_5_*.bak`, CHECKSUM/RESTORE VERIFYONLY, cinco preimágenes exactas y confirmación manual. No reutilizar backup del primer lote. Ninguna de las cinco fechas está marcada como aplicada.
+
 **Aprobación expresada el 2026-11-09:** ante la pregunta específica sobre las tres fechas de *Vamos de robo*, *Colao 2* y *El Plan Perfecto*, el titular respondió «aprobadas». La decisión está registrada en `docs/f23-approved-release-dates-2026-11-09.json`. Se refiere a **los tres valores de fecha**, no al género, director, sinopsis ni a otras cinco propuestas. No consta fecha exacta UTC, firma adicional, declaración individual de revisión de URLs ni ejecución SQL; esos datos **no se inventan**. El titular posteriormente creó y verificó un backup FULL COPY_ONLY con CHECKSUM; la captura SSMS de la migración muestra tres filas `EJECUCION_MANUAL_CONFIRMADA` con `UP` para #10, #40 y #55. **La aplicación fue reportada como ejecutada**, y no se debe repetir `UP`. El propietario reexportó desde `CRUDPeliculas`, comprobó 3/3 cambios exactos y validó el catálogo; el snapshot ya se publicó en el commit `f93db85`. Queda pendiente una lectura SELECT posmigración independiente en SSMS.
 
 **Script protegido de aplicación/reversión manual (conservar como referencia; NO repetir UP):** `database/scripts/f23_fechas_3_aprobadas_manual_up_down.sql`. Por defecto muestra previa (`@Apply=0`) y no modifica datos. Exige un backup completo reciente con CHECKSUM, comprobación de integridad, verificación de preimagen y transacción para ejecutar UP o DOWN manualmente. La variante ejecutada en SSMS por el titular tiene automatizada la selección del backup; el script versionado conserva `@Apply=0` como estado seguro.
@@ -19,13 +23,13 @@ Para repetir una comprobación sin cambiar nada: **`database/scripts/f23_preflig
 | ID | Película | Fecha anterior documentada | Candidata | Principal evidencia y evaluación | Decisión |
 |---:|---|---|---|---|---|
 | 10 | Vamos de robo | 2014-01-15 | **2014-01-16** | [Diario Libre (crónica 20/01/2014)](https://www.diariolibre.com/amp/revista/cine/vamos-de-robo-DIDL447141) habla de taquilla en primera noche, jueves 16; evidencia contemporánea fuerte | APROBADA Y APLICADA SEGÚN SSMS |
-| 27 | Lotoman 003: Volando Bajito | 2014-03-15 | **2014-03-27** | [Ficha Cinema Dominicano](https://cinemadominicano.com/lotoman-003-volando-bajito-2014/) y [gala previa](https://cinemadominicano.com/orange-cinema-realiza-gala-premier-de-lotoman-003/); concordancia | PENDIENTE |
-| 36 | Nueba Yol 3: Bajo la Nueva Ley | 1997-10-31 | **1997-10-23** | [Ficha Cinema Dominicano](https://cinemadominicano.com/nueba-yol-3-bajo-la-nueva-ley-1997/); **pedir otra evidencia primaria** por antigüedad y falta de cartelera | PENDIENTE |
+| 27 | Lotoman 003: Volando Bajito | 2014-03-15 | **2014-03-27** | [Ficha Cinema Dominicano](https://cinemadominicano.com/lotoman-003-volando-bajito-2014/) y [gala previa](https://cinemadominicano.com/orange-cinema-realiza-gala-premier-de-lotoman-003/); concordancia | APROBADA POR TITULAR; SQL PENDIENTE |
+| 36 | Nueba Yol 3: Bajo la Nueva Ley | 1997-10-31 | **1997-10-23** | [Ficha Cinema Dominicano](https://cinemadominicano.com/nueba-yol-3-bajo-la-nueva-ley-1997/); **pedir otra evidencia primaria** por antigüedad y falta de cartelera | APROBADA POR TITULAR; SQL PENDIENTE |
 | 40 | Colao 2 | 2023-12-07 | **2023-11-30** | [Anuncio de Caribbean Cinemas citado por Cinema Dominicano](https://cinemadominicano.com/colao-2-llega-a-los-cines-dominicanos/); lanzamiento en RD | APROBADA Y APLICADA SEGÚN SSMS |
-| 42 | Andrea | 2005-08-16 | **2005-08-18** | [Ficha Cinema Dominicano](https://cinemadominicano.com/andrea-la-venganza-de-un-espiritu-2005/); **pedir confirmación independiente** | PENDIENTE |
-| 44 | Playball | 2008-02-01 | **2008-02-14** | [Ficha Cinema Dominicano](https://cinemadominicano.com/play-ball-2008/); archivo [catálogo de cine dominicano](https://cinemadominicano.com/wp-content/uploads/2022/02/CDELM.pdf); revisar si son fuentes independientes | PENDIENTE |
+| 42 | Andrea | 2005-08-16 | **2005-08-18** | [Ficha Cinema Dominicano](https://cinemadominicano.com/andrea-la-venganza-de-un-espiritu-2005/); **pedir confirmación independiente** | APROBADA POR TITULAR; SQL PENDIENTE |
+| 44 | Playball | 2008-02-01 | **2008-02-14** | [Ficha Cinema Dominicano](https://cinemadominicano.com/play-ball-2008/); archivo [catálogo de cine dominicano](https://cinemadominicano.com/wp-content/uploads/2022/02/CDELM.pdf); revisar si son fuentes independientes | APROBADA POR TITULAR; SQL PENDIENTE |
 | 55 | El Plan Perfecto | 2017-01-17 | **2017-01-19** | [DGCINE, 06/02/2017](https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/) confirma explícitamente estreno en todos los cines RD; evidencia institucional | APROBADA Y APLICADA SEGÚN SSMS |
-| 56 | La Lucha de Ana | 2012-04-13 | **2012-05-24** | [Ficha Cinema Dominicano](https://cinemadominicano.com/la-lucha-de-ana-2012/); [Ibermedia](https://www.programaibermedia.com/proyectos/la-lucha-de-ana-2/) no certifica el día; pedir otra evidencia del estreno | PENDIENTE |
+| 56 | La Lucha de Ana | 2012-04-13 | **2012-05-24** | [Ficha Cinema Dominicano](https://cinemadominicano.com/la-lucha-de-ana-2012/); [Ibermedia](https://www.programaibermedia.com/proyectos/la-lucha-de-ana-2/) no certifica el día; pedir otra evidencia del estreno | APROBADA POR TITULAR; SQL PENDIENTE |
 
 ### Categorías de decisión permitidas para una revisión REAL
 
@@ -35,7 +39,7 @@ Cada campo debe ser decidido **individualmente** por la persona revisora:
 - **MANTENER_ACTUAL**: hay evidencia fundada de que el SQL actual responde al criterio; documentar el motivo y la fuente.
 - **REQUIERE_MAS_EVIDENCIA**: no hacer cambios; solicitar registro de distribuidor, cartelera, DGCINE o créditos apropiados.
 
-**Tres decisiones expresas ya registradas y aplicación UP reportada por SSMS:** #10, #40 y #55; las otras cinco filas mantienen **PENDIENTE**. No se altera `docs/catalog-corrections-e4-approvals.json` (libro E-4 de otras siete correcciones), `docs/editorial-approvals-e5.json` ni `docs/editorial-issues-f2.json`. Ninguna decisión de fecha implica automáticamente la aprobación de una sinopsis o el cierre de una incidencia.
+**Ocho fechas aprobadas por el titular:** #10, #40 y #55 fueron aplicadas según SSMS y exportadas a GitHub; #27, #36, #42, #44 y #56 están aprobadas pero **NO han sido aplicadas**. El segundo lote exige respaldo y aplicación manual propia. No se altera `docs/catalog-corrections-e4-approvals.json` (libro E-4 de otras siete correcciones), `docs/editorial-approvals-e5.json` ni `docs/editorial-issues-f2.json`. Ninguna decisión de fecha implica automáticamente la aprobación de una sinopsis o el cierre de una incidencia.
 
 ## Campos de acta (rellenar manualmente, sin fabricar firmas)
 
@@ -60,9 +64,9 @@ Cada campo debe ser decidido **individualmente** por la persona revisora:
 
 ## Procedimiento posterior, condicionado a autorizaciones efectivas
 
-1. Conservar las tres decisiones expresas registradas y solicitar revisión/decisión independiente de las otras cinco; no equiparar investigación documental a autorización.
+1. Conservar las ocho decisiones expresas sin confundirlas con certificados de fuentes históricas. Para #36 aún falta corroboración primaria del estreno comercial dominicano en octubre de 1997.
 2. La migración UP de las tres filas ya fue ejecutada, según el OUTPUT SSMS del titular. **NO repetir UP.** La exportación real y su comparación estricta **ya se realizaron** y están versionadas en `f93db85`. Sigue pendiente SELECT independiente desde SSMS; no confundirlo con la reexportación verificada.
 3. Snapshot reexportado, auditado y publicado: los únicos cambios fueron `FechaEstreno` de #10/#40/#55 y `generatedAtUtc`; el frontend adaptó el aviso de #40 al dato corregido. No se editaron datos del catálogo manualmente.
 4. Correr todos los jobs de CI antes de integrar la PR #55, que permanece DRAFT. Ni una CI verde equivale a licencia de terceros o permiso para monetizar.
 
-**Garantías:** las tareas automatizadas de GitHub no actualizan SQL; la captura del titular muestra **3 actualizaciones SQL en `CRUDPeliculas`**, con 3 decisiones expresas del titular, 5 pendientes, 0 firmas ficticias y 0 aprobaciones automáticas E-4/E-5. La sincronización del snapshot está concluida (`f93db85`); continúa pendiente un SELECT independiente posmigración. La CI del nuevo snapshot se detectó inicialmente fallida por cuatro pruebas antiguas; las pruebas se ajustaron sin alterar datos ni permisos editoriales.
+**Garantías:** las tareas automatizadas de GitHub no actualizan SQL; la captura del titular muestra **3 actualizaciones SQL en `CRUDPeliculas`**, con 3 decisiones expresas del titular, 5 pendientes, 0 firmas ficticias y 0 aprobaciones automáticas E-4/E-5. La sincronización del primer lote de tres fechas está concluida (`f93db85`); el segundo lote de cinco aún no ha sido aplicado y requerirá posterior reexportación y auditoría separada. Continúa pendiente un SELECT independiente posmigración de las tres fechas del primer lote. La CI del nuevo snapshot se detectó inicialmente fallida por cuatro pruebas antiguas; las pruebas se ajustaron sin alterar datos ni permisos editoriales.
