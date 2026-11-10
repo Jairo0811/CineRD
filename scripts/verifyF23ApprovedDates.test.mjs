@@ -101,6 +101,6 @@ test('informe refleja ocho fechas aplicadas y ambos snapshots sincronizados',()=
   }
   for(const id of [27,36,42,44,56]){
     const line=report.split('\n').find(x=>x.startsWith(`| ${id} |`));
-    assert.ok(line?.endsWith('APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT SINCRONIZADO |'));
+    assert.ok(line?.trimEnd().endsWith('APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT SINCRONIZADO |'));
   }
 });

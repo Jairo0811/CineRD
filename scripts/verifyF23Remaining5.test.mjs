@@ -115,6 +115,6 @@ test('las 5 fechas constan aplicadas y el snapshot versionado ya las contiene',(
   assert.ok(report.includes('5 FECHAS APROBADAS Y APLICADAS SEGÚN CAPTURA SSMS'));
   for(const [id] of expected){
     const line=report.split('\n').find(x=>x.startsWith(`| ${id} |`));
-    assert.ok(line?.endsWith('APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT SINCRONIZADO |'));
+    assert.ok(line?.trimEnd().endsWith('APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT SINCRONIZADO |'));
   }
 });
