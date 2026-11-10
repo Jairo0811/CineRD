@@ -11,6 +11,12 @@ const root = path.resolve(__dirname, "../..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
 const QUERY = "SELECT Id,Titulo,FechaEstreno FROM dbo.Peliculas WHERE Id IN (@id0,@id1,@id2,@id3,@id4,@id5)";
 const EXPECTED_IDS = [27, 36, 40, 42, 44, 56];
+const DATE_DECISIONS = [
+  ...read("docs/f23-approved-release-dates-2026-11-09.json").decisions,
+  ...read("docs/f23-approved-remaining-5-dates-2026-11-09.json").decisions
+];
+const DATE_DECISIONS_BY_ID = new Map(DATE_DECISIONS.map(d=>[d.filmId,d]));
+
 
 function day(value) {
   if (value == null) return null;
@@ -73,6 +79,16 @@ function validateDossier(dossier, snapshot, matrix, legacyE4) {
     for (const p of entry.proposals) {
       assert(p.field === "FechaEstreno" && validDate(p.from) &&
         validDate(p.to) && p.from !== p.to, "F-2.6: modificación de fecha inválida");
+      // El snapshot puede contener la fecha antigua O la nueva tras F-2.3.
+      // Su coincidencia con p.to NO puede legitimar una preimagen inventada.
+      // Anclar ambos extremos a las decisiones humanas conservadas en Git.
+      const authorized=DATE_DECISIONS_BY_ID.get(entry.filmId);
+      assert(authorized?.field==="FechaEstreno" &&
+        authorized.decision==="APROBAR_CANDIDATA" &&
+        normalizedTitle(authorized.title)===normalizedTitle(entry.title) &&
+        p.from===authorized.currentSql &&
+        p.to===authorized.approvedNewValue,
+        "F-2.6: preimagen o candidata distinta del expediente F-2.3: "+entry.filmId);
       const snapshotDay = day(film.FechaEstreno);
       assert(snapshotDay === p.from || snapshotDay === p.to,
         "F-2.6: fecha distinta en snapshot: " + entry.filmId);
