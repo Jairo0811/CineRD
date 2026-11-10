@@ -8,10 +8,10 @@ const valid=()=>({
   PUBLIC_APP_URL:'https://cinerd.pages.dev',
   DB_SERVER:'sql.cinerd.internal',
   DB_PORT:'1433',DB_DATABASE:'CRUDPeliculas',DB_USER:'cinerd_rw',
-  DB_PASSWORD:'EXAMPLE_REDACTED_STRONG_PASSWORD_123456',
+  DB_PASSWORD:'synthetic_never_use_password_9Ax123456',
   DB_ENCRYPT:'true',DB_TRUST_CERT:'false',
-  JWT_ACCESS_SECRET:'EXAMPLE_REDACTED_LONG_RANDOM_TOKEN_LENGTH_123456789',
-  RESEND_API_KEY:'re_example_dummy_long_key_123456789',
+  JWT_ACCESS_SECRET:'synthetic_token_never_use_abcdefghijklmnopqrstuvwxyz',
+  RESEND_API_KEY:'re_synthetic_nonworking_abcdefghijklmnop',
   EMAIL_FROM:'CineRD <notificaciones@cinerd.org>',
   UPLOADS_DIR:'/var/data/uploads',PRIVATE_STORAGE_DIR:'/var/data/private'
 });
