@@ -4,10 +4,10 @@
   "consentRecordedDate": "2026-11-09",
   "consentSource": "El titular escribió «apruebalas todas» en respuesta al lote de cinco fechas que incluía explícitamente Nueba Yol 3.",
   "scope": "Exclusivamente cinco modificaciones FechaEstreno en CRUDPeliculas: películas 27, 36, 42, 44, 56.",
-  "decisionStatus": "APROBADAS_POR_TITULAR_PENDIENTES_APLICACION_SQL",
+  "decisionStatus": "APROBADAS_POR_TITULAR_EJECUTADAS_EN_SQL_SEGUN_CAPTURA_SSMS; SNAPSHOT_PENDIENTE",
   "humanApprovalByOwner": true,
-  "sqlApplied": false,
-  "backupForThisBatchVerified": false,
+  "sqlApplied": true,
+  "backupForThisBatchVerified": true,
   "snapshotSynchronized": false,
   "reviewerFullName": null,
   "reviewedAtExactUtc": null,
@@ -85,5 +85,30 @@
         "https://www.diariolibre.com/revista/cine/la-lucha-de-ana-FIDL337543"
       ]
     }
-  ]
+  ],
+  "independentPostMigrationSqlSelectVerified": false,
+  "executionEvidence": {
+    "type": "Captura de resultados SQL Server Management Studio facilitada por el titular",
+    "dateLocal": "2026-11-09",
+    "database": "CRUDPeliculas",
+    "action": "UP",
+    "reportedResult": "EJECUCION_MANUAL_CONFIRMADA",
+    "affectedIds": [
+      27,
+      36,
+      42,
+      44,
+      56
+    ],
+    "verifiedByIndependentRead": false,
+    "caveat": "Captura muestra 5/5 resultados y transacción finalizada sin error; todavía falta SELECT independiente posmigración."
+  },
+  "backupEvidence": {
+    "type": "Captura previa de SSMS del titular",
+    "reportedResult": "BACKUP_F23_5_VERIFICADO",
+    "database": "CRUDPeliculas",
+    "method": "BACKUP DATABASE FULL COPY_ONLY CHECKSUM + RESTORE VERIFYONLY WITH CHECKSUM",
+    "backupFilePattern": "CRUDPeliculas_F23_5_20261109_*.bak",
+    "caveat": "RESTORE VERIFYONLY no sustituye una restauración de prueba ni evidencia de contenido comercial."
+  }
 }
