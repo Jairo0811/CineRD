@@ -35,6 +35,38 @@ No alojar SQL Server dentro del contenedor Node de Render, no sustituirlo por Po
 - Si se exige dominio propio para envíos y branding, **no inventar precio**: elegir registrador/TLD y cotizar compra/renovación y condiciones de privacidad de dominio. No asumir que una dirección gratuita de correo autoriza enviar desde cualquier dominio.
 - Publicidad: **$0 ingresados en presupuesto** mientras `VITE_ADSENSE_ENABLED` siga desactivado y Google no haya confirmado autorización; ingresos esperados **$0** para justificar gasto.
 
+## Medición SSMS de tamaño — 2026-11-10
+
+El titular ejecutó una consulta `SELECT` contra `sys.database_files` de la base local `CRUDPeliculas` en SSMS. La captura compartida muestra **DatosAsignadosMB = 8.00**, **LogAsignadoMB = 8.00** y ejecución correcta. **Total asignado = 16 MB; datos asignados = 8 MB (~0.39% de los 2,048 MB disponibles en Azure SQL Basic)**.
+
+**Alcance y cautelas:** las cifras son **espacio asignado**, no bytes usados ni tamaño definitivo de importación. La captura no prueba capacidad de cómputo, compatibilidad Azure SQL, migración exitosa, el rendimiento de 5 DTU ni si hay archivos de usuario fuera de la base (por ejemplo, `uploads`). El archivo log no se suma al límite de 2 GB de datos de Basic como si fuera la misma categoría de almacenamiento. **Basic sigue siendo candidato, no una contratación autorizada.** 
+
+### Comprobación complementaria de solo lectura en SSMS
+
+```sql
+USE CRUDPeliculas;
+GO
+SELECT
+    DB_NAME() AS BaseDeDatos,
+    SUM(CASE WHEN type_desc = 'ROWS' THEN size ELSE 0 END) * 8.0 / 1024 AS DatosAsignadosMB,
+    SUM(CASE WHEN type_desc = 'ROWS' THEN FILEPROPERTY(name,'SpaceUsed') ELSE 0 END) * 8.0 / 1024 AS DatosUsadosMB,
+    SUM(CASE WHEN type_desc = 'LOG' THEN size ELSE 0 END) * 8.0 / 1024 AS LogAsignadoMB
+FROM sys.database_files;
+GO
+SELECT
+    t.name AS Tabla,
+    SUM(p.row_count) AS Filas,
+    CAST(SUM(p.reserved_page_count) * 8.0 / 1024 AS DECIMAL(12,2)) AS ReservadoMB,
+    CAST(SUM(p.used_page_count) * 8.0 / 1024 AS DECIMAL(12,2)) AS UsadoMB
+FROM sys.dm_db_partition_stats AS p
+JOIN sys.tables AS t ON t.object_id = p.object_id
+WHERE p.index_id IN (0, 1)
+GROUP BY t.name
+ORDER BY ReservadoMB DESC, t.name;
+```
+
+No contiene escritura, migración ni cambios de permisos. Las métricas `sys.dm_db_partition_stats` dependen de permisos de consulta sobre metadatos concedidos al usuario local.
+ 
 ## Restricciones técnicas detectadas en el repositorio
 
 **Hechos observados en GitHub (`feat/cinerd-abc-release-gates-20261110`):**
