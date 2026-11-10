@@ -24,6 +24,10 @@ Este informe separa lo que se puede dejar implementado en GitHub de verificacion
 
 ## Fase B — Backend real, SQL y Render
 
+> **Presupuesto SQL Server actualizado (10/11/2026):** consultar [ESTUDIO_COSTOS_SQL_SERVER_CINERD_2026-11-10.md](ESTUDIO_COSTOS_SQL_SERVER_CINERD_2026-11-10.md). Alternativas sin alta de recursos: Azure SQL Free para PoC, Basic 5 DTU (~US$13.15/mes con Render y disco), S0 (~US$22.97/mes), y AWS RDS SQL Server Express ejemplo (~US$26.61/mes). Condicionado a región, compatibilidad, límites, ancho de banda e impuestos. **No se ha autorizado una contratación.**
+
+
+
 ### Entregables técnicos y salvaguardas
 
 - `render.yaml` define servicio Node, `/ready` como health check, disco `/var/data` con uploads y private en directorios separados, TLS SQL y configuración de CORS. **Despliegue automático desactivado (`autoDeployTrigger: off`)**. Usa la **raíz del monorepo** (sin `rootDir: backend`) para disponer en build/runtime de `backend/`, `docs/`, `database/` y `scripts/`; ejecuta `npm --prefix backend ci --omit=dev` y `npm --prefix backend start`.
