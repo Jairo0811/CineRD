@@ -36,7 +36,8 @@ test('3 fechas del primer lote aplicadas; 5 aprobaciones registradas por separad
   assert.equal(manifest.snapshotExportEvidence.gitPath,'database/seeds/catalog.snapshot.json');
   assert.equal(manifest.originalSevenE4ApprovalsUnaffected,true);
   assert.equal(manifest.otherFiveDatesStillPending,false);
-  assert.equal(manifest.otherFiveDatesApprovedPendingSql,true);
+  assert.equal(manifest.otherFiveDatesApprovedPendingSql,false);
+  assert.equal(manifest.otherFiveDatesAppliedAccordingToSsms,true);
   assert.equal(manifest.secondBatchApprovalRecord,'docs/f23-approved-remaining-5-dates-2026-11-09.json');
   assert.equal(otherLedger.approvals.length,0);
 });
@@ -89,10 +90,10 @@ test('script manual falla cerrado por defecto y protege integridad/reversión',(
   assert.ok(!sql.includes('CRUDPeliculas_E2E];'));
 });
 
-test('informe mantiene cinco fechas pendientes de SQL y tres ejecuciones reportadas por SSMS',()=>{
+test('informe refleja ocho fechas aplicadas segun SSMS sin certificar el snapshot segundo lote',()=>{
   const report=read('docs/FASE_F2_3_PAQUETE_DECISIONES_8_FECHAS_2026-11-09.md');
   assert.ok(report.includes('3 FECHAS APROBADAS POR EL TITULAR'));
-  assert.ok(report.includes('5 APROBADAS POR EL TITULAR PENDIENTES DE APLICACIÓN SQL'));
+  assert.ok(report.includes('5 FECHAS APROBADAS Y APLICADAS SEGÚN CAPTURA SSMS'));
   assert.ok(report.includes('3 CAMBIOS SQL APLICADOS SEGÚN CAPTURA SSMS'));
   for(const id of [10,40,55]){
     const line=report.split('\n').find(x=>x.startsWith(`| ${id} |`));
@@ -100,6 +101,6 @@ test('informe mantiene cinco fechas pendientes de SQL y tres ejecuciones reporta
   }
   for(const id of [27,36,42,44,56]){
     const line=report.split('\n').find(x=>x.startsWith(`| ${id} |`));
-    assert.ok(line?.endsWith('APROBADA POR TITULAR; SQL PENDIENTE |'));
+    assert.ok(line?.endsWith('APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT PENDIENTE |'));
   }
 });
