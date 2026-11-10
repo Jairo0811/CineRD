@@ -3,8 +3,8 @@ name: CineRD CI
 on:
   push:
     branches: [main]
+  # También validar PR anidadas (por ejemplo #59 hacia feat/f2-editorial-review).
   pull_request:
-    branches: [main]
 
 jobs:
   backend:
@@ -21,7 +21,11 @@ jobs:
           cache-dependency-path: backend/package-lock.json
       - run: npm ci
       - run: npm test
+      - name: Probar auditoría de integración local de solo lectura (sin SQL)
+        run: node --test ../scripts/auditLocalCineRD.test.mjs
       - run: npm run catalog:validate
+      - name: Validate F-2.7 metadata candidates (offline / no SQL)
+        run: npm run catalog:metadata:validate
       - run: npm audit --omit=dev --audit-level=high
 
   frontend:
@@ -40,9 +44,45 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run editorial:audit
+      - name: Probar cola humana de 7 cambios E-4 y 58 textos E-5 sin firmas
+        run: node --test ../scripts/prepareClosureEditorial.test.mjs
+      - name: Test F2.3 E4 E5 second pass (without approvals)
+        run: node --test ../scripts/verifyF23EditorialRound2.test.mjs
+      - name: Validate all 58 E5 review packets and B/C deployment safeguards
+        run: node --test ../scripts/verifyABCReleaseGates.test.mjs
+      - name: Report A/B/C readiness without granting licenses or deployment
+        run: node ../scripts/verifyABCReleaseGates.mjs
+      - name: Test parallel E4 SQL E5 and production dashboard (read only)
+        run: node --test ../scripts/reportParallelClosure.test.mjs
+      - name: Verify E4 and SQL synopsis preflight cannot mutate data
+        run: node --test ../scripts/verifyParallelClosureSql.test.mjs
+      - name: Report three parallel closure tracks without human sign-offs
+        run: node ../scripts/reportParallelClosure.mjs
       - run: node --test ../scripts/reportAdSenseReadiness.test.mjs
+      - name: Test production API and monetization gates (offline)
+        run: node --test ../scripts/reportProductionCommercial.test.mjs
+      - name: Report production and AdSense blockers without enabling ads
+        run: node ../scripts/reportProductionCommercial.mjs
       - run: node ../scripts/reportAdSenseReadiness.mjs
+      - name: Test local-only original media viewer (without SQL or publication)
+        run: node --test ../scripts/previewLocalMedia.test.mjs
       - run: npm run editorial:review
+      - name: Triage 18 high-priority editorial observations (read-only)
+        run: node ../scripts/reportHighPriorityEditorial.mjs
+      - name: Test high-priority triage without changing approvals
+        run: node --test ../scripts/reportHighPriorityEditorial.test.mjs
+      - name: Verify explicit approvals for 3 release dates and safe manual SQL
+        run: node --test ../scripts/verifyF23ApprovedDates.test.mjs
+      - name: Validate 5 additional owner-approved dates and safe manual backup/migration
+        run: node --test ../scripts/verifyF23Remaining5.test.mjs
+      - name: Test strictly five approved release-date changes during re-export
+        run: node --test ../scripts/verifyF23FiveDateSnapshot.test.cjs
+      - name: Test post-SQL snapshot diff guard for only 3 approved release dates
+        run: node --test ../scripts/verifyF23ThreeDateSnapshot.test.cjs
+      - name: Validate integrated 1-4 release checks without forging sign-offs
+        run: node --test ../scripts/releaseReadiness14.test.cjs
+      - name: Report all four gates (informational while human reviews are pending)
+        run: node ../scripts/releaseReadiness14.cjs --json
       - run: node --test ../scripts/editorialReviewAudit.test.mjs
       - run: npm audit --omit=dev --audit-level=high
       - run: npm run build
@@ -115,4 +155,60 @@ jobs:
             assert.equal(p.mediaRightsMode, "review");
             assert.equal(p.sourceCommit, process.env.COMMIT_SHA);
             assert.ok(Number.isInteger(p.mediaFilesCopied) && p.mediaFilesCopied >= 0);
+          '
+
+  backend-windows:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - name: Install backend packages (Windows)
+        run: npm ci
+      - name: Run backend tests on Windows
+        run: npm test
+      - name: Test read-only local audit on Windows
+        run: node --test ../scripts/auditLocalCineRD.test.mjs
+      - name: Validate catalog on Windows
+        run: npm run catalog:validate
+      - name: Validate F-2.7 metadata on Windows (offline)
+        run: npm run catalog:metadata:validate
+
+  netlify-production-review:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - name: Simulate Netlify deploy with unsafe pilot requested
+        env:
+          NETLIFY: "true"
+          CONTEXT: deploy-preview
+          VITE_MEDIA_RIGHTS_MODE: pilot
+          COMMIT_REF: ${{ github.sha }}
+        run: npm run build
+      - name: Verify protected deployment contains no pending images
+        run: node ../scripts/verifyRightsReviewBuild.mjs
+      - name: Confirm Netlify mode is forced to review
+        run: |
+          node --input-type=module -e '
+            import fs from "node:fs";
+            import assert from "node:assert/strict";
+            const status=JSON.parse(fs.readFileSync("dist/demo/deploy-status.json","utf8"));
+            assert.equal(status.mediaRightsMode,"review");
+            assert.equal(status.mediaFilesCopied,0);
           '

@@ -14,9 +14,21 @@ import { getSinopsisEditorial } from "../frontend/src/data/sinopsisCuradasFaseE.
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
 const snap=JSON.parse(fs.readFileSync(path.join(root,"database/seeds/catalog.snapshot.json"),"utf8"));
 const ledger=JSON.parse(fs.readFileSync(path.join(root,"docs/editorial-approvals-e5.json"),"utf8"));
+const sqlSourceLedger=JSON.parse(fs.readFileSync(path.join(root,"docs/editorial-sources-sql-f2.json"),"utf8"));
 const clean=x=>String(x??"").replace(/\s+/g," ").trim();
 const sha256=x=>createHash("sha256").update(JSON.stringify(x)).digest("hex");
 const sourceUrls=refs=>(refs||[]).map(x=>x.url).filter(Boolean).sort();
+function sqlSourceUrls(film) {
+  if(sqlSourceLedger.version!==1 || !sqlSourceLedger.entries || Array.isArray(sqlSourceLedger.entries))
+    throw Error("Registro de fuentes SQL invalido");
+  const entry=sqlSourceLedger.entries[String(film.Id)];
+  if(!entry)return [];
+  if(clean(entry.title).toLowerCase()!==clean(film.Titulo).toLowerCase() ||
+     Number(entry.year)!==Number(String(film.FechaEstreno||"").slice(0,4)))
+    throw Error("Referencia SQL no coincide con pelicula "+film.Id);
+  if(!Array.isArray(entry.fuentes))throw Error("Fuentes SQL invalidas: "+film.Id);
+  return sourceUrls(entry.fuentes);
+}
 function makeItem(film,kind,textEs,textEn,urls=[],origin="EDITORIAL") {
   const base={filmId:Number(film.Id),kind,es:clean(textEs),en:clean(textEn),sources:[...urls].sort()};
   return {
@@ -55,7 +67,7 @@ function inventory() {
   for(const film of snap.tables.Peliculas) {
     const sql=clean(film.Sinopsis);
     const curated=sql?null:getSinopsisEditorial(film);
-    if(sql) items.push(makeItem(film,"sinopsis",sql,"",[], "SQL"));
+    if(sql) items.push(makeItem(film,"sinopsis",sql,"",sqlSourceUrls(film), "SQL"));
     else if(curated) items.push(makeItem(film,"sinopsis",curated.es,curated.en,sourceUrls(curated.fuentes)));
     else throw Error("Sin sinopsis visible: "+film.Id);
     const editorial=getEditorialPelicula(film);

@@ -1,0 +1,558 @@
+{
+  "version": 1,
+  "phase": "F-2.3",
+  "scope": "Cobertura documental preliminar, no aprobacion ni verificacion definitiva de fuentes",
+  "catalogSnapshot": "database/seeds/catalog.snapshot.json",
+  "sourceReports": [
+    "docs/FASE_F2_2_AUDITORIA_SQL.md",
+    "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE1.md",
+    "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE2.md",
+    "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE3.md",
+    "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE4.md",
+    "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE5.md",
+    "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md"
+  ],
+  "items": [
+    {
+      "filmId": 4,
+      "kind": "sinopsis",
+      "title": "Sanky Panky",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "Algunas frases del borrador sobre romance y malentendidos culturales son inferencias o detalles narrativos no explicitados en la ficha base; comprobarlos con otra fuente o suavizar su grado de certeza. La fecha SQL coincide con 2007-02-01.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE1.md"
+    },
+    {
+      "filmId": 5,
+      "kind": "sinopsis",
+      "title": "Perico Ripiao",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "El texto SQL omite el encarcelamiento prolongado por burocracia que describe la ficha histórica; revisar la expresión «criminales convictos», la búsqueda familiar y detalles de aventuras añadidos sin referencia.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_SQL.md"
+    },
+    {
+      "filmId": 6,
+      "kind": "sinopsis",
+      "title": "Ladrones a Domicilio",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "El texto SQL habla de trabajo como chofer de transporte de valores; el resumen del catálogo CineDominicano.com se refiere a guardia de seguridad. Determinar si ambas descripciones corresponden al mismo trabajo o son contradictorias.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_SQL.md"
+    },
+    {
+      "filmId": 9,
+      "kind": "sinopsis",
+      "title": "Lotoman",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Metadatos SQL: el snapshot tiene género Infantil y fecha 2011-03-10, mientras la ficha histórica registra Comedia y estreno 2011-01-20. Hay propuesta E-4 en el proyecto; NO actualizar el JSON a mano.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE1.md",
+      "e4Proposals": [
+        "Genero",
+        "FechaEstreno"
+      ]
+    },
+    {
+      "filmId": 10,
+      "kind": "sinopsis",
+      "title": "Vamos de robo",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Redacción SQL con correspondencia textual muy marcada con sinopsis disponibles en Cinema Dominicano y CineDominicano.com. Aclarar origen/autorización, proponer texto propio solo tras comprobar trama. Fecha SQL 2014-01-15 vs estreno comercial 2014-01-16 en ambas fichas.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_SQL.md"
+    },
+    {
+      "filmId": 11,
+      "kind": "sinopsis",
+      "title": "Santicló: La Vaina de la Navidad",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "El texto abrevia la separación familiar; no parece alterar la trama principal. Pendiente comprobar procedencia, traducción y redacción final. Fecha SQL 2008-11-13 coincide con la ficha histórica.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE1.md"
+    },
+    {
+      "filmId": 12,
+      "kind": "sinopsis",
+      "title": "I Love Bachata",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha SQL 2011-10-27 vs fecha de estreno histórico 2011-10-25. Comprobar criterio y posible preestreno antes de corregir en SQL.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE1.md"
+    },
+    {
+      "filmId": 13,
+      "kind": "sinopsis",
+      "title": "Cristiano de la Secreta",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha SQL 2009-01-01 vs estreno histórico 2009-01-15. Es posible que el 1 de enero sea una fecha aproximada, pero no presumirlo como hecho sin prueba.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE1.md"
+    },
+    {
+      "filmId": 14,
+      "kind": "sinopsis",
+      "title": "Los Rechazados",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "La fuente presenta el título extendido «Los Rechazados: Operación Submarino»; registrar como variante antes de cambiar el título canónico. Verificar que la traducción inglesa no añada hechos no documentados.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE2.md"
+    },
+    {
+      "filmId": 15,
+      "kind": "sinopsis",
+      "title": "Tubérculo Gourmet",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "«Lealtad» en inglés y la caracterización interpretativa en ambas versiones requieren revisión final: son lectura editorial, no afirmación documental estricta.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE2.md"
+    },
+    {
+      "filmId": 16,
+      "kind": "sinopsis",
+      "title": "Nueba Yol: ¡Por Fin Llegó Balbuena!",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha SQL 1995-08-16 vs ficha histórica 1995-08-17. Hay publicaciones secundarias que sitúan exhibiciones desde el día 16; documentar tipo de fecha, no forzar una corrección automática.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE1.md"
+    },
+    {
+      "filmId": 17,
+      "kind": "sinopsis",
+      "title": "Profe por Accidente",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "El texto simplifica la relación con el amigo y su trabajo como profesor sustituto; confirmar que esa abreviación no induzca error.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE2.md"
+    },
+    {
+      "filmId": 18,
+      "kind": "sinopsis",
+      "title": "Lotoman 2.0",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "La idea final de que «el dinero no puede resolverlo» es interpretación de CineRD: distinguir tema de hecho narrativo si se presenta como dato oficial.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE2.md"
+    },
+    {
+      "filmId": 19,
+      "kind": "sinopsis",
+      "title": "Carlota la Más Barrial",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "El borrador omite la localización Villa Hermosa, que podría incorporarse si se desea mayor precisión. Revisar atribución de las afirmaciones sobre «organización comunitaria» como interpretación editorial.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE2.md"
+    },
+    {
+      "filmId": 20,
+      "kind": "sinopsis",
+      "title": "Un Macho de Mujer",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "La ficha identifica a su esposa como Mariel; el borrador no la nombra, sin que ello constituya error. Revisar adecuación lingüística de «reversal of family roles».",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE2.md"
+    },
+    {
+      "filmId": 21,
+      "kind": "sinopsis",
+      "title": "Medias Hermanas",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "La sinopsis resumida omite la intervención del esposo Román y la condición vinculada a vender la casa; es una simplificación aceptable si se valida editorialmente. La página consultada no indica fecha precisa de estreno: 2025-12-04 en el snapshot queda pendiente de segunda fuente.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE2.md"
+    },
+    {
+      "filmId": 23,
+      "kind": "sinopsis",
+      "title": "Sanky Panky 2",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "F-2.3: la distribuidora Caribbean Cinemas identifica a La Morena como novia actual de Genaro y el regreso de Martha como desencadenante de enredos (https://caribbeancinemas.com/movie/3959/). La ficha histórica y UC3M coinciden. La reseña que llama Martha «novia» es discrepante: prevalece la descripción de distribución para el borrador. Texto ES/EN conservado; añadida fuente primaria de distribución. Siguen pendientes revisión editorial humana, procedencia y eventual alias «Objetivo Italia». Incidencia original en F-2.2, lote 2.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE2.md"
+    },
+    {
+      "filmId": 24,
+      "kind": "sinopsis",
+      "title": "Sanky Panky 3",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Snapshot: FechaEstreno=2018-03-18, Director=null; comunicados de Caribbean Films y notas de marzo de 2018 registran estreno comercial en RD el 2018-03-29 y dirección Eduardo «Transfor» Ortiz. Una premier ocurrió el 26 de marzo, no el 18. La versión inglesa no añade hechos sustanciales. Corregir solo mediante procedimiento SQL E-4 tras comprobar el registro de origen.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE3.md",
+      "e4Proposals": [
+        "Director",
+        "FechaEstreno"
+      ]
+    },
+    {
+      "filmId": 25,
+      "kind": "sinopsis",
+      "title": "Sanky Panky 4: De Safari",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "La referencia identifica el encuentro de cada uno con una tribu diferente, detalle omitido sin distorsión en el resumen. Fecha SQL 2025-05-15 y director Elías Acosta coinciden. Revisar matices culturales y denominación geográfica antes de aprobar.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE3.md"
+    },
+    {
+      "filmId": 26,
+      "kind": "sinopsis",
+      "title": "Feo de día, Lindo de noche",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "F-2.3: corregida en los borradores ES/EN la referencia imprecisa a horas del día; ahora describe la transformación nocturna de 8 p. m. a medianoche, respaldada por Cinema Dominicano, Diario Libre y Prime Video. Quedan pendientes la revisión humana de exactitud, estilo, procedencia y versión editorial final. Incidencia original: Error de precisión potencial en ambos borradores: se dice «ciertas horas del día» / «a few hours each day», pero varias fuentes precisan el cambio de 8 p. m. a medianoche. Evitar interpretarlo como transformación diurna. Plantear una actualización editorial ES/EN tras revisión manual. Fecha SQL 2012-09-13 coincide.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE3.md"
+    },
+    {
+      "filmId": 27,
+      "kind": "sinopsis",
+      "title": "Lotoman 003: Volando Bajito",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha SQL 2014-03-15 vs estreno comercial 2014-03-27 en Cinema Dominicano y CineDominicano.com. La organización se denomina «La Cosa Aquella» en ambas referencias; el borrador no la nombra. Evaluar precisión y corregir solo desde SQL.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE3.md"
+    },
+    {
+      "filmId": 28,
+      "kind": "sinopsis",
+      "title": "Teacher Mechy",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "Caribbean Cinemas confirma estreno 2023-01-05 y director acreditado como Frank Perozo. El snapshot contiene el nombre civil extendido Francisco Ernesto Perozo Balbuena; no modificar la identidad sin revisar política de alias/créditos.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE3.md"
+    },
+    {
+      "filmId": 29,
+      "kind": "sinopsis",
+      "title": "Baño de Mujeres",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "La referencia describe a la víctima como fallecida que intenta ayudar a su hermana, dato sobrenatural que el borrador omite. Inconsistencia ortográfica interna: el borrador dice Johanna, mientras la ficha de Cinema Dominicano utiliza Johana en el argumento y Johanna en créditos. Confirmar nombre del personaje en créditos oficiales. Estreno 2025-10-02 y dirección Frank Perozo respaldados también por DGCINE.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE3.md"
+    },
+    {
+      "filmId": 30,
+      "kind": "sinopsis",
+      "title": "El Diablo no duerme en su cama",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Alerta de metadatos: la ficha del sitio publicada el 2024-09-24 es una nota sobre la producción, no certifica estreno el 2024-09-22 del snapshot. Una nota de 2024 anuncia posible llegada a salas en el primer semestre de 2025; requiere verificar fecha real, estatus de estreno y si se mezcló fecha de prensa con estreno comercial. Dirección Amauris Pérez documentada; snapshot director null.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE3.md",
+      "e4Proposals": [
+        "Director"
+      ]
+    },
+    {
+      "filmId": 31,
+      "kind": "sinopsis",
+      "title": "Entiérrenlo Parao",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "IMDb y medios confirman premisa y dirección Ronni Castillo. El snapshot registra 2025-06-05, reflejado también por agregadores, pero no encontramos evidencia primaria suficiente de apertura comercial dominicana en ese día. En agosto de 2026 la película fue presentada en el Dominican Film Festival de Nueva York como premiere internacional. Confirmar si el 5 de junio de 2025 es una fecha técnica/listado, estreno nacional o festival. No confundir esta obra con otro formato o producción homónima.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE3.md"
+    },
+    {
+      "filmId": 32,
+      "kind": "sinopsis",
+      "title": "Los Rechazados 2: Operación Espacial",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Discrepancias del snapshot: FechaEstreno=2026-09-13 y Director=null, mientras DGCINE documenta estreno comercial el 2026-08-13 y dirección de Yasser Michelén. El catálogo asigna género Acción; la producción se describe también como comedia y ciencia ficción. Revisar la taxonomía de géneros sin sobrescribirla por defecto. El título contiene un espacio final en el snapshot.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE4.md",
+      "e4Proposals": [
+        "Director",
+        "FechaEstreno"
+      ]
+    },
+    {
+      "filmId": 33,
+      "kind": "sinopsis",
+      "title": "Pueto Pa' Mi",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "Dirección Iván Herrera, género drama y estreno 2015-08-13 coinciden con Cinema Dominicano. La fuente identifica a los protagonistas como Aníbal y Renzo Comando; incluir nombres solo si aporta claridad al resumen. Comprobar grafía oficial del título PUETO PA´MI frente a la variante apostrofada del snapshot.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE4.md"
+    },
+    {
+      "filmId": 34,
+      "kind": "sinopsis",
+      "title": "Los Super",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "La ficha histórica especifica que Vandomal crea un virus letal y posee su cura para obtener apoyo político; el resumen de CineRD lo omite. Puede mantenerse abreviado, pero no convertir la omisión en una interpretación diferente. Estreno 2013-05-09 y director Bladimir Abud coinciden.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE4.md"
+    },
+    {
+      "filmId": 36,
+      "kind": "sinopsis",
+      "title": "Nueba Yol 3: Bajo la Nueva Ley",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha SQL 1997-10-31 frente a 1997-10-23 en Cinema Dominicano. La fuente describe esta obra como «segunda parte» de Nueba Yol, aunque el catálogo usa Nueba Yol 3; revisar denominación y secuencia histórica antes de alterar el título.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE4.md"
+    },
+    {
+      "filmId": 38,
+      "kind": "sinopsis",
+      "title": "La casa del kilómetro 5",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "La ficha especifica un premio de dos millones de pesos y que la emisora buscaba aumentar audiencia; el borrador omite la cuantía, una simplificación admisible. La frase inglesa publicity stunt es una interpretación funcional del concurso, no una cita oficial. Estreno 2012-03-22 y director Omar Javier coinciden.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE4.md"
+    },
+    {
+      "filmId": 39,
+      "kind": "sinopsis",
+      "title": "Colao",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "La fuente histórica respalda los elementos centrales, y el estreno 2017-11-30 coincide con SQL. Mantener revisión lingüística y de originalidad.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE1.md"
+    },
+    {
+      "filmId": 40,
+      "kind": "sinopsis",
+      "title": "Colao 2",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Snapshot: estreno 2023-12-07 y género Comedia; Cinema Dominicano registra estreno 2023-11-30 y género Drama. Determinar tipo de fecha y clasificación de género con distribuidora u otra fuente antes de corregir. La ficha acredita Frank Perozo mientras el snapshot utiliza su nombre extendido; conservar identidad sin cambiar por intuición.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE4.md"
+    },
+    {
+      "filmId": 41,
+      "kind": "sinopsis",
+      "title": "Malos padres",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "El texto fuente aclara que la herencia proviene de la madre del niño; el borrador no identifica de quién procede. Puede añadirse para precisión, previa revisión editorial. Estreno 2023-08-10 y dirección José Ramón Alamá coinciden.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE4.md"
+    },
+    {
+      "filmId": 42,
+      "kind": "sinopsis",
+      "title": "Andrea",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha SQL 2005-08-16 vs 2005-08-18 en Cinema Dominicano. Sobre el director, la misma ficha usa Roger Bencosme en dirección, guion y edición, pero Rogert Bencosme en productores, y el snapshot registra Rogert. Resolver con créditos originales o registro oficial, no suponer un error tipográfico. La referencia usa el título extendido «Andrea: La venganza de un espíritu».",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE4.md"
+    },
+    {
+      "filmId": 44,
+      "kind": "sinopsis",
+      "title": "Playball",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Snapshot: estreno 2008-02-01, género Comedia. Cinema Dominicano y documentación del Festival de Cine Global señalan 14/02/2008 y la ficha histórica clasifica Drama. La misma obra aparece como Play Ball, mientras CineRD usa Playball. Confirmar estreno y género antes de cambios E-4; no confundir con fecha de nota promocional.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE5.md"
+    },
+    {
+      "filmId": 45,
+      "kind": "sinopsis",
+      "title": "Yuniol",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "La ficha histórica se presenta con la grafía (Yuniol)². Revisar título canónico y posibles nombres alternativos sin cambiar IDs ni créditos. Fecha SQL 2007-04-19 coincide con la referencia.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE1.md"
+    },
+    {
+      "filmId": 47,
+      "kind": "sinopsis",
+      "title": "Pimp Bullies: Victimas de un Prostibulo",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Snapshot: género Acción; Cinema Dominicano lo identifica como Drama/Thriller. Revisar subtipo/etiquetas y confirmar qué criterios utiliza la taxonomía del catálogo. La ficha emplea el título alternativo «Víctimas de un prostíbulo (Pimp Bullies)»; el título SQL presenta diferencias de tildes/capitalización y orden. Estreno 22/09/2011 coincide.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE5.md"
+    },
+    {
+      "filmId": 48,
+      "kind": "sinopsis",
+      "title": "Al Fin y al Cabo",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "Cinema Dominicano registra estreno 02/10/2008, dirección Alfonso Rodríguez y género Comedia/Fantástico. El snapshot coincide en fecha y Comedia, aunque no refleja la etiqueta Fantástico. «El Duque» se identifica como jefe de cartel internacional. Sin incidencia urgente; revisar redacción final y titularidad.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE5.md"
+    },
+    {
+      "filmId": 49,
+      "kind": "sinopsis",
+      "title": "Los Locos también Piensan",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "Discrepancia no resuelta: snapshot 2005-01-26; Cinema Dominicano indica 27/01/2005, mientras Diario Libre (06/01/2005) anunció estreno simultáneo en RD, Puerto Rico y EE. UU. para el 26/01/2005 y su cobertura de premier se publicó el 26. No clasificar todavía la fecha SQL como errónea; confirmar función/premier/estreno efectivo y país. Dirección Che Castellanos es forma abreviada de Humberto «Che» Castellanos, verificar cómo documentar alias.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE5.md"
+    },
+    {
+      "filmId": 50,
+      "kind": "sinopsis",
+      "title": "Hermanos",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "Diferencia de taxonomía, no necesariamente error: CineRD almacena Comedia y Cinema Dominicano/CineDominicano.com clasifican Drama; DGCINE describe expresamente la obra como comedia con drama humano. Registrar ambos géneros o adoptar criterio editorial multisectorial tras comprobar el modelo de datos. Fecha 15/03/2018 y dirección Archie López coinciden.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE5.md"
+    },
+    {
+      "filmId": 51,
+      "kind": "sinopsis",
+      "title": "Tubérculo Presidente",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "Cinema Dominicano confirma fecha 24/11/2016, género Comedia y dirección Archie López: coinciden con snapshot. La descripción «food access» puede pulirse con referencia a programas de alimentación popular para precisión de traducción, sin cambiar hechos.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE5.md"
+    },
+    {
+      "filmId": 52,
+      "kind": "sinopsis",
+      "title": "Dos policías en apuros",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha 25/02/2016 y Comedia coinciden. CineRD registra director Francis Disla, Cinema Dominicano lo acredita como Francisco Disla; publicaciones contemporáneas usan Francis Disla («El Indio»). No deducir que se trata de personas distintas; revisar alias/nombre de crédito oficial antes de modificar identidad.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE5.md"
+    },
+    {
+      "filmId": 53,
+      "kind": "sinopsis",
+      "title": "La Musiquita por Dentro",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "Cinema Dominicano registra 02/05/2019, dirección Ernesto Alemany y comedia romántica; fecha/director coinciden con snapshot, que clasifica Comedia. El borrador en inglés Vanessa's involvement es correcto pero amplio; verificar que no atribuya acciones no descritas explícitamente.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE5.md"
+    },
+    {
+      "filmId": 54,
+      "kind": "sinopsis",
+      "title": "Los Paracaidistas",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha 12/02/2015, dirección Archie López y comedia coinciden. La ficha añade la intención de enriquecerse, resumida en ES/EN como ganar fama; evaluar incluir «ricos y famosos» sin reproducir literalmente una sinopsis ajena.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_ES_EN_LOTE5.md"
+    },
+    {
+      "filmId": 55,
+      "kind": "sinopsis",
+      "title": "El Plan Perfecto",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Comprobar si la sinopsis SQL se tomó de una descripción comercial y si existe permiso de reproducción. Fecha SQL 2017-01-17; DGCINE y Cinema Dominicano registran 2017-01-19 como estreno; Páginas Amarillas muestra 1/17/17. No corregir sin establecer el significado del campo.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_SQL.md"
+    },
+    {
+      "filmId": 56,
+      "kind": "sinopsis",
+      "title": "La Lucha de Ana",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "La redacción SQL se aproxima considerablemente a fuentes públicas; auditar procedencia y permisos, y revisar si conviene una sinopsis original de nueva redacción. Fecha SQL 2012-04-13 vs estreno 2012-05-24 indicado por fuentes históricas.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_SQL.md"
+    },
+    {
+      "filmId": 4,
+      "kind": "contexto",
+      "title": "Sanky Panky",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "La mención a música/comedia y «diferencias culturales» es un análisis interpretativo plausible, pero no sustituye examen de la película. Revisar referencias específicas del artículo académico digital y alcance de la interpretación.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md"
+    },
+    {
+      "filmId": 5,
+      "kind": "contexto",
+      "title": "Perico Ripiao",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "El artículo utiliza «encarcelados durante años»; el registro histórico habla de diez años. Precisión opcional tras contraste. La lectura de los instrumentos como «expresión musical reconocible» corresponde a análisis, no hecho comprobado del diseño sonoro.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md"
+    },
+    {
+      "filmId": 6,
+      "kind": "contexto",
+      "title": "Ladrones a Domicilio",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "Distinguir la ocupación del personaje en la sinopsis SQL (donde se han detectado descripciones divergentes) de la lectura contextual. Aquí no se precisa el tipo de segundo trabajo, lo cual evita conflicto, pero debe verificarse al armonizar ambos textos. ES/EN correctos en nombres y relaciones generales.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md"
+    },
+    {
+      "filmId": 9,
+      "kind": "contexto",
+      "title": "Lotoman",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Discrepancia material: el contexto dice estreno 20/01/2011, confirmado por ficha histórica, mientras SQL contiene 10/03/2011 y género Infantil en vez de Comedia. No corregir sin procedimiento E-4 en SQL y confirmación editorial del campo.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md",
+      "e4Proposals": [
+        "Genero",
+        "FechaEstreno"
+      ]
+    },
+    {
+      "filmId": 10,
+      "kind": "contexto",
+      "title": "Vamos de robo",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha: ficha cinematográfica señala 16/01/2014, mientras SQL conserva 15/01/2014. Verificar fuente primaria y tipo de fecha; al revisar texto SQL y ensayo, evitar confundir «sospecha» con prueba de culpabilidad.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md"
+    },
+    {
+      "filmId": 11,
+      "kind": "contexto",
+      "title": "Santicló: La Vaina de la Navidad",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "Frases como «adaptación de símbolos importados» y «Navidad frente a precariedad» son interpretación cultural, no declaraciones documentadas de dirección. Verificar atribución de la productora y grafías Santi Cló / Santicló al fijar título canónico.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md"
+    },
+    {
+      "filmId": 12,
+      "kind": "contexto",
+      "title": "I Love Bachata",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha de estreno: fuente indica 25/10/2011, SQL almacena 27/10/2011. Evitar corregir sin verificar preestreno o apertura comercial. El análisis ES/EN no confunde música de Amaury Sánchez con canciones originales de los protagonistas.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md"
+    },
+    {
+      "filmId": 13,
+      "kind": "contexto",
+      "title": "Cristiano de la Secreta",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha: estreno 15/01/2009 en referencia y 01/01/2009 en snapshot. No atribuir el 01/01 a un «placeholder» sin evidencia. Verificar créditos de guion antes de aprobación.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md"
+    },
+    {
+      "filmId": 16,
+      "kind": "contexto",
+      "title": "Nueba Yol: ¡Por Fin Llegó Balbuena!",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha del catálogo 16/08/1995, mientras Cinema Dominicano cita 17/08/1995: investigar tipo de exhibición antes de modificar. Evitar convertir la importancia histórica o impacto promocional en cifras de audiencia no respaldadas.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md"
+    },
+    {
+      "filmId": 39,
+      "kind": "contexto",
+      "title": "Colao",
+      "priority": "baja",
+      "status": "pendiente_verificacion",
+      "observation": "Citar Frank Perozo como crédito artístico y no crear entidad adicional respecto del nombre civil largo del snapshot. La referencia al café en el título es lectura temática, no etimología oficial certificada.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md"
+    },
+    {
+      "filmId": 45,
+      "kind": "contexto",
+      "title": "Yuniol",
+      "priority": "media",
+      "status": "pendiente_verificacion",
+      "observation": "Variantes de título: la ficha histórica usa (Yuniol)², y la revista académica dice Yuniol 2; SQL usa Yuniol. Documentar alias/canon antes de cambiar título. Precisión académica: el estudio de 2018 analiza familia e ideología, no prueba directamente todas las interpretaciones sobre movilidad educativa del ensayo CineRD.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md"
+    },
+    {
+      "filmId": 56,
+      "kind": "contexto",
+      "title": "La Lucha de Ana",
+      "priority": "alta",
+      "status": "pendiente_verificacion",
+      "observation": "Fecha SQL: 13/04/2012 frente a 24/05/2012 en ficha histórica. Ibermedia solo respalda el año 2012, no el día de estreno. La fórmula «circuito de apoyo cinematográfico» debe entenderse por su registro en Ibermedia, sin inferir subvenciones específicas.",
+      "sourceReport": "docs/FASE_F2_2_AUDITORIA_CONTEXTOS_12.md"
+    }
+  ]
+}

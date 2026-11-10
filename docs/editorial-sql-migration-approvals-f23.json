@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "description": "SOLO aprobaciones humanas documentadas de las propuestas de reemplazo SQL F-2.3. Vacio por defecto. No inventar revisores, permisos ni firmas; el fingerprint depende del borrador y del texto SQL original.",
+  "approvals": []
+}

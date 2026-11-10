@@ -1,7 +1,9 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import EncabezadoPagina from "../components/ui/EncabezadoPagina";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import api from "../services/api";
+import { resolveMediaUrl } from "../config/api";
+import { validarArchivoImagen } from "../utils/validarArchivoImagen";
 
 import ActorFormFields from "../components/actores/ActorFormFields";
 import { prepararFechaParaInput } from "../utils/fechas";
@@ -30,12 +32,16 @@ function FormularioActor() {
   const navigate = useNavigate();
   const { id } = useParams();
   const esEdicion = Boolean(id);
-  const API_URL = "http://localhost:3000";
+  const esTalentoPropio = esEdicion && (() => {
+    try { return JSON.parse(localStorage.getItem("cineRdUsuario") || "null")?.rol === "TALENTO_VERIFICADO"; }
+    catch { return false; }
+  })();
 
   const [formulario, setFormulario] = useState(formularioInicial);
   const [foto, setFoto] = useState(null);
   const [vistaPrevia, setVistaPrevia] = useState(null);
   const [guardando, setGuardando] = useState(false);
+  const guardandoRef = useRef(false);
 
   useEffect(() => { if (esEdicion) obtenerActor(); }, [id]);
   useEffect(() => () => { if (vistaPrevia?.startsWith("blob:")) URL.revokeObjectURL(vistaPrevia); }, [vistaPrevia]);
@@ -63,7 +69,7 @@ function FormularioActor() {
         XUrl: actor.XUrl || "",
         SitioWebUrl: actor.SitioWebUrl || "",
       });
-      if (actor.Foto) setVistaPrevia(`${API_URL}${actor.Foto}`);
+      setVistaPrevia(resolveMediaUrl(actor.Foto));
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.mensaje || "Error al cargar el actor");
@@ -87,6 +93,8 @@ function FormularioActor() {
   const manejarFoto = (e) => {
     const archivo = e.target.files?.[0];
     if (!archivo) return;
+    const errorArchivo = validarArchivoImagen(archivo);
+    if (errorArchivo) { alert(errorArchivo); e.target.value = ""; return; }
     if (vistaPrevia?.startsWith("blob:")) URL.revokeObjectURL(vistaPrevia);
     setFoto(archivo);
     setVistaPrevia(URL.createObjectURL(archivo));
@@ -127,10 +135,11 @@ function FormularioActor() {
 
   const guardarActor = async (e) => {
     e.preventDefault();
-    if (!validarFormulario()) return;
+    if (guardandoRef.current || !validarFormulario()) return;
     const datos = construirFormData();
+    guardandoRef.current = true;
+    setGuardando(true);
     try {
-      setGuardando(true);
       if (esEdicion) await api.put(`/actores/${id}`, datos, { headers: { "Content-Type": "multipart/form-data" } });
       else await api.post("/actores", datos, { headers: { "Content-Type": "multipart/form-data" } });
       alert(esEdicion ? "Actor actualizado correctamente" : "Actor registrado correctamente");
@@ -138,20 +147,25 @@ function FormularioActor() {
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.mensaje || error.response?.data?.error || "Error al guardar el actor");
-    } finally { setGuardando(false); }
+    } finally {
+      guardandoRef.current = false;
+      setGuardando(false);
+    }
   };
 
   return <div className="form-page-container">
     <EncabezadoPagina
       eyebrow="TALENTOS"
       titulo={esEdicion ? "Editar talento" : "Nuevo talento"}
-      descripcion="Registra o actualiza el perfil profesional y su información biográfica."
+      descripcion={esTalentoPropio
+        ? "Puedes actualizar tu nombre artístico, profesión, enlaces y fotografía. Los datos de identidad necesitan revisión editorial."
+        : "Registra o actualiza el perfil profesional y su información biográfica."}
       volverA="/actores"
       volverTexto="← Volver a Talentos"
     />
     <form onSubmit={guardarActor} className="card mt-3 shadow"><div className="card-body">
       {formulario.TMDbId && <div className="alert alert-success">✅ Talento vinculado con TMDb. ID: <strong>{formulario.TMDbId}</strong></div>}
-      <ActorFormFields formulario={formulario} onChange={manejarCambio} onChangeEstadoVida={cambiarEstadoVida} onFotoChange={manejarFoto} vistaPrevia={vistaPrevia}/>
+      <ActorFormFields formulario={formulario} onChange={manejarCambio} onChangeEstadoVida={cambiarEstadoVida} onFotoChange={manejarFoto} vistaPrevia={vistaPrevia} bloquearIdentidad={esTalentoPropio}/>
       <div className="d-flex gap-2 flex-wrap mt-4"><button type="submit" className="btn btn-primary" disabled={guardando}>{guardando ? "Guardando..." : "Guardar"}</button><Link to="/actores" className="btn btn-secondary">Cancelar</Link></div>
     </div></form>
   </div>;

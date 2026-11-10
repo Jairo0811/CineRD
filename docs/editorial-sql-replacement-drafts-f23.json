@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "purpose": "Propuestas de sustitucion bilingue para las cinco sinopsis SQL de origen no acreditado. No se conectan a la interfaz ni se aprueban de forma automatica.",
+  "autoPublish": false,
+  "entries": {
+    "5": {
+      "filmId": 5,
+      "title": "Perico Ripiao",
+      "year": 2003,
+      "status": "pendiente_revision",
+      "deployment": "manual_only",
+      "draftOrigin": "nueva_redaccion_f23",
+      "es": "En la República Dominicana de los años setenta, tres hombres pasan años encarcelados por delitos menores mientras los trámites penitenciarios prolongan su encierro. Cuando encuentran la oportunidad de escapar, salen en busca de sus familias llevando consigo una güira, un tambor y un acordeón. La música acompaña su viaje de regreso, marcado por los contratiempos y el humor.",
+      "en": "In 1970s Dominican Republic, three men remain imprisoned for years over minor offenses as bureaucratic delays prolong their confinement. When they finally get a chance to escape, they set off to reunite with their families, carrying a güira, a drum and an accordion. Music accompanies their journey home through setbacks and comic situations.",
+      "sources": [
+        "https://cinemadominicano.com/perico-ripiao-2003/",
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/perico-ripiao-2003/",
+        "https://www.filmaffinity.com/es/fullcredits.php?movie_id=452681"
+      ],
+      "openQuestions": [
+        "Las fuentes disponibles discrepan sobre siete o diez años de encarcelamiento; el texto evita una cifra hasta conseguir prueba primaria o visionado.",
+        "Confirmar mediante créditos o visionado la relación y nombres de los tres protagonistas; evitar inventar aventuras específicas fuera de la trama documentada.",
+        "Registrar procedencia y autoría de la sinopsis anterior y comprobar derechos antes de la sustitución; el nuevo texto no hereda licencias de las fuentes citadas."
+      ],
+      "sourcePermissionStatus": "sin_evidencia_registrada",
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    "6": {
+      "filmId": 6,
+      "title": "Ladrones a Domicilio",
+      "year": 2008,
+      "status": "pendiente_revision",
+      "deployment": "manual_only",
+      "draftOrigin": "nueva_redaccion_f23",
+      "es": "Bruno, profesor universitario, intenta financiar los estudios de su hija después de que se suspende el programa de becas de la institución donde enseña. Con ayuda de su compadre Biembo, consigue un empleo como conductor de un vehículo de transporte de valores. En su primera noche, él y sus acompañantes quedan atrapados en un robo organizado desde la propia compañía. Para escapar de la maniobra, Bruno deberá recurrir a su habilidad al volante mientras enfrenta una trama de corrupción.",
+      "en": "When the university where he teaches suspends its scholarship program, professor Bruno looks for another way to fund his daughter's education. With help from his friend Biembo, he takes a job driving a cash transport vehicle. On his first night, Bruno and his companions become caught in a robbery orchestrated from within the company. Escaping the scheme will test his driving skills as he confronts corruption.",
+      "sources": [
+        "https://cinemadominicano.com/ladrones-a-domicilio-2008/",
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/ladrones-a-domicilio-2008/",
+        "https://www.casamerica.es/cine/ladrones-domicilio",
+        "https://www.diariolibre.com/amp/revista/ladrones-a-domicilio-se-estrena-14-de-agosto-AADL25057",
+        "https://www.diariolibre.com/amp/revista/ladrones-a-domicilio-la-nueva-pelcula-del-director-ngel-muiz-YCDL23032"
+      ],
+      "openQuestions": [
+        "Verificar en créditos finales o visionado que la primera noche de Bruno como conductor de transporte de valores está representada tal como se describe en el material de estreno.",
+        "Contrastar la diferencia terminológica entre guardia de seguridad y chofer de transporte de valores; las fichas podrían resumir tareas del mismo empleo sin contradicción.",
+        "Revisar que la expresión robo organizado desde la propia compañía no sugiera culpabilidad de Bruno y que el inglés conserve esa distinción.",
+        "Identificar autoría y licencias del texto SQL anterior: varias fichas comparten redacción promocional y la presencia de fuentes no acredita derecho de reutilización."
+      ],
+      "sourcePermissionStatus": "sin_evidencia_registrada",
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    "10": {
+      "filmId": 10,
+      "title": "Vamos de robo",
+      "year": 2014,
+      "status": "pendiente_revision",
+      "deployment": "manual_only",
+      "draftOrigin": "nueva_redaccion_f23",
+      "es": "Michael, Pedro, Mateo y Antonio trabajan en el área de fiscalización de un banco. Cuando desaparecen 150 millones de pesos de la bóveda, las sospechas recaen sobre ellos: los cuatro estaban en las instalaciones durante el robo. Mientras intentan aclarar lo sucedido y despejar las acusaciones, se ven envueltos en una cadena de complicaciones y situaciones cómicas.",
+      "en": "Michael, Pedro, Mateo and Antonio work in a bank's auditing department. When 150 million Dominican pesos are stolen from the vault, suspicion falls on the four men because they were on the premises during the robbery. As they try to find out what happened and clear their names, they get caught up in a series of complications and comic mishaps.",
+      "sources": [
+        "https://cinemadominicano.com/vamos-de-robo-2014/",
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/vamos-de-robo-2014/",
+        "https://www.diariolibre.com/revista/vamos-de-robo-a-las-salas-de-cines-en-enero-BMDL406632",
+        "https://eldia.com.do/publico-valora-filme-vamos-de-robo/",
+        "https://www.diariolibre.com/amp/revista/cine/vamos-de-robo-DIDL447141"
+      ],
+      "openQuestions": [
+        "Verificar mediante visionado, créditos o materiales de producción la relación exacta de los cuatro protagonistas con el departamento de fiscalización y el robo, sin suponer que fueron declarados inocentes o culpables.",
+        "La fecha comercial dominicana 2014-01-16 ya fue aprobada y verificada en SQL (F2.3). No reabrir ni modificar FechaEstreno durante la revisión textual.",
+        "Revisar la equivalencia de los términos área de fiscalización / auditing department y la cuantía RD$150 millones en ambas versiones.",
+        "Determinar el origen, autoría y derechos de la sinopsis SQL previa, que coincide en redacción con descripciones de terceros; las noticias consultadas no conceden licencia textual."
+      ],
+      "sourcePermissionStatus": "sin_evidencia_registrada",
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    "55": {
+      "filmId": 55,
+      "title": "El Plan Perfecto",
+      "year": 2017,
+      "status": "pendiente_revision",
+      "deployment": "manual_only",
+      "draftOrigin": "nueva_redaccion_f23",
+      "es": "Por problemas de salud, Don Pascual vende el almacén de Santo Domingo donde trabajan seis compañeros. El nuevo dueño los contrata nuevamente, sin que ellos sepan que el local se utiliza para almacenar mercancía ilegal. Cuando el engaño sale a la luz, quedan entre las presiones de los responsables del negocio y las sospechas de la policía. Los seis intentarán salir del aprieto en una sucesión de enredos de comedia y acción.",
+      "en": "Health problems lead Don Pascual to sell his Santo Domingo warehouse, where six coworkers earn their living. The new owner rehires them, but they do not realize the premises are being used to store illegal goods. When the deception comes to light, they find themselves caught between pressure from the people behind the operation and police suspicions. The six try to find a way out amid escalating comic and action-filled complications.",
+      "sources": [
+        "https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/",
+        "https://cinemadominicano.com/el-plan-perfecto-2017/",
+        "https://paginasamarillas.com.do/es/movie/el-plan-perfecto/M5P1549",
+        "https://lacronica.do/roberto-angel-salcedo-inicia-2017-estreno-plan-perfecto/",
+        "https://eldia.com.do/el-plan-perfecto-reune-buen-elenco/",
+        "https://www.elcaribe.com.do/sin-categoria/el-plan-perfecto-en-gala-premier/",
+        "https://cinemadominicano.com/el-plan-perfecto-imperfecto-plan/"
+      ],
+      "openQuestions": [
+        "La recontratación está respaldada por La Crónica y elCaribe (reseña contemporánea); contrastar la secuencia específica con el filme/créditos antes de ratificar el borrador final.",
+        "Preservar la distinción entre sospecha policial y culpabilidad comprobada; La Crónica, elCaribe y la crítica de Cinema Dominicano describen persecuciones, pero no deben inferirse resoluciones judiciales.",
+        "Comprobar equivalencia ES/EN y que la redacción sea autónoma, sin copiar literalmente sinopsis promocionales de terceros; documentar autoría y licencias del texto SQL anterior.",
+        "La fecha comercial 2017-01-19 ya fue aprobada, aplicada y verificada en el cierre F2.3; NO ejecutar cambios de fecha en esta revisión textual."
+      ],
+      "sourcePermissionStatus": "sin_evidencia_registrada",
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    "56": {
+      "filmId": 56,
+      "title": "La Lucha de Ana",
+      "year": 2012,
+      "status": "pendiente_revision",
+      "deployment": "manual_only",
+      "draftOrigin": "nueva_redaccion_f23",
+      "es": "Ana vende flores en el Mercado Nuevo de Santo Domingo para sostener a su único hijo. Cuando el joven es asesinado, acude a las instituciones en busca de justicia. Sin obtener la respuesta que espera por las vías legales, se enfrenta a la posibilidad de actuar por su cuenta. Su dolor y su determinación impulsan una lucha que pondrá a prueba sus convicciones.",
+      "en": "Ana sells flowers at Santo Domingo's Mercado Nuevo to support her only son. When he is murdered, she turns to the authorities in search of justice. Unable to obtain the answers she seeks through legal channels, she considers taking matters into her own hands. Grief and determination drive her struggle as her convictions are put to the test.",
+      "sources": [
+        "https://www.programaibermedia.com/proyectos/la-lucha-de-ana-2/",
+        "https://cinemadominicano.com/la-lucha-de-ana-2012/",
+        "https://dgcine.gob.do/programacion-cinemateca-sobre-ruedas-centro-cultural-narciso-gonzalez-2/",
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/la-lucha-de-ana-2012/"
+      ],
+      "openQuestions": [
+        "El texto habla de asesinato según Ibermedia y Cinema Dominicano, sin establecer un mecanismo accidental concreto que las fuentes describen ambiguamente.",
+        "Corroborar mediante visionado el punto exacto donde fracasan las vías institucionales antes de que Ana considere actuar por su cuenta; evitar inferir cómo concluye su búsqueda.",
+        "Registrar procedencia original y derechos del texto SQL previo, además de revisar el nuevo texto español e inglés por un responsable.",
+        "La fecha comercial dominicana 2012-05-24 (24 de mayo de 2012) ya fue aprobada y verificada en SQL (F2.3). No reabrir ni modificar FechaEstreno durante la revisión textual."
+      ],
+      "sourcePermissionStatus": "sin_evidencia_registrada",
+      "reviewedBy": null,
+      "reviewedAt": null
+    }
+  }
+}

@@ -69,6 +69,10 @@ export const SINOPSIS_EDITORIALES_FASE_E2 = Object.freeze({
       {
         "titulo": "Ficha histórica / fuente del argumento",
         "url": "https://cinemadominicano.com/sanky-panky-2-2013/"
+      },
+      {
+        "titulo": "Caribbean Cinemas — ficha de distribución Sanky Panky 2",
+        "url": "https://caribbeancinemas.com/movie/3959/"
       }
     ]
   },
@@ -102,8 +106,8 @@ export const SINOPSIS_EDITORIALES_FASE_E2 = Object.freeze({
     "tituloReferencia": "Feo de día, Lindo de noche",
     "anioReferencia": 2012,
     "estado": "pendiente_revision",
-    "es": "Un hombre acostumbrado a recibir poca atención por su aspecto físico obtiene, gracias a un hechizo, una apariencia diferente durante ciertas horas del día. La transformación parece abrirle nuevas posibilidades amorosas, pero se vuelve un problema cuando comienza a sentir un afecto genuino.",
-    "en": "A man who feels overlooked because of his appearance is transformed by a spell into a handsome version of himself for a few hours each day. What initially seems like a chance at romance becomes complicated when he develops genuine feelings for someone.",
+    "es": "Un hombre acostumbrado a recibir poca atención por su aspecto físico obtiene, gracias a un hechizo, una apariencia diferente cada noche, desde las ocho de la noche hasta la medianoche. La transformación parece abrirle nuevas posibilidades amorosas, pero se vuelve un problema cuando comienza a sentir un afecto genuino.",
+    "en": "A man who feels overlooked because of his appearance is transformed by a spell into a handsome version of himself each night from 8 p.m. until midnight. What initially seems like a chance at romance becomes complicated when he develops genuine feelings for someone.",
     "fuentes": [
       {
         "titulo": "Ficha histórica / fuente del argumento",

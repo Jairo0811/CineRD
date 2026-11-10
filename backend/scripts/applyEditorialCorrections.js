@@ -1,13 +1,15 @@
 /**
  * Fase E-4: proposed, cited SQL Server corrections.
  * Default is an OFFLINE dry-run using the versioned snapshot. No DB connection.
- * --apply --confirm-db-backup connects to local SQL Server, verifies all
- * original values under SERIALIZABLE locks, saves a local preimage and commits
+ * --apply --confirm-db-backup --backup-file ABSOLUTE.bak requires seven
+ * attributed field approvals and an existing backup BEFORE DB connection.
+ * It then verifies originals under SERIALIZABLE locks, saves a preimage, commits.
  * a transaction. Never runs automatically during build or CI.
  */
 const fs = require("node:fs");
 const path = require("node:path");
 const sql = require("mssql");
+const { assertApplyGate } = require("./e4ApprovalGate");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 const root = path.resolve(__dirname,"../..");
@@ -46,8 +48,13 @@ function validate(ledger,snapshot) {
 }
 const rows=validate(spec,catalog);
 async function apply() {
-  if(!process.argv.includes("--confirm-db-backup"))
-    throw Error("Para modificar SQL confirma primero un respaldo de la BASE DE DATOS y usa --apply --confirm-db-backup.");
+  const approvals=JSON.parse(fs.readFileSync(path.join(root,"docs/catalog-corrections-e4-approvals.json"),"utf8"));
+  const gate=assertApplyGate({
+    argv:process.argv.slice(2),ledger:approvals,rows,snapshot:catalog,env:process.env
+  });
+  console.log("✓ Autorizaciones E-4 verificadas: "+gate.valid+"/"+gate.required+
+    "; archivo .bak localizado: "+gate.backupFile);
+  console.log("⚠ La existencia del .bak no demuestra que sea restaurable; el administrador debe comprobarlo.");
   for(const k of ["DB_SERVER","DB_DATABASE","DB_USER","DB_PASSWORD"]) {
     if(!process.env[k]) throw Error("Falta configurar "+k+" en backend/.env");
   }
@@ -79,6 +86,7 @@ async function apply() {
     const file=path.join(backupDir,"catalog-e4-preimage-"+new Date().toISOString().replace(/[:.]/g,"-")+".json");
     fs.writeFileSync(file,JSON.stringify({
       createdAt:new Date().toISOString(),database:process.env.DB_DATABASE,
+      backupFile:gate.backupFile,authorizationsVerified:gate.valid,
       rows:[...existing.values()],
       corrections:rows,
     },null,2),{flag:"wx",mode:0o600});
@@ -107,6 +115,6 @@ if(require.main===module){
     console.log("  "+(done?"[APLICADO EN SNAPSHOT]":"[PENDIENTE]")+" #"+c.filmId+" "+c.title+" / "+c.field+": "+String(c.expected)+" -> "+String(c.proposed));
   }
   if(process.argv.includes("--apply")) apply().catch(e=>{console.error("✗ "+e.message);process.exitCode=1});
-  else console.log("✓ VISTA PREVIA; no se ha modificado SQL Server. Para aplicar: --apply --confirm-db-backup");
+  else console.log("✓ VISTA PREVIA; no se ha modificado SQL Server. Para aplicar: las 7 autorizaciones E-4, respaldo .bak real, --apply --confirm-db-backup --backup-file RUTA_ABSOLUTA.bak");
 }
 module.exports={validate,compared,normalize};

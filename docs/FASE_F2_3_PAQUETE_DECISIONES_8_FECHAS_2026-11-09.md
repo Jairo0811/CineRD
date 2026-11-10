@@ -1,0 +1,90 @@
+# CineRD — Paquete de decisión editorial para ocho fechas (F-2.3)
+
+**Fecha:** 2026-11-09 · **Rama:** `feat/f2-editorial-review` · **PR:** #55  
+**Estado:** **3 FECHAS APROBADAS POR EL TITULAR** (#10, #40, #55), **3 CAMBIOS SQL APLICADOS SEGÚN CAPTURA SSMS**; **5 FECHAS APROBADAS Y APLICADAS SEGÚN CAPTURA SSMS** (#27, #36, #42, #44, #56). Ambos lotes fueron sincronizados en GitHub: tres fechas en `f93db85` y cinco en `864d26a`; **SELECT independiente posmigración verificado el 2026-11-10 (8/8 CORRECTO)**.
+**Objeto:** resolver la fecha de **estreno comercial en cines de República Dominicana**. La fecha de gala, festival, reseña, distribución internacional o preestreno no reemplaza esa definición.
+
+## Verificación independiente posmigración — 2026-11-10
+
+El titular ejecutó en **SQL Server Management Studio**, sobre la base **`CRUDPeliculas`**, una consulta **solo lectura** que contrastó exactamente los ocho IDs, títulos y fechas autorizados. La captura de resultados aportada en la conversación muestra **8 filas, `TotalVerificadas=8`, `TotalCorrectas=8`, todas con `Estado=CORRECTO`**. La consulta reproducible está en `database/scripts/f23_postmigration_8_readonly.sql`.
+
+| ID | Fecha confirmada en SQL |
+|---:|---|
+| #10 | 2014-01-16 |
+| #27 | 2014-03-27 |
+| #36 | 1997-10-23 |
+| #40 | 2023-11-30 |
+| #42 | 2005-08-18 |
+| #44 | 2008-02-14 |
+| #55 | 2017-01-19 |
+| #56 | 2012-05-24 |
+
+**Trazabilidad:** la captura original fue compartida por el titular durante la revisión del 2026-11-10, pero **no se incorpora ni se afirma archivada en GitHub**. No se inventan hora UTC, firma, nombre completo del revisor ni huella digital de un archivo que no está versionado. Esta lectura confirma el estado técnico de SQL; **no certifica la fecha histórica de estreno de #36**, licencias de terceros ni una restauración de prueba del backup. **No repetir las migraciones UP.**
+
+
+## Evidencia técnica previa
+
+El propietario ejecutó `SELECT` el 2026-11-09 en la base SQL Server original `CRUDPeliculas` sobre las películas 6,10,26,27,31,36,40,42,44,47,55,56. Los ocho registros abajo coinciden con el snapshot `database/seeds/catalog.snapshot.json` en valores históricos. **Este cotejo demuestra sincronía entre SQL y snapshot, no que las fechas históricas sean correctas.**
+
+Para repetir una comprobación sin cambiar nada: **`database/scripts/f23_preflight_fechas_estreno_8_readonly.sql`**. El script identifica los ocho registros por ID/título y muestra el valor actual y el candidato. **Solo consulta**.
+
+## Decisiones de revisión — no completar automáticamente
+
+**Segundo lote, aprobado el 2026-11-09:** el titular escribió «apruebalas todas» en respuesta a las cinco fechas candidatas #27, #36, #42, #44 y #56. Las cinco fueron **APROBADAS POR EL TITULAR Y EJECUTADAS SEGÚN CAPTURA SSMS**; las cinco nuevas fechas ya fueron incorporadas al snapshot versionado mediante `864d26a`, con auditoría 5/5. Registro: `docs/f23-approved-remaining-5-dates-2026-11-09.json`. La solicitud **incluye explícitamente #36** pese al aviso de evidencia independiente insuficiente; se registra la autorización sin inventar que la cartelera dominicana de 1997 haya sido comprobada. Para #36, Cinema Dominicano y CineDominicano comparten información editorial y el 31/10/1997 de IMDb corresponde a estreno de **Estados Unidos**, no demuestra el estreno comercial dominicano. Sigue siendo recomendable conseguir una fuente primaria local de octubre de 1997; la ejecución no equivale a corroboración histórica.
+
+**Respaldo independiente y segunda migración manual, ejecutados por el titular según capturas SSMS (NO REPETIR UP):** `database/scripts/f23_backup_nuevas_5_fechas_manual.sql` y `database/scripts/f23_fechas_5_aprobadas_manual_up_down.sql`. El script versionado arranca con `@Apply=0`; el titular ejecutó manualmente la variante con aplicación habilitada, backup nuevo `CRUDPeliculas_F23_5_*.bak`, CHECKSUM/RESTORE VERIFYONLY, cinco preimágenes exactas y confirmación. La captura muestra **5/5 filas `EJECUCION_MANUAL_CONFIRMADA`, dirección `UP`**. No reutilizar backup anterior ni repetir esta migración; el snapshot ya fue reexportado, auditado y publicado en GitHub. SELECT independiente de las ocho fechas verificado el 2026-11-10 (8/8).
+
+**Aprobación expresada el 2026-11-09:** ante la pregunta específica sobre las tres fechas de *Vamos de robo*, *Colao 2* y *El Plan Perfecto*, el titular respondió «aprobadas». La decisión está registrada en `docs/f23-approved-release-dates-2026-11-09.json`. Se refiere a **los tres valores de fecha**, no al género, director, sinopsis ni a otras cinco propuestas. No consta fecha exacta UTC, firma adicional, declaración individual de revisión de URLs ni ejecución SQL; esos datos **no se inventan**. El titular posteriormente creó y verificó un backup FULL COPY_ONLY con CHECKSUM; la captura SSMS de la migración muestra tres filas `EJECUCION_MANUAL_CONFIRMADA` con `UP` para #10, #40 y #55. **La aplicación fue reportada como ejecutada**, y no se debe repetir `UP`. El propietario reexportó desde `CRUDPeliculas`, comprobó 3/3 cambios exactos y validó el catálogo; el snapshot ya se publicó en el commit `f93db85`. El titular aportó captura del SELECT independiente en SSMS del 2026-11-10: 8/8 fechas CORRECTO.
+
+**Script protegido de aplicación/reversión manual (conservar como referencia; NO repetir UP):** `database/scripts/f23_fechas_3_aprobadas_manual_up_down.sql`. Por defecto muestra previa (`@Apply=0`) y no modifica datos. Exige un backup completo reciente con CHECKSUM, comprobación de integridad, verificación de preimagen y transacción para ejecutar UP o DOWN manualmente. La variante ejecutada en SSMS por el titular tiene automatizada la selección del backup; el script versionado conserva `@Apply=0` como estado seguro.
+
+| ID | Película | Fecha anterior documentada | Candidata | Principal evidencia y evaluación | Decisión |
+|---:|---|---|---|---|---|
+| 10 | Vamos de robo | 2014-01-15 | **2014-01-16** | [Diario Libre (crónica 20/01/2014)](https://www.diariolibre.com/amp/revista/cine/vamos-de-robo-DIDL447141) habla de taquilla en primera noche, jueves 16; evidencia contemporánea fuerte | APROBADA Y APLICADA SEGÚN SSMS |
+| 27 | Lotoman 003: Volando Bajito | 2014-03-15 | **2014-03-27** | [Ficha Cinema Dominicano](https://cinemadominicano.com/lotoman-003-volando-bajito-2014/) y [gala previa](https://cinemadominicano.com/orange-cinema-realiza-gala-premier-de-lotoman-003/); concordancia | APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT SINCRONIZADO |
+| 36 | Nueba Yol 3: Bajo la Nueva Ley | 1997-10-31 | **1997-10-23** | [Ficha Cinema Dominicano](https://cinemadominicano.com/nueba-yol-3-bajo-la-nueva-ley-1997/); **pedir otra evidencia primaria** por antigüedad y falta de cartelera | APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT SINCRONIZADO |
+| 40 | Colao 2 | 2023-12-07 | **2023-11-30** | [Anuncio de Caribbean Cinemas citado por Cinema Dominicano](https://cinemadominicano.com/colao-2-llega-a-los-cines-dominicanos/); lanzamiento en RD | APROBADA Y APLICADA SEGÚN SSMS |
+| 42 | Andrea | 2005-08-16 | **2005-08-18** | [Ficha Cinema Dominicano](https://cinemadominicano.com/andrea-la-venganza-de-un-espiritu-2005/); **pedir confirmación independiente** | APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT SINCRONIZADO |
+| 44 | Playball | 2008-02-01 | **2008-02-14** | [Ficha Cinema Dominicano](https://cinemadominicano.com/play-ball-2008/); archivo [catálogo de cine dominicano](https://cinemadominicano.com/wp-content/uploads/2022/02/CDELM.pdf); revisar si son fuentes independientes | APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT SINCRONIZADO |
+| 55 | El Plan Perfecto | 2017-01-17 | **2017-01-19** | [DGCINE, 06/02/2017](https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/) confirma explícitamente estreno en todos los cines RD; evidencia institucional | APROBADA Y APLICADA SEGÚN SSMS |
+| 56 | La Lucha de Ana | 2012-04-13 | **2012-05-24** | [Ficha Cinema Dominicano](https://cinemadominicano.com/la-lucha-de-ana-2012/); [Ibermedia](https://www.programaibermedia.com/proyectos/la-lucha-de-ana-2/) no certifica el día; pedir otra evidencia del estreno | APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT SINCRONIZADO |
+
+### Categorías de decisión permitidas para una revisión REAL
+
+Cada campo debe ser decidido **individualmente** por la persona revisora:
+
+- **APROBAR_CANDIDATA**: fuente cotejada y criterio de estreno comercial RD satisfecho; registrar persona, fecha real UTC, fuente y comparación SQL; entonces preparar migración protegida.
+- **MANTENER_ACTUAL**: hay evidencia fundada de que el SQL actual responde al criterio; documentar el motivo y la fuente.
+- **REQUIERE_MAS_EVIDENCIA**: no hacer cambios; solicitar registro de distribuidor, cartelera, DGCINE o créditos apropiados.
+
+**Ocho fechas aprobadas por el titular:** #10, #40 y #55 fueron aplicadas según SSMS y exportadas a GitHub; #27, #36, #42, #44 y #56 fueron **aplicadas según captura SSMS**, con respaldo nuevo y script protegido. El snapshot quedó reexportado y sincronizado en GitHub; se verificó por SELECT independiente el 2026-11-10 (8/8 CORRECTO). No se altera `docs/catalog-corrections-e4-approvals.json` (libro E-4 de otras siete correcciones), `docs/editorial-approvals-e5.json` ni `docs/editorial-issues-f2.json`. Ninguna decisión de fecha implica automáticamente la aprobación de una sinopsis o el cierre de una incidencia.
+
+## Campos de acta (rellenar manualmente, sin fabricar firmas)
+
+**Por cada decisión:**
+- `filmId`, `campo=FechaEstreno`, `tituloVerificado`
+- `valorActualSql` leído en SSMS; `valorCandidato`
+- `decision` (una de las anteriores)
+- `fuentesRevisadas` (URL o evidencia almacenada)
+- `criterio` (estreno comercial en cines RD, justificación)
+- `revisadoPor` (nombre de quien verificó personalmente, no generado automáticamente)
+- `revisadoEnUtc` (fecha real de la revisión)
+- `observaciones` (incluida la diferencia premiere/estreno)
+- Referencia de backup y hash de la propuesta antes de aplicar cualquier migración; **no inventar** un valor de huella
+
+## Bloqueos paralelos NO abordados por esta tanda
+
+1. **#30 — El Diablo no duerme en su cama:** `FechaEstreno=2024-09-22` en SQL/snapshot, sin prueba de estreno comercial esa fecha. No proponer reemplazo hasta evidencia primaria.
+2. **#31 — Entiérrenlo Parao:** `2025-06-05` sin prueba de estreno comercial dominicano; estreno en festival extranjero en 2026 no determina valor para el campo.
+3. **#40, #44, #47:** géneros que requieren criterio de clasificación; *Colao 2* tiene fuentes contradictorias.
+4. **#42:** director Roger/Rogert Bencosme necesita créditos originales; no cambiar la identidad por inferencia.
+5. **58 textos E-5, cinco sinopsis SQL y 128 medios** siguen pendientes de autorizaciones apropiadas; modo seguro `review` y anuncios desactivados.
+
+## Procedimiento posterior, condicionado a autorizaciones efectivas
+
+1. Conservar las ocho decisiones expresas sin confundirlas con certificados de fuentes históricas. Para #36 aún falta corroboración primaria del estreno comercial dominicano en octubre de 1997.
+2. La migración UP de las tres filas ya fue ejecutada, según el OUTPUT SSMS del titular. **NO repetir UP.** La exportación real y su comparación estricta **ya se realizaron** y están versionadas en `f93db85`. El SELECT independiente de solo lectura se comprobó por captura de SSMS el 2026-11-10 (8/8); es distinto de la reexportación verificada.
+3. Ambos snapshots fueron exportados, auditados y publicados: lote de 3 en `f93db85`, lote de 5 en `864d26a`, cada uno cambiando solamente los campos `FechaEstreno` autorizados y `generatedAtUtc`. El frontend retira los cuatro avisos de fecha con evidencia y mantiene advertencia de *Nueba Yol 3* (#36) aun con su fecha aprobada. No se editaron datos del catálogo manualmente.
+4. Correr todos los jobs de CI antes de integrar la PR #55, que permanece DRAFT. Ni una CI verde equivale a licencia de terceros o permiso para monetizar.
+
+**Garantías:** las tareas automatizadas de GitHub no actualizan SQL; la captura del titular muestra **3 actualizaciones SQL en `CRUDPeliculas`**, con 8 decisiones expresas del titular, 5 actualizaciones adicionales mostradas en captura SSMS, 0 firmas ficticias y 0 aprobaciones automáticas E-4/E-5. La sincronización del primer lote de tres fechas está concluida (`f93db85`) y la del segundo lote de cinco también (`864d26a`), con auditorías separadas y 0 cambios de contenido adicionales. El SELECT independiente posmigración de las ocho fechas fue verificado el 2026-11-10 (8/8 CORRECTO). La CI del nuevo snapshot se detectó inicialmente fallida por cuatro pruebas antiguas; las pruebas se ajustaron sin alterar datos ni permisos editoriales.

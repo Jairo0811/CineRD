@@ -27,6 +27,8 @@
 [build.environment]
   NODE_VERSION = "22"
   VITE_DEMO_MODE = "true"
+  # Defense in depth: la compilación de Netlify jamás distribuye medios PENDIENTE.
+  VITE_MEDIA_RIGHTS_MODE = "review"
 
 # ==========================================
 # REACT ROUTER — SPA FALLBACK

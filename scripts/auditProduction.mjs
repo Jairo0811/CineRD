@@ -15,7 +15,10 @@ const snapshot = JSON.parse(fs.readFileSync(path.join(root,"database/seeds/catal
 const errors = [];
 const warnings = [];
 const passed = [];
-const requireReview = process.argv.includes("--require-review");
+const args = process.argv.slice(2);
+if(args.some(a=>!["--require-review","--skip-ads"].includes(a)))throw Error("Argumento no reconocido");
+const requireReview = args.includes("--require-review");
+const skipAds = args.includes("--skip-ads");
 
 async function fetchText(relative, mime = "") {
   const controller = new AbortController();
@@ -98,7 +101,7 @@ await check("Manifiesto de catálogo",async()=>{
     "Se necesita publicar review antes de reenvío");
   assert.ok(Number.isInteger(status.mediaFilesCopied),"Falta contador de archivos");
 });
-await check("AdSense ads.txt",async()=>{
+if(!skipAds) await check("AdSense ads.txt",async()=>{
   const txt=await fetchText("/ads.txt");
   assert.ok(txt.includes("google.com, pub-"),"Falta línea verificable de Google");
 });

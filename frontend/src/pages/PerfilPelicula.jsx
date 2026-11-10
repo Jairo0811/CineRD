@@ -8,6 +8,7 @@ import MusicaPelicula from "../components/peliculas/MusicaPelicula";
 import { anioDe, decadaDe } from "../data/historiaCine";
 import { getEditorialPelicula } from "../data/editorialPeliculas";
 import { getSinopsisEditorial } from "../data/sinopsisCuradasFaseE";
+import { obtenerAvisoRevision } from "../data/revisionCatalogo";
 import PosterOriginal from "../components/media/PosterOriginal";
 import FilmSectionHeading from "../components/peliculas/FilmSectionHeading";
 
@@ -37,6 +38,7 @@ function PerfilPelicula(){
  ].filter(Boolean);
  const premiosGanados=nominaciones.filter(n=>n.Resultado==="GANADOR").length;
  const fondo=backdrop||poster;
+ const avisoRevision=obtenerAvisoRevision(pelicula,idiomaUi);
  const editorial=getEditorialPelicula(pelicula);
  const editorialIdioma=editorial?.[idiomaUi];
  const sinopsisEditorial=!pelicula.Sinopsis ? getSinopsisEditorial(pelicula) : null;
@@ -64,6 +66,7 @@ function PerfilPelicula(){
      {galeria.length>0&&<li>🖼️ {galeria.length}</li>}
      {pelicula.Estado&&<li>{pelicula.Estado}</li>}
     </ul>
+    {avisoRevision&&<p role="note" className="film-release-review-note">{avisoRevision}</p>}
    </div>
   </div>
   <div className="film-hero-strip" aria-hidden="true"/>

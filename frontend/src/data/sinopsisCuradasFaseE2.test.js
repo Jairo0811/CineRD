@@ -21,11 +21,21 @@ describe("CineRD · Fase E-2 / segunda tanda documentada", () => {
       expect(item.en.length).toBeGreaterThan(105);
       expect(originalText.has(item.es)).toBe(false);
       originalText.add(item.es);
-      expect(item.fuentes).toHaveLength(1);
-      const source = item.fuentes[0].url;
-      expect(new URL(source).protocol).toBe("https:");
+      expect(item.fuentes).toHaveLength(id === 23 ? 2 : 1);
+      for (const source of item.fuentes) expect(new URL(source.url).protocol).toBe("https:");
       expect(item.tituloReferencia).toBe(film.Titulo);
     }
+  });
+
+  it("Sanky Panky 2 mantiene Morena como pareja según distribuidora sin aprobar el texto", () => {
+    const film = films.find(f => f.Id === 23);
+    const item = getSinopsisFaseE2(film);
+    expect(item.es).toContain("Morena intenta");
+    expect(item.es).toContain("regreso de Martha");
+    expect(item.en).toContain("Morena hopes");
+    expect(item.en).toContain("return of Martha");
+    expect(item.fuentes.map(f => f.url)).toContain("https://caribbeancinemas.com/movie/3959/");
+    expect(item.estado).toBe("pendiente_revision");
   });
 
   it("rechaza fichas cuyo ID, título o año no coincide", () => {
@@ -34,6 +44,17 @@ describe("CineRD · Fase E-2 / segunda tanda documentada", () => {
     expect(getSinopsisFaseE2({ ...film, Titulo:"Una película diferente" })).toBeNull();
     expect(getSinopsisFaseE2({ ...film, FechaEstreno:"2017-10-11" })).toBeNull();
     expect(getSinopsisFaseE2(film).es).toContain("Puerto Rico");
+  });
+
+  it("precisa la transformación nocturna de Lorenzo sin aprobar el borrador", () => {
+    const film = films.find(f => f.Id === 26);
+    const item = getSinopsisFaseE2(film);
+    expect(item).toBeTruthy();
+    expect(item.es).toContain("ocho de la noche hasta la medianoche");
+    expect(item.en).toContain("8 p.m. until midnight");
+    expect(item.es).not.toContain("ciertas horas del día");
+    expect(item.en).not.toContain("each day");
+    expect(item.estado).toBe("pendiente_revision");
   });
 
   it("la tanda de 24 contribuye al total de 41 borradores de respaldo", () => {

@@ -19,13 +19,30 @@ describe("CineRD / modo de derechos según entorno de compilación", () => {
       CF_PAGES:"1", CF_PAGES_BRANCH:"main", VITE_MEDIA_RIGHTS_MODE:"pilot"
     }), "review");
   });
-  it("las ramas de preview no cambian de modo automáticamente", () => {
-    assert.equal(resolve({ CF_PAGES:"1", CF_PAGES_BRANCH:"feature/example" }), "");
-    assert.equal(resolve({
-      CF_PAGES:"1", CF_PAGES_BRANCH:"feature/example", VITE_MEDIA_RIGHTS_MODE:"pilot"
-    }), "pilot");
+  it("también obliga review en todas las ramas de preview", () => {
+    for (const branch of ["feature/example", "feat/f2-editorial-review", "develop", ""]) {
+      assert.equal(resolve({ CF_PAGES:"1", CF_PAGES_BRANCH:branch }), "review");
+      assert.equal(resolve({
+        CF_PAGES:"1", CF_PAGES_BRANCH:branch, VITE_MEDIA_RIGHTS_MODE:"pilot"
+      }), "review");
+      assert.equal(resolve({
+        CF_PAGES:"1", CF_PAGES_BRANCH:branch, VITE_MEDIA_RIGHTS_MODE:"normal"
+      }), "review");
+    }
   });
-  it("rechaza errores de tipeo fuera del despliegue de producción", () => {
+  it("Netlify fuerza review en producción, deploy-preview y branch-deploy", () => {
+    for (const context of ["production", "deploy-preview", "branch-deploy", "dev"]) {
+      for (const requested of ["", "pilot", "normal", "review"]) {
+        assert.equal(resolve({
+          NETLIFY:"true", CONTEXT:context, VITE_MEDIA_RIGHTS_MODE:requested,
+        }), "review");
+      }
+    }
+    assert.equal(resolve({ NETLIFY:"false", VITE_MEDIA_RIGHTS_MODE:"pilot" }), "pilot");
+  });
+  it("fuera de Cloudflare se exige review explícito para una compilación segura", () => {
+    assert.equal(resolve({ CF_PAGES:"0", CF_PAGES_BRANCH:"main" }), "");
+    assert.equal(resolve({ CF_PAGES:"0", VITE_MEDIA_RIGHTS_MODE:"review" }), "review");
     assert.throws(() => resolve({ VITE_MEDIA_RIGHTS_MODE:"normal" }), /inválido/);
   });
 });

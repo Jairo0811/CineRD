@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "edition": "F-2.3-SEGUNDO-LOTE",
+  "consentRecordedDate": "2026-11-09",
+  "consentSource": "El titular escribió «apruebalas todas» en respuesta al lote de cinco fechas que incluía explícitamente Nueba Yol 3.",
+  "scope": "Exclusivamente cinco modificaciones FechaEstreno en CRUDPeliculas: películas 27, 36, 42, 44, 56.",
+  "decisionStatus": "APROBADAS_POR_TITULAR_EJECUTADAS_EN_SQL_SEGUN_CAPTURA_SSMS; SNAPSHOT_SINCRONIZADO; SELECT_POSTMIGRACION_VERIFICADO",
+  "humanApprovalByOwner": true,
+  "sqlApplied": true,
+  "backupForThisBatchVerified": true,
+  "snapshotSynchronized": true,
+  "reviewerFullName": null,
+  "reviewedAtExactUtc": null,
+  "attestation": "La confirmación autoriza las cinco propuestas; no equivale a revisión individual de enlaces ni certificación independiente del dato histórico, ni a firma adicional o autorización de otras piezas editoriales.",
+  "scientificCaveat": "Nueba Yol 3 tiene fecha dominicana 1997-10-23 en dos fuentes editorialmente relacionadas, pero no se obtuvo cartelera contemporánea independiente. IMDb muestra 1997-10-31 para EE.UU., otra jurisdicción; no desmiente el posible estreno dominicano anterior.",
+  "decisions": [
+    {
+      "filmId": 27,
+      "title": "Lotoman 003: Volando Bajito",
+      "field": "FechaEstreno",
+      "currentSql": "2014-03-15",
+      "approvedNewValue": "2014-03-27",
+      "decision": "APROBAR_CANDIDATA",
+      "sourceConfidence": "alta",
+      "independentCommercialEvidenceVerified": true,
+      "sourceUrls": [
+        "https://www.diariolibre.com/revista/cine/orange-cinemas-har-hoy-gala-premier-de-lotoman-003-IODL539111",
+        "https://www.diariolibre.com/amp/revista/cine/orange-cinema-realiz-la-gala-premier-de-lotoman-003-en-el-teatro-nacional-GJDL542411"
+      ]
+    },
+    {
+      "filmId": 36,
+      "title": "Nueba Yol 3: Bajo la Nueva Ley",
+      "field": "FechaEstreno",
+      "currentSql": "1997-10-31",
+      "approvedNewValue": "1997-10-23",
+      "decision": "APROBAR_CANDIDATA",
+      "sourceConfidence": "sin_fuente_primaria_independiente",
+      "independentCommercialEvidenceVerified": false,
+      "sourceUrls": [
+        "https://cinemadominicano.com/nueba-yol-3-bajo-la-nueva-ley-1997/",
+        "https://cinedominicano.com/peliculasdominicanas/pelicula/nueba-yol-3-bajo-la-nueva-ley-1997/",
+        "https://www.imdb.com/title/tt0128376/"
+      ]
+    },
+    {
+      "filmId": 42,
+      "title": "Andrea",
+      "field": "FechaEstreno",
+      "currentSql": "2005-08-16",
+      "approvedNewValue": "2005-08-18",
+      "decision": "APROBAR_CANDIDATA",
+      "sourceConfidence": "alta",
+      "independentCommercialEvidenceVerified": true,
+      "sourceUrls": [
+        "https://www.diariolibre.com/revista/andrea-un-film-de-bajo-costo-y-alta-expectativa-CADL70488",
+        "https://www.diariolibre.com/revista/pelculas-BYDL71470"
+      ]
+    },
+    {
+      "filmId": 44,
+      "title": "Playball",
+      "field": "FechaEstreno",
+      "currentSql": "2008-02-01",
+      "approvedNewValue": "2008-02-14",
+      "decision": "APROBAR_CANDIDATA",
+      "sourceConfidence": "media_alta",
+      "independentCommercialEvidenceVerified": true,
+      "sourceUrls": [
+        "https://www.diariolibre.com/revista/jugadores-de-bisbol-debutarn-en-el-cine-con-playball-la-nueva-cinta-de-alfonso-rodrguez-1-BKDL4164",
+        "https://cinemadominicano.com/play-ball-2008/"
+      ]
+    },
+    {
+      "filmId": 56,
+      "title": "La Lucha de Ana",
+      "field": "FechaEstreno",
+      "currentSql": "2012-04-13",
+      "approvedNewValue": "2012-05-24",
+      "decision": "APROBAR_CANDIDATA",
+      "sourceConfidence": "alta",
+      "independentCommercialEvidenceVerified": true,
+      "sourceUrls": [
+        "https://www.diariolibre.com/amp/revista/cine/la-lucha-por-un-mejor-cine-DIDL336401",
+        "https://www.diariolibre.com/revista/cine/la-lucha-de-ana-FIDL337543"
+      ]
+    }
+  ],
+  "independentPostMigrationSqlSelectVerified": true,
+  "independentPostMigrationSqlSelectEvidence": {
+    "verificationDateLocal": "2026-11-10",
+    "database": "CRUDPeliculas",
+    "method": "SSMS SELECT independiente, solo lectura",
+    "result": "8/8 CORRECTO",
+    "expectedCount": 8,
+    "matchedCount": 8,
+    "affectedIds": [10, 27, 36, 40, 42, 44, 55, 56],
+    "queryReference": "database/scripts/f23_postmigration_8_readonly.sql",
+    "source": "Captura SSMS aportada por el titular en la conversación del 2026-11-10; no archivada en el repositorio",
+    "limitations": "Verifica coincidencia de los valores SQL con las decisiones y el snapshot; no demuestra exactitud histórica, permisos editoriales ni restauración de respaldo."
+  },
+  "executionEvidence": {
+    "type": "Captura de resultados SQL Server Management Studio facilitada por el titular",
+    "dateLocal": "2026-11-09",
+    "database": "CRUDPeliculas",
+    "action": "UP",
+    "reportedResult": "EJECUCION_MANUAL_CONFIRMADA",
+    "affectedIds": [
+      27,
+      36,
+      42,
+      44,
+      56
+    ],
+    "verifiedByIndependentRead": true,
+    "caveat": "Captura muestra 5/5 resultados y transacción finalizada sin error; la lectura SELECT independiente de las ocho fechas fue confirmada por captura SSMS el 2026-11-10."
+  },
+  "backupEvidence": {
+    "type": "Captura previa de SSMS del titular",
+    "reportedResult": "BACKUP_F23_5_VERIFICADO",
+    "database": "CRUDPeliculas",
+    "method": "BACKUP DATABASE FULL COPY_ONLY CHECKSUM + RESTORE VERIFYONLY WITH CHECKSUM",
+    "backupFilePattern": "CRUDPeliculas_F23_5_20261109_*.bak",
+    "caveat": "RESTORE VERIFYONLY no sustituye una restauración de prueba ni evidencia de contenido comercial."
+  },
+  "snapshotExportEvidence": {
+    "sourceDatabase": "CRUDPeliculas",
+    "dateLocal": "2026-11-09",
+    "exportCommand": "npm --prefix backend run catalog:export",
+    "verificationCommand": "node scripts/verifyF23FiveDateSnapshot.cjs",
+    "verificationResult": "5/5 fechas; SOLO FechaEstreno #27,#36,#42,#44,#56 y generatedAtUtc",
+    "catalogValidationCommand": "npm --prefix backend run catalog:validate",
+    "catalogValidationResult": "Snapshot v3 valido; 46 peliculas, 83 talentos, 216 participaciones, 28 creditos profesionales, 1 traduccion, 12 multimedia",
+    "publicWarningsValidation": "3 avisos: 1 fecha Nueba Yol 3 sin evidencia independiente y 2 retenidos; 5 avisos de fecha retirados con nuevo snapshot",
+    "rightsBuild": "review; 128 imagenes no autorizadas omitidas, 0 archivos copiados a dist; anuncios desactivados",
+    "gitCommit": "864d26a9217bba529329802d23b0724df6813ce9",
+    "gitPath": "database/seeds/catalog.snapshot.json",
+    "gitPushReported": true,
+    "evidence": "Salida de PowerShell proporcionada por titular; commit y contenido verificados en GitHub",
+    "caveat": "No equivale a SELECT independiente de las ocho fechas ni a licencia comercial para las imágenes."
+  }
+}

@@ -3,11 +3,10 @@ services:
     name: cinerd-api
     runtime: node
     plan: starter
-    rootDir: backend
-    buildCommand: npm ci --omit=dev
-    startCommand: npm start
+    buildCommand: npm --prefix backend ci --omit=dev && node scripts/verifyMediaRightsLedger.mjs
+    startCommand: node backend/scripts/auditProductionEnv.js --strict && npm --prefix backend start
     healthCheckPath: /ready
-    autoDeploy: true
+    autoDeployTrigger: off
     disk:
       name: cinerd-storage
       mountPath: /var/data
@@ -18,9 +17,9 @@ services:
       - key: HOST
         value: 0.0.0.0
       - key: FRONTEND_URLS
-        value: https://cinerd.netlify.app
+        value: https://cinerd.pages.dev,https://cinerd.netlify.app
       - key: PUBLIC_APP_URL
-        value: https://cinerd.netlify.app
+        value: https://cinerd.pages.dev
       - key: UPLOADS_DIR
         value: /var/data/uploads
       - key: PRIVATE_STORAGE_DIR

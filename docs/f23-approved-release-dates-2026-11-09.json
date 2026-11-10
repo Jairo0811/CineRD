@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "criterion": "FechaEstreno es el estreno comercial en salas de República Dominicana; no gala ni festival.",
+  "decisionScope": "Solo tres campos FechaEstreno en CRUDPeliculas, IDs 10, 40 y 55.",
+  "consentRecordedDate": "2026-11-09",
+  "consentSource": "Confirmación explícita 'aprobadas' del titular del proyecto en respuesta a la consulta sobre las tres fechas propuestas.",
+  "attestation": "El titular aprobó las fechas propuestas. No se afirma que haya firmado una declaración técnica, comprobado personalmente cada URL o autorizado ejecutar SQL sin respaldo.",
+  "reviewerFullName": null,
+  "reviewedAtExactUtc": null,
+  "originalSevenE4ApprovalsUnaffected": true,
+  "executableChangesApplied": true,
+  "databaseBackupVerified": true,
+  "otherFiveDatesStillPending": false,
+  "decisions": [
+    {
+      "filmId": 10,
+      "title": "Vamos de robo",
+      "field": "FechaEstreno",
+      "currentSql": "2014-01-15",
+      "approvedNewValue": "2014-01-16",
+      "decision": "APROBAR_CANDIDATA",
+      "evidenceUrls": [
+        "https://www.diariolibre.com/amp/revista/cine/vamos-de-robo-DIDL447141",
+        "https://www.diariolibre.com/revista/vamos-de-robo-a-las-salas-de-cines-en-enero-BMDL406632"
+      ]
+    },
+    {
+      "filmId": 40,
+      "title": "Colao 2",
+      "field": "FechaEstreno",
+      "currentSql": "2023-12-07",
+      "approvedNewValue": "2023-11-30",
+      "decision": "APROBAR_CANDIDATA",
+      "evidenceUrls": [
+        "https://cinemadominicano.com/colao-2-llega-a-los-cines-dominicanos/"
+      ]
+    },
+    {
+      "filmId": 55,
+      "title": "El Plan Perfecto",
+      "field": "FechaEstreno",
+      "currentSql": "2017-01-17",
+      "approvedNewValue": "2017-01-19",
+      "decision": "APROBAR_CANDIDATA",
+      "evidenceUrls": [
+        "https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/"
+      ]
+    }
+  ],
+  "executionEvidence": {
+    "type": "Capturas de resultados SQL Server Management Studio proporcionadas por el titular",
+    "dateLocal": "2026-11-09",
+    "database": "CRUDPeliculas",
+    "action": "UP",
+    "reportedResult": "EJECUCION_MANUAL_CONFIRMADA",
+    "affectedIds": [
+      10,
+      40,
+      55
+    ],
+    "caveat": "La evidencia muestra el OUTPUT confirmado y el respaldo verificado; la lectura SELECT independiente de las ocho fechas fue confirmada por captura de SSMS el 2026-11-10."
+  },
+  "independentPostMigrationSqlSelectVerified": true,
+  "independentPostMigrationSqlSelectEvidence": {
+    "verificationDateLocal": "2026-11-10",
+    "database": "CRUDPeliculas",
+    "method": "SSMS SELECT independiente, solo lectura",
+    "result": "8/8 CORRECTO",
+    "expectedCount": 8,
+    "matchedCount": 8,
+    "affectedIds": [10, 27, 36, 40, 42, 44, 55, 56],
+    "queryReference": "database/scripts/f23_postmigration_8_readonly.sql",
+    "source": "Captura SSMS aportada por el titular en la conversación del 2026-11-10; no archivada en el repositorio",
+    "limitations": "Verifica coincidencia de los valores SQL con las decisiones y el snapshot; no demuestra exactitud histórica, permisos editoriales ni restauración de respaldo."
+  },
+  "snapshotExportSynchronized": true,
+  "snapshotExportEvidence": {
+    "sourceDatabase": "CRUDPeliculas",
+    "exportCommand": "npm --prefix backend run catalog:export",
+    "verificationCommand": "node scripts/verifyF23ThreeDateSnapshot.cjs",
+    "verificationResult": "3/3 fechas, solo FechaEstreno #10, #40, #55 y generatedAtUtc",
+    "catalogValidationCommand": "npm --prefix backend run catalog:validate",
+    "catalogValidationResult": "PASS; 46 películas, 83 talentos, 216 participaciones, 28 créditos, 1 traducción, 12 multimedia",
+    "gitCommit": "f93db856a826a014da86d246af8dc5d80bac73c6",
+    "gitPath": "database/seeds/catalog.snapshot.json",
+    "gitPushReported": true,
+    "sourceEvidence": "Salida PowerShell proporcionada por titular",
+    "caveat": "No representa lectura SELECT independiente posmigración ni autorización de imágenes; 128 archivos excluidos del build review."
+  },
+  "otherFiveDatesApprovedPendingSql": false,
+  "secondBatchApprovalRecord": "docs/f23-approved-remaining-5-dates-2026-11-09.json",
+  "otherFiveDatesAppliedAccordingToSsms": true
+}

@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import api from "../services/api";
+import { resolveMediaUrl } from "../config/api";
+import { validarArchivoImagen } from "../utils/validarArchivoImagen";
 
 import ActorFormFields from "../components/actores/ActorFormFields";
 import ParticipacionFormFields from "../components/reparto/ParticipacionFormFields";
@@ -38,7 +40,6 @@ const formularioNuevoTalentoInicial = {
 function RepartoPelicula() {
   const { id } = useParams();
 
-  const API_URL = "http://localhost:3000";
 
   const [pelicula, setPelicula] = useState(null);
   const [actores, setActores] = useState([]);
@@ -350,6 +351,8 @@ function RepartoPelicula() {
     const archivo = e.target.files?.[0];
 
     if (!archivo) return;
+    const errorArchivo = validarArchivoImagen(archivo);
+    if (errorArchivo) { alert(errorArchivo); e.target.value = ""; return; }
 
     setNuevoTalento((actual) => ({
       ...actual,
@@ -670,7 +673,7 @@ function RepartoPelicula() {
               <div className="text-center pt-3">
                 {actor.Foto ? (
                   <img
-                    src={`${API_URL}${actor.Foto}`}
+                    src={resolveMediaUrl(actor.Foto)}
                     alt={actor.NombreCompleto}
                     className="actor-photo"
                   />

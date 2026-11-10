@@ -34,7 +34,7 @@ const restablecerPassword = async (req, res) => {
     if (!row) { await tx.rollback(); return res.status(400).json({ mensaje: "El enlace es inválido o expiró" }); }
     const hash = await bcrypt.hash(password, 12);
     await new sql.Request(tx).input("UsuarioId", sql.Int, row.UsuarioId).input("Hash", sql.NVarChar(255), hash)
-      .query("UPDATE dbo.Usuarios SET PasswordHash=@Hash WHERE Id=@UsuarioId; UPDATE dbo.RefreshTokens SET RevocadoEn=COALESCE(RevocadoEn,SYSUTCDATETIME()) WHERE UsuarioId=@UsuarioId;");
+      .query("UPDATE dbo.Usuarios SET PasswordHash=@Hash, SesionVersion=SesionVersion+1 WHERE Id=@UsuarioId; UPDATE dbo.RefreshTokens SET RevocadoEn=COALESCE(RevocadoEn,SYSUTCDATETIME()) WHERE UsuarioId=@UsuarioId;");
     await new sql.Request(tx).input("Id", sql.BigInt, row.Id).query("UPDATE dbo.PasswordResetTokens SET UsadoEn=SYSUTCDATETIME() WHERE Id=@Id");
     await new sql.Request(tx).input("UsuarioId", sql.Int, row.UsuarioId)
       .query("INSERT INTO dbo.AuditLogs(UsuarioId,Accion,Entidad,EntidadId) VALUES(@UsuarioId,N'RESET_PASSWORD',N'Usuarios',CONVERT(NVARCHAR(80),@UsuarioId))");

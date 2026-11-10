@@ -10,6 +10,9 @@ describe("CineRD / control de aprobaciones editoriales E-5",()=>{
     assert.equal(data.filter(x=>x.kind==="contexto").length,12);
     assert.equal(data.filter(x=>x.fuenteInvalida).length,0);
     assert.equal(new Set(data.map(x=>x.kind+":"+x.filmId)).size,58);
+    const sql=data.filter(x=>x.kind==="sinopsis" && x.origin==="SQL");
+    assert.deepEqual(sql.map(x=>x.filmId).sort((a,b)=>a-b),[5,6,10,55,56]);
+    assert.ok(sql.every(x=>x.fuentes>0 && !x.faltanFuentes));
   });
   it("ninguna pieza adquiere aprobación de oficio",()=>{
     const data=inventory();

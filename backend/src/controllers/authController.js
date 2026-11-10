@@ -70,7 +70,7 @@ const login = async (req, res) => {
 
     const pool = await poolPromise;
     const resultado = await pool.request().input("Email", sql.NVarChar(255), email.trim().toLowerCase())
-      .query("SELECT Id, Nombre, Email, PasswordHash, Rol, Estado, EmailVerificado FROM dbo.Usuarios WHERE Email = @Email");
+      .query("SELECT Id, Nombre, Email, PasswordHash, Rol, Estado, EmailVerificado, SesionVersion FROM dbo.Usuarios WHERE Email = @Email");
     const usuario = resultado.recordset[0];
     if (!usuario || !(await bcrypt.compare(password, usuario.PasswordHash))) return res.status(401).json({ mensaje: "Credenciales inválidas" });
     if (usuario.Estado !== "ACTIVO") return res.status(403).json({ mensaje: "La cuenta no está activa" });

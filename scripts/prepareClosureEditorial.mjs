@@ -1,0 +1,177 @@
+/**
+ * CineRD — paquete privado de revisión E-4 (7) / E-5 (58).
+ * Las casillas permanecen vacías; nunca crea aprobaciones o cambia SQL.
+ * node scripts/prepareClosureEditorial.mjs
+ * node scripts/prepareClosureEditorial.mjs --create
+ */
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { inventory } from "./editorialReviewAudit.mjs";
+import { getEditorialPelicula } from "../frontend/src/data/editorialPeliculas.js";
+import { getSinopsisEditorial } from "../frontend/src/data/sinopsisCuradasFaseE.js";
+
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
+const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),"utf8"));
+const privateFile=path.join(root,"backend/private/editorial/CIERRE_E4_E5_REVISION_HUMANA.md");
+const priority={alta:0,media:1,baja:2};
+const snapshot=read("database/seeds/catalog.snapshot.json");
+const sqlSources=read("docs/editorial-sources-sql-f2.json");
+function draftBody(item) {
+  const film=snapshot.tables.Peliculas.find(x=>Number(x.Id)===Number(item.filmId));
+  if(!film)throw Error("Falta película para revisión "+item.filmId);
+  if(item.kind==="sinopsis") {
+    const sql=String(film.Sinopsis??"").trim();
+    if(sql) {
+      return {es:sql,en:"",sources:(sqlSources.entries?.[String(film.Id)]?.fuentes||[]).map(x=>x.url)};
+    }
+    const draft=getSinopsisEditorial(film);
+    if(!draft)throw Error("Falta sinopsis ES/EN para "+film.Id);
+    return {es:draft.es,en:draft.en,sources:(draft.fuentes||[]).map(x=>x.url)};
+  }
+  const editorial=getEditorialPelicula(film);
+  if(!editorial)throw Error("Falta contexto ES/EN para "+film.Id);
+  return {es:editorial.es.parrafos.join("\n\n"),
+    en:editorial.en.parrafos.join("\n\n"),
+    sources:(editorial.fuentes||[]).map(x=>x.url)};
+}
+
+const text=x=>String(x??"").replace(/[\r\n|]/g," ").trim();
+
+const normField=(field,value)=>value==null||value===""?null:
+  field==="FechaEstreno"?String(value).slice(0,10):String(value).trim();
+const valueLabel=value=>value==null||value===""?"(sin dato)":text(value);
+
+export function buildEditorialPacket({changes,items,issues,approvedE4=[],approvedE5=[],
+  snapshotFilms=snapshot.tables.Peliculas}) {
+  if(!Array.isArray(changes)||!Array.isArray(items)||!Array.isArray(issues)||
+      !Array.isArray(approvedE4)||!Array.isArray(approvedE5)||
+      !Array.isArray(snapshotFilms)) {
+    throw Error("Los documentos editoriales deben incluir los arreglos exigidos");
+  }
+  const e4Keys=new Set(changes.map(x=>x.filmId+":"+x.field));
+  const e5Keys=new Set(items.map(x=>x.filmId+":"+x.kind));
+  if(e4Keys.size!==changes.length||e5Keys.size!==items.length)
+    throw Error("Propuestas E-4 o piezas E-5 duplicadas");
+  const byIssue=new Map(issues.map(i=>[i.filmId+":"+i.kind,i]));
+  if(byIssue.size!==issues.length||items.length!==issues.length)
+    throw Error("La matriz F-2.3 no coincide con inventario E-5");
+  if(!changes.every(x=>Number.isInteger(x.filmId)&&x.title&&x.field&&Array.isArray(x.sources))||
+     !items.every(x=>x.fingerprint&&byIssue.has(x.filmId+":"+x.kind))) {
+    throw Error("Faltan identidades u observaciones editoriales");
+  }
+  const signedE4=new Set(approvedE4.map(x=>x.filmId+":"+x.field));
+  const signedE5=new Set(approvedE5.map(x=>x.filmId+":"+x.kind));
+  const pendingE4=changes.filter(x=>!signedE4.has(x.filmId+":"+x.field));
+  const pendingE5=items.filter(x=>!signedE5.has(x.filmId+":"+x.kind));
+  const lines=[
+    "# CineRD — cola de revisión HUMANA E-4 y E-5",
+    "",
+    "Documento privado de trabajo. TODAS las casillas están sin marcar.",
+    "Este archivo no constituye aprobación ni prueba de derechos; nunca altera",
+    "los libros de decisiones ni el catálogo SQL.",
+    "",
+    "## Resumen",
+    "",
+    "- Cambios E-4 pendientes: "+pendingE4.length+" / "+changes.length,
+    "- Piezas E-5 pendientes: "+pendingE5.length+" / "+items.length,
+    "- Los derechos comerciales de 128 imágenes antiguas se gestionan aparte.",
+    "",
+    "## E-4 — datos del catálogo, sin aplicar cambios SQL",
+    "",
+    "Los valores en snapshot NO prueban por sí solos el estado de SQL Server.",
+    "Verificar SQL Server ORIGINAL mediante SELECT antes de firmar decisiones.",
+    "",
+  ];
+  for(const c of pendingE4) {
+    const film=snapshotFilms.find(x=>Number(x.Id)===c.filmId);
+    if(!film || String(film.Titulo||"").trim().toLowerCase()!==String(c.title).trim().toLowerCase()) {
+      throw Error("E-4 no coincide con la identidad de la película en snapshot: "+c.filmId+"/"+c.field);
+    }
+    const current=normField(c.field,film[c.field]);
+    const expected=normField(c.field,c.expected);
+    const proposed=normField(c.field,c.proposed);
+    if(current!==expected && current!==proposed) {
+      throw Error("E-4 no coincide con valor anterior ni propuesto en snapshot: "+c.filmId+"/"+c.field);
+    }
+    const snapshotStatus=current===proposed?
+      "PROPUESTA_PRESENTE_EN_SNAPSHOT_SIN_AUTORIZACION":"VALOR_ANTERIOR_EN_SNAPSHOT";
+    lines.push("### [ ] "+c.filmId+" · "+text(c.title)+" — "+c.field);
+    lines.push("");
+    lines.push("- Valor anterior documentado E-4: "+valueLabel(c.expected));
+    lines.push("- Propuesta E-4: "+valueLabel(c.proposed));
+    lines.push("- Valor observado en snapshot (NO SQL Server): "+valueLabel(film[c.field]));
+    lines.push("- Estado del snapshot: "+snapshotStatus);
+    lines.push("- Estado SQL Server original: verificar con SELECT independiente; no inferir del snapshot.");
+    if(c.field==="FechaEstreno")lines.push("- Confirmar criterio: estreno comercial en cines dominicanos (no premiere)");
+    for(const source of c.sources)lines.push("- Fuente por comprobar: "+source);
+    lines.push("- [ ] Hechos y fuentes contrastados manualmente");
+    lines.push("- [ ] Nombre, fecha y significado del campo validados");
+    lines.push("- [ ] Decisión humana registrada de forma atribuida en el libro E-4");
+    lines.push("- Revisor: __________ Fecha/zona: __________ Evidencia/Notas: __________");
+    lines.push("");
+  }
+  lines.push("## E-5 — sinopsis y contextos, sin aprobación automática","");
+  const sorted=pendingE5.map(i=>({...i,issue:byIssue.get(i.filmId+":"+i.kind)}))
+    .sort((a,b)=>(priority[a.issue.priority]??9)-(priority[b.issue.priority]??9) ||
+      a.filmId-b.filmId || a.kind.localeCompare(b.kind));
+  for(const item of sorted) {
+    lines.push("### [ ] "+item.filmId+" · "+text(item.titulo)+" — "+item.kind+" ("+item.issue.priority+")");
+    lines.push("");
+    lines.push("- Estado: "+text(item.issue.status));
+    lines.push("- Observación: "+text(item.issue.observation));
+    lines.push("- Informe: "+text(item.issue.sourceReport));
+    lines.push("- Fingerprint SHA-256 de la pieza vigente: "+item.fingerprint);
+    lines.push("- Fuentes: "+item.fuentes+" / caracteres ES: "+item.caracteresEs+" / EN: "+item.caracteresEn);
+    if(item.faltanFuentes)lines.push("- ADVERTENCIA: no hay fuente HTTPS registrada");
+    const draft=draftBody(item);
+    lines.push("");
+    lines.push("#### Texto español de la versión en revisión","");
+    lines.push(draft.es || "SIN TEXTO ES","");
+    lines.push("#### Texto inglés de la versión en revisión","");
+    lines.push(draft.en || "SIN TEXTO EN: comprobar el flujo SQL antes de publicar","");
+    if(draft.sources.length) {
+      lines.push("#### Referencias registradas (se deben comprobar)","");
+      draft.sources.forEach(link=>lines.push("- "+link));
+      lines.push("");
+    }
+    lines.push("- [ ] Revisar trama y hechos en fuente primaria");
+    lines.push("- [ ] Revisar los textos ES/EN y sus inferencias");
+    lines.push("- [ ] Revisar derechos, atribución y versión publicada");
+    lines.push("- [ ] Registrar decisión humana atribuida en el libro E-5");
+    lines.push("- Revisor: __________ Fecha/zona: __________ Evidencia/Notas: __________");
+    lines.push("");
+  }
+  return {markdown:lines.join("\n")+"\n",
+    summary:{e4Total:changes.length,e4Pending:pendingE4.length,e5Total:items.length,
+      e5Pending:pendingE5.length,highPriority:sorted.filter(x=>x.issue.priority==="alta").length}};
+}
+
+export function writePrivatePacket(file,markdown) {
+  fs.mkdirSync(path.dirname(file),{recursive:true});
+  fs.writeFileSync(file,markdown,{encoding:"utf8",flag:"wx",mode:0o600});
+  return file;
+}
+
+function main(argv=process.argv.slice(2)) {
+  if(argv.length>1||argv.some(a=>!["--show","--create"].includes(a)))throw Error("Solo --show o --create");
+  const {markdown,summary}=buildEditorialPacket({
+    changes:read("docs/catalog-corrections-e4.json").rows,
+    items:inventory(),
+    issues:read("docs/editorial-issues-f2.json").items,
+    approvedE4:read("docs/catalog-corrections-e4-approvals.json").approvals,
+    approvedE5:read("docs/editorial-approvals-e5.json").approvals,
+  });
+  if(argv.includes("--create")) {
+    console.log("Paquete privado creado: "+writePrivatePacket(privateFile,markdown));
+  } else {
+    console.log(JSON.stringify({...summary,status:"AWAITING_HUMAN_REVIEW",
+      sqlApplied:false,approvalsCreated:false,privatePacketExists:fs.existsSync(privateFile)},null,2));
+    console.log("Generar cola privada: node scripts/prepareClosureEditorial.mjs --create");
+  }
+  return summary;
+}
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
+  try{main();}catch(e){console.error("Cierre E-4/E-5: "+e.message);process.exitCode=1;}
+}
+export {main};
