@@ -40,6 +40,7 @@ El proyecto se considera **Production Candidate**, no un servicio comercial defi
 Documentación relevante:
 
 - [Production Readiness](docs/PRODUCTION_READINESS.md)
+- [Plan de cierre paralelo: E-4, E-5 y producción](docs/PLAN_CIERRE_PARALELO_E4_E5_PRODUCCION_2026-11-09.md)
 - [Operations Runbook](docs/OPERATIONS_RUNBOOK.md)
 - [AdSense Readiness](docs/ADSENSE_READINESS.md)
 - [Privacy Policy](docs/PRIVACY_POLICY.md)
