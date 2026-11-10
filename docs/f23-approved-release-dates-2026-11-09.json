@@ -8,8 +8,8 @@
   "reviewerFullName": null,
   "reviewedAtExactUtc": null,
   "originalSevenE4ApprovalsUnaffected": true,
-  "executableChangesApplied": false,
-  "databaseBackupVerified": false,
+  "executableChangesApplied": true,
+  "databaseBackupVerified": true,
   "otherFiveDatesStillPending": true,
   "decisions": [
     {
@@ -46,5 +46,20 @@
         "https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/"
       ]
     }
-  ]
+  ],
+  "executionEvidence": {
+    "type": "Capturas de resultados SQL Server Management Studio proporcionadas por el titular",
+    "dateLocal": "2026-11-09",
+    "database": "CRUDPeliculas",
+    "action": "UP",
+    "reportedResult": "EJECUCION_MANUAL_CONFIRMADA",
+    "affectedIds": [
+      10,
+      40,
+      55
+    ],
+    "caveat": "La evidencia muestra el OUTPUT confirmado y el respaldo verificado; queda pendiente un SELECT posmigracion independiente en la base real."
+  },
+  "independentPostMigrationSqlSelectVerified": false,
+  "snapshotExportSynchronized": false
 }
