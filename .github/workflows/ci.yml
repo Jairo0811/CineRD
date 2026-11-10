@@ -3,8 +3,8 @@ name: CineRD CI
 on:
   push:
     branches: [main]
+  # También validar PR anidadas (por ejemplo #59 hacia feat/f2-editorial-review).
   pull_request:
-    branches: [main]
 
 jobs:
   backend:
@@ -46,6 +46,12 @@ jobs:
       - run: npm run editorial:audit
       - name: Probar cola humana de 7 cambios E-4 y 58 textos E-5 sin firmas
         run: node --test ../scripts/prepareClosureEditorial.test.mjs
+      - name: Test F2.3 E4 E5 second pass (without approvals)
+        run: node --test ../scripts/verifyF23EditorialRound2.test.mjs
+      - name: Validate all 58 E5 review packets and B/C deployment safeguards
+        run: node --test ../scripts/verifyABCReleaseGates.test.mjs
+      - name: Report A/B/C readiness without granting licenses or deployment
+        run: node ../scripts/verifyABCReleaseGates.mjs
       - name: Test parallel E4 SQL E5 and production dashboard (read only)
         run: node --test ../scripts/reportParallelClosure.test.mjs
       - name: Verify E4 and SQL synopsis preflight cannot mutate data
