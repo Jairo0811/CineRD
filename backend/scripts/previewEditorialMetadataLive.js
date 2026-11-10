@@ -191,7 +191,8 @@ async function main(argv = process.argv.slice(2)) {
     "F-2.3: candidato #40 difiere del aprobado");
   const second=read("docs/f23-approved-remaining-5-dates-2026-11-09.json");
   const remaining=[27,36,42,44,56];
-  assert(second.humanApprovalByOwner===true && second.sqlApplied===false &&
+  assert(second.humanApprovalByOwner===true && second.sqlApplied===true &&
+    second.backupForThisBatchVerified===true &&
     Array.isArray(second.decisions) &&
     JSON.stringify(second.decisions.map(x=>x.filmId))===JSON.stringify(remaining),
     "F-2.3: expediente segundo lote incompleto o estado SQL no actualizado");
@@ -209,14 +210,14 @@ async function main(argv = process.argv.slice(2)) {
     " | anterior="+x.previous+" | candidato="+x.proposed+
     " | coinciden="+(x.matchesSnapshot?"SI":"NO")+" | revisión="+
     (x.filmId===40?"APROBADA_F23; SQL_"+(x.status==="ALREADY"?"APLICADO":"REVISAR"):
-      "APROBADA_F23; SQL_"+(x.status==="ORIGINAL"?"PENDIENTE":"REVISAR")));
+      "APROBADA_F23; SQL_"+(x.status==="ALREADY"?"APLICADO":"REVISAR")));
   const c=comparison.counts;
   console.log("Resultado: "+c.ORIGINAL+" anteriores; "+c.ALREADY+
     " propuestas presentes; "+c.DRIFT+" diferencias; "+c.MISSING+
     " ausentes; "+comparison.snapshotMismatch+" desacuerdos SQL/snapshot.");
-  console.log("F-2.3: #40 aplicada; otras cinco fechas APROBADAS POR TITULAR,"+
-    " pendientes de aplicación SQL con respaldo nuevo. #36 carece de "+
-    "corroboración primaria independiente del estreno comercial RD.");
+  console.log("F-2.3: #40 y otras cinco fechas APROBADAS POR TITULAR y aplicadas según SSMS; "+
+    "este lector compara SQL con snapshot versionado, sin certificar nuevas fuentes. "+
+    "#36 carece de corroboración primaria independiente del estreno comercial RD.");
   console.log("NO ejecutar UPDATE automático: usar solo migración manual protegida y respaldo verificable.");
   if(comparison.hasDrift || comparison.snapshotMismatch)
     process.exitCode=1;
