@@ -57,7 +57,12 @@ export function inspectABC({issues,e4,e4Approvals,drafts,sqlApprovals,e5Approval
   // NO implica su validez. Los gates especializados validan su huella.
   requireThat(render.includes("autoDeployTrigger: off"),
     "B: Render debe mantener autoDeployTrigger: off hasta verificar infraestructura");
-  requireThat(render.includes("node scripts/auditProductionEnv.js --strict"),
+  requireThat(!/^\s*rootDir:\s*backend\s*$/m.test(render) &&
+    render.includes("npm --prefix backend ci --omit=dev") &&
+    render.includes("node scripts/verifyMediaRightsLedger.mjs") &&
+    render.includes("npm --prefix backend start"),
+    "B: Render necesita acceso al monorepo completo en build y runtime");
+  requireThat(render.includes("node backend/scripts/auditProductionEnv.js --strict"),
     "B: falta validar 15 variables antes de arrancar API");
   requireThat(render.includes("healthCheckPath: /ready"),
     "B: el health check debe exigir SQL Server");
