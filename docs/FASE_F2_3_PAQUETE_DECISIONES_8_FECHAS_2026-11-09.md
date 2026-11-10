@@ -1,7 +1,7 @@
 # CineRD — Paquete de decisión editorial para ocho fechas (F-2.3)
 
 **Fecha:** 2026-11-09 · **Rama:** `feat/f2-editorial-review` · **PR:** #55  
-**Estado:** **3 FECHAS APROBADAS POR EL TITULAR** (#10, #40, #55), **3 CAMBIOS SQL APLICADOS SEGÚN CAPTURA SSMS**; **5 PENDIENTES DE DECISIÓN** (#27, #36, #42, #44, #56). Falta lectura SQL independiente y exportación del snapshot.  
+**Estado:** **3 FECHAS APROBADAS POR EL TITULAR** (#10, #40, #55), **3 CAMBIOS SQL APLICADOS SEGÚN CAPTURA SSMS**; **5 PENDIENTES DE DECISIÓN** (#27, #36, #42, #44, #56). Snapshot exportado y sincronizado en GitHub (`f93db85`); solo queda pendiente SELECT independiente posmigración.  
 **Objeto:** resolver la fecha de **estreno comercial en cines de República Dominicana**. La fecha de gala, festival, reseña, distribución internacional o preestreno no reemplaza esa definición.
 
 ## Evidencia técnica previa
@@ -12,11 +12,11 @@ Para repetir una comprobación sin cambiar nada: **`database/scripts/f23_preflig
 
 ## Decisiones de revisión — no completar automáticamente
 
-**Aprobación expresada el 2026-11-09:** ante la pregunta específica sobre las tres fechas de *Vamos de robo*, *Colao 2* y *El Plan Perfecto*, el titular respondió «aprobadas». La decisión está registrada en `docs/f23-approved-release-dates-2026-11-09.json`. Se refiere a **los tres valores de fecha**, no al género, director, sinopsis ni a otras cinco propuestas. No consta fecha exacta UTC, firma adicional, declaración individual de revisión de URLs ni ejecución SQL; esos datos **no se inventan**. El titular posteriormente creó y verificó un backup FULL COPY_ONLY con CHECKSUM; la captura SSMS de la migración muestra tres filas `EJECUCION_MANUAL_CONFIRMADA` con `UP` para #10, #40 y #55. **La aplicación fue reportada como ejecutada**, y no se debe repetir `UP`. Queda pendiente una lectura SELECT posmigración independiente y exportar el snapshot; los archivos versionados siguen con las fechas anteriores.
+**Aprobación expresada el 2026-11-09:** ante la pregunta específica sobre las tres fechas de *Vamos de robo*, *Colao 2* y *El Plan Perfecto*, el titular respondió «aprobadas». La decisión está registrada en `docs/f23-approved-release-dates-2026-11-09.json`. Se refiere a **los tres valores de fecha**, no al género, director, sinopsis ni a otras cinco propuestas. No consta fecha exacta UTC, firma adicional, declaración individual de revisión de URLs ni ejecución SQL; esos datos **no se inventan**. El titular posteriormente creó y verificó un backup FULL COPY_ONLY con CHECKSUM; la captura SSMS de la migración muestra tres filas `EJECUCION_MANUAL_CONFIRMADA` con `UP` para #10, #40 y #55. **La aplicación fue reportada como ejecutada**, y no se debe repetir `UP`. El propietario reexportó desde `CRUDPeliculas`, comprobó 3/3 cambios exactos y validó el catálogo; el snapshot ya se publicó en el commit `f93db85`. Queda pendiente una lectura SELECT posmigración independiente en SSMS.
 
 **Script protegido de aplicación/reversión manual (conservar como referencia; NO repetir UP):** `database/scripts/f23_fechas_3_aprobadas_manual_up_down.sql`. Por defecto muestra previa (`@Apply=0`) y no modifica datos. Exige un backup completo reciente con CHECKSUM, comprobación de integridad, verificación de preimagen y transacción para ejecutar UP o DOWN manualmente. La variante ejecutada en SSMS por el titular tiene automatizada la selección del backup; el script versionado conserva `@Apply=0` como estado seguro.
 
-| ID | Película | Fecha actual en SQL | Candidata | Principal evidencia y evaluación | Decisión |
+| ID | Película | Fecha anterior documentada | Candidata | Principal evidencia y evaluación | Decisión |
 |---:|---|---|---|---|---|
 | 10 | Vamos de robo | 2014-01-15 | **2014-01-16** | [Diario Libre (crónica 20/01/2014)](https://www.diariolibre.com/amp/revista/cine/vamos-de-robo-DIDL447141) habla de taquilla en primera noche, jueves 16; evidencia contemporánea fuerte | APROBADA Y APLICADA SEGÚN SSMS |
 | 27 | Lotoman 003: Volando Bajito | 2014-03-15 | **2014-03-27** | [Ficha Cinema Dominicano](https://cinemadominicano.com/lotoman-003-volando-bajito-2014/) y [gala previa](https://cinemadominicano.com/orange-cinema-realiza-gala-premier-de-lotoman-003/); concordancia | PENDIENTE |
@@ -61,8 +61,8 @@ Cada campo debe ser decidido **individualmente** por la persona revisora:
 ## Procedimiento posterior, condicionado a autorizaciones efectivas
 
 1. Conservar las tres decisiones expresas registradas y solicitar revisión/decisión independiente de las otras cinco; no equiparar investigación documental a autorización.
-2. La migración UP de las tres filas ya fue ejecutada, según el OUTPUT SSMS del titular. **NO repetir UP.** Antes de publicar, verificar las tres fechas mediante SELECT nuevo y exportar el snapshot real desde `CRUDPeliculas`; comparar diferencias antes de confirmar el commit.
-3. Reexportar snapshot desde SQL real mediante el procedimiento del proyecto, **no editar datos manualmente**, y actualizar trazabilidad/correcciones nuevas; ampliar tests/avisos públicos si corresponde.
+2. La migración UP de las tres filas ya fue ejecutada, según el OUTPUT SSMS del titular. **NO repetir UP.** La exportación real y su comparación estricta **ya se realizaron** y están versionadas en `f93db85`. Sigue pendiente SELECT independiente desde SSMS; no confundirlo con la reexportación verificada.
+3. Snapshot reexportado, auditado y publicado: los únicos cambios fueron `FechaEstreno` de #10/#40/#55 y `generatedAtUtc`; el frontend adaptó el aviso de #40 al dato corregido. No se editaron datos del catálogo manualmente.
 4. Correr todos los jobs de CI antes de integrar la PR #55, que permanece DRAFT. Ni una CI verde equivale a licencia de terceros o permiso para monetizar.
 
-**Garantías:** las tareas automatizadas de GitHub no actualizan SQL; la captura del titular muestra **3 actualizaciones SQL en `CRUDPeliculas`**, con 3 decisiones expresas del titular, 5 pendientes, 0 firmas ficticias y 0 aprobaciones automáticas E-4/E-5. La lectura posmigración y sincronización del snapshot siguen abiertas.
+**Garantías:** las tareas automatizadas de GitHub no actualizan SQL; la captura del titular muestra **3 actualizaciones SQL en `CRUDPeliculas`**, con 3 decisiones expresas del titular, 5 pendientes, 0 firmas ficticias y 0 aprobaciones automáticas E-4/E-5. La sincronización del snapshot está concluida (`f93db85`); continúa pendiente un SELECT independiente posmigración. La CI del nuevo snapshot se detectó inicialmente fallida por cuatro pruebas antiguas; las pruebas se ajustaron sin alterar datos ni permisos editoriales.
