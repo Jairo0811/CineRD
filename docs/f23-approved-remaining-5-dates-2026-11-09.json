@@ -8,7 +8,7 @@
   "humanApprovalByOwner": true,
   "sqlApplied": true,
   "backupForThisBatchVerified": true,
-  "snapshotSynchronized": false,
+  "snapshotSynchronized": true,
   "reviewerFullName": null,
   "reviewedAtExactUtc": null,
   "attestation": "La confirmación autoriza las cinco propuestas; no equivale a revisión individual de enlaces ni certificación independiente del dato histórico, ni a firma adicional o autorización de otras piezas editoriales.",
@@ -110,5 +110,21 @@
     "method": "BACKUP DATABASE FULL COPY_ONLY CHECKSUM + RESTORE VERIFYONLY WITH CHECKSUM",
     "backupFilePattern": "CRUDPeliculas_F23_5_20261109_*.bak",
     "caveat": "RESTORE VERIFYONLY no sustituye una restauración de prueba ni evidencia de contenido comercial."
+  },
+  "snapshotExportEvidence": {
+    "sourceDatabase": "CRUDPeliculas",
+    "dateLocal": "2026-11-09",
+    "exportCommand": "npm --prefix backend run catalog:export",
+    "verificationCommand": "node scripts/verifyF23FiveDateSnapshot.cjs",
+    "verificationResult": "5/5 fechas; SOLO FechaEstreno #27,#36,#42,#44,#56 y generatedAtUtc",
+    "catalogValidationCommand": "npm --prefix backend run catalog:validate",
+    "catalogValidationResult": "Snapshot v3 valido; 46 peliculas, 83 talentos, 216 participaciones, 28 creditos profesionales, 1 traduccion, 12 multimedia",
+    "publicWarningsValidation": "3 avisos: 1 fecha Nueba Yol 3 sin evidencia independiente y 2 retenidos; 5 avisos de fecha retirados con nuevo snapshot",
+    "rightsBuild": "review; 128 imagenes no autorizadas omitidas, 0 archivos copiados a dist; anuncios desactivados",
+    "gitCommit": "864d26a9217bba529329802d23b0724df6813ce9",
+    "gitPath": "database/seeds/catalog.snapshot.json",
+    "gitPushReported": true,
+    "evidence": "Salida de PowerShell proporcionada por titular; commit y contenido verificados en GitHub",
+    "caveat": "No equivale a SELECT independiente de las ocho fechas ni a licencia comercial para las imágenes."
   }
 }
