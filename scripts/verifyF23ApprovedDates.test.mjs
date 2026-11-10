@@ -90,7 +90,7 @@ test('script manual falla cerrado por defecto y protege integridad/reversión',(
   assert.ok(!sql.includes('CRUDPeliculas_E2E];'));
 });
 
-test('informe refleja ocho fechas aplicadas segun SSMS sin certificar el snapshot segundo lote',()=>{
+test('informe refleja ocho fechas aplicadas y ambos snapshots sincronizados',()=>{
   const report=read('docs/FASE_F2_3_PAQUETE_DECISIONES_8_FECHAS_2026-11-09.md');
   assert.ok(report.includes('3 FECHAS APROBADAS POR EL TITULAR'));
   assert.ok(report.includes('5 FECHAS APROBADAS Y APLICADAS SEGÚN CAPTURA SSMS'));
@@ -101,6 +101,6 @@ test('informe refleja ocho fechas aplicadas segun SSMS sin certificar el snapsho
   }
   for(const id of [27,36,42,44,56]){
     const line=report.split('\n').find(x=>x.startsWith(`| ${id} |`));
-    assert.ok(line?.endsWith('APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT PENDIENTE |'));
+    assert.ok(line?.endsWith('APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT SINCRONIZADO |'));
   }
 });
