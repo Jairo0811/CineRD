@@ -3,6 +3,9 @@
 **Rama:** `feat/f2-editorial-review`. **Fecha:** 8 de noviembre de 2026.  
 **Alcance:** puntos **1. calidad editorial** y **2. derechos multimedia**. No implica liberar producción ni aprobar AdSense.
 
+> **Actualización 09/11/2026 (posterior a este reporte histórico de 08/11):** las ocho fechas autorizadas por el titular fueron ejecutadas según SSMS y sincronizadas por snapshots GitHub `f93db85` y `864d26a`. El verificador público ahora informa **3 avisos restantes** (1 fecha histórica de *Nueba Yol 3* sin prueba primaria independiente, 2 casos retenidos) y 5 fechas corregidas. Las **7 autorizaciones E-4, 58 E-5, 5 reemplazos de sinopsis SQL y 128 medios** siguen pendientes. No confundir las ocho fechas F-2.3 con las siete propuestas E-4. La planificación simultánea de contenido y producción está en [PLAN_CIERRE_PARALELO_E4_E5_PRODUCCION_2026-11-09.md](PLAN_CIERRE_PARALELO_E4_E5_PRODUCCION_2026-11-09.md). Lo descrito abajo refleja la implementación histórica del 08/11 y no sustituye este estado posterior.
+
+
 ## 1. Publicación editorial más precisa
 
 En la UI de `PerfilPelicula` se añadió un aviso contextual, **en español e inglés**, para las ocho fichas del expediente F-2.6:
