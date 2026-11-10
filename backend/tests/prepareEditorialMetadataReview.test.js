@@ -53,9 +53,14 @@ test("F-2.8: huellas cambian con fuente, propuesta y política",()=>{
   const policy=reviewPacket({...a,policy:a.policy+"\nNueva aclaración verificable."});
   assert.notEqual(original.policyHash,policy.policyHash);
   assert.notEqual(original.batchHash,policy.batchHash);
-  // A moved preimage outside the snapshot is caught by F-2.7 validation.
+  // Ni la preimagen ni la candidata se pueden alterar en F-2.6,
+  // aunque el snapshot ya tenga la nueva fecha sincronizada.
   const e=clone(a.dossier);e.items[0].proposals[0].from="2013-01-01";
-  assert.throws(()=>reviewPacket({...a,dossier:e}),/distinta en snapshot/);
+  assert.throws(()=>reviewPacket({...a,dossier:e}),
+    /preimagen o candidata distinta del expediente F-2.3/);
+  const t=clone(a.dossier);t.items[0].proposals[0].to="2014-03-28";
+  assert.throws(()=>reviewPacket({...a,dossier:t}),
+    /preimagen o candidata distinta del expediente F-2.3/);
 });
 
 test("F-2.8: un borrador nuevo no aprueba el lote",()=>{
