@@ -7,6 +7,7 @@ const issues=require("../../docs/editorial-issues-f2.json");
 const provenance=require("../../docs/editorial-provenance-sql-f23.json");
 const approvals=require("../../docs/editorial-sql-migration-approvals-f23.json");
 const e5=require("../../docs/editorial-approvals-e5.json");
+const approvedF23=require("../../docs/f23-approved-release-dates-2026-11-09.json");
 const {fingerprint,validateDraft,createBundle}=require("../scripts/prepareEditorialSqlMigration");
 const {collectPackets,createReviewPacket}=require("../scripts/prepareEditorialHumanReview");
 
@@ -42,8 +43,16 @@ test("F-2.3 #10: toda fuente de la propuesta está registrada en el catálogo",(
   for(const u of added)assert.ok(draft.sources.includes(u));
 });
 
-test("F-2.3 #10: fecha 15 del snapshot permanece hasta decisión independiente",()=>{
-  assert.equal(film.FechaEstreno.slice(0,10),"2014-01-15");
+test("F-2.3 #10: fecha 16 aprobada y exportada sin aprobar su sinopsis",()=>{
+  const decision=approvedF23.decisions.find(x=>x.filmId===10);
+  assert.equal(decision.field,"FechaEstreno");
+  assert.equal(decision.currentSql,"2014-01-15");
+  assert.equal(decision.approvedNewValue,"2014-01-16");
+  assert.equal(decision.decision,"APROBAR_CANDIDATA");
+  assert.equal(approvedF23.executableChangesApplied,true);
+  assert.equal(film.FechaEstreno.slice(0,10),decision.approvedNewValue);
+  // La aprobación del campo fecha NO aprueba el texto propuesto.
+  assert.equal(draft.status,"pendiente_revision");
   assert.ok(draft.openQuestions.some(x=>x.includes("2014-01-16")));
   assert.equal(issues.items.find(x=>x.filmId===10&&x.kind==="sinopsis").status,"pendiente_verificacion");
 });
