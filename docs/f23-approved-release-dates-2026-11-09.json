@@ -61,5 +61,18 @@
     "caveat": "La evidencia muestra el OUTPUT confirmado y el respaldo verificado; queda pendiente un SELECT posmigracion independiente en la base real."
   },
   "independentPostMigrationSqlSelectVerified": false,
-  "snapshotExportSynchronized": false
+  "snapshotExportSynchronized": true,
+  "snapshotExportEvidence": {
+    "sourceDatabase": "CRUDPeliculas",
+    "exportCommand": "npm --prefix backend run catalog:export",
+    "verificationCommand": "node scripts/verifyF23ThreeDateSnapshot.cjs",
+    "verificationResult": "3/3 fechas, solo FechaEstreno #10, #40, #55 y generatedAtUtc",
+    "catalogValidationCommand": "npm --prefix backend run catalog:validate",
+    "catalogValidationResult": "PASS; 46 películas, 83 talentos, 216 participaciones, 28 créditos, 1 traducción, 12 multimedia",
+    "gitCommit": "f93db856a826a014da86d246af8dc5d80bac73c6",
+    "gitPath": "database/seeds/catalog.snapshot.json",
+    "gitPushReported": true,
+    "sourceEvidence": "Salida PowerShell proporcionada por titular",
+    "caveat": "No representa lectura SELECT independiente posmigración ni autorización de imágenes; 128 archivos excluidos del build review."
+  }
 }
