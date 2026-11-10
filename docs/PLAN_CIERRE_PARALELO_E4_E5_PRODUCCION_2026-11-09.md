@@ -1,5 +1,7 @@
 # CineRD — cierre paralelo: E-4 + sinopsis SQL, E-5 y producción (frentes 1–3)
 
+> **Actualización de evidencia — 2026-11-10:** el titular ejecutó en SSMS el preflight de solo lectura sobre `CRUDPeliculas`: **7/7 valores candidatos E-4 ya están en SQL, sin 7 aprobaciones E-4**, y **5/5 sinopsis SQL están presentes, sin 5 aprobaciones**. La captura no está archivada en el repositorio. Véanse [evidencia SQL E-4](FASE_F23_E4_EVIDENCIA_SQL_2026-11-10.md) y [revisión preliminar de las cinco sinopsis](FASE_F23_REVISION_PRELIMINAR_5_SINOPSIS_2026-11-10.md). Las expresiones «SQL real no cotejado» o «SELECT SQL pendiente» que aparecen más abajo describen el corte histórico del 09/11 y no el estado de lectura del 10/11. **No reaplicar E-4, F2.3 ni sustituciones de sinopsis.**
+
 **Corte:** 2026-11-09 · **Rama:** `feat/f2-editorial-review` · **PR:** [#55](https://github.com/Jairo0811/CineRD/pull/55) **DRAFT**.
 
 **Alcance aprobado por el titular:** trabajar simultáneamente los tres frentes de evaluación, implementación técnica y preparación. **No equivale a aprobación de siete cambios E-4, 58 piezas E-5, cinco sinopsis SQL, licencias de 128 medios, despliegue de backend o anuncios.** Toda modificación a SQL es manual, con backup y decisión específica. No cambiar la base desde esta rama.
