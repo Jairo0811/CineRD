@@ -75,6 +75,7 @@
     "sourceEvidence": "Salida PowerShell proporcionada por titular",
     "caveat": "No representa lectura SELECT independiente posmigración ni autorización de imágenes; 128 archivos excluidos del build review."
   },
-  "otherFiveDatesApprovedPendingSql": true,
-  "secondBatchApprovalRecord": "docs/f23-approved-remaining-5-dates-2026-11-09.json"
+  "otherFiveDatesApprovedPendingSql": false,
+  "secondBatchApprovalRecord": "docs/f23-approved-remaining-5-dates-2026-11-09.json",
+  "otherFiveDatesAppliedAccordingToSsms": true
 }
