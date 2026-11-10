@@ -35,6 +35,26 @@ test('F2.3 #55 mantiene borrador ES/EN con recontratación respaldada y sin perm
   assert.ok(!report.includes('no está acreditada aquí la recontratación explícita'));
 });
 
+test('F2.3: cada fuente citada por las cinco sinopsis consta en el libro bibliográfico SQL',()=>{
+  const drafts=json('docs/editorial-sql-replacement-drafts-f23.json');
+  const ledger=json('docs/editorial-sources-sql-f2.json');
+  assert.equal(ledger.version,1);
+  for(const [id,draft] of Object.entries(drafts.entries)){
+    const entry=ledger.entries[id];
+    assert.ok(entry,'Sin entrada de fuentes para #'+id);
+    assert.equal(entry.title,draft.title);
+    assert.equal(entry.year,draft.year);
+    const registered=new Set(entry.fuentes.map(s=>s.url));
+    assert.equal(registered.size,entry.fuentes.length,'Fuente duplicada en #'+id);
+    assert.equal(new Set(draft.sources).size,draft.sources.length,'Borrador duplica fuente #'+id);
+    for(const url of draft.sources){
+      assert.ok(registered.has(url),'Fuente citada pero no registrada #'+id+': '+url);
+      assert.match(url,/^https:\/\//);
+    }
+  }
+  assert.equal(ledger.entries['55'].fuentes.length,7);
+});
+
 test('F2.3 sólo modifica preguntas históricas: fechas ya aprobadas no se reabren',()=>{
   const x=json('docs/editorial-sql-replacement-drafts-f23.json').entries;
   assert.match(x['10'].openQuestions.join(' '),/2014-01-16/);
