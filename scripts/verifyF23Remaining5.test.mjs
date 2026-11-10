@@ -37,7 +37,8 @@ test('el titular aprobó las cinco fechas; SSMS reportó aplicación y respaldo 
   assert.equal(approved.reviewerFullName,null);
   assert.equal(approved.reviewedAtExactUtc,null);
   assert.equal(oldBatch.executableChangesApplied,true);
-  assert.equal(oldBatch.otherFiveDatesApprovedPendingSql,true);
+  assert.equal(oldBatch.otherFiveDatesApprovedPendingSql,false);
+  assert.equal(oldBatch.otherFiveDatesAppliedAccordingToSsms,true);
   assert.deepEqual(oldBatch.decisions.map(x=>x.filmId),[10,40,55]);
 });
 
