@@ -2,13 +2,17 @@
 **Fecha de revisión documental:** 2026-11-09 · **Estado:** 5/5 APROBADAS POR EL TITULAR EL 2026-11-09; 5/5 APLICADAS SEGÚN SSMS; SNAPSHOT SINCRONIZADO EN 864d26a.  
 **Criterio:** primera exhibición comercial en salas de República Dominicana; distinguirla de gala premiere, festival, fecha de noticia y estreno internacional.
 
+## Verificación posmigración independiente (2026-11-10)
+
+El titular presentó captura de una lectura independiente en SSMS de la base `CRUDPeliculas`: **ocho fechas coincidentes, 8/8 CORRECTO**. La consulta reproducible está en `database/scripts/f23_postmigration_8_readonly.sql`. Esto comprueba los valores técnicos, no la veracidad histórica de la fecha de *Nueba Yol 3* ni otros permisos editoriales.
+
 ## Estado técnico real comprobado por el titular
 
 El titular ejecutó `node backend/scripts/previewEditorialMetadataLive.js` sobre `DB_DATABASE=CRUDPeliculas`: cinco registros en `ORIGINAL` (#27, #36, #42, #44, #56), uno en `ALREADY` (#40 *Colao 2*), **0 DRIFT, 0 MISSING, 0 desacuerdos SQL/snapshot**. Esto verifica identidad y sincronización, NO comprueba la veracidad histórica de las cinco fechas ni otorga aprobación editorial. La #40 fue autorizada en F-2.3, no en el expediente F-2.6 anterior. No repetir UP.
 
 ## Fuentes por película (documentación, aprobación posterior del titular)
 
-**Decisión posterior a este contraste:** el titular escribió «apruebalas todas» para las cinco fechas indicadas. El alcance exacto está en `docs/f23-approved-remaining-5-dates-2026-11-09.json`; no atribuye firmas adicionales ni certifica que se hayan comprobado personalmente todas las URLs. **Las cinco se actualizaron en SQL según el resultado de SSMS y se exportaron al snapshot versionado en `864d26a` después de una auditoría 5/5; aún falta SELECT independiente posmigración.**
+**Decisión posterior a este contraste:** el titular escribió «apruebalas todas» para las cinco fechas indicadas. El alcance exacto está en `docs/f23-approved-remaining-5-dates-2026-11-09.json`; no atribuye firmas adicionales ni certifica que se hayan comprobado personalmente todas las URLs. **Las cinco se actualizaron en SQL según el resultado de SSMS y se exportaron al snapshot versionado en `864d26a` después de una auditoría 5/5; el SELECT independiente posmigración ya se comprobó el 2026-11-10 (8/8 CORRECTO).**
 
 **Precaución específica #36:** aunque la fecha dominicana de 23/10/1997 consta en fuentes catalográficas relacionadas, no se ha hallado cartelera dominicana independiente del período. IMDb indica 31/10/1997 como estreno estadounidense, que no equivale necesariamente a estreno en RD. Conservar esa advertencia incluso después de la autorización del titular.
 
@@ -22,6 +26,6 @@ El titular ejecutó `node backend/scripts/previewEditorialMetadataLive.js` sobre
 
 ## Próximos pasos técnicos, bajo control del titular
 
-Las cinco propuestas ya están autorizadas por el titular y sus nuevas fechas aparecen en el `OUTPUT` SQL como **aplicadas mediante UP**. Hay un respaldo y una migración manual nuevos: `database/scripts/f23_backup_nuevas_5_fechas_manual.sql` y `database/scripts/f23_fechas_5_aprobadas_manual_up_down.sql`. El titular comprobó la vista previa 5/5, generó y verificó un backup FULL COPY_ONLY CHECKSUM nuevo del segundo lote y ejecutó UP con cinco filas `EJECUCION_MANUAL_CONFIRMADA` en SSMS. **NO repetir el UP de cinco ni el de tres fechas.** El snapshot ya fue reexportado desde SQL original, auditado estrictamente y publicado en `864d26a`. **Próximo paso:** SELECT independiente posmigración de las ocho fechas. No repetir migraciones ni exportaciones.
+Las cinco propuestas ya están autorizadas por el titular y sus nuevas fechas aparecen en el `OUTPUT` SQL como **aplicadas mediante UP**. Hay un respaldo y una migración manual nuevos: `database/scripts/f23_backup_nuevas_5_fechas_manual.sql` y `database/scripts/f23_fechas_5_aprobadas_manual_up_down.sql`. El titular comprobó la vista previa 5/5, generó y verificó un backup FULL COPY_ONLY CHECKSUM nuevo del segundo lote y ejecutó UP con cinco filas `EJECUCION_MANUAL_CONFIRMADA` en SSMS. **NO repetir el UP de cinco ni el de tres fechas.** El snapshot ya fue reexportado desde SQL original, auditado estrictamente y publicado en `864d26a`. **Verificación completada:** SELECT independiente posmigración 2026-11-10, 8/8 CORRECTO. No repetir migraciones ni exportaciones.
 
 El expediente F-2.6 se conserva como registro histórico de propuestas inicialmente pendientes: **no actualizar sus autorizaciones a posteriori** ni cerrar incidencias de sinopsis por aprobar fechas. No cambiar los siete libros E-4, las 58 autorizaciones E-5 ni editar manualmente el snapshot desde ChatGPT; tampoco dar permisos a los 128 medios. PR #55 DRAFT y AdSense desactivado.

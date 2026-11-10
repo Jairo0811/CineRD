@@ -32,7 +32,7 @@ test('el titular aprobó las cinco fechas; SSMS reportó aplicación y respaldo 
   assert.equal(approved.backupForThisBatchVerified,true);
   assert.equal(approved.executionEvidence.reportedResult,'EJECUCION_MANUAL_CONFIRMADA');
   assert.deepEqual(approved.executionEvidence.affectedIds,[27,36,42,44,56]);
-  assert.equal(approved.independentPostMigrationSqlSelectVerified,false);
+  assert.equal(approved.independentPostMigrationSqlSelectVerified,true);
   assert.equal(approved.snapshotSynchronized,true);
   assert.equal(approved.snapshotExportEvidence.sourceDatabase,'CRUDPeliculas');
   assert.equal(approved.snapshotExportEvidence.verificationResult,

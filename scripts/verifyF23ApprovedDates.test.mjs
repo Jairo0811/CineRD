@@ -27,7 +27,7 @@ test('3 fechas del primer lote aplicadas; 5 aprobaciones registradas por separad
   assert.equal(manifest.executionEvidence.type,'Capturas de resultados SQL Server Management Studio proporcionadas por el titular');
   assert.equal(manifest.executionEvidence.reportedResult,'EJECUCION_MANUAL_CONFIRMADA');
   assert.deepEqual(manifest.executionEvidence.affectedIds,[10,40,55]);
-  assert.equal(manifest.independentPostMigrationSqlSelectVerified,false);
+  assert.equal(manifest.independentPostMigrationSqlSelectVerified,true);
   assert.equal(manifest.snapshotExportSynchronized,true);
   assert.equal(manifest.snapshotExportEvidence.sourceDatabase,'CRUDPeliculas');
   assert.equal(manifest.snapshotExportEvidence.verificationResult,

@@ -4,7 +4,7 @@
   "consentRecordedDate": "2026-11-09",
   "consentSource": "El titular escribió «apruebalas todas» en respuesta al lote de cinco fechas que incluía explícitamente Nueba Yol 3.",
   "scope": "Exclusivamente cinco modificaciones FechaEstreno en CRUDPeliculas: películas 27, 36, 42, 44, 56.",
-  "decisionStatus": "APROBADAS_POR_TITULAR_EJECUTADAS_EN_SQL_SEGUN_CAPTURA_SSMS; SNAPSHOT_PENDIENTE",
+  "decisionStatus": "APROBADAS_POR_TITULAR_EJECUTADAS_EN_SQL_SEGUN_CAPTURA_SSMS; SNAPSHOT_SINCRONIZADO; SELECT_POSTMIGRACION_VERIFICADO",
   "humanApprovalByOwner": true,
   "sqlApplied": true,
   "backupForThisBatchVerified": true,
@@ -86,7 +86,19 @@
       ]
     }
   ],
-  "independentPostMigrationSqlSelectVerified": false,
+  "independentPostMigrationSqlSelectVerified": true,
+  "independentPostMigrationSqlSelectEvidence": {
+    "verificationDateLocal": "2026-11-10",
+    "database": "CRUDPeliculas",
+    "method": "SSMS SELECT independiente, solo lectura",
+    "result": "8/8 CORRECTO",
+    "expectedCount": 8,
+    "matchedCount": 8,
+    "affectedIds": [10, 27, 36, 40, 42, 44, 55, 56],
+    "queryReference": "database/scripts/f23_postmigration_8_readonly.sql",
+    "source": "Captura SSMS aportada por el titular en la conversación del 2026-11-10; no archivada en el repositorio",
+    "limitations": "Verifica coincidencia de los valores SQL con las decisiones y el snapshot; no demuestra exactitud histórica, permisos editoriales ni restauración de respaldo."
+  },
   "executionEvidence": {
     "type": "Captura de resultados SQL Server Management Studio facilitada por el titular",
     "dateLocal": "2026-11-09",
@@ -100,8 +112,8 @@
       44,
       56
     ],
-    "verifiedByIndependentRead": false,
-    "caveat": "Captura muestra 5/5 resultados y transacción finalizada sin error; todavía falta SELECT independiente posmigración."
+    "verifiedByIndependentRead": true,
+    "caveat": "Captura muestra 5/5 resultados y transacción finalizada sin error; la lectura SELECT independiente de las ocho fechas fue confirmada por captura SSMS el 2026-11-10."
   },
   "backupEvidence": {
     "type": "Captura previa de SSMS del titular",

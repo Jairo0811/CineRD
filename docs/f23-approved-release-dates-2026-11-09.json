@@ -58,9 +58,21 @@
       40,
       55
     ],
-    "caveat": "La evidencia muestra el OUTPUT confirmado y el respaldo verificado; queda pendiente un SELECT posmigracion independiente en la base real."
+    "caveat": "La evidencia muestra el OUTPUT confirmado y el respaldo verificado; la lectura SELECT independiente de las ocho fechas fue confirmada por captura de SSMS el 2026-11-10."
   },
-  "independentPostMigrationSqlSelectVerified": false,
+  "independentPostMigrationSqlSelectVerified": true,
+  "independentPostMigrationSqlSelectEvidence": {
+    "verificationDateLocal": "2026-11-10",
+    "database": "CRUDPeliculas",
+    "method": "SSMS SELECT independiente, solo lectura",
+    "result": "8/8 CORRECTO",
+    "expectedCount": 8,
+    "matchedCount": 8,
+    "affectedIds": [10, 27, 36, 40, 42, 44, 55, 56],
+    "queryReference": "database/scripts/f23_postmigration_8_readonly.sql",
+    "source": "Captura SSMS aportada por el titular en la conversación del 2026-11-10; no archivada en el repositorio",
+    "limitations": "Verifica coincidencia de los valores SQL con las decisiones y el snapshot; no demuestra exactitud histórica, permisos editoriales ni restauración de respaldo."
+  },
   "snapshotExportSynchronized": true,
   "snapshotExportEvidence": {
     "sourceDatabase": "CRUDPeliculas",
