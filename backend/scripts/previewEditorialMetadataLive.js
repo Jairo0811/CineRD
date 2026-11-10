@@ -128,7 +128,7 @@ function compareLiveDateCandidates(batch, records) {
     allOriginal:counts.ORIGINAL === 6, allAlready:counts.ALREADY === 6,
     mixed:counts.ORIGINAL > 0 && counts.ALREADY > 0,
     safeToApplyAutomatically:false,
-    note:"Solo lectura. Las seis fechas son propuestas, no cambios aprobados."};
+    note:"Solo lectura. ALREADY indica fecha presente en SQL; la autorización pertenece al expediente F-2.3 u otro registro independiente."};
 }
 
 async function selectLiveDates(pool, batch, sqlDriver) {
@@ -179,16 +179,31 @@ async function main(argv = process.argv.slice(2)) {
     const rows = await selectLiveDates(pool,batch,sql);
     comparison = compareLiveDateCandidates(batch,rows);
   } finally { await pool.close(); }
+  const f23=read("docs/f23-approved-release-dates-2026-11-09.json");
+  const approved=f23.decisions?.find(x=>x.filmId===40);
+  assert(f23.executableChangesApplied===true &&
+    approved?.field==="FechaEstreno" && approved.decision==="APROBAR_CANDIDATA" &&
+    approved.currentSql==="2023-12-07" && approved.approvedNewValue==="2023-11-30" &&
+    f23.executionEvidence?.affectedIds?.includes(40),
+    "F-2.3: expediente #40 inconsistente");
+  const film40=comparison.items.find(x=>x.filmId===40);
+  assert(film40?.proposed===approved.approvedNewValue,
+    "F-2.3: candidato #40 difiere del aprobado");
   console.log("CineRD F-2.7 / comparación de seis fechas SQL (SOLO LECTURA)");
   for (const x of comparison.items) console.log("  ["+x.status+"] #"+x.filmId+" "+
     x.title+": SQL="+(x.sqlCurrent ?? "NULL")+" | snapshot="+x.snapshotCurrent+
     " | anterior="+x.previous+" | candidato="+x.proposed+
-    " | coinciden="+(x.matchesSnapshot?"SI":"NO")+" | revisión=PENDIENTE");
+    " | coinciden="+(x.matchesSnapshot?"SI":"NO")+" | revisión="+
+    (x.filmId===40?"APROBADA_F23; SQL_"+(x.status==="ALREADY"?"APLICADO":"REVISAR"):
+      "PENDIENTE"));
   const c=comparison.counts;
   console.log("Resultado: "+c.ORIGINAL+" anteriores; "+c.ALREADY+
     " propuestas presentes; "+c.DRIFT+" diferencias; "+c.MISSING+
     " ausentes; "+comparison.snapshotMismatch+" desacuerdos SQL/snapshot.");
-  console.log("NO ejecutar UPDATE, importaciones ni exportaciones automáticas. Las seis decisiones y el respaldo restaurable siguen pendientes.");
+  console.log("F-2.3: Colao 2 (#40) ya cuenta con aprobación y aplicación documentadas; "+
+    "las otras cinco fechas permanecen pendientes de revisión humana.");
+  console.log("NO ejecutar UPDATE ni autorizar nuevas fechas automáticamente. "+
+    "Una futura migración requiere respaldo propio verificable.");
   if(comparison.hasDrift || comparison.snapshotMismatch)
     process.exitCode=1;
 }
