@@ -41,6 +41,12 @@ El titular ejecutó una consulta `SELECT` contra `sys.database_files` de la base
 
 **Alcance y cautelas:** las cifras son **espacio asignado**, no bytes usados ni tamaño definitivo de importación. La captura no prueba capacidad de cómputo, compatibilidad Azure SQL, migración exitosa, el rendimiento de 5 DTU ni si hay archivos de usuario fuera de la base (por ejemplo, `uploads`). El archivo log no se suma al límite de 2 GB de datos de Basic como si fuera la misma categoría de almacenamiento. **Basic sigue siendo candidato, no una contratación autorizada.** 
 
+### Segunda medición SSMS — utilización efectiva de las páginas asignadas
+
+La segunda consulta de solo lectura aportada por el titular devuelve **DatosAsignadosMB = 8.00** y **DatosUsadosMB = 7.38**, sobre la misma base `CRUDPeliculas`; diferencia: **0.62 MB asignados sin usar**. El resultado equivale a **92.25% del archivo de datos ya asignado** y **~0.36% de un límite referencial de 2,048 MB de Azure SQL Basic**. El archivo de datos pequeño puede crecer conforme se incorporen registros: ese 92.25% no representa proximidad al máximo de la nube.
+
+**Interpretación:** el almacenamiento **no es el impedimento actual** para un piloto Basic. La consulta de `FILEPROPERTY(name, 'SpaceUsed')` mide espacio de páginas utilizado; no garantiza que una importación a Azure SQL mantenga un tamaño idéntico, ni evidencia rendimiento, compatibilidad de migraciones, tamaño de archivos fuera de SQL o necesidad de respaldos.
+
 ### Comprobación complementaria de solo lectura en SSMS
 
 ```sql
