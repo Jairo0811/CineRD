@@ -189,21 +189,35 @@ async function main(argv = process.argv.slice(2)) {
   const film40=comparison.items.find(x=>x.filmId===40);
   assert(film40?.proposed===approved.approvedNewValue,
     "F-2.3: candidato #40 difiere del aprobado");
+  const second=read("docs/f23-approved-remaining-5-dates-2026-11-09.json");
+  const remaining=[27,36,42,44,56];
+  assert(second.humanApprovalByOwner===true && second.sqlApplied===false &&
+    Array.isArray(second.decisions) &&
+    JSON.stringify(second.decisions.map(x=>x.filmId))===JSON.stringify(remaining),
+    "F-2.3: expediente segundo lote incompleto o estado SQL no actualizado");
+  for(const decision of second.decisions) {
+    const item=comparison.items.find(x=>x.filmId===decision.filmId);
+    assert(item && decision.field==="FechaEstreno" &&
+      decision.decision==="APROBAR_CANDIDATA" &&
+      decision.currentSql===item.previous &&
+      decision.approvedNewValue===item.proposed,
+      "F-2.3: discrepancia entre fecha aprobada y candidata #"+decision.filmId);
+  }
   console.log("CineRD F-2.7 / comparación de seis fechas SQL (SOLO LECTURA)");
   for (const x of comparison.items) console.log("  ["+x.status+"] #"+x.filmId+" "+
     x.title+": SQL="+(x.sqlCurrent ?? "NULL")+" | snapshot="+x.snapshotCurrent+
     " | anterior="+x.previous+" | candidato="+x.proposed+
     " | coinciden="+(x.matchesSnapshot?"SI":"NO")+" | revisión="+
     (x.filmId===40?"APROBADA_F23; SQL_"+(x.status==="ALREADY"?"APLICADO":"REVISAR"):
-      "PENDIENTE"));
+      "APROBADA_F23; SQL_"+(x.status==="ORIGINAL"?"PENDIENTE":"REVISAR")));
   const c=comparison.counts;
   console.log("Resultado: "+c.ORIGINAL+" anteriores; "+c.ALREADY+
     " propuestas presentes; "+c.DRIFT+" diferencias; "+c.MISSING+
     " ausentes; "+comparison.snapshotMismatch+" desacuerdos SQL/snapshot.");
-  console.log("F-2.3: Colao 2 (#40) ya cuenta con aprobación y aplicación documentadas; "+
-    "las otras cinco fechas permanecen pendientes de revisión humana.");
-  console.log("NO ejecutar UPDATE ni autorizar nuevas fechas automáticamente. "+
-    "Una futura migración requiere respaldo propio verificable.");
+  console.log("F-2.3: #40 aplicada; otras cinco fechas APROBADAS POR TITULAR,"+
+    " pendientes de aplicación SQL con respaldo nuevo. #36 carece de "+
+    "corroboración primaria independiente del estreno comercial RD.");
+  console.log("NO ejecutar UPDATE automático: usar solo migración manual protegida y respaldo verificable.");
   if(comparison.hasDrift || comparison.snapshotMismatch)
     process.exitCode=1;
 }
