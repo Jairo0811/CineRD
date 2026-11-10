@@ -28,7 +28,12 @@ test('3 aprobaciones explícitas, sin inventar firmas ni autorizar otras 5',()=>
   assert.equal(manifest.executionEvidence.reportedResult,'EJECUCION_MANUAL_CONFIRMADA');
   assert.deepEqual(manifest.executionEvidence.affectedIds,[10,40,55]);
   assert.equal(manifest.independentPostMigrationSqlSelectVerified,false);
-  assert.equal(manifest.snapshotExportSynchronized,false);
+  assert.equal(manifest.snapshotExportSynchronized,true);
+  assert.equal(manifest.snapshotExportEvidence.sourceDatabase,'CRUDPeliculas');
+  assert.equal(manifest.snapshotExportEvidence.verificationResult,
+    '3/3 fechas, solo FechaEstreno #10, #40, #55 y generatedAtUtc');
+  assert.match(manifest.snapshotExportEvidence.gitCommit,/^[a-f0-9]{40}$/);
+  assert.equal(manifest.snapshotExportEvidence.gitPath,'database/seeds/catalog.snapshot.json');
   assert.equal(manifest.originalSevenE4ApprovalsUnaffected,true);
   assert.equal(manifest.otherFiveDatesStillPending,true);
   assert.equal(otherLedger.approvals.length,0);
