@@ -33,7 +33,13 @@ test('el titular aprobó las cinco fechas; SSMS reportó aplicación y respaldo 
   assert.equal(approved.executionEvidence.reportedResult,'EJECUCION_MANUAL_CONFIRMADA');
   assert.deepEqual(approved.executionEvidence.affectedIds,[27,36,42,44,56]);
   assert.equal(approved.independentPostMigrationSqlSelectVerified,false);
-  assert.equal(approved.snapshotSynchronized,false);
+  assert.equal(approved.snapshotSynchronized,true);
+  assert.equal(approved.snapshotExportEvidence.sourceDatabase,'CRUDPeliculas');
+  assert.equal(approved.snapshotExportEvidence.verificationResult,
+    '5/5 fechas; SOLO FechaEstreno #27,#36,#42,#44,#56 y generatedAtUtc');
+  assert.equal(approved.snapshotExportEvidence.gitCommit,
+    '864d26a9217bba529329802d23b0724df6813ce9');
+  assert.equal(approved.snapshotExportEvidence.gitPath,'database/seeds/catalog.snapshot.json');
   assert.equal(approved.reviewerFullName,null);
   assert.equal(approved.reviewedAtExactUtc,null);
   assert.equal(oldBatch.executableChangesApplied,true);
@@ -55,8 +61,8 @@ test('5 decisiones casan exactamente con fecha histórica y candidata en expedie
     assert.ok(d.sourceUrls.every(s=>new URL(s).protocol==='https:'));
     const f=snapshot.tables.Peliculas.find(x=>x.Id===id);
     assert.equal(f.Titulo,title);
-    assert.ok([previous,candidate].includes(f.FechaEstreno.slice(0,10)),
-      'El snapshot conserva el valor anterior o el aprobado, sin terceros valores');
+    assert.equal(f.FechaEstreno.slice(0,10),candidate,
+      'El snapshot sincronizado debe reflejar la fecha aprobada');
     const p=dossier.items.find(x=>x.filmId===id)?.proposals[0];
     assert.equal(p.field,'FechaEstreno');
     assert.equal(p.from,previous);
@@ -104,11 +110,11 @@ test('nuevo backup es manual, de base original, full copy-only y con checksum',(
   assert.ok(!/\bUPDATE\s+dbo\.Peliculas\b/i.test(backup));
 });
 
-test('las 5 fechas constan aprobadas y aplicadas por SSMS; snapshot aún por sincronizar',()=>{
+test('las 5 fechas constan aplicadas y el snapshot versionado ya las contiene',()=>{
   const report=read('docs/FASE_F2_3_PAQUETE_DECISIONES_8_FECHAS_2026-11-09.md');
   assert.ok(report.includes('5 FECHAS APROBADAS Y APLICADAS SEGÚN CAPTURA SSMS'));
   for(const [id] of expected){
     const line=report.split('\n').find(x=>x.startsWith(`| ${id} |`));
-    assert.ok(line?.endsWith('APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT PENDIENTE |'));
+    assert.ok(line?.endsWith('APROBADA Y APLICADA SEGÚN SSMS; SNAPSHOT SINCRONIZADO |'));
   }
 });
