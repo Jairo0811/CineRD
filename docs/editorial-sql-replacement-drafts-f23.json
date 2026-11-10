@@ -70,7 +70,7 @@
       ],
       "openQuestions": [
         "Verificar mediante visionado, créditos o materiales de producción la relación exacta de los cuatro protagonistas con el departamento de fiscalización y el robo, sin suponer que fueron declarados inocentes o culpables.",
-        "Determinar documentalmente si la fecha 2014-01-15 en SQL representa una gala/función previa y si el estreno comercial dominicano debe registrarse como 2014-01-16; no cambiar SQL en esta revisión textual.",
+        "La fecha comercial dominicana 2014-01-16 ya fue aprobada y verificada en SQL (F2.3). No reabrir ni modificar FechaEstreno durante la revisión textual.",
         "Revisar la equivalencia de los términos área de fiscalización / auditing department y la cuantía RD$150 millones en ambas versiones.",
         "Determinar el origen, autoría y derechos de la sinopsis SQL previa, que coincide en redacción con descripciones de terceros; las noticias consultadas no conceden licencia textual."
       ],
@@ -85,20 +85,22 @@
       "status": "pendiente_revision",
       "deployment": "manual_only",
       "draftOrigin": "nueva_redaccion_f23",
-      "es": "Don Pascual vende por motivos de salud un almacén de Santo Domingo, y sus seis empleados son contratados nuevamente por los compradores. Sin saberlo, continúan trabajando en un local que ahora se utiliza para guardar mercancía ilegal. Perseguidos por delincuentes y bajo sospecha de la policía, deberán encontrar cómo salir del enredo en medio de situaciones de acción y comedia.",
-      "en": "When Don Pascual sells his Santo Domingo warehouse because of health problems, its six employees are rehired by the new owners. Unaware that the premises are now being used to store illegal goods, they find themselves pursued by criminals and suspected by the police. To get out of trouble, they must come up with a plan amid a series of comic mishaps.",
+      "es": "Por problemas de salud, Don Pascual vende el almacén de Santo Domingo donde trabajan seis compañeros. El nuevo dueño los contrata nuevamente, sin que ellos sepan que el local se utiliza para almacenar mercancía ilegal. Cuando el engaño sale a la luz, quedan entre las presiones de los responsables del negocio y las sospechas de la policía. Los seis intentarán salir del aprieto en una sucesión de enredos de comedia y acción.",
+      "en": "Health problems lead Don Pascual to sell his Santo Domingo warehouse, where six coworkers earn their living. The new owner rehires them, but they do not realize the premises are being used to store illegal goods. When the deception comes to light, they find themselves caught between pressure from the people behind the operation and police suspicions. The six try to find a way out amid escalating comic and action-filled complications.",
       "sources": [
         "https://dgcine.gob.do/mas-de-50-mil-personas-han-visto-el-plan-perfecto/",
         "https://cinemadominicano.com/el-plan-perfecto-2017/",
         "https://paginasamarillas.com.do/es/movie/el-plan-perfecto/M5P1549",
         "https://lacronica.do/roberto-angel-salcedo-inicia-2017-estreno-plan-perfecto/",
-        "https://eldia.com.do/el-plan-perfecto-reune-buen-elenco/"
+        "https://eldia.com.do/el-plan-perfecto-reune-buen-elenco/",
+        "https://www.elcaribe.com.do/sin-categoria/el-plan-perfecto-en-gala-premier/",
+        "https://cinemadominicano.com/el-plan-perfecto-imperfecto-plan/"
       ],
       "openQuestions": [
-        "Contrastar con créditos finales o visionado la secuencia de venta y recontratación de los seis empleados; la prensa contemporánea documenta ambos hechos.",
-        "Verificar que los textos ES y EN no afirmen culpabilidad ni inocencia demostrada: la policía solo los considera sospechosos de complicidad.",
-        "Documentar la procedencia y condiciones de uso de la sinopsis SQL anterior, que coincide con agregadores; la mera existencia de las noticias no constituye licencia.",
-        "Resolver en el control independiente de metadatos la gala anterior y el estreno comercial del 19 de enero de 2017; el snapshot conserva la fecha histórica."
+        "La recontratación está respaldada por La Crónica y elCaribe (reseña contemporánea); contrastar la secuencia específica con el filme/créditos antes de ratificar el borrador final.",
+        "Preservar la distinción entre sospecha policial y culpabilidad comprobada; La Crónica, elCaribe y la crítica de Cinema Dominicano describen persecuciones, pero no deben inferirse resoluciones judiciales.",
+        "Comprobar equivalencia ES/EN y que la redacción sea autónoma, sin copiar literalmente sinopsis promocionales de terceros; documentar autoría y licencias del texto SQL anterior.",
+        "La fecha comercial 2017-01-19 ya fue aprobada, aplicada y verificada en el cierre F2.3; NO ejecutar cambios de fecha en esta revisión textual."
       ],
       "sourcePermissionStatus": "sin_evidencia_registrada",
       "reviewedBy": null,
@@ -123,7 +125,7 @@
         "El texto habla de asesinato según Ibermedia y Cinema Dominicano, sin establecer un mecanismo accidental concreto que las fuentes describen ambiguamente.",
         "Corroborar mediante visionado el punto exacto donde fracasan las vías institucionales antes de que Ana considere actuar por su cuenta; evitar inferir cómo concluye su búsqueda.",
         "Registrar procedencia original y derechos del texto SQL previo, además de revisar el nuevo texto español e inglés por un responsable.",
-        "El estreno comercial histórico consta como 24 de mayo de 2012 en Cinema Dominicano, pero SQL conserva 13 de abril; decidir por procedimiento independiente de metadatos."
+        "La fecha comercial dominicana 2012-05-24 (24 de mayo de 2012) ya fue aprobada y verificada en SQL (F2.3). No reabrir ni modificar FechaEstreno durante la revisión textual."
       ],
       "sourcePermissionStatus": "sin_evidencia_registrada",
       "reviewedBy": null,
