@@ -20,6 +20,10 @@ jobs:
           cache: npm
           cache-dependency-path: backend/package-lock.json
       - run: npm ci
+      - name: Audit Render Blueprint without deploying
+        run: node ../scripts/auditRenderBlueprint.mjs --check
+      - name: Test Render Blueprint safety
+        run: node --test ../scripts/auditRenderBlueprint.test.mjs
       - name: Offline SQL migrations preflight (no DB / no writes)
         run: npm run migrate -- --check
       - run: npm test
