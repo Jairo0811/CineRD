@@ -1,3 +1,4 @@
+import { mostrarAdvertencia, mostrarError, mostrarExito } from "../utils/dialogos";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import { useEffect, useRef, useState } from "react";
@@ -72,7 +73,7 @@ function FormularioActor() {
       setVistaPrevia(resolveMediaUrl(actor.Foto));
     } catch (error) {
       console.error(error);
-      alert(error.response?.data?.mensaje || "Error al cargar el actor");
+      mostrarError(error.response?.data?.mensaje || "Error al cargar el actor");
     }
   };
 
@@ -94,17 +95,17 @@ function FormularioActor() {
     const archivo = e.target.files?.[0];
     if (!archivo) return;
     const errorArchivo = validarArchivoImagen(archivo);
-    if (errorArchivo) { alert(errorArchivo); e.target.value = ""; return; }
+    if (errorArchivo) { mostrarAdvertencia(errorArchivo); e.target.value = ""; return; }
     if (vistaPrevia?.startsWith("blob:")) URL.revokeObjectURL(vistaPrevia);
     setFoto(archivo);
     setVistaPrevia(URL.createObjectURL(archivo));
   };
 
   const validarFormulario = () => {
-    if (!formulario.Nombres.trim() || !formulario.Sexo) { alert("Nombres y sexo son obligatorios"); return false; }
-    if (formulario.AnioNacimiento && (Number(formulario.AnioNacimiento) < 1800 || Number(formulario.AnioNacimiento) > new Date().getFullYear())) { alert("El año de nacimiento no es válido"); return false; }
-    if (!formulario.EstaVivo && !formulario.FechaFallecimiento) { alert("Debe indicar la fecha de fallecimiento"); return false; }
-    if (formulario.FechaNacimiento && formulario.FechaFallecimiento && formulario.FechaFallecimiento < formulario.FechaNacimiento) { alert("La fecha de fallecimiento no puede ser anterior a la fecha de nacimiento"); return false; }
+    if (!formulario.Nombres.trim() || !formulario.Sexo) { mostrarAdvertencia("Nombres y sexo son obligatorios"); return false; }
+    if (formulario.AnioNacimiento && (Number(formulario.AnioNacimiento) < 1800 || Number(formulario.AnioNacimiento) > new Date().getFullYear())) { mostrarAdvertencia("El año de nacimiento no es válido"); return false; }
+    if (!formulario.EstaVivo && !formulario.FechaFallecimiento) { mostrarAdvertencia("Debe indicar la fecha de fallecimiento"); return false; }
+    if (formulario.FechaNacimiento && formulario.FechaFallecimiento && formulario.FechaFallecimiento < formulario.FechaNacimiento) { mostrarAdvertencia("La fecha de fallecimiento no puede ser anterior a la fecha de nacimiento"); return false; }
     return true;
   };
 
@@ -142,11 +143,11 @@ function FormularioActor() {
     try {
       if (esEdicion) await api.put(`/actores/${id}`, datos, { headers: { "Content-Type": "multipart/form-data" } });
       else await api.post("/actores", datos, { headers: { "Content-Type": "multipart/form-data" } });
-      alert(esEdicion ? "Actor actualizado correctamente" : "Actor registrado correctamente");
+      await mostrarExito(esEdicion ? "Actor actualizado correctamente" : "Actor registrado correctamente");
       navigate("/actores");
     } catch (error) {
       console.error(error);
-      alert(error.response?.data?.mensaje || error.response?.data?.error || "Error al guardar el actor");
+      mostrarError(error.response?.data?.mensaje || error.response?.data?.error || "Error al guardar el actor");
     } finally {
       guardandoRef.current = false;
       setGuardando(false);

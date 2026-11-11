@@ -1,3 +1,4 @@
+import { confirmarAccion, mostrarError, mostrarExito } from "../utils/dialogos";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -30,9 +31,9 @@ function Peliculas() {
   };
 
   const eliminarPelicula = async (id) => {
-    if (!esAdmin || !window.confirm(t("movies.confirmDelete"))) return;
+    if (!esAdmin || !(await confirmarAccion(t("movies.confirmDelete"), { confirmar: "Sí, eliminar" }))) return;
     try { await api.delete(`/peliculas/${id}`); await obtenerPeliculas(); }
-    catch (error) { console.error(error); alert(error.response?.data?.mensaje || error.response?.data?.error || t("movies.deleteError")); }
+    catch (error) { console.error(error); mostrarError(error.response?.data?.mensaje || error.response?.data?.error || t("movies.deleteError")); }
   };
 
   const formatearFecha = (fecha) => {
