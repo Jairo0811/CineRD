@@ -9,9 +9,14 @@
   Confirme DB_NAME() y que el entorno está aislado. NUNCA ejecutar contra
   la base operativa original sin respaldo, revisión y autorización.
 */
-IF DB_NAME() IN (N'master',N'model',N'msdb',N'tempdb')
+IF DB_NAME() IN (N'master',N'model',N'msdb',N'tempdb',N'CRUDPeliculas')
+   OR NOT (
+      DB_NAME() LIKE N'%[_]Staging'
+      OR DB_NAME() LIKE N'%[_]POC'
+      OR DB_NAME() LIKE N'%[_]E2E'
+   )
 BEGIN
-    THROW 51051, 'Bootstrap bloqueado: conecte directamente a una base de aplicacion.', 1;
+    THROW 51051, 'Bootstrap bloqueado: use una base AISLADA con sufijo _Staging, _POC o _E2E.', 1;
 END;
 GO
 

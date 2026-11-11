@@ -16,6 +16,10 @@ test("bootstrap de esquema Azure no cambia base ni crea DB o datos",()=>{
   for(const required of ["dbo.Actores","dbo.Peliculas","dbo.ActoresPeliculas","DB_NAME()"])
     assert.ok(sql.includes(required),required);
   assert.match(sql,/THROW 51051/);
+  assert.match(sql,/LIKE N'%\[_\]Staging'/);
+  assert.match(sql,/LIKE N'%\[_\]POC'/);
+  assert.match(sql,/LIKE N'%\[_\]E2E'/);
+  assert.match(sql,/N'CRUDPeliculas'/);
   assert.match(sql,/\bGO\b/);
 });
 

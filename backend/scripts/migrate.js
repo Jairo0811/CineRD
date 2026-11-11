@@ -94,7 +94,9 @@ async function main(argv = process.argv.slice(2)) {
   try {
     // Verify actual connection target BEFORE any DDL. No guessed database names.
     const result = await pool.request().query("SELECT DB_NAME() AS activeDatabase");
-    assertTargetDatabase(process.env.DB_DATABASE, result.recordset?.[0]?.activeDatabase);
+    const actualDatabase = result.recordset?.[0]?.activeDatabase;
+    if (!actualDatabase) throw new Error("Migración bloqueada: no se pudo confirmar DB_NAME().");
+    assertTargetDatabase(process.env.DB_DATABASE, actualDatabase);
     for (const { file, batches } of migrations) {
       for (const batch of batches) await pool.request().batch(batch);
       console.log(`✓ Migración aplicada/idempotente: ${file}`);

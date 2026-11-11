@@ -9,7 +9,7 @@ El inventario detectó que 14 de 15 migraciones `database/migrations/002...016` 
 - Las **14 sentencias USE se retiraron únicamente de los scripts de migración**. Las instrucciones SQL de esquema y sus condiciones de idempotencia se conservan. No se aplicaron cambios SQL en producción ni en localhost.
 - `backend/scripts/migrate.js --check` verifica offline las **15 migraciones**, sin secretos ni conexión SQL y sin ejecutar DDL. Además, el ejecutor valida que `DB_DATABASE` no sea una base de sistema y coteja `SELECT DB_NAME()` con el nombre configurado **antes del primer lote**.
 - `Login-CRUD-Peliculas.sql` tenía un bloque duplicado y T-SQL mal formado. Se reestructuró para **SQL Server local**, con secreto de SQLCMD y `db_owner` reservado a desarrollo. **No utilizar en Azure ni para usuario de API de producción**.
-- `database/scripts/azure_schema_bootstrap.sql` es un **bootstrap manual de tablas iniciales** sin `CREATE DATABASE`, `USE` o modificaciones de registros. No se ejecuta automáticamente y requiere conectar a una base **aislada** previamente creada.
+- `database/scripts/azure_schema_bootstrap.sql` es un **bootstrap manual de tablas iniciales** sin `CREATE DATABASE`, `USE` o modificaciones de registros. Solo permite nombres con sufijo `_Staging`, `_POC` o `_E2E` y rechaza `CRUDPeliculas` para reducir el riesgo de ejecutar DDL accidental en la base real. No se ejecuta automáticamente.
 
 ## Comprobación segura sin SQL (PowerShell, desde CineRD actualizado)
 
@@ -24,7 +24,7 @@ npm --prefix backend test
 ## Prueba futura en un entorno AISLADO (requiere aprobación y acceso)
 
 1. **Aprobar presupuesto**, elegir una región adecuada y confirmar límites SQL, conexiones cifradas, egreso de Render y política de firewall. No abrir SQL al público con `0.0.0.0/0`.
-2. Crear **manualmente** una base Azure SQL **nueva y vacía**, no `CRUDPeliculas` local; conectar directamente a ella mediante SSMS con identidad administradora de migración.
+2. Crear **manualmente** una base Azure SQL **nueva y vacía** con sufijo **`_Staging`**, **`_POC`** o **`_E2E`** (por ejemplo, `CineRD_Staging`), no `CRUDPeliculas` local; conectar directamente a ella mediante SSMS con identidad administradora de migración.
 3. Registrar `SELECT DB_NAME(), SYSUTCDATETIME();` en un acta sin credenciales; validar que se trata de la base aislada. Preparar evidencia y plan de rollback de esquema.
 4. Revisar y ejecutar manualmente `database/scripts/azure_schema_bootstrap.sql` **solo contra esa base**; no ejecutar el legado `CRUD-Peliculas.sql`, que incluye `CREATE DATABASE`, `USE` y `UPDATE` de géneros.
 5. Crear **usuario contenido con contraseña** de acceso SQL a la base de destino mediante configuración segura (sin publicar la contraseña en repositorio, logs ni chat). [Microsoft recomienda usuarios contenidos para Azure SQL Database](https://learn.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage?view=azuresql). Usar **cuenta DDL separada** para migrar; la API debe ser usuaria de acceso mínimo `db_datareader` / `db_datawriter` o permisos más estrictos.
