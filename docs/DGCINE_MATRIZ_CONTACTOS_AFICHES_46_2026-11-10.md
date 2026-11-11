@@ -2,7 +2,7 @@
 
 **Investigación:** 10 de noviembre de 2026. **Base de datos:** `database/seeds/catalog.snapshot.json` de `main`. **Matriz estructurada:** [`dgcine-afiches-contactos-46.json`](dgcine-afiches-contactos-46.json).
 
-> **Alcance:** investigar contactos para solicitar permiso escrito sobre afiches de películas individuales. Ningún contacto ha sido enviado desde CineRD por este expediente, ninguna productora figura aquí como titular verificado y **ninguno de los 128 medios del ledger ha obtenido autorización**. DGCINE respondió al titular remitiéndolo a su directorio, pero esa orientación no concede derechos.
+> **Alcance:** investigar contactos para solicitar permiso escrito sobre afiches de películas individuales. El titular informó que **envió dos correos de consulta el 10/11/2026** (Panamericana y Caribbean Films), sin acuse, entrega o respuesta técnica acreditada. Ninguna productora figura aquí como titular verificado y **ninguno de los 128 medios del ledger ha obtenido autorización**. DGCINE respondió al titular remitiéndolo a su directorio, pero esa orientación no concede derechos.
 
 ## Resumen verificable
 
@@ -12,9 +12,10 @@
 | Con nombre de productora en el snapshot | **29** |
 | Sin productora en el snapshot | **17** |
 | Con noticia DGCINE que menciona productora de esa película | **6** |
-| Con candidato de contacto público localizado | **11** |
+| Con candidato de contacto público localizado | **12** |
 | Afiches autorizados por esta investigación | **0** |
-| Solicitudes enviadas por esta investigación | **0** |
+| Películas mencionadas en los correos enviados | **11** |
+| Correos enviados reportados por el titular | **2** |
 
 ## Contactos públicos encontrados (no necesariamente titulares)
 
@@ -26,6 +27,15 @@
 
 Los contactos se obtuvieron de publicaciones **públicas** de DGCINE o del sitio corporativo de la productora. **No se ha validado la entrega de mensajes ni la capacidad jurídica para licenciar material gráfico**. DGCINE lista asimismo [distribuidores cinematográficos](https://dgcine.gob.do/directorio/categoria/distribuidores-cinematograficos/), pero estar registrado como distribuidor tampoco acredita control sobre un afiche.
 
+## Correos enviados el 10 de noviembre de 2026 (declarados por el remitente)
+
+| Empresa | Destinatario | Películas consultadas | Estado |
+|---|---|---|---|
+| Panamericana de Producciones | `contacto@panamericana.com.do` | #9, #13, #15, #18, #27, #50 y #51 | Enviado según titular; sin respuesta ni licencia |
+| Caribbean Films | `info@caribbeanfilms.com` | #21, #28, #29 y #39 | Enviado según titular; sin respuesta ni licencia |
+
+**Precisión del correo enviado:** el mensaje final dirigido a Panamericana añadió **Lotoman 003: Volando Bajito (#27)**. CineRD conserva a **Producciones Coral** como productora de esa película. Consultar también por ella **no implica** que Panamericana la haya producido ni posea derechos del afiche. La entrega efectiva y el contenido de las respuestas no han sido verificados mediante acceso a buzones. Se registró el hecho declarado por el remitente, **no un permiso**.
+
 ## Matriz película por película
 
 | ID | Película | Productora en CineRD | Evidencia de productora DGCINE | Contacto candidato | Estado |
@@ -33,26 +43,26 @@ Los contactos se obtuvieron de publicaciones **públicas** de DGCINE o del sitio
 | 4 | Sanky Panky | Premium Latin Films | No cotejada | Por localizar | Sin autorización |
 | 5 | Perico Ripiao | Cigua Films | No cotejada | Por localizar | Sin autorización |
 | 6 | Ladrones a Domicilio | Estudio Quitasueño | No cotejada | Por localizar | Sin autorización |
-| 9 | Lotoman | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Sin autorización |
+| 9 | Lotoman | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 10 | Vamos de robo | Producciones Coral | No cotejada | Por localizar | Sin autorización |
 | 11 | Santicló: La Vaina de la Navidad | Premium Latin Films | No cotejada | Por localizar | Sin autorización |
 | 12 | I Love Bachata | Producciones Coral | No cotejada | Por localizar | Sin autorización |
-| 13 | Cristiano de la Secreta | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Sin autorización |
+| 13 | Cristiano de la Secreta | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 14 | Los Rechazados | Bougroup | Bougroup | Por localizar | Sin autorización |
-| 15 | Tubérculo Gourmet | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Sin autorización |
+| 15 | Tubérculo Gourmet | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 16 | Nueba Yol: ¡Por Fin Llegó Balbuena! | Cigua Films | No cotejada | Por localizar | Sin autorización |
 | 17 | Profe por Accidente | Producciones Coral | No cotejada | Por localizar | Sin autorización |
-| 18 | Lotoman 2.0 | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Sin autorización |
+| 18 | Lotoman 2.0 | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 19 | Carlota la Más Barrial | Dukesa Films | Dukesa Films + La Aldea Estudio | `LA_ALDEA_DGCINE` | Sin autorización |
 | 20 | Un Macho de Mujer | Producciones Coral | No cotejada | Por localizar | Sin autorización |
-| 21 | Medias Hermanas | Caribbean Films | Caribbean Films | `CARIBBEAN_FILMS_OFICIAL` | Sin autorización |
+| 21 | Medias Hermanas | Caribbean Films | Caribbean Films | `CARIBBEAN_FILMS_OFICIAL` | Consulta enviada 10/11; sin autorización |
 | 23 | Sanky Panky 2 | Premium Latin Films | No cotejada | Por localizar | Sin autorización |
 | 24 | Sanky Panky 3 | Piñolywood Studios | No cotejada | Por localizar | Sin autorización |
 | 25 | Sanky Panky 4: De Safari | Premium Latin Films | No cotejada | Por localizar | Sin autorización |
 | 26 | Feo de día, Lindo de noche | Kaluana Films | No cotejada | Por localizar | Sin autorización |
-| 27 | Lotoman 003: Volando Bajito | Producciones Coral | No cotejada | Por localizar | Sin autorización |
-| 28 | Teacher Mechy | Caribbean Films | No cotejada | `CARIBBEAN_FILMS_OFICIAL` | Sin autorización |
-| 29 | Baño de Mujeres | Caribbean Films | No cotejada | `CARIBBEAN_FILMS_OFICIAL` | Sin autorización |
+| 27 | Lotoman 003: Volando Bajito | Producciones Coral | No cotejada | `PANAMERICANA_DGCINE` (solo consulta; producción no corroborada) | Consulta enviada 10/11; sin autorización |
+| 28 | Teacher Mechy | Caribbean Films | No cotejada | `CARIBBEAN_FILMS_OFICIAL` | Consulta enviada 10/11; sin autorización |
+| 29 | Baño de Mujeres | Caribbean Films | No cotejada | `CARIBBEAN_FILMS_OFICIAL` | Consulta enviada 10/11; sin autorización |
 | 30 | El Diablo no duerme en su cama | Estudio Quitasueño | No cotejada | Por localizar | Sin autorización |
 | 31 | Entiérrenlo Parao | No registrada | No cotejada | Por localizar | Sin autorización |
 | 32 | Los Rechazados 2: Operación Espacial  | Bougroup | Bougroup | Por localizar | Sin autorización |
@@ -60,7 +70,7 @@ Los contactos se obtuvieron de publicaciones **públicas** de DGCINE o del sitio
 | 34 | Los Super | No registrada | No cotejada | Por localizar | Sin autorización |
 | 36 | Nueba Yol 3: Bajo la Nueva Ley | No registrada | No cotejada | Por localizar | Sin autorización |
 | 38 | La casa del kilómetro 5 | No registrada | No cotejada | Por localizar | Sin autorización |
-| 39 | Colao | No registrada | Caribbean Films | `CARIBBEAN_FILMS_OFICIAL` | Sin autorización |
+| 39 | Colao | No registrada | Caribbean Films | `CARIBBEAN_FILMS_OFICIAL` | Consulta enviada 10/11; sin autorización |
 | 40 | Colao 2 | No registrada | No cotejada | Por localizar | Sin autorización |
 | 41 | Malos padres | No registrada | No cotejada | Por localizar | Sin autorización |
 | 42 | Andrea | No registrada | No cotejada | Por localizar | Sin autorización |
@@ -69,8 +79,8 @@ Los contactos se obtuvieron de publicaciones **públicas** de DGCINE o del sitio
 | 47 | Pimp Bullies: Victimas de un Prostibulo | Antena Films | No cotejada | Por localizar | Sin autorización |
 | 48 | Al Fin y al Cabo | No registrada | No cotejada | Por localizar | Sin autorización |
 | 49 | Los Locos también Piensan | No registrada | No cotejada | Por localizar | Sin autorización |
-| 50 | Hermanos | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Sin autorización |
-| 51 | Tubérculo Presidente | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Sin autorización |
+| 50 | Hermanos | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
+| 51 | Tubérculo Presidente | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 52 | Dos policías en apuros | No registrada | No cotejada | Por localizar | Sin autorización |
 | 53 | La Musiquita por Dentro | No registrada | No cotejada | Por localizar | Sin autorización |
 | 54 | Los Paracaidistas | No registrada | No cotejada | Por localizar | Sin autorización |
@@ -90,8 +100,8 @@ Los contactos se obtuvieron de publicaciones **públicas** de DGCINE o del sitio
 
 ## Primera oleada propuesta de gestión de permisos
 
-1. **Confirmación de contactos, no permiso automático:** verificar identidad jurídica de Panamericana frente al alias en CineRD y consultar por los títulos #9, #13, #15, #18, #50 y #51. Dirigir la consulta al correo público DGCINE, como **posible interlocutor**.
-2. **Caribbean Films:** consultar al correo de su web oficial por #21, #28, #29 y #39, diferenciando producciones ya corroboradas de créditos únicamente en el catálogo.
+1. **Panamericana — consulta enviada:** dar seguimiento a la identidad jurídica y a las películas #9, #13, #15, #18, #27, #50 y #51. #27 aparece por consulta del remitente; la productora del catálogo sigue siendo Producciones Coral.
+2. **Caribbean Films — consulta enviada:** esperar respuesta sobre #21, #28, #29 y #39, distinguiendo productoras acreditadas y administración específica de afiches.
 3. **La Aldea Estudio / Carlota #19:** confirmar primero que la ficha de La Aldea Studio es la misma entidad citada por la noticia y, después, preguntar quién gestiona el material promocional.
 4. **Sin contacto directo verificado:** buscar vía directorio, web corporativa o una nueva consulta institucional específica (no reenviar la misma solicitud general) para Premium Latin Films, Cigua Films, Bougroup, Miranda Films, Antena Films y demás empresas.
 5. **17 películas sin productora en snapshot:** investigar caso por caso con créditos, productoras y distribuidoras, sin atribuir empresas por coincidencia de director o por participación en una secuela.
