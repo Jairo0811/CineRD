@@ -1,8 +1,17 @@
 # CineRD — Plantillas para localizar titulares y solicitar afiches
 
-**Edición:** 2026-11-10. **Estado de todas las plantillas:** BORRADOR — **NO ENVIADO**.
+**Edición:** 2026-11-10. **Estado:** las plantillas A y B son versiones preliminares; el titular informó haber enviado **dos correos personalizados** el 10/11/2026 a Panamericana y Caribbean Films. La plantilla C permanece **NO ENVIADA**. Los textos que aparecen debajo **no son copias literales certificadas** de los mensajes enviados.
 
-Estas comunicaciones deben emitirse individualmente por el responsable de CineRD. **No identificar una productora como titular de los derechos del cartel sin confirmación expresa**. Un enlace del directorio no certifica vigencia del correo; no reenviar a terceros no autorizados. Archivar respuestas y contratos fuera del repositorio, y conservar en GitHub solo una referencia no confidencial.
+Las solicitudes futuras deben emitirse individualmente por el responsable de CineRD. **No identificar una productora como titular de los derechos del cartel sin confirmación expresa**. Un enlace del directorio no certifica vigencia del correo; no reenviar a terceros no autorizados. Archivar respuestas y contratos fuera del repositorio, y conservar en GitHub solo una referencia no confidencial.
+
+## Estado de los correos enviados según declaración del remitente
+
+| 10/11/2026 | Correo | Asunto informado | Títulos consultados | Respuesta y derechos |
+|---|---|---|---|---|
+| Enviado | `contacto@panamericana.com.do` | `CineRD \| Consulta sobre derechos de uso de afiches cinematográficos` | Lotoman, Lotoman 2.0, **Lotoman 003**, Cristiano de la Secreta, Tubérculo Gourmet, Hermanos, Tubérculo Presidente | Pendientes |
+| Enviado | `info@caribbeanfilms.com` | `CineRD \| Solicitud de orientación sobre afiches y materiales promocionales` | Medias Hermanas, Teacher Mechy, Baño de Mujeres, Colao | Pendientes |
+
+**Diferencia importante:** el mensaje personalizado enviado a Panamericana añadió **Lotoman 003: Volando Bajito**, pero la productora almacenada en CineRD es **Producciones Coral**. La consulta es para aclarar interlocutores y derechos; **no** cambia ese crédito ni atribuye derechos a Panamericana. Los textos originales de estas plantillas eran propuestas previas, y no se deben tratar como transcripciones exactas de los correos remitidos. El remitente comunicó el envío; no se verificó el buzón ni un acuse.
 
 ## Solicitud A — Panamericana de Producciones (verificar vinculación jurídica)
 
@@ -85,7 +94,7 @@ No modificar `docs/media-rights-ledger.csv` solo por una respuesta con el nombre
 3. Territorio, duración, atribución, redimensionamiento y posibles limitaciones o revocación.
 4. Evidencia escrita almacenada fuera de GitHub, fecha de emisión y referencia documental no sensible para trazabilidad.
 
-Si la respuesta es «contacta a X», se registra **CONTACTO_REFERIDO**, jamás **AUTORIZADO**. Si no existe respuesta, mantener **NO_ENVIADO** hasta enviar y registrar la comunicación realmente.
+Si la respuesta es «contacta a X», se registra **CONTACTO_REFERIDO**, jamás **AUTORIZADO**. Si no existe respuesta, conservar **ENVIADA_REPORTADA_POR_TITULAR / SIN RESPUESTA** para las dos consultas remitidas; usar **NO_ENVIADA** solo para las demás. Una declaración de envío no acredita entrega, lectura, titularidad ni licencia.
 
 ## Registro de seguimiento
 
@@ -94,4 +103,4 @@ Si la respuesta es «contacta a X», se registra **CONTACTO_REFERIDO**, jamás *
 - Libro legal vigente y protegido: [Ledger de 128 medios](media-rights-ledger.csv).
 - Antecedentes de gestión: [OUTREACH_DERECHOS.md](OUTREACH_DERECHOS.md).
 
-**Ningún correo fue enviado durante esta investigación.**
+**Actualización del 10/11/2026:** el titular confirmó dos correos enviados. No hay acuse de entrega, respuesta ni licencia acreditados. La plantilla C a DGCINE continúa sin enviar.
