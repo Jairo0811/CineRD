@@ -2,7 +2,7 @@
 
 **Investigación:** 10 de noviembre de 2026. **Base de datos:** `database/seeds/catalog.snapshot.json` de `main`. **Matriz estructurada:** [`dgcine-afiches-contactos-46.json`](dgcine-afiches-contactos-46.json).
 
-> **Alcance:** investigar contactos para solicitar permiso escrito sobre afiches de películas individuales. El titular informó que **envió dos correos de consulta el 10/11/2026** (Panamericana y Caribbean Films), sin acuse, entrega o respuesta técnica acreditada. Ninguna productora figura aquí como titular verificado y **ninguno de los 128 medios del ledger ha obtenido autorización**. DGCINE respondió al titular remitiéndolo a su directorio, pero esa orientación no concede derechos.
+> **Alcance:** investigar contactos para solicitar permiso escrito sobre afiches de películas individuales. El titular informó que **envió cuatro correos de consulta el 10/11/2026** (Panamericana, Caribbean Films, Alfonso Rodríguez y Roberto Ángel Salcedo), sin acuse, entrega o respuesta técnica acreditada. Ninguna productora figura aquí como titular verificado y **ninguno de los 128 medios del ledger ha obtenido autorización**. DGCINE respondió al titular remitiéndolo a su directorio, pero esa orientación no concede derechos.
 
 ## Resumen verificable
 
@@ -14,8 +14,8 @@
 | Con noticia DGCINE que menciona productora de esa película | **6** |
 | Con candidato de contacto público localizado | **22** |
 | Afiches autorizados por esta investigación | **0** |
-| Películas mencionadas en los correos enviados | **11** |
-| Correos enviados reportados por el titular | **2** |
+| Películas mencionadas en los correos enviados | **21** |
+| Correos enviados reportados por el titular | **4** |
 
 ## Contactos públicos encontrados (no necesariamente titulares)
 
@@ -35,6 +35,8 @@ Los contactos se obtuvieron de publicaciones **públicas** de DGCINE o del sitio
 |---|---|---|---|
 | Panamericana de Producciones | `contacto@panamericana.com.do` | #9, #13, #15, #18, #27, #50 y #51 | Enviado según titular; sin respuesta ni licencia |
 | Caribbean Films | `info@caribbeanfilms.com` | #21, #28, #29 y #39 | Enviado según titular; sin respuesta ni licencia |
+| Bienvenido Alfonso Rodríguez Zorrilla | `alfonsorod@kaluanafilms.com` y `pelidomsa@gmail.com` | #20, #26, #44, #45, #47 y #48 | **Un mensaje con dos destinatarios**; enviado según titular; sin respuesta ni licencia |
+| Roberto Ángel Salcedo Sanz | `rsalcedo@cultura.gob.do` | #10, #12, #17 y #55 | Enviado según titular; **destinatario institucional utilizado para consulta sobre cine**, no trámite del Ministerio; sin respuesta ni licencia |
 
 **Precisión del correo enviado:** el mensaje final dirigido a Panamericana añadió **Lotoman 003: Volando Bajito (#27)**. CineRD conserva a **Producciones Coral** como productora de esa película. Consultar también por ella **no implica** que Panamericana la haya producido ni posea derechos del afiche. La entrega efectiva y el contenido de las respuestas no han sido verificados mediante acceso a buzones. Se registró el hecho declarado por el remitente, **no un permiso**.
 
@@ -46,22 +48,22 @@ Los contactos se obtuvieron de publicaciones **públicas** de DGCINE o del sitio
 | 5 | Perico Ripiao | Cigua Films | No cotejada | Por localizar | Sin autorización |
 | 6 | Ladrones a Domicilio | Estudio Quitasueño | No cotejada | Por localizar | Sin autorización |
 | 9 | Lotoman | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
-| 10 | Vamos de robo | Producciones Coral | No cotejada | `PALOMA_SALCEDO_CATALOGO_HISTORICO` (producción, vigencia pendiente) | Sin autorización |
+| 10 | Vamos de robo | Producciones Coral | No cotejada | `PALOMA_SALCEDO_CATALOGO_HISTORICO` (producción, vigencia pendiente) | Consulta enviada 10/11; sin autorización |
 | 11 | Santicló: La Vaina de la Navidad | Premium Latin Films | No cotejada | Por localizar | Sin autorización |
-| 12 | I Love Bachata | Producciones Coral | No cotejada | `PALOMA_SALCEDO_CATALOGO_HISTORICO` (producción, vigencia pendiente) | Sin autorización |
+| 12 | I Love Bachata | Producciones Coral | No cotejada | `PALOMA_SALCEDO_CATALOGO_HISTORICO` (producción, vigencia pendiente) | Consulta enviada 10/11; sin autorización |
 | 13 | Cristiano de la Secreta | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 14 | Los Rechazados | Bougroup | Bougroup | Por localizar | Sin autorización |
 | 15 | Tubérculo Gourmet | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 16 | Nueba Yol: ¡Por Fin Llegó Balbuena! | Cigua Films | No cotejada | Por localizar | Sin autorización |
-| 17 | Profe por Accidente | Producciones Coral | No cotejada | `PALOMA_SALCEDO_CATALOGO_HISTORICO` (producción, vigencia pendiente) | Sin autorización |
+| 17 | Profe por Accidente | Producciones Coral | No cotejada | `PALOMA_SALCEDO_CATALOGO_HISTORICO` (producción, vigencia pendiente) | Consulta enviada 10/11; sin autorización |
 | 18 | Lotoman 2.0 | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 19 | Carlota la Más Barrial | Dukesa Films | Dukesa Films + La Aldea Estudio | `LA_ALDEA_DGCINE` | Sin autorización |
-| 20 | Un Macho de Mujer | Producciones Coral | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Sin autorización |
+| 20 | Un Macho de Mujer | Producciones Coral | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Consulta enviada 10/11; sin autorización |
 | 21 | Medias Hermanas | Caribbean Films | Caribbean Films | `CARIBBEAN_FILMS_OFICIAL` | Consulta enviada 10/11; sin autorización |
 | 23 | Sanky Panky 2 | Premium Latin Films | No cotejada | Por localizar | Sin autorización |
 | 24 | Sanky Panky 3 | Piñolywood Studios | No cotejada | Por localizar | Sin autorización |
 | 25 | Sanky Panky 4: De Safari | Premium Latin Films | No cotejada | Por localizar | Sin autorización |
-| 26 | Feo de día, Lindo de noche | Kaluana Films | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Sin autorización |
+| 26 | Feo de día, Lindo de noche | Kaluana Films | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Consulta enviada 10/11; sin autorización |
 | 27 | Lotoman 003: Volando Bajito | Producciones Coral | No cotejada | `PANAMERICANA_DGCINE` (solo consulta; producción no corroborada) | Consulta enviada 10/11; sin autorización |
 | 28 | Teacher Mechy | Caribbean Films | No cotejada | `CARIBBEAN_FILMS_OFICIAL` | Consulta enviada 10/11; sin autorización |
 | 29 | Baño de Mujeres | Caribbean Films | No cotejada | `CARIBBEAN_FILMS_OFICIAL` | Consulta enviada 10/11; sin autorización |
@@ -76,17 +78,17 @@ Los contactos se obtuvieron de publicaciones **públicas** de DGCINE o del sitio
 | 40 | Colao 2 | No registrada | No cotejada | Por localizar | Sin autorización |
 | 41 | Malos padres | No registrada | No cotejada | Por localizar | Sin autorización |
 | 42 | Andrea | No registrada | No cotejada | Por localizar | Sin autorización |
-| 44 | Playball | No registrada | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Sin autorización |
-| 45 | Yuniol | Antena Films | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Sin autorización |
-| 47 | Pimp Bullies: Victimas de un Prostibulo | Antena Films | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Sin autorización |
-| 48 | Al Fin y al Cabo | No registrada | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Sin autorización |
+| 44 | Playball | No registrada | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Consulta enviada 10/11; sin autorización |
+| 45 | Yuniol | Antena Films | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Consulta enviada 10/11; sin autorización |
+| 47 | Pimp Bullies: Victimas de un Prostibulo | Antena Films | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Consulta enviada 10/11; sin autorización |
+| 48 | Al Fin y al Cabo | No registrada | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Consulta enviada 10/11; sin autorización |
 | 49 | Los Locos también Piensan | No registrada | No cotejada | Por localizar | Sin autorización |
 | 50 | Hermanos | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 51 | Tubérculo Presidente | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 52 | Dos policías en apuros | No registrada | No cotejada | Por localizar | Sin autorización |
 | 53 | La Musiquita por Dentro | No registrada | No cotejada | Por localizar | Sin autorización |
 | 54 | Los Paracaidistas | No registrada | No cotejada | Por localizar | Sin autorización |
-| 55 | El Plan Perfecto | No registrada | Miranda Films | `PALOMA_SALCEDO_CATALOGO_HISTORICO` (producción, vigencia pendiente) | Sin autorización |
+| 55 | El Plan Perfecto | No registrada | Miranda Films | `PALOMA_SALCEDO_CATALOGO_HISTORICO` (producción, vigencia pendiente) | Consulta enviada 10/11; sin autorización |
 | 56 | La Lucha de Ana | No registrada | No cotejada | Por localizar | Sin autorización |
 
 **Interpretación:** las productoras del snapshot son datos históricos de CineRD, no verificaciones jurídicas; las seis filas con noticia DGCINE tienen una referencia adicional sobre producción, no sobre quién diseñó o posee el cartel. Las notas, URLs por película y vínculo al archivo de afiche constan en el [JSON de 46 filas](dgcine-afiches-contactos-46.json).
@@ -97,9 +99,9 @@ CineRD registra seis créditos de dirección: **#20 Un Macho de Mujer, #26 Feo d
 
 **Otros vínculos actorales en CineRD:** el catálogo registra al mismo talento (ActorId interno 32) como **Lic. Ramírez** en *Lotoman* (#9) y *Lotoman 2.0* (#18), y como **Figura Alta** en *Al Fin y al Cabo* (#48). Las dos películas de *Lotoman* ya están incluidas en las consultas enviadas a Panamericana; su participación como actor **no convierte al cineasta en titular de sus afiches**. El detalle se conserva en el JSON de la matriz.
 
-La [ficha de DGCINE publicada en enero de 2020](https://dgcine.gob.do/directory-listado/bienvenido-alfonzo-rodriguez-zorrilla/) proporciona dos correos históricos del cineasta: `alfonsorod@kaluanafilms.com` y `pelidomsa@gmail.com`. **Estado: contacto identificado, sin consulta enviada, sin vigencia comprobada y sin autorización**. Que una persona figure como director o productor **no demuestra propiedad del arte gráfico** de sus películas. Se mantiene cada productora tal como consta en CineRD, sin modificar `Productora`: Producciones Coral (#20), Kaluana Films (#26), Antena Films (#45/#47) y no registrada (#44/#48).
+La [ficha de DGCINE publicada en enero de 2020](https://dgcine.gob.do/directory-listado/bienvenido-alfonzo-rodriguez-zorrilla/) proporciona dos correos históricos del cineasta: `alfonsorod@kaluanafilms.com` y `pelidomsa@gmail.com`. **Estado: consulta enviada por el titular el 10/11/2026 a los dos correos históricos publicados, sin vigencia comprobada, respuesta ni autorización**. Que una persona figure como director o productor **no demuestra propiedad del arte gráfico** de sus películas. Se mantiene cada productora tal como consta en CineRD, sin modificar `Productora`: Producciones Coral (#20), Kaluana Films (#26), Antena Films (#45/#47) y no registrada (#44/#48).
 
-**Acción pendiente:** consultar por el titular adecuado y permiso de reproducción comercial específico de cada afiche. Propuesta de mensaje en [plantillas de solicitud](DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md). **No enviar automáticamente ni inferir respuesta**.
+**Acción pendiente:** esperar respuesta a la consulta enviada y comprobar quién puede autorizar cada afiche. Conservar el correo como evidencia de contacto, nunca como permiso. Propuesta usada como base en [plantillas de solicitud](DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md).
 
 ## Grupo Roberto Ángel Salcedo Sanz — cuatro películas como director
 
@@ -111,7 +113,7 @@ De acuerdo con el catálogo CineRD, `#10 Vamos de robo` (2014), `#12 I Love Bach
 
 Un [catálogo cinematográfico histórico publicado en Dominicana Online](https://www.dominicanaonline.org/documentos/Cata%CC%81logoDePeli%CC%81culasDominicanasEspan%CC%83ol.pdf) identifica a **Paloma Salcedo** como contacto de producción en *I Love Bachata* y *Vamos de robo*; publica el correo `salcedo.paloma@gmail.com`. **No consta que sea un buzón vigente, un contacto para todas las películas o un representante facultado para licenciar cada cartel.** El contacto se registra solo como candidato a confirmar, sin enviarse ninguna comunicación.
 
-**Acción:** usar la [plantilla E, no enviada](DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md) y buscar primero confirmación de un canal de producción vigente. En todo caso, el mensaje debe solicitar **orientación** sobre el titular de los afiches, respetar al actual ministro y evitar cualquier petición relacionada con su cargo público. No se ha reconocido ningún permiso.
+**Acción:** el titular envió su versión de la [plantilla E](DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md) a `rsalcedo@cultura.gob.do` el 10/11/2026. **Se utilizó un dominio institucional**, pero ese hecho no implica un trámite oficial de Cultura, respuesta de la institución ni permiso de uso. Seguimiento exclusivamente sobre quién gestiona los afiches. En todo caso, el mensaje debe solicitar **orientación** sobre el titular de los afiches, respetar al actual ministro y evitar cualquier petición relacionada con su cargo público. No se ha reconocido ningún permiso.
 
 ## Evidencias de producción en DGCINE
 
@@ -142,7 +144,7 @@ Un [catálogo cinematográfico histórico publicado en Dominicana Online](https:
 
 ## Antecedentes y siguiente tarea
 
-El documento anterior [`OUTREACH_DERECHOS.md`](OUTREACH_DERECHOS.md) recoge Cigua Films, Premium Latin Films, Imakonos y consultas históricas; no contradice esta matriz. La respuesta de DGCINE mostrada por el titular es **orientación a un directorio**, no una licencia. Las plantillas de consulta se recogen a continuación en [`DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md`](DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md). El titular reportó dos consultas enviadas el 10/11 (Panamericana y Caribbean Films); la consulta a Alfonso Rodríguez aún no se ha enviado.
+El documento anterior [`OUTREACH_DERECHOS.md`](OUTREACH_DERECHOS.md) recoge Cigua Films, Premium Latin Films, Imakonos y consultas históricas; no contradice esta matriz. La respuesta de DGCINE mostrada por el titular es **orientación a un directorio**, no una licencia. Las plantillas de consulta se recogen a continuación en [`DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md`](DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md). El titular reportó cuatro consultas enviadas el 10/11: Panamericana, Caribbean Films, Alfonso Rodríguez y Roberto Ángel Salcedo. La consulta de seguimiento a DGCINE (plantilla C) aún no se ha enviado.
 
 ### Verificación automatizada
 
@@ -150,4 +152,4 @@ El documento anterior [`OUTREACH_DERECHOS.md`](OUTREACH_DERECHOS.md) recoge Cigu
 node --test scripts/verifyDgcineOutreach.test.mjs
 ```
 
-Este test valida cobertura de los 46 IDs, coherencia de rutas de afiche, vínculos de fuentes, los dos envíos reportados y la ausencia de autorizaciones. No certifica que un contacto responda ni que una compañía sea titular de derechos.
+Este test valida cobertura de los 46 IDs, coherencia de rutas de afiche, vínculos de fuentes, los cuatro envíos reportados y la ausencia de autorizaciones. No certifica que un contacto responda ni que una compañía sea titular de derechos.
