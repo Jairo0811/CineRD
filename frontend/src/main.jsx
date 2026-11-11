@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/fraunces";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "sweetalert2/dist/sweetalert2.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import "./i18n";
@@ -25,6 +26,7 @@ import "./styles/theme-overrides.css";
 import "./styles/search.css";
 import "./styles/movie-credits.css";
 import "./styles/dark-polish.css";
+import "./styles/sweetalert.css";
 import "./styles/adsense.css";
 import "./styles/heritage.css";
 import "./styles/historia.css";

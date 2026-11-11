@@ -1,3 +1,4 @@
+import { confirmarAccion, mostrarError, mostrarExito, solicitarTexto } from "../utils/dialogos";
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
@@ -30,29 +31,31 @@ function AdminVerificaciones() {
   useEffect(() => { cargar(); }, []);
 
   const revisar = async (id, decision) => {
-    const observaciones = window.prompt("Observaciones de la revisión (opcional):", "") ?? "";
+    const observaciones = await solicitarTexto("Observaciones de la revisión (opcional)");
+    if (observaciones === null) return;
     try {
       await api.patch(`/verificaciones/admin/${id}/revisar`, { decision, observaciones });
       await cargar();
     } catch (err) {
-      alert(err.response?.data?.mensaje || "No fue posible revisar la solicitud");
+      mostrarError(err.response?.data?.mensaje || "No fue posible revisar la solicitud");
     }
   };
 
   const revocar = async (vinculacion) => {
     const nombre = vinculacion.NombreArtistico || vinculacion.NombreCompleto;
-    const confirmar = window.confirm(`¿Deseas desvincular la cuenta de ${vinculacion.UsuarioNombre} del perfil de ${nombre}?\n\nLa cuenta volverá al rol USUARIO y la verificación quedará registrada como revocada.`);
+    const confirmar = await confirmarAccion(`¿Deseas desvincular la cuenta de ${vinculacion.UsuarioNombre} del perfil de ${nombre}?\n\nLa cuenta volverá al rol USUARIO y la verificación quedará registrada como revocada.`, { confirmar: "Sí, revocar" });
     if (!confirmar) return;
 
-    const motivo = window.prompt("Motivo de la revocación:", "Prueba o corrección administrativa") ?? "";
+    const motivo = await solicitarTexto("Motivo de la revocación", { requerido: true, valorInicial: "Prueba o corrección administrativa" });
+    if (motivo === null) return;
     if (!motivo.trim()) return;
 
     try {
       await api.patch(`/verificaciones/admin/vinculaciones/${vinculacion.Id}/revocar`, { motivo });
       await cargar();
-      alert("Vinculación revocada correctamente. El usuario deberá iniciar sesión nuevamente para recibir su nuevo rol.");
+      await mostrarExito("Vinculación revocada correctamente. El usuario deberá iniciar sesión nuevamente para recibir su nuevo rol.");
     } catch (err) {
-      alert(err.response?.data?.mensaje || "No fue posible revocar la vinculación");
+      mostrarError(err.response?.data?.mensaje || "No fue posible revocar la vinculación");
     }
   };
 

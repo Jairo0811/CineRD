@@ -1,3 +1,4 @@
+import { confirmarAccion } from "../../utils/dialogos";
 import { useEffect, useMemo, useState } from "react";
 import api from "../../services/api";
 
@@ -86,7 +87,7 @@ function CreditosProfesionalesPelicula({ peliculaId, actores = [] }) {
 
   const eliminar = async (credito) => {
     const nombre = credito.NombreArtistico || credito.NombreCompleto;
-    if (!window.confirm(`¿Eliminar el crédito ${ETIQUETAS[credito.TipoCredito] || credito.TipoCredito} de ${nombre}?`)) return;
+    if (!(await confirmarAccion(`¿Eliminar el crédito ${ETIQUETAS[credito.TipoCredito] || credito.TipoCredito} de ${nombre}?`, { confirmar: "Sí, eliminar" }))) return;
 
     try {
       setError("");

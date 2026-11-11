@@ -1,3 +1,4 @@
+import { confirmarAccion, mostrarError, mostrarExito } from "../utils/dialogos";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -15,7 +16,7 @@ function Actores() {
 
   useEffect(() => { obtenerActores(); }, [buscar, orden, estado, anio, profesion]);
   const obtenerActores = async () => { try { setCargando(true); const response = await api.get("/actores", { params:{buscar,orden,estado,anio,profesion} }); setActores(response.data || []); } catch(error){ console.error(error); } finally { setCargando(false); } };
-  const eliminarActor = async (id) => { if (!esAdmin || !window.confirm(t("talents.confirmDelete"))) return; try { await api.delete(`/actores/${id}`); await obtenerActores(); } catch(error){ console.error(error); alert(error.response?.data?.mensaje || t("talents.deleteError")); } };
+  const eliminarActor = async (id) => { if (!esAdmin || !(await confirmarAccion(t("talents.confirmDelete"), { confirmar: "Sí, eliminar" }))) return; try { await api.delete(`/actores/${id}`); await obtenerActores(); await mostrarExito("Talento eliminado correctamente"); } catch(error){ console.error(error); mostrarError(error.response?.data?.mensaje || t("talents.deleteError")); } };
   const obtenerEdadActor = (actor) => { if(actor.FechaNacimiento){ if(!actor.EstaVivo && actor.FechaFallecimiento) return calcularEdadEnFecha(actor.FechaNacimiento,actor.FechaFallecimiento); return calcularEdad(actor.FechaNacimiento); } if(actor.AnioNacimiento){ const final=!actor.EstaVivo&&actor.FechaFallecimiento?obtenerAnioFecha(actor.FechaFallecimiento):new Date().getFullYear(); return calcularEdadAproximada(actor.AnioNacimiento,final); } return null; };
   const mostrarNacimiento = (actor) => { const edad=obtenerEdadActor(actor); if(actor.FechaNacimiento) return edad!==null?t("talents.age",{age:edad}):t("talents.ageUnavailable"); if(actor.AnioNacimiento) return edad!==null?t("talents.approxAge",{year:actor.AnioNacimiento,age:edad}):String(actor.AnioNacimiento); return t("talents.unknownDate"); };
   const profesionTraducida = (valor) => valor ? t(`professions.${valor}`, { defaultValue: valor }) : t("talents.talent");

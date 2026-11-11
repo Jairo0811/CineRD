@@ -1,3 +1,4 @@
+import { confirmarAccion } from "../utils/dialogos";
 import { useEffect, useMemo, useState } from "react";
 import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import api from "../services/api";
@@ -127,7 +128,7 @@ function AdminPremios() {
   };
 
   const eliminarPremio = async (id) => {
-    if (!window.confirm("¿Eliminar este premio y todas sus nominaciones?")) return;
+    if (!(await confirmarAccion("¿Eliminar este premio y todas sus nominaciones?", { confirmar: "Sí, eliminar" }))) return;
     try {
       await api.delete(`/premios/${id}`);
       await cargarDatos();
@@ -186,7 +187,7 @@ function AdminPremios() {
   };
 
   const eliminarNominacion = async (id) => {
-    if (!window.confirm("¿Eliminar esta nominación?")) return;
+    if (!(await confirmarAccion("¿Eliminar esta nominación?", { confirmar: "Sí, eliminar" }))) return;
     try {
       await api.delete(`/premios/nominaciones/${id}`);
       await cargarDatos();

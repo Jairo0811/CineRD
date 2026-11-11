@@ -1,3 +1,4 @@
+import { confirmarAccion, mostrarAdvertencia, mostrarError, mostrarExito } from "../utils/dialogos";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -101,7 +102,7 @@ function FormularioPelicula() {
       setVistaPrevia(resolveMediaUrl(pelicula.Foto));
     } catch (error) {
       console.error(error);
-      alert(error.response?.data?.mensaje || "Error al cargar la película");
+      mostrarError(error.response?.data?.mensaje || "Error al cargar la película");
     }
   };
 
@@ -115,7 +116,7 @@ function FormularioPelicula() {
     const archivo = e.target.files?.[0];
     if (!archivo) return;
     const errorArchivo = validarArchivoImagen(archivo);
-    if (errorArchivo) { alert(errorArchivo); e.target.value = ""; return; }
+    if (errorArchivo) { mostrarAdvertencia(errorArchivo); e.target.value = ""; return; }
     if (vistaPrevia?.startsWith("blob:")) URL.revokeObjectURL(vistaPrevia);
     setFoto(archivo);
     setVistaPrevia(URL.createObjectURL(archivo));
@@ -123,7 +124,7 @@ function FormularioPelicula() {
 
   const buscarEnTmdb = async () => {
     const titulo = formulario.Titulo.trim();
-    if (titulo.length < 2) return alert("Escribe al menos 2 caracteres para buscar en TMDb");
+    if (titulo.length < 2) return mostrarAdvertencia("Escribe al menos 2 caracteres para buscar en TMDb");
 
     try {
       setBuscandoTmdb(true);
@@ -188,12 +189,12 @@ function FormularioPelicula() {
       }
     } catch (error) {
       console.error("Error al importar desde TMDb:", error);
-      alert(error.response?.data?.mensaje || "No fue posible importar la información desde TMDb");
+      mostrarError(error.response?.data?.mensaje || "No fue posible importar la información desde TMDb");
     } finally { setImportandoTmdbId(null); }
   };
 
-  const desvincularTmdb = () => {
-    if (!window.confirm("¿Deseas eliminar la vinculación de esta película con TMDb?")) return;
+  const desvincularTmdb = async () => {
+    if (!(await confirmarAccion("¿Deseas eliminar la vinculación de esta película con TMDb?", { confirmar: "Sí, desvincular" }))) return;
     setFormulario((actual) => ({ ...actual, TMDbId: "" }));
     setMensajeTmdb("La película quedará guardada sin vinculación con TMDb.");
   };
@@ -203,7 +204,7 @@ function FormularioPelicula() {
     if (guardandoRef.current) return;
     const titulo = formulario.Titulo.trim();
     if (!titulo || !formulario.Genero || !formulario.FechaEstreno) {
-      return alert("Título, género y fecha de estreno son obligatorios");
+      return mostrarAdvertencia("Título, género y fecha de estreno son obligatorios");
     }
 
     const datos = new FormData();
@@ -225,15 +226,15 @@ function FormularioPelicula() {
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       if (esEdicion) {
         await api.put(`/peliculas/${id}`, datos, config);
-        alert("Película actualizada correctamente");
+        await mostrarExito("Película actualizada correctamente");
       } else {
         await api.post("/peliculas", datos, config);
-        alert("Película registrada correctamente");
+        await mostrarExito("Película registrada correctamente");
       }
       navigate("/peliculas");
     } catch (error) {
       console.error(error);
-      alert(error.response?.data?.mensaje || error.response?.data?.error || "Error al guardar la película");
+      mostrarError(error.response?.data?.mensaje || error.response?.data?.error || "Error al guardar la película");
     } finally {
       guardandoRef.current = false;
       setGuardando(false);

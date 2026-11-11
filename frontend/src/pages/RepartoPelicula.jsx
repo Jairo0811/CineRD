@@ -1,3 +1,4 @@
+import { confirmarAccion, mostrarAdvertencia, mostrarError } from "../utils/dialogos";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import EncabezadoPagina from "../components/ui/EncabezadoPagina";
@@ -81,7 +82,7 @@ function RepartoPelicula() {
       setReparto(repartoResponse.data);
     } catch (error) {
       console.error(error);
-      alert("Error al cargar el reparto");
+      mostrarError("Error al cargar el reparto");
     }
   };
 
@@ -120,7 +121,7 @@ function RepartoPelicula() {
     e.preventDefault();
 
     if (!formulario.ActorId) {
-      alert("Debe seleccionar un actor");
+      mostrarAdvertencia("Debe seleccionar un actor");
       return;
     }
 
@@ -137,7 +138,7 @@ function RepartoPelicula() {
     } catch (error) {
       console.error(error);
 
-      alert(
+      mostrarError(
         error.response?.data?.mensaje ||
           error.response?.data?.error ||
           "Error al agregar actor al reparto",
@@ -168,14 +169,14 @@ function RepartoPelicula() {
     } catch (error) {
       console.error(error);
 
-      alert(
+      mostrarError(
         error.response?.data?.mensaje || "Error al actualizar la participación",
       );
     }
   };
 
   const eliminarDelReparto = async (actorId) => {
-    const confirmar = window.confirm("¿Desea quitar este actor del reparto?");
+    const confirmar = await confirmarAccion("¿Desea quitar este actor del reparto?", { confirmar: "Sí, quitar" });
 
     if (!confirmar) return;
 
@@ -185,7 +186,7 @@ function RepartoPelicula() {
       await cargarDatos();
     } catch (error) {
       console.error(error);
-      alert("Error al quitar actor del reparto");
+      mostrarError("Error al quitar actor del reparto");
     }
   };
 
@@ -219,12 +220,12 @@ function RepartoPelicula() {
 
   const usarActorExistente = async (personaTmdb, actorExistente) => {
     if (!actorExistente?.Id) {
-      alert("No se encontró un actor válido");
+      mostrarAdvertencia("No se encontró un actor válido");
       return;
     }
 
     if (actoresEnReparto.has(Number(actorExistente.Id))) {
-      alert("Este actor ya pertenece al reparto");
+      mostrarAdvertencia("Este actor ya pertenece al reparto");
       return;
     }
 
@@ -251,7 +252,7 @@ function RepartoPelicula() {
     } catch (error) {
       console.error(error);
 
-      alert(
+      mostrarError(
         error.response?.data?.mensaje ||
           "No fue posible utilizar el actor existente.",
       );
@@ -311,7 +312,7 @@ function RepartoPelicula() {
     } catch (error) {
       console.error(error);
 
-      alert(
+      mostrarError(
         error.response?.data?.mensaje ||
           "No fue posible obtener los datos de la persona.",
       );
@@ -352,7 +353,7 @@ function RepartoPelicula() {
 
     if (!archivo) return;
     const errorArchivo = validarArchivoImagen(archivo);
-    if (errorArchivo) { alert(errorArchivo); e.target.value = ""; return; }
+    if (errorArchivo) { mostrarAdvertencia(errorArchivo); e.target.value = ""; return; }
 
     setNuevoTalento((actual) => ({
       ...actual,
@@ -394,12 +395,12 @@ function RepartoPelicula() {
     e.preventDefault();
 
     if (!nuevoTalento.Nombres.trim()) {
-      alert("Debe indicar los nombres del talento");
+      mostrarAdvertencia("Debe indicar los nombres del talento");
       return;
     }
 
     if (!nuevoTalento.EstaVivo && !nuevoTalento.FechaFallecimiento) {
-      alert("Debe indicar la fecha de fallecimiento");
+      mostrarAdvertencia("Debe indicar la fecha de fallecimiento");
       return;
     }
 
@@ -456,7 +457,7 @@ function RepartoPelicula() {
     } catch (error) {
       console.error(error);
 
-      alert(
+      mostrarError(
         error.response?.data?.mensaje ||
           error.response?.data?.error ||
           "No fue posible crear el talento.",
