@@ -53,6 +53,17 @@
       "legalIdentityVerified": false,
       "authorizationCapacityVerified": false,
       "emailDeliverabilityVerified": false
+    },
+    "PALOMA_SALCEDO_CATALOGO_HISTORICO": {
+      "company": "Paloma Salcedo — contacto de producción publicado en catálogo histórico de cine dominicano",
+      "publicEmail": "salcedo.paloma@gmail.com",
+      "directoryUrl": "https://www.dominicanaonline.org/documentos/Cata%CC%81logoDePeli%CC%81culasDominicanasEspan%CC%83ol.pdf",
+      "directoryCategory": "Contacto de producción de I Love Bachata y Vamos de robo (catálogo histórico, no canal ministerial)",
+      "type": "CONTACTO_PRODUCCION_HISTORICO_A_VERIFICAR",
+      "identificationCaveat": "Correo de contacto cinematográfico publicado en fichas históricas, entre ellas I Love Bachata y Vamos de robo. No se verificó vigencia, representación de las cuatro películas ni facultad para ceder derechos sobre carteles. No confundir con contacto del Ministerio de Cultura.",
+      "legalIdentityVerified": false,
+      "authorizationCapacityVerified": false,
+      "emailDeliverabilityVerified": false
     }
   },
   "filas": [
@@ -147,7 +158,9 @@
       "distribuidorasMencionadasPorDgcine": [],
       "fuentesAsociacionProduccion": [],
       "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "PALOMA_SALCEDO_CATALOGO_HISTORICO"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -155,8 +168,16 @@
       "solicitudFecha": null,
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
-      "observaciones": null
+      "siguienteAccion": "Verificar contacto de producción y quién administra el cartel; preparar consulta profesional respetuosa, SIN ENVIAR; distinguir cineasta de cargo ministerial.",
+      "observaciones": "Roberto Ángel Salcedo Sanz figura como director en CineRD; su cargo vigente es ministro de Cultura, pero la solicitud de afiches debe tramitarse por vías privadas de producción. El contacto de Paloma Salcedo procede de catálogo histórico y solo se asocia directamente a algunas películas; validar vigencia y facultades. La mención de coproductoras no cambia Productora del snapshot ni acredita derechos.",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/vamos-de-robo-2014/",
+        "https://acento.com.do/cultura/vamos-de-robo-primer-estreno-dominicano-para-el-2014-1127603.html"
+      ],
+      "productorasMencionadasEnFuentesPorVerificar": [
+        "Miranda Films",
+        "Producciones Coral"
+      ]
     },
     {
       "filmId": 11,
@@ -187,7 +208,9 @@
       "distribuidorasMencionadasPorDgcine": [],
       "fuentesAsociacionProduccion": [],
       "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "PALOMA_SALCEDO_CATALOGO_HISTORICO"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -195,8 +218,15 @@
       "solicitudFecha": null,
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
-      "observaciones": null
+      "siguienteAccion": "Verificar contacto de producción y quién administra el cartel; preparar consulta profesional respetuosa, SIN ENVIAR; distinguir cineasta de cargo ministerial.",
+      "observaciones": "Roberto Ángel Salcedo Sanz figura como director en CineRD; su cargo vigente es ministro de Cultura, pero la solicitud de afiches debe tramitarse por vías privadas de producción. El contacto de Paloma Salcedo procede de catálogo histórico y solo se asocia directamente a algunas películas; validar vigencia y facultades. La mención de coproductoras no cambia Productora del snapshot ni acredita derechos.",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/yo-amo-la-bachata-i-love-bachata-2011/"
+      ],
+      "productorasMencionadasEnFuentesPorVerificar": [
+        "Miranda Films",
+        "Producciones Coral"
+      ]
     },
     {
       "filmId": 13,
@@ -297,7 +327,9 @@
       "distribuidorasMencionadasPorDgcine": [],
       "fuentesAsociacionProduccion": [],
       "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "PALOMA_SALCEDO_CATALOGO_HISTORICO"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -305,8 +337,15 @@
       "solicitudFecha": null,
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
-      "observaciones": null
+      "siguienteAccion": "Verificar contacto de producción y quién administra el cartel; preparar consulta profesional respetuosa, SIN ENVIAR; distinguir cineasta de cargo ministerial.",
+      "observaciones": "Roberto Ángel Salcedo Sanz figura como director en CineRD; su cargo vigente es ministro de Cultura, pero la solicitud de afiches debe tramitarse por vías privadas de producción. El contacto de Paloma Salcedo procede de catálogo histórico y solo se asocia directamente a algunas películas; validar vigencia y facultades. La mención de coproductoras no cambia Productora del snapshot ni acredita derechos.",
+      "fuentesRelacionDireccion": [
+        "https://www.diariolibre.com/revista/cine/profe-por-accidente-la-nueva-pelcula-de-robertico-salcedo-EPDL344077"
+      ],
+      "productorasMencionadasEnFuentesPorVerificar": [
+        "Miranda Films",
+        "Producciones Coral"
+      ]
     },
     {
       "filmId": 18,
@@ -1036,7 +1075,9 @@
         "https://dgcine.gob.do/para-2017-hay-en-cartelera-20-peliculas-dominicanas/"
       ],
       "estadoAsociacion": "FUENTE_DGCINE_PELICULA",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "PALOMA_SALCEDO_CATALOGO_HISTORICO"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -1044,8 +1085,17 @@
       "solicitudFecha": null,
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Localizar contacto verificado de la productora citada por DGCINE",
-      "observaciones": "DGCINE identifica a Miranda Films como productora, y Palacio del Cine como distribuidor; no acredita control de afiche."
+      "siguienteAccion": "Verificar contacto de producción y quién administra el cartel; preparar consulta profesional respetuosa, SIN ENVIAR; distinguir cineasta de cargo ministerial.",
+      "observaciones": "DGCINE identifica a Miranda Films como productora, y Palacio del Cine como distribuidor; no acredita control de afiche. Roberto Ángel Salcedo Sanz figura como director en CineRD; su cargo vigente es ministro de Cultura, pero la solicitud de afiches debe tramitarse por vías privadas de producción. El contacto de Paloma Salcedo procede de catálogo histórico y solo se asocia directamente a algunas películas; validar vigencia y facultades. La mención de coproductoras no cambia Productora del snapshot ni acredita derechos.",
+      "fuentesRelacionDireccion": [
+        "https://dgcine.gob.do/para-2017-hay-en-cartelera-20-peliculas-dominicanas/",
+        "https://cinemadominicano.com/el-plan-perfecto-2017/"
+      ],
+      "productorasMencionadasEnFuentesPorVerificar": [
+        "Miranda Films",
+        "Vistalux Internacional",
+        "Producciones Coral"
+      ]
     },
     {
       "filmId": 56,
@@ -1135,5 +1185,38 @@
         "fuente": "database/seeds/catalog.snapshot.json: Actores[Id=32], ActoresPeliculas[PeliculaId=48, ActorId=32]"
       }
     ]
+  },
+  "vinculosInterpretacionRobertoAngel": {
+    "actorIdCineRD": 16,
+    "estado": "CREDITOS_DE_CATALOGO_NO_LICENCIAS",
+    "notas": "Director de cuatro películas dentro del catálogo (#10, #12, #17, #55); además actor en #12, #17, #20 y #55. Un Macho de Mujer (#20) figura bajo la dirección de Alfonso Rodríguez y está en otro expediente. Nunca deducir autorización gráfica por rol de actor, director, productor o ministro.",
+    "peliculasDirigidas": [
+      10,
+      12,
+      17,
+      55
+    ],
+    "peliculasConActuacion": [
+      {
+        "filmId": 12,
+        "personaje": "Marcos"
+      },
+      {
+        "filmId": 17,
+        "personaje": "Francisco"
+      },
+      {
+        "filmId": 20,
+        "personaje": "Ramón"
+      },
+      {
+        "filmId": 55,
+        "personaje": "Ricky"
+      }
+    ],
+    "fuenteCargoInstitucional": "https://cultura.gob.do/sobre-nosotros/despacho-del-ministro/",
+    "fuenteDirectorioCineasta": "https://dgcine.gob.do/directory-listado/roberto-angel-salcedo-sanz-3/",
+    "correosEnviados": 0,
+    "derechosDeAfiche": "NO_VERIFICADOS"
   }
 }
