@@ -41,6 +41,18 @@
       "legalIdentityVerified": false,
       "authorizationCapacityVerified": false,
       "emailDeliverabilityVerified": false
+    },
+    "ALFONSO_RODRIGUEZ_DGCINE": {
+      "company": "Bienvenido Alfonso Rodríguez Zorrilla (productor cinematográfico, ficha DGCINE: «ALFONZO»)",
+      "publicEmail": "alfonsorod@kaluanafilms.com",
+      "alternatePublicEmail": "pelidomsa@gmail.com",
+      "directoryUrl": "https://dgcine.gob.do/directory-listado/bienvenido-alfonzo-rodriguez-zorrilla/",
+      "directoryCategory": "Productor Cinematográfico — ficha individual DGCINE 07/01/2020",
+      "type": "CONTACTO_PRODUCTOR_INSTITUCIONAL_HISTORICO",
+      "identificationCaveat": "DGCINE publica dos correos desde enero de 2020 (grafía «Alfonzo» en su registro). No se comprobó vigencia ni facultad para licenciar afiches; CineRD identifica dirección artística, no necesariamente titularidad de derechos.",
+      "legalIdentityVerified": false,
+      "authorizationCapacityVerified": false,
+      "emailDeliverabilityVerified": false
     }
   },
   "filas": [
@@ -356,7 +368,9 @@
       "distribuidorasMencionadasPorDgcine": [],
       "fuentesAsociacionProduccion": [],
       "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "ALFONSO_RODRIGUEZ_DGCINE"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -364,8 +378,12 @@
       "solicitudFecha": null,
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
-      "observaciones": null
+      "siguienteAccion": "Verificar vigencia de ficha DGCINE y consultar al director/productor por titular y canal de autorización del afiche; correo todavía NO ENVIADO",
+      "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
+        "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
+      ]
     },
     {
       "filmId": 21,
@@ -462,7 +480,9 @@
       "distribuidorasMencionadasPorDgcine": [],
       "fuentesAsociacionProduccion": [],
       "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "ALFONSO_RODRIGUEZ_DGCINE"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -470,8 +490,12 @@
       "solicitudFecha": null,
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
-      "observaciones": null
+      "siguienteAccion": "Verificar vigencia de ficha DGCINE y consultar al director/productor por titular y canal de autorización del afiche; correo todavía NO ENVIADO",
+      "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
+        "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
+      ]
     },
     {
       "filmId": 27,
@@ -778,7 +802,9 @@
       "distribuidorasMencionadasPorDgcine": [],
       "fuentesAsociacionProduccion": [],
       "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "ALFONSO_RODRIGUEZ_DGCINE"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -786,8 +812,12 @@
       "solicitudFecha": null,
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
-      "observaciones": null
+      "siguienteAccion": "Verificar vigencia de ficha DGCINE y consultar al director/productor por titular y canal de autorización del afiche; correo todavía NO ENVIADO",
+      "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. CineRD usa la variante abreviada «Alfonso Rodríguez Zorrilla» para dirección de Playball.",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
+        "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
+      ]
     },
     {
       "filmId": 45,
@@ -798,7 +828,9 @@
       "distribuidorasMencionadasPorDgcine": [],
       "fuentesAsociacionProduccion": [],
       "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "ALFONSO_RODRIGUEZ_DGCINE"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -806,8 +838,12 @@
       "solicitudFecha": null,
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
-      "observaciones": null
+      "siguienteAccion": "Verificar vigencia de ficha DGCINE y consultar al director/productor por titular y canal de autorización del afiche; correo todavía NO ENVIADO",
+      "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
+        "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
+      ]
     },
     {
       "filmId": 47,
@@ -818,7 +854,9 @@
       "distribuidorasMencionadasPorDgcine": [],
       "fuentesAsociacionProduccion": [],
       "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "ALFONSO_RODRIGUEZ_DGCINE"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -826,8 +864,12 @@
       "solicitudFecha": null,
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
-      "observaciones": null
+      "siguienteAccion": "Verificar vigencia de ficha DGCINE y consultar al director/productor por titular y canal de autorización del afiche; correo todavía NO ENVIADO",
+      "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
+        "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
+      ]
     },
     {
       "filmId": 48,
@@ -838,7 +880,9 @@
       "distribuidorasMencionadasPorDgcine": [],
       "fuentesAsociacionProduccion": [],
       "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "ALFONSO_RODRIGUEZ_DGCINE"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -846,8 +890,12 @@
       "solicitudFecha": null,
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
-      "observaciones": null
+      "siguienteAccion": "Verificar vigencia de ficha DGCINE y consultar al director/productor por titular y canal de autorización del afiche; correo todavía NO ENVIADO",
+      "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
+        "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
+      ]
     },
     {
       "filmId": 49,
