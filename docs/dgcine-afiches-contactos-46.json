@@ -6,7 +6,7 @@
   "fuenteInstitucional": "https://dgcine.gob.do/directorio/",
   "referenciaRespuestaDgcine": "Correo de orientación al titular mostrado en la conversación, sin autorización de uso de afiches ni garantía sobre los contactos; no se archiva correspondencia privada.",
   "scope": "Investigación de contactos para solicitar permisos de afiches; no prueba propiedad intelectual ni licencia.",
-  "estado": "INVESTIGACION_NO_CONTACTADA",
+  "estado": "CONTACTO_INICIAL_REPORTADO_POR_TITULAR_SIN_RESPUESTA",
   "contactosPublicosCandidatos": {
     "PANAMERICANA_DGCINE": {
       "company": "PANAMERICANA DE PRODUCCIONES, S.R.L.",
@@ -119,11 +119,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar identidad/contacto del directorio y quién puede autorizar afiche específico",
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
       "observaciones": null
     },
     {
@@ -201,11 +201,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar identidad/contacto del directorio y quién puede autorizar afiche específico",
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
       "observaciones": null
     },
     {
@@ -249,11 +249,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar identidad/contacto del directorio y quién puede autorizar afiche específico",
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
       "observaciones": null
     },
     {
@@ -311,11 +311,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar identidad/contacto del directorio y quién puede autorizar afiche específico",
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
       "observaciones": null
     },
     {
@@ -386,11 +386,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Localizar contacto verificado de la productora citada por DGCINE",
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
       "observaciones": "DGCINE identifica a Caribbean Films como productora."
     },
     {
@@ -482,16 +482,18 @@
       "distribuidorasMencionadasPorDgcine": [],
       "fuentesAsociacionProduccion": [],
       "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "PANAMERICANA_DGCINE"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
-      "observaciones": null
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
+      "observaciones": "La consulta enviada a Panamericana también menciona Lotoman 003 (2014), pero CineRD registra como productora a Producciones Coral. Se solicita orientación y posible vinculación; no modificar el crédito por enviar esta consulta."
     },
     {
       "filmId": 28,
@@ -508,11 +510,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
       "observaciones": null
     },
     {
@@ -530,11 +532,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
       "observaciones": null
     },
     {
@@ -700,11 +702,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Localizar contacto verificado de la productora citada por DGCINE",
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
       "observaciones": "DGCINE incluye Colao entre las producciones de Caribbean Films; ficha del catálogo aún no tiene productora."
     },
     {
@@ -882,11 +884,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar identidad/contacto del directorio y quién puede autorizar afiche específico",
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
       "observaciones": null
     },
     {
@@ -904,11 +906,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar identidad/contacto del directorio y quién puede autorizar afiche específico",
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
       "observaciones": null
     },
     {
@@ -1016,6 +1018,49 @@
       "evidenciaPrivadaRef": null,
       "siguienteAccion": "Retomar búsqueda histórica de representante con DGCINE y fuentes del expediente anterior",
       "observaciones": null
+    }
+  ],
+  "enviosRegistrados": [
+    {
+      "empresa": "Panamericana de Producciones",
+      "contactoClave": "PANAMERICANA_DGCINE",
+      "destinatario": "contacto@panamericana.com.do",
+      "fechaEnvioReportada": "2026-11-10",
+      "estado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "asunto": "CineRD | Consulta sobre derechos de uso de afiches cinematográficos",
+      "filmIds": [
+        9,
+        13,
+        15,
+        18,
+        27,
+        50,
+        51
+      ],
+      "evidencia": "Declaración del remitente en conversación; no se adjuntó prueba técnica de entrega",
+      "acuseRecibo": null,
+      "respuesta": null,
+      "permisoConcedido": false,
+      "observacion": "El mensaje efectivamente redactado incorpora Lotoman 003 (2014), aunque el catálogo identifica a Producciones Coral como productora. Solicitar aclaración y no alterar créditos."
+    },
+    {
+      "empresa": "Caribbean Films",
+      "contactoClave": "CARIBBEAN_FILMS_OFICIAL",
+      "destinatario": "info@caribbeanfilms.com",
+      "fechaEnvioReportada": "2026-11-10",
+      "estado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "asunto": "CineRD | Solicitud de orientación sobre afiches y materiales promocionales",
+      "filmIds": [
+        21,
+        28,
+        29,
+        39
+      ],
+      "evidencia": "Declaración del remitente en conversación; no se adjuntó prueba técnica de entrega",
+      "acuseRecibo": null,
+      "respuesta": null,
+      "permisoConcedido": false,
+      "observacion": "Se consultó por Medias Hermanas, Teacher Mechy, Baño de Mujeres y Colao; no se ha acreditado que Caribbean Films administre cada afiche."
     }
   ]
 }
