@@ -80,7 +80,7 @@ test("DGCINE: las 46 rutas de afiches siguen en ledger sin permiso",()=>{
 test("DGCINE: cobertura de fuentes oficiales y próximos pasos por las 46 películas",()=>{
   assert.equal(matrix.filas.filter(x=>x.productoraSegunCatalogo).length,29);
   assert.equal(matrix.filas.filter(x=>x.productorasCorroboradasPorDgcine.length).length,6);
-  assert.equal(matrix.filas.filter(x=>x.contactosCandidatos.length).length,18);
+  assert.equal(matrix.filas.filter(x=>x.contactosCandidatos.length).length,22);
   for(const x of matrix.filas) assert.ok(x.siguienteAccion?.trim());
   assert.ok(!matrix.contactosPublicosCandidatos.PANAMERICANA_DGCINE.authorizationCapacityVerified);
 });
@@ -171,4 +171,50 @@ test("DGCINE: actuación de Alfonso en Lotoman y Lotoman 2 no implica derechos d
   }
   assert.equal(matrix.filas.find(x=>x.filmId===9).solicitudEstado,"ENVIADA_REPORTADA_POR_TITULAR");
   assert.equal(matrix.filas.find(x=>x.filmId===18).solicitudEstado,"ENVIADA_REPORTADA_POR_TITULAR");
+});
+
+test("DGCINE: cuatro películas dirigidas por Roberto Ángel tienen solo canal histórico de producción",()=>{
+  const ids=[10,12,17,55];
+  const key="PALOMA_SALCEDO_CATALOGO_HISTORICO";
+  const lead=matrix.contactosPublicosCandidatos[key];
+  assert.ok(lead,"Falta candidato de producción histórico");
+  assert.equal(lead.publicEmail,"salcedo.paloma@gmail.com");
+  assert.equal(lead.emailDeliverabilityVerified,false);
+  assert.equal(lead.legalIdentityVerified,false);
+  assert.equal(lead.authorizationCapacityVerified,false);
+  assert.match(lead.directoryUrl,/^https:\/\//);
+  assert.match(lead.identificationCaveat,/no se verificó|No se verificó/i);
+  const linked=matrix.filas.filter(x=>x.contactosCandidatos.includes(key)).map(x=>x.filmId);
+  assert.deepEqual(linked,ids);
+  const works=matrix.vinculosInterpretacionRobertoAngel;
+  assert.deepEqual(works.peliculasDirigidas,ids);
+  assert.equal(works.actorIdCineRD,16);
+  assert.equal(works.correosEnviados,0);
+  assert.equal(works.derechosDeAfiche,"NO_VERIFICADOS");
+  const snapshotDirectors=new Map(snapshot.map(f=>[f.Id,f.Director]));
+  for(const id of ids){
+    const f=matrix.filas.find(x=>x.filmId===id);
+    assert.match(snapshotDirectors.get(id),/Roberto Ángel\s+Salcedo Sanz/);
+    assert.equal(f.solicitudEstado,"NO_ENVIADA");
+    assert.equal(f.titularAfiche,"NO_IDENTIFICADO");
+    assert.equal(f.permisoUsoWebComercial,false);
+    assert.equal(f.derechosReproduccion,"NO_AUTORIZADOS");
+    assert.ok(f.fuentesRelacionDireccion.length>0);
+  }
+  assert.equal(matrix.filas.find(f=>f.filmId===55).productoraSegunCatalogo,null);
+});
+
+test("DGCINE: participación actoral de Robertico no se confunde con dirección ni autorización",()=>{
+  const works=matrix.vinculosInterpretacionRobertoAngel;
+  assert.deepEqual(works.peliculasConActuacion.map(x=>x.filmId),[12,17,20,55]);
+  const tables=load("database/seeds/catalog.snapshot.json").tables;
+  for(const entry of works.peliculasConActuacion){
+    const p=tables.ActoresPeliculas.find(a=>a.PeliculaId===entry.filmId&&a.ActorId===16);
+    assert.ok(p);
+    assert.equal(p.Personaje.trim(),entry.personaje);
+    assert.equal(matrix.filas.find(f=>f.filmId===entry.filmId).derechosReproduccion,"NO_AUTORIZADOS");
+  }
+  assert.match(snapshot.find(f=>f.Id===20).Director,/Alfonso\s+Rodríguez Zorrilla/);
+  assert.equal(matrix.filas.find(f=>f.filmId===20).contactosCandidatos.includes("PALOMA_SALCEDO_CATALOGO_HISTORICO"),false);
+  assert.equal(matrix.enviosRegistrados.length,2,"Las dos consultas ya enviadas deben mantenerse sin alteración");
 });
