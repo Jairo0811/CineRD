@@ -154,3 +154,21 @@ test("DGCINE: seis películas de Alfonso Rodríguez son candidatos de consulta s
   assert.equal(matrix.filas.find(f=>f.filmId===47).productoraSegunCatalogo,"Antena Films");
   assert.equal(matrix.filas.find(f=>f.filmId===48).productoraSegunCatalogo,null);
 });
+
+test("DGCINE: actuación de Alfonso en Lotoman y Lotoman 2 no implica derechos de afiches",()=>{
+  const data=matrix.vinculosInterpretacionAlfonsoRodriguez;
+  assert.equal(data.actorIdCineRD,32);
+  assert.equal(data.estado,"CREDITOS_RECOGIDOS_DEL_CATALOGO_NO_DERECHOS");
+  assert.deepEqual(data.filmes.map(x=>x.filmId),[9,18,48]);
+  const actors=load("database/seeds/catalog.snapshot.json").tables.Actores;
+  const links=load("database/seeds/catalog.snapshot.json").tables.ActoresPeliculas;
+  assert.match(actors.find(a=>a.Id===32).NombreCompleto,/Alfonso/);
+  for(const rec of data.filmes){
+    const e=links.find(x=>x.PeliculaId===rec.filmId&&x.ActorId===32);
+    assert.ok(e,"Falta aparición en "+rec.filmId);
+    assert.equal(e.Personaje.trim(),rec.personaje);
+    assert.equal(matrix.filas.find(x=>x.filmId===rec.filmId).derechosReproduccion,"NO_AUTORIZADOS");
+  }
+  assert.equal(matrix.filas.find(x=>x.filmId===9).solicitudEstado,"ENVIADA_REPORTADA_POR_TITULAR");
+  assert.equal(matrix.filas.find(x=>x.filmId===18).solicitudEstado,"ENVIADA_REPORTADA_POR_TITULAR");
+});
