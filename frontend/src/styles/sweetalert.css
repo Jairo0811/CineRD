@@ -1,0 +1,73 @@
+/* SweetAlert2 adopta la paleta de CineRD en temas claro y oscuro. */
+.cine-swal-popup {
+  width: min(92vw, 30rem) !important;
+  padding: 1.5rem !important;
+  border-radius: 1.25rem !important;
+  border: 1px solid var(--cine-line, #dfe7f1) !important;
+  background: var(--cine-surface-1, #fff) !important;
+  color: var(--cine-text-1, #101828) !important;
+  box-shadow: 0 25px 70px rgba(9, 25, 50, 0.24) !important;
+  font-family: "Inter Variable", Inter, system-ui, sans-serif;
+}
+.cine-swal-title {
+  color: var(--cine-text-1, #101828) !important;
+  font-weight: 800 !important;
+  font-size: clamp(1.3rem, 3vw, 1.65rem) !important;
+}
+.cine-swal-popup .swal2-html-container {
+  color: var(--cine-text-2, #475467) !important;
+  white-space: pre-line;
+  font-size: 0.96rem;
+  line-height: 1.6;
+}
+.cine-swal-popup .swal2-actions {
+  gap: 0.65rem;
+  width: 100%;
+}
+.cine-swal-confirm,
+.cine-swal-cancel {
+  min-height: 2.7rem;
+  border-radius: 0.7rem;
+  padding: 0.65rem 1.1rem;
+  font: inherit;
+  font-weight: 700;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+.cine-swal-confirm {
+  border: 1px solid var(--cine-primary, #0d6efd);
+  background: var(--cine-primary, #0d6efd);
+  color: #fff;
+}
+.cine-swal-confirm:hover { filter: brightness(0.93); }
+.cine-swal-cancel {
+  border: 1px solid var(--cine-line, #dfe7f1);
+  background: var(--cine-surface-2, #f8fafc);
+  color: var(--cine-text-1, #101828);
+}
+.cine-swal-cancel:hover { border-color: var(--cine-primary, #0d6efd); }
+.cine-swal-confirm:focus-visible,
+.cine-swal-cancel:focus-visible,
+.cine-swal-input:focus-visible {
+  outline: 3px solid var(--cine-primary, #0d6efd);
+  outline-offset: 3px;
+}
+.cine-swal-input {
+  width: calc(100% - 2rem) !important;
+  margin-inline: 1rem !important;
+  border: 1px solid var(--cine-line, #dfe7f1) !important;
+  background: var(--cine-input-bg, #fff) !important;
+  color: var(--cine-text-1, #101828) !important;
+  border-radius: 0.65rem !important;
+  font: inherit !important;
+}
+html[data-theme="dark"] .cine-swal-popup .swal2-validation-message {
+  color: #f8d7da;
+  background: #42232c;
+}
+@media (max-width: 420px) {
+  .cine-swal-popup { padding: 1rem !important; }
+  .cine-swal-confirm, .cine-swal-cancel { flex: 1 1 8rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cine-swal-popup, .cine-swal-confirm, .cine-swal-cancel { transition: none !important; animation: none !important; }
+}
