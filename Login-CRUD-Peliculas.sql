@@ -1,114 +1,54 @@
 /*
-  Crea el login y el usuario de base de datos que usa la API de CineRD.
+  CineRD — solo SQL Server LOCAL / instancia administrada, NO Azure SQL Database.
+  Ejecute con sqlcmd en modo SQLCMD y sesión de administración legítima:
 
-  La contraseña NO se guarda en el repositorio. Configura CINERD_DB_PASSWORD como
-  variable de entorno privada de la sesión antes de invocar sqlcmd.
-  No pases la contraseña con -v en la línea de comandos: puede quedar en el historial.
+    - Configure CINERD_DB_PASSWORD en el entorno de la terminal (no lo pegue en Git).
+    - sqlcmd -S <servidor-local> -E -b -i Login-CRUD-Peliculas.sql
+    - Borre CINERD_DB_PASSWORD de la sesión al finalizar.
 
-    sqlcmd -S <servidor> -E -b -i Login-CRUD-Peliculas.sql
-
-  - EJECÚTALO CON sqlcmd o con el modo SQLCMD de SSMS. -b hace que sqlcmd devuelva error
-    al detectar fallos. Además, el script comprueba la ausencia de sustitución para evitar
-    crear accidentalmente un login con una contraseña literal.
-  - Elimina la variable de entorno al terminar de crear la cuenta.
-  - Usa una clave que cumpla la política de SQL Server y que no contenga comillas simples (').
-  - Esa misma clave va en DB_PASSWORD (backend/.env o variables de Render), nunca en Git.
-  - Si una versión anterior de este archivo se usó en un servidor real, cambia esa clave:
-    sigue visible en el historial de Git.
+  El valor se sustituye como variable sqlcmd; no usar comillas simples en la clave.
+  Requiere contraseña robusta de al menos 16 caracteres y política del servidor.
+  Nunca usar esta cuenta db_owner para la API de producción: la aplicación debe
+  usar una identidad separada con permisos mínimos y migraciones administradas.
+  No ejecutar contra Azure SQL Database, donde se recomienda usuario contenido.
 */
+
 USE master;
 GO
 
--- Defensa adicional: si alguien ejecuta esto como T-SQL normal, la variable
--- SQLCMD no se expande. Rechazarla en el mismo lote que CREATE LOGIN.
-IF N'$(CINERD_DB_PASSWORD)' = N'
-    SELECT 1
-    FROM sys.server_principals
-    WHERE name = 'crud_peliculas_user'
-)
+DECLARE @password NVARCHAR(128) = N'$(CINERD_DB_PASSWORD)';
+IF @password = N'$' + N'(CINERD_DB_PASSWORD)'
+   OR NULLIF(LTRIM(RTRIM(@password)), N'') IS NULL
+   OR LEN(@password) < 16
 BEGIN
-    CREATE LOGIN crud_peliculas_user
-    WITH PASSWORD = N'$(CINERD_DB_PASSWORD)',
-    CHECK_POLICY = ON,
-    CHECK_EXPIRATION = OFF;
-END
-GO
-
-ALTER LOGIN crud_peliculas_user ENABLE;
-GO
-
-USE CRUDPeliculas;
-GO
-
-IF NOT EXISTS (
-    SELECT 1
-    FROM sys.database_principals
-    WHERE name = 'crud_peliculas_user'
-)
-BEGIN
-    CREATE USER crud_peliculas_user
-    FOR LOGIN crud_peliculas_user;
-END
-GO
-
--- db_owner permite que `npm run migrate` y `npm run setup:local` creen tablas e índices.
-ALTER ROLE db_owner ADD MEMBER crud_peliculas_user;
-GO
-
-/*
-  Mínimo privilegio para producción: la API solo ejecuta SELECT/INSERT/UPDATE/DELETE (no crea
-  objetos mientras corre). Si aplicas las migraciones con otra cuenta administrativa, reemplaza
-  el bloque db_owner de arriba por este:
-
-  ALTER ROLE db_datareader ADD MEMBER crud_peliculas_user;
-  ALTER ROLE db_datawriter ADD MEMBER crud_peliculas_user;
-  GO
-*/ + N'(CINERD_DB_PASSWORD)'
-   OR NULLIF(LTRIM(RTRIM(N'$(CINERD_DB_PASSWORD)')), N'') IS NULL
-BEGIN
-    THROW 51001, 'CINERD_DB_PASSWORD no fue sustituida por SQLCMD o esta vacia.', 1;
+    THROW 51001, 'CINERD_DB_PASSWORD no fue sustituida o no cumple longitud minima.', 1;
 END;
 
-IF NOT EXISTS (
-    SELECT 1
-    FROM sys.server_principals
-    WHERE name = 'crud_peliculas_user'
-)
+IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE name = N'crud_peliculas_user')
 BEGIN
-    CREATE LOGIN crud_peliculas_user
-    WITH PASSWORD = N'$(CINERD_DB_PASSWORD)',
-    CHECK_POLICY = ON,
-    CHECK_EXPIRATION = OFF;
-END
+    DECLARE @createLogin NVARCHAR(MAX) =
+        N'CREATE LOGIN [crud_peliculas_user] WITH PASSWORD = N' +
+        QUOTENAME(@password, NCHAR(39)) +
+        N', CHECK_POLICY = ON, CHECK_EXPIRATION = OFF;';
+    EXEC sys.sp_executesql @createLogin;
+END;
 GO
 
-ALTER LOGIN crud_peliculas_user ENABLE;
-GO
-
+-- El bloque siguiente se ejecuta únicamente en SQL Server local.
 USE CRUDPeliculas;
 GO
 
+IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE name = N'crud_peliculas_user')
+    CREATE USER [crud_peliculas_user] FOR LOGIN [crud_peliculas_user];
+GO
+
+-- Solo para entorno de DESARROLLO local que aplica DDL.
 IF NOT EXISTS (
     SELECT 1
-    FROM sys.database_principals
-    WHERE name = 'crud_peliculas_user'
+    FROM sys.database_role_members rm
+    JOIN sys.database_principals rolep ON rolep.principal_id = rm.role_principal_id
+    JOIN sys.database_principals memberp ON memberp.principal_id = rm.member_principal_id
+    WHERE rolep.name = N'db_owner' AND memberp.name = N'crud_peliculas_user'
 )
-BEGIN
-    CREATE USER crud_peliculas_user
-    FOR LOGIN crud_peliculas_user;
-END
+    ALTER ROLE [db_owner] ADD MEMBER [crud_peliculas_user];
 GO
-
--- db_owner permite que `npm run migrate` y `npm run setup:local` creen tablas e índices.
-ALTER ROLE db_owner ADD MEMBER crud_peliculas_user;
-GO
-
-/*
-  Mínimo privilegio para producción: la API solo ejecuta SELECT/INSERT/UPDATE/DELETE (no crea
-  objetos mientras corre). Si aplicas las migraciones con otra cuenta administrativa, reemplaza
-  el bloque db_owner de arriba por este:
-
-  ALTER ROLE db_datareader ADD MEMBER crud_peliculas_user;
-  ALTER ROLE db_datawriter ADD MEMBER crud_peliculas_user;
-  GO
-*/

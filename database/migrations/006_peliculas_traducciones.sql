@@ -4,8 +4,6 @@
    Conserva el contenido original como fuente canónica.
    ========================================================= */
 
-USE CRUDPeliculas;
-GO
 
 IF OBJECT_ID(N'dbo.PeliculaTraducciones', N'U') IS NULL
 BEGIN

@@ -1,5 +1,3 @@
-USE CRUDPeliculas;
-GO
 
 IF COL_LENGTH('dbo.Actores', 'InstagramUrl') IS NULL
     ALTER TABLE dbo.Actores ADD InstagramUrl NVARCHAR(300) NULL;

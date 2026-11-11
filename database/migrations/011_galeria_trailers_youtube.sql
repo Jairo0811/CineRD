@@ -1,5 +1,3 @@
-USE CRUDPeliculas;
-GO
 
 IF COL_LENGTH(N'dbo.GaleriaMultimedia', N'VideoUrl') IS NULL
 BEGIN

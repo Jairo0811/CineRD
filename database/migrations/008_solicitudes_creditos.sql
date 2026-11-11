@@ -1,5 +1,3 @@
-USE CRUDPeliculas;
-GO
 
 IF OBJECT_ID(N'dbo.SolicitudesCredito', N'U') IS NULL
 BEGIN
