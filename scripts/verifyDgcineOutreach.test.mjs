@@ -31,7 +31,7 @@ test("DGCINE: el contacto candidato no se confunde con titularidad ni permiso",(
     assert.equal(x.titularAfiche,"NO_IDENTIFICADO");
     assert.equal(x.derechosReproduccion,"NO_AUTORIZADOS");
     assert.equal(x.permisoUsoWebComercial,false);
-    const queried=new Set([9,13,15,18,27,50,51,21,28,29,39]).has(x.filmId);
+    const queried=new Set([9,13,15,18,27,50,51,21,28,29,39,20,26,44,45,47,48,10,12,17,55]).has(x.filmId);
     assert.equal(x.solicitudEstado,queried?"ENVIADA_REPORTADA_POR_TITULAR":"NO_ENVIADA");
     assert.equal(x.solicitudFecha,queried?"2026-11-10":null);
     assert.equal(x.respuesta,null);
@@ -85,9 +85,9 @@ test("DGCINE: cobertura de fuentes oficiales y próximos pasos por las 46 pelíc
   assert.ok(!matrix.contactosPublicosCandidatos.PANAMERICANA_DGCINE.authorizationCapacityVerified);
 });
 
-test("DGCINE: dos correos reportados el 10/11 sin acuse, respuesta ni licencia",()=>{
+test("DGCINE: cuatro correos reportados el 10/11 sin acuse, respuesta ni licencia",()=>{
   const records=matrix.enviosRegistrados;
-  assert.equal(records.length,2);
+  assert.equal(records.length,4);
   const byKey=new Map(records.map(r=>[r.contactoClave,r]));
   const expected=[
     ["PANAMERICANA_DGCINE","contacto@panamericana.com.do",[9,13,15,18,27,50,51]],
@@ -112,8 +112,8 @@ test("DGCINE: dos correos reportados el 10/11 sin acuse, respuesta ni licencia",
       assert.equal(row.permisoUsoWebComercial,false);
     }
   }
-  assert.equal(matrix.filas.filter(f=>f.solicitudEstado==="ENVIADA_REPORTADA_POR_TITULAR").length,11);
-  assert.equal(matrix.filas.filter(f=>f.solicitudEstado==="NO_ENVIADA").length,35);
+  assert.equal(matrix.filas.filter(f=>f.solicitudEstado==="ENVIADA_REPORTADA_POR_TITULAR").length,21);
+  assert.equal(matrix.filas.filter(f=>f.solicitudEstado==="NO_ENVIADA").length,25);
 });
 
 test("DGCINE: Lotoman 003 fue consultada a Panamericana sin falsear productora",()=>{
@@ -140,7 +140,7 @@ test("DGCINE: seis películas de Alfonso Rodríguez son candidatos de consulta s
   assert.deepEqual(actual,ids);
   for(const id of ids){
     const film=matrix.filas.find(f=>f.filmId===id);
-    assert.equal(film.solicitudEstado,"NO_ENVIADA");
+    assert.equal(film.solicitudEstado,"ENVIADA_REPORTADA_POR_TITULAR");
     assert.equal(film.respuesta,null);
     assert.equal(film.derechosReproduccion,"NO_AUTORIZADOS");
     assert.equal(film.titularAfiche,"NO_IDENTIFICADO");
@@ -189,13 +189,13 @@ test("DGCINE: cuatro películas dirigidas por Roberto Ángel tienen solo canal h
   const works=matrix.vinculosInterpretacionRobertoAngel;
   assert.deepEqual(works.peliculasDirigidas,ids);
   assert.equal(works.actorIdCineRD,16);
-  assert.equal(works.correosEnviados,0);
+  assert.equal(works.correosEnviados,1);
   assert.equal(works.derechosDeAfiche,"NO_VERIFICADOS");
   const snapshotDirectors=new Map(snapshot.map(f=>[f.Id,f.Director]));
   for(const id of ids){
     const f=matrix.filas.find(x=>x.filmId===id);
     assert.match(snapshotDirectors.get(id),/Roberto Ángel\s+Salcedo Sanz/);
-    assert.equal(f.solicitudEstado,"NO_ENVIADA");
+    assert.equal(f.solicitudEstado,"ENVIADA_REPORTADA_POR_TITULAR");
     assert.equal(f.titularAfiche,"NO_IDENTIFICADO");
     assert.equal(f.permisoUsoWebComercial,false);
     assert.equal(f.derechosReproduccion,"NO_AUTORIZADOS");
@@ -216,5 +216,49 @@ test("DGCINE: participación actoral de Robertico no se confunde con dirección 
   }
   assert.match(snapshot.find(f=>f.Id===20).Director,/Alfonso\s+Rodríguez Zorrilla/);
   assert.equal(matrix.filas.find(f=>f.filmId===20).contactosCandidatos.includes("PALOMA_SALCEDO_CATALOGO_HISTORICO"),false);
-  assert.equal(matrix.enviosRegistrados.length,2,"Las dos consultas ya enviadas deben mantenerse sin alteración");
+  assert.equal(matrix.enviosRegistrados.length,4,"Las cuatro consultas enviadas deben conservarse, incluidos los mensajes previos");
+});
+
+test("DGCINE: Alfonso fue consultado en un mensaje a dos destinatarios, sin licencias",()=>{
+  const record=matrix.enviosRegistrados.find(x=>x.contactoClave==="ALFONSO_RODRIGUEZ_DGCINE");
+  assert.ok(record);
+  assert.equal(record.destinatario,"alfonsorod@kaluanafilms.com");
+  assert.deepEqual(record.destinatarios,["alfonsorod@kaluanafilms.com","pelidomsa@gmail.com"]);
+  assert.deepEqual(record.filmIds,[20,26,44,45,47,48]);
+  assert.equal(record.fechaEnvioReportada,"2026-11-10");
+  assert.equal(record.estado,"ENVIADA_REPORTADA_POR_TITULAR");
+  assert.equal(record.acuseRecibo,null);
+  assert.equal(record.respuesta,null);
+  assert.equal(record.permisoConcedido,false);
+  for(const id of record.filmIds){
+    const film=matrix.filas.find(x=>x.filmId===id);
+    assert.deepEqual(film.contactoEnvioReportado.destinatarios,record.destinatarios);
+    assert.equal(film.solicitudFecha,"2026-11-10");
+    assert.equal(film.derechosReproduccion,"NO_AUTORIZADOS");
+  }
+});
+
+test("DGCINE: envío de Roberto a dirección institucional no habilita licencias ni consta envío a Paloma",()=>{
+  const record=matrix.enviosRegistrados.find(x=>x.empresa?.startsWith("Roberto Ángel Salcedo"));
+  assert.ok(record);
+  assert.equal(record.contactoClave,null);
+  assert.equal(record.destinatario,"rsalcedo@cultura.gob.do");
+  assert.deepEqual(record.destinatarios,["rsalcedo@cultura.gob.do"]);
+  assert.deepEqual(record.filmIds,[10,12,17,55]);
+  assert.equal(record.fechaEnvioReportada,"2026-11-10");
+  assert.equal(record.estado,"ENVIADA_REPORTADA_POR_TITULAR");
+  assert.equal(record.acuseRecibo,null);
+  assert.equal(record.respuesta,null);
+  assert.equal(record.permisoConcedido,false);
+  assert.match(record.observacion,/no se interpreta como trámite ante Cultura/i);
+  for(const id of record.filmIds){
+    const film=matrix.filas.find(x=>x.filmId===id);
+    assert.deepEqual(film.contactoEnvioReportado.destinatarios,record.destinatarios);
+    assert.equal(film.solicitudEstado,"ENVIADA_REPORTADA_POR_TITULAR");
+    assert.equal(film.solicitudFecha,"2026-11-10");
+    assert.equal(film.derechosReproduccion,"NO_AUTORIZADOS");
+    assert.equal(film.permisoUsoWebComercial,false);
+  }
+  assert.equal(matrix.vinculosInterpretacionRobertoAngel.correosEnviados,1);
+  assert.ok(!matrix.enviosRegistrados.some(x=>x.destinatario==="salcedo.paloma@gmail.com"));
 });
