@@ -29,6 +29,18 @@
       "legalIdentityVerified": false,
       "authorizationCapacityVerified": false,
       "emailDeliverabilityVerified": false
+    },
+    "CARIBBEAN_FILMS_OFICIAL": {
+      "company": "Caribbean Films",
+      "publicEmail": "info@caribbeanfilms.com",
+      "publicPhone": "809-688-8710 ext. 2021",
+      "directoryUrl": "https://www.caribbeanfilms.com/",
+      "directoryCategory": "Sitio corporativo de productora (no directorio DGCINE)",
+      "type": "CONTACTO_CORPORATIVO_PUBLICO",
+      "identificationCaveat": "El sitio corporativo documenta el contacto público; la capacidad de autorizar cada afiche debe confirmarse por película y archivo.",
+      "legalIdentityVerified": false,
+      "authorizationCapacityVerified": false,
+      "emailDeliverabilityVerified": false
     }
   },
   "filas": [
@@ -368,7 +380,9 @@
         "https://dgcine.gob.do/medias-hermanas-estrena-este-jueves-4-en-todos-los-cines/"
       ],
       "estadoAsociacion": "FUENTE_DGCINE_PELICULA",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "CARIBBEAN_FILMS_OFICIAL"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -488,7 +502,9 @@
       "distribuidorasMencionadasPorDgcine": [],
       "fuentesAsociacionProduccion": [],
       "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "CARIBBEAN_FILMS_OFICIAL"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -508,7 +524,9 @@
       "distribuidorasMencionadasPorDgcine": [],
       "fuentesAsociacionProduccion": [],
       "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "CARIBBEAN_FILMS_OFICIAL"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
@@ -676,7 +694,9 @@
         "https://dgcine.gob.do/pelicula-flow-calle-inspiradora-y-musical-llega-a-la-gran-pantalla/"
       ],
       "estadoAsociacion": "FUENTE_DGCINE_PELICULA",
-      "contactosCandidatos": [],
+      "contactosCandidatos": [
+        "CARIBBEAN_FILMS_OFICIAL"
+      ],
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
