@@ -1110,5 +1110,30 @@
       "permisoConcedido": false,
       "observacion": "Se consultó por Medias Hermanas, Teacher Mechy, Baño de Mujeres y Colao; no se ha acreditado que Caribbean Films administre cada afiche."
     }
-  ]
+  ],
+  "vinculosInterpretacionAlfonsoRodriguez": {
+    "actorIdCineRD": 32,
+    "estado": "CREDITOS_RECOGIDOS_DEL_CATALOGO_NO_DERECHOS",
+    "nota": "Las participaciones como actor no otorgan poder de autorizar afiches y no alteran solicitudes ya enviadas a Panamericana.",
+    "filmes": [
+      {
+        "filmId": 9,
+        "personaje": "Lic. Ramirez",
+        "tipoVinculo": "ACTUACION_SIN_DIRECCION",
+        "fuente": "database/seeds/catalog.snapshot.json: Actores[Id=32], ActoresPeliculas[PeliculaId=9, ActorId=32]"
+      },
+      {
+        "filmId": 18,
+        "personaje": "Lic. Ramirez",
+        "tipoVinculo": "ACTUACION_SIN_DIRECCION",
+        "fuente": "database/seeds/catalog.snapshot.json: Actores[Id=32], ActoresPeliculas[PeliculaId=18, ActorId=32]"
+      },
+      {
+        "filmId": 48,
+        "personaje": "Figura Alta",
+        "tipoVinculo": "ACTUACION_Y_DIRECCION",
+        "fuente": "database/seeds/catalog.snapshot.json: Actores[Id=32], ActoresPeliculas[PeliculaId=48, ActorId=32]"
+      }
+    ]
+  }
 }
