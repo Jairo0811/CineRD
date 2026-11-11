@@ -1,6 +1,6 @@
 # CineRD — Plantillas para localizar titulares y solicitar afiches
 
-**Edición:** 2026-11-10. **Estado:** las plantillas A y B son versiones preliminares; el titular informó haber enviado **dos correos personalizados** el 10/11/2026 a Panamericana y Caribbean Films. La plantilla C permanece **NO ENVIADA**. Los textos que aparecen debajo **no son copias literales certificadas** de los mensajes enviados.
+**Edición:** 2026-11-10. **Estado:** el titular informó haber enviado **dos correos personalizados** el 10/11/2026 a Panamericana y Caribbean Films (plantillas A/B como antecedentes). Las plantillas C (DGCINE) y D (Alfonso Rodríguez) permanecen **NO ENVIADAS**. Los textos que aparecen debajo **no son copias literales certificadas** de los mensajes enviados.
 
 Las solicitudes futuras deben emitirse individualmente por el responsable de CineRD. **No identificar una productora como titular de los derechos del cartel sin confirmación expresa**. Un enlace del directorio no certifica vigencia del correo; no reenviar a terceros no autorizados. Archivar respuestas y contratos fuera del repositorio, y conservar en GitHub solo una referencia no confidencial.
 
@@ -60,6 +60,45 @@ Muchas gracias por su atención.
 Atentamente,  
 Equipo CineRD  
 https://cinerd.pages.dev
+
+---
+
+## Solicitud D — Bienvenido Alfonso Rodríguez Zorrilla (NO ENVIADA)
+
+**Contacto publicado en ficha DGCINE (7 de enero de 2020):** `alfonsorod@kaluanafilms.com` (alternativo listado: `pelidomsa@gmail.com`). **Vigencia pendiente de confirmar.**  
+**Fuente:** https://dgcine.gob.do/directory-listado/bienvenido-alfonzo-rodriguez-zorrilla/  
+**Asunto:** CineRD | Orientación para solicitar derechos de afiches de seis películas dominicanas
+
+Estimado señor Rodríguez:
+
+Reciba un cordial saludo.
+
+Mi nombre es Francis Jairo Matías Rosario, desarrollador de software y creador de CineRD (https://cinerd.pages.dev), un proyecto independiente dedicado a documentar las películas, talentos e historia del cine dominicano.
+
+La Dirección General de Cine (DGCINE) nos remitió a su Directorio Cinematográfico, donde encontré una ficha de contacto a su nombre como productor. Por su trayectoria en el cine dominicano, me gustaría solicitarle orientación sobre la procedencia y los titulares de los afiches oficiales de seis películas que nuestro catálogo registra bajo su dirección:
+
+- Un Macho de Mujer (2006).
+- Yuniol (2007).
+- Playball (2008).
+- Al Fin y al Cabo (2008).
+- Pimp Bullies: Víctimas de un Prostíbulo (2011).
+- Feo de día, Lindo de noche (2012).
+
+Actualmente no publicamos afiches de terceros cuyos permisos no hayan sido comprobados. Quisiera saber **quién puede autorizar por escrito la reproducción digital de cada material gráfico** y a qué productora, distribuidora o representante correspondería dirigir la solicitud.
+
+Si usted o alguna entidad que representa tiene esa facultad, agradecería conocer el procedimiento para solicitar autorizaciones no exclusivas de uso informativo en CineRD, incluyendo la posibilidad de incorporar publicidad digital en el futuro, con las condiciones de atribución, territorio, duración y adaptación técnica que correspondan.
+
+No solicitamos derechos para proyectar o distribuir las películas; nuestra consulta se limita a identificar al responsable de sus materiales promocionales.
+
+Le agradezco de antemano su orientación y sus aportes al cine dominicano.
+
+Atentamente,
+
+Francis Jairo Matías Rosario  
+Creador y desarrollador de CineRD  
+https://cinerd.pages.dev
+
+**ESTADO: BORRADOR, NO ENVIADO.** Esta plantilla no supone que el director sea propietario de los afiches ni que los datos institucionales de 2020 sigan vigentes.
 
 ---
 
