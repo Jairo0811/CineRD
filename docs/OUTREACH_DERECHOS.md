@@ -5,6 +5,20 @@
 
 El objetivo es solicitar permiso **no exclusivo** para afiches, fotos promocionales, imágenes de prensa y miniaturas alojadas en CineRD, contemplando su eventual monetización mediante anuncios. Estas referencias orientan el primer contacto: **identificar una productora no demuestra que controle los derechos del póster**.
 
+## Actualización institucional 10/11/2026 — respuesta DGCINE
+
+El titular recibió una respuesta institucional de DGCINE en la que se le remitió al **[Directorio Cinematográfico](https://dgcine.gob.do/directorio/)** para localizar contactos relacionados con las películas solicitadas. El mensaje es **orientación para localizar interlocutores**, no permiso de uso, identificación definitiva de titulares ni autorización para publicar afiches.
+
+Se abrió un expediente específico para **las 46 películas de CineRD**:
+
+- [Matriz tabular DGCINE](DGCINE_MATRIZ_CONTACTOS_AFICHES_46_2026-11-10.md).
+- [Matriz JSON con 46 fichas y estados controlados](dgcine-afiches-contactos-46.json).
+- [Tres correos de consulta preparados, ninguno enviado](DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md).
+
+Se localizaron tres contactos corporativos/registrales públicos como **candidatos**: Panamericana (directorio DGCINE), La Aldea Studio (directorio DGCINE, identidad por contrastar con el crédito) y Caribbean Films (web oficial). Se recopilaron seis relaciones película-productora corroboradas por noticias DGCINE. **No se cambia el ledger de 128 medios ni la configuración de anuncios**, y los nuevos contactos no se tratarán como titulares acreditados sin contrato.
+
+---
+
 ## Vías de contacto investigadas
 
 | Película / IDs | Entidad asociada | Vía verificable | Estado y cautela |
