@@ -48,6 +48,8 @@ jobs:
         run: node --test ../scripts/prepareClosureEditorial.test.mjs
       - name: Test F2.3 E4 E5 second pass (without approvals)
         run: node --test ../scripts/verifyF23EditorialRound2.test.mjs
+      - name: Verify 46 DGCINE outreach rows and 128 unlicensed media stay blocked
+        run: node --test ../scripts/verifyDgcineOutreach.test.mjs
       - name: Validate all 58 E5 review packets and B/C deployment safeguards
         run: node --test ../scripts/verifyABCReleaseGates.test.mjs
       - name: Report A/B/C readiness without granting licenses or deployment
