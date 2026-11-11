@@ -1,0 +1,119 @@
+# CineRD — Matriz de 46 películas para localizar responsables de afiches
+
+**Investigación:** 10 de noviembre de 2026. **Base de datos:** `database/seeds/catalog.snapshot.json` de `main`. **Matriz estructurada:** [`dgcine-afiches-contactos-46.json`](dgcine-afiches-contactos-46.json).
+
+> **Alcance:** investigar contactos para solicitar permiso escrito sobre afiches de películas individuales. Ningún contacto ha sido enviado desde CineRD por este expediente, ninguna productora figura aquí como titular verificado y **ninguno de los 128 medios del ledger ha obtenido autorización**. DGCINE respondió al titular remitiéndolo a su directorio, pero esa orientación no concede derechos.
+
+## Resumen verificable
+
+| Indicador | Cantidad |
+|---|---:|
+| Películas del catálogo | **46** |
+| Con nombre de productora en el snapshot | **29** |
+| Sin productora en el snapshot | **17** |
+| Con noticia DGCINE que menciona productora de esa película | **6** |
+| Con candidato de contacto público localizado | **11** |
+| Afiches autorizados por esta investigación | **0** |
+| Solicitudes enviadas por esta investigación | **0** |
+
+## Contactos públicos encontrados (no necesariamente titulares)
+
+| Código | Entidad | Contacto publicado | Fuente | Advertencia |
+|---|---|---|---|---|
+| `PANAMERICANA_DGCINE` | PANAMERICANA DE PRODUCCIONES, S.R.L. | `contacto@panamericana.com.do` | [Directorio DGCINE](https://dgcine.gob.do/directorio/directory-listing/panamericana-de-producciones-s-r-l/) | «Panamericana» en el catálogo no verifica identidad jurídica ni titularidad. La ficha tiene fecha de 2020; comprobar vigencia. |
+| `LA_ALDEA_DGCINE` | LA ALDEA STUDIO, S.R.L. | `indiocine@gmail.com` | [Directorio DGCINE](https://dgcine.gob.do/directorio/directory-listing/la-aldea-studio-s-r-l-2/) | La noticia menciona «La Aldea Estudio»; coincidencia con «La Aldea Studio» aún por verificar. |
+| `CARIBBEAN_FILMS_OFICIAL` | Caribbean Films | `info@caribbeanfilms.com` · 809-688-8710 ext. 2021 | [Web corporativa](https://www.caribbeanfilms.com/) | Un buzón corporativo no garantiza autorización sobre materiales concretos. |
+
+Los contactos se obtuvieron de publicaciones **públicas** de DGCINE o del sitio corporativo de la productora. **No se ha validado la entrega de mensajes ni la capacidad jurídica para licenciar material gráfico**. DGCINE lista asimismo [distribuidores cinematográficos](https://dgcine.gob.do/directorio/categoria/distribuidores-cinematograficos/), pero estar registrado como distribuidor tampoco acredita control sobre un afiche.
+
+## Matriz película por película
+
+| ID | Película | Productora en CineRD | Evidencia de productora DGCINE | Contacto candidato | Estado |
+|---:|---|---|---|---|---|
+| 4 | Sanky Panky | Premium Latin Films | No cotejada | Por localizar | Sin autorización |
+| 5 | Perico Ripiao | Cigua Films | No cotejada | Por localizar | Sin autorización |
+| 6 | Ladrones a Domicilio | Estudio Quitasueño | No cotejada | Por localizar | Sin autorización |
+| 9 | Lotoman | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Sin autorización |
+| 10 | Vamos de robo | Producciones Coral | No cotejada | Por localizar | Sin autorización |
+| 11 | Santicló: La Vaina de la Navidad | Premium Latin Films | No cotejada | Por localizar | Sin autorización |
+| 12 | I Love Bachata | Producciones Coral | No cotejada | Por localizar | Sin autorización |
+| 13 | Cristiano de la Secreta | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Sin autorización |
+| 14 | Los Rechazados | Bougroup | Bougroup | Por localizar | Sin autorización |
+| 15 | Tubérculo Gourmet | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Sin autorización |
+| 16 | Nueba Yol: ¡Por Fin Llegó Balbuena! | Cigua Films | No cotejada | Por localizar | Sin autorización |
+| 17 | Profe por Accidente | Producciones Coral | No cotejada | Por localizar | Sin autorización |
+| 18 | Lotoman 2.0 | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Sin autorización |
+| 19 | Carlota la Más Barrial | Dukesa Films | Dukesa Films + La Aldea Estudio | `LA_ALDEA_DGCINE` | Sin autorización |
+| 20 | Un Macho de Mujer | Producciones Coral | No cotejada | Por localizar | Sin autorización |
+| 21 | Medias Hermanas | Caribbean Films | Caribbean Films | `CARIBBEAN_FILMS_OFICIAL` | Sin autorización |
+| 23 | Sanky Panky 2 | Premium Latin Films | No cotejada | Por localizar | Sin autorización |
+| 24 | Sanky Panky 3 | Piñolywood Studios | No cotejada | Por localizar | Sin autorización |
+| 25 | Sanky Panky 4: De Safari | Premium Latin Films | No cotejada | Por localizar | Sin autorización |
+| 26 | Feo de día, Lindo de noche | Kaluana Films | No cotejada | Por localizar | Sin autorización |
+| 27 | Lotoman 003: Volando Bajito | Producciones Coral | No cotejada | Por localizar | Sin autorización |
+| 28 | Teacher Mechy | Caribbean Films | No cotejada | `CARIBBEAN_FILMS_OFICIAL` | Sin autorización |
+| 29 | Baño de Mujeres | Caribbean Films | No cotejada | `CARIBBEAN_FILMS_OFICIAL` | Sin autorización |
+| 30 | El Diablo no duerme en su cama | Estudio Quitasueño | No cotejada | Por localizar | Sin autorización |
+| 31 | Entiérrenlo Parao | No registrada | No cotejada | Por localizar | Sin autorización |
+| 32 | Los Rechazados 2: Operación Espacial  | Bougroup | Bougroup | Por localizar | Sin autorización |
+| 33 | Pueto Pa' Mi | No registrada | No cotejada | Por localizar | Sin autorización |
+| 34 | Los Super | No registrada | No cotejada | Por localizar | Sin autorización |
+| 36 | Nueba Yol 3: Bajo la Nueva Ley | No registrada | No cotejada | Por localizar | Sin autorización |
+| 38 | La casa del kilómetro 5 | No registrada | No cotejada | Por localizar | Sin autorización |
+| 39 | Colao | No registrada | Caribbean Films | `CARIBBEAN_FILMS_OFICIAL` | Sin autorización |
+| 40 | Colao 2 | No registrada | No cotejada | Por localizar | Sin autorización |
+| 41 | Malos padres | No registrada | No cotejada | Por localizar | Sin autorización |
+| 42 | Andrea | No registrada | No cotejada | Por localizar | Sin autorización |
+| 44 | Playball | No registrada | No cotejada | Por localizar | Sin autorización |
+| 45 | Yuniol | Antena Films | No cotejada | Por localizar | Sin autorización |
+| 47 | Pimp Bullies: Victimas de un Prostibulo | Antena Films | No cotejada | Por localizar | Sin autorización |
+| 48 | Al Fin y al Cabo | No registrada | No cotejada | Por localizar | Sin autorización |
+| 49 | Los Locos también Piensan | No registrada | No cotejada | Por localizar | Sin autorización |
+| 50 | Hermanos | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Sin autorización |
+| 51 | Tubérculo Presidente | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Sin autorización |
+| 52 | Dos policías en apuros | No registrada | No cotejada | Por localizar | Sin autorización |
+| 53 | La Musiquita por Dentro | No registrada | No cotejada | Por localizar | Sin autorización |
+| 54 | Los Paracaidistas | No registrada | No cotejada | Por localizar | Sin autorización |
+| 55 | El Plan Perfecto | No registrada | Miranda Films | Por localizar | Sin autorización |
+| 56 | La Lucha de Ana | No registrada | No cotejada | Por localizar | Sin autorización |
+
+**Interpretación:** las productoras del snapshot son datos históricos de CineRD, no verificaciones jurídicas; las seis filas con noticia DGCINE tienen una referencia adicional sobre producción, no sobre quién diseñó o posee el cartel. Las notas, URLs por película y vínculo al archivo de afiche constan en el [JSON de 46 filas](dgcine-afiches-contactos-46.json).
+
+## Evidencias de producción en DGCINE
+
+- [Los Rechazados — Bougroup y distribuidora indicada](https://dgcine.gob.do/los-rechazados-operacion-submarino-ya-en-salas-de-cine-del-pais/).
+- [Los Rechazados 2 — Bougroup](https://dgcine.gob.do/los-rechazados-2-lleva-la-comedia-y-la-ciencia-ficcion-a-nuevas-audiencias/).
+- [Carlota la Más Barrial — Dukesa Films y La Aldea Estudio](https://dgcine.gob.do/dgcine-participa-en-la-premiere-decarlota-la-mas-barrial-que-llegara-a-los-cines-este-28-de-agosto/).
+- [Medias Hermanas — Caribbean Films](https://dgcine.gob.do/medias-hermanas-estrena-este-jueves-4-en-todos-los-cines/).
+- [Colao mencionada como producción Caribbean Films](https://dgcine.gob.do/pelicula-flow-calle-inspiradora-y-musical-llega-a-la-gran-pantalla/).
+- [El Plan Perfecto — Miranda Films](https://dgcine.gob.do/para-2017-hay-en-cartelera-20-peliculas-dominicanas/).
+
+## Primera oleada propuesta de gestión de permisos
+
+1. **Confirmación de contactos, no permiso automático:** verificar identidad jurídica de Panamericana frente al alias en CineRD y consultar por los títulos #9, #13, #15, #18, #50 y #51. Dirigir la consulta al correo público DGCINE, como **posible interlocutor**.
+2. **Caribbean Films:** consultar al correo de su web oficial por #21, #28, #29 y #39, diferenciando producciones ya corroboradas de créditos únicamente en el catálogo.
+3. **La Aldea Estudio / Carlota #19:** confirmar primero que la ficha de La Aldea Studio es la misma entidad citada por la noticia y, después, preguntar quién gestiona el material promocional.
+4. **Sin contacto directo verificado:** buscar vía directorio, web corporativa o una nueva consulta institucional específica (no reenviar la misma solicitud general) para Premium Latin Films, Cigua Films, Bougroup, Miranda Films, Antena Films y demás empresas.
+5. **17 películas sin productora en snapshot:** investigar caso por caso con créditos, productoras y distribuidoras, sin atribuir empresas por coincidencia de director o por participación en una secuela.
+
+## Qué debe contener la autorización escrita
+
+- Película y **archivo exacto** (nombre, variante y procedencia del afiche).
+- Titular del material y competencia de la persona que firma para sublicenciar su uso.
+- Permiso de reproducción digital en sitios de CineRD y redes/promociones si corresponde, con uso comercial y eventual publicidad expresamente permitido.
+- Territorios, duración, atribución, posibilidad de redimensionar/adaptar técnicamente, revocación y condiciones.
+- Fecha, responsable, cadena de representación y evidencia conservada **fuera del repositorio**; en GitHub solo referencia documental no sensible.
+
+**Regla de publicación:** registrar una respuesta no basta para pasar `PENDIENTE` a `AUTORIZADO`. El libro [`media-rights-ledger.csv`](media-rights-ledger.csv) solo se modificará tras una licencia concreta, verificada y atribuida; se mantiene el modo `review` mientras tanto.
+
+## Antecedentes y siguiente tarea
+
+El documento anterior [`OUTREACH_DERECHOS.md`](OUTREACH_DERECHOS.md) recoge Cigua Films, Premium Latin Films, Imakonos y consultas históricas; no contradice esta matriz. La respuesta de DGCINE mostrada por el titular es **orientación a un directorio**, no una licencia. Las plantillas de consulta se recogen a continuación en [`DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md`](DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md). Ninguna solicitud ha sido enviada.
+
+### Verificación automatizada
+
+```powershell
+node --test scripts/verifyDgcineOutreach.test.mjs
+```
+
+Este test valida cobertura de los 46 IDs, coherencia de rutas de afiche, vínculos de fuentes y ausencia de autorizaciones/supuestos envíos. No certifica que un contacto responda ni que una compañía sea titular de derechos.
