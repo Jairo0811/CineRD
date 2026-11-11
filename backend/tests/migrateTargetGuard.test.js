@@ -61,5 +61,6 @@ test("login local corregido tiene un CREATE LOGIN y no autoriza Azure ni secreto
   assert.ok(script.includes("solo SQL Server LOCAL"));
   assert.ok(script.includes("CHECK_POLICY = ON"));
   assert.ok(script.includes("THROW 51001"));
-  assert.ok(!/\bPASSWORD\s*=\s*N?'(?:(?!\$\().)*'/i.test(script));
+  assert.match(script,/QUOTENAME\(@password, NCHAR\(39\)\)/);
+  assert.doesNotMatch(script,/^\s*CREATE LOGIN \[crud_peliculas_user\] WITH PASSWORD = N\x27[^\$]/im);
 });
