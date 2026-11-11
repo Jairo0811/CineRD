@@ -1,0 +1,1350 @@
+{
+  "version": 1,
+  "fechaCorte": "2026-11-10",
+  "proyecto": "CineRD",
+  "sourceSnapshot": "database/seeds/catalog.snapshot.json",
+  "fuenteInstitucional": "https://dgcine.gob.do/directorio/",
+  "referenciaRespuestaDgcine": "Correo de orientación al titular mostrado en la conversación, sin autorización de uso de afiches ni garantía sobre los contactos; no se archiva correspondencia privada.",
+  "scope": "Investigación de contactos para solicitar permisos de afiches; no prueba propiedad intelectual ni licencia.",
+  "estado": "CONTACTO_INICIAL_REPORTADO_POR_TITULAR_SIN_RESPUESTA",
+  "contactosPublicosCandidatos": {
+    "PANAMERICANA_DGCINE": {
+      "company": "PANAMERICANA DE PRODUCCIONES, S.R.L.",
+      "publicEmail": "contacto@panamericana.com.do",
+      "directoryUrl": "https://dgcine.gob.do/directorio/directory-listing/panamericana-de-producciones-s-r-l/",
+      "directoryCategory": "Casas Productoras",
+      "type": "COINCIDENCIA_NOMINAL_POR_VERIFICAR",
+      "identificationCaveat": "CineRD registra «Panamericana», pero no está confirmado que corresponda a esta sociedad o que gestione los afiches.",
+      "legalIdentityVerified": false,
+      "authorizationCapacityVerified": false,
+      "emailDeliverabilityVerified": false
+    },
+    "LA_ALDEA_DGCINE": {
+      "company": "LA ALDEA STUDIO, S.R.L.",
+      "publicEmail": "indiocine@gmail.com",
+      "directoryUrl": "https://dgcine.gob.do/directorio/directory-listing/la-aldea-studio-s-r-l-2/",
+      "directoryCategory": "Estudios Cinematográficos",
+      "type": "CANDIDATO_VINCULACION_POR_VERIFICAR",
+      "identificationCaveat": "La noticia DGCINE dice «La Aldea Estudio» y el directorio «La Aldea Studio»; identidad y facultad para autorizar el afiche no verificadas.",
+      "legalIdentityVerified": false,
+      "authorizationCapacityVerified": false,
+      "emailDeliverabilityVerified": false
+    },
+    "CARIBBEAN_FILMS_OFICIAL": {
+      "company": "Caribbean Films",
+      "publicEmail": "info@caribbeanfilms.com",
+      "publicPhone": "809-688-8710 ext. 2021",
+      "directoryUrl": "https://www.caribbeanfilms.com/",
+      "directoryCategory": "Sitio corporativo de productora (no directorio DGCINE)",
+      "type": "CONTACTO_CORPORATIVO_PUBLICO",
+      "identificationCaveat": "El sitio corporativo documenta el contacto público; la capacidad de autorizar cada afiche debe confirmarse por película y archivo.",
+      "legalIdentityVerified": false,
+      "authorizationCapacityVerified": false,
+      "emailDeliverabilityVerified": false
+    },
+    "ALFONSO_RODRIGUEZ_DGCINE": {
+      "company": "Bienvenido Alfonso Rodríguez Zorrilla (productor cinematográfico, ficha DGCINE: «ALFONZO»)",
+      "publicEmail": "alfonsorod@kaluanafilms.com",
+      "alternatePublicEmail": "pelidomsa@gmail.com",
+      "directoryUrl": "https://dgcine.gob.do/directory-listado/bienvenido-alfonzo-rodriguez-zorrilla/",
+      "directoryCategory": "Productor Cinematográfico — ficha individual DGCINE 07/01/2020",
+      "type": "CONTACTO_PRODUCTOR_INSTITUCIONAL_HISTORICO",
+      "identificationCaveat": "DGCINE publica dos correos desde enero de 2020 (grafía «Alfonzo» en su registro). No se comprobó vigencia ni facultad para licenciar afiches; CineRD identifica dirección artística, no necesariamente titularidad de derechos.",
+      "legalIdentityVerified": false,
+      "authorizationCapacityVerified": false,
+      "emailDeliverabilityVerified": false
+    },
+    "PALOMA_SALCEDO_CATALOGO_HISTORICO": {
+      "company": "Paloma Salcedo — contacto de producción publicado en catálogo histórico de cine dominicano",
+      "publicEmail": "salcedo.paloma@gmail.com",
+      "directoryUrl": "https://www.dominicanaonline.org/documentos/Cata%CC%81logoDePeli%CC%81culasDominicanasEspan%CC%83ol.pdf",
+      "directoryCategory": "Contacto de producción de I Love Bachata y Vamos de robo (catálogo histórico, no canal ministerial)",
+      "type": "CONTACTO_PRODUCCION_HISTORICO_A_VERIFICAR",
+      "identificationCaveat": "Correo de contacto cinematográfico publicado en fichas históricas, entre ellas I Love Bachata y Vamos de robo. No se verificó vigencia, representación de las cuatro películas ni facultad para ceder derechos sobre carteles. No confundir con contacto del Ministerio de Cultura.",
+      "legalIdentityVerified": false,
+      "authorizationCapacityVerified": false,
+      "emailDeliverabilityVerified": false
+    }
+  },
+  "filas": [
+    {
+      "filmId": 4,
+      "titulo": "Sanky Panky",
+      "posterEnLedger": "/uploads/peliculas/1783263938713-Foto.jpeg",
+      "productoraSegunCatalogo": "Premium Latin Films",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Retomar búsqueda histórica de representante con DGCINE y fuentes del expediente anterior",
+      "observaciones": null
+    },
+    {
+      "filmId": 5,
+      "titulo": "Perico Ripiao",
+      "posterEnLedger": "/uploads/peliculas/1787265022657-Foto.jpeg",
+      "productoraSegunCatalogo": "Cigua Films",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Retomar búsqueda histórica de representante con DGCINE y fuentes del expediente anterior",
+      "observaciones": null
+    },
+    {
+      "filmId": 6,
+      "titulo": "Ladrones a Domicilio",
+      "posterEnLedger": "/uploads/peliculas/1787184596095-Foto.jpeg",
+      "productoraSegunCatalogo": "Estudio Quitasueño",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
+      "observaciones": null
+    },
+    {
+      "filmId": 9,
+      "titulo": "Lotoman",
+      "posterEnLedger": "/uploads/peliculas/1783798871497-Foto.jpeg",
+      "productoraSegunCatalogo": "Panamericana",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "PANAMERICANA_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
+      "observaciones": null
+    },
+    {
+      "filmId": 10,
+      "titulo": "Vamos de robo",
+      "posterEnLedger": "/uploads/peliculas/1787434127535-Foto.jpeg",
+      "productoraSegunCatalogo": "Producciones Coral",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "PALOMA_SALCEDO_CATALOGO_HISTORICO"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta del correo dirigido a Roberto Ángel; canal institucional utilizado no acredita intervención de Cultura ni permiso. Si hay respuesta, confirmar interlocutor privado autorizado para afiches.",
+      "observaciones": "Roberto Ángel Salcedo Sanz figura como director en CineRD; su cargo vigente es ministro de Cultura, pero la solicitud de afiches debe tramitarse por vías privadas de producción. El contacto de Paloma Salcedo procede de catálogo histórico y solo se asocia directamente a algunas películas; validar vigencia y facultades. La mención de coproductoras no cambia Productora del snapshot ni acredita derechos.",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/vamos-de-robo-2014/",
+        "https://acento.com.do/cultura/vamos-de-robo-primer-estreno-dominicano-para-el-2014-1127603.html"
+      ],
+      "productorasMencionadasEnFuentesPorVerificar": [
+        "Miranda Films",
+        "Producciones Coral"
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "rsalcedo@cultura.gob.do"
+        ],
+        "tipo": "CORREO_INSTITUCIONAL_UTILIZADO_POR_TITULAR",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; no se ha verificado si es canal apropiado para derechos privados",
+        "observacion": "No confundir envío a buzón de cultura.gob.do con solicitud oficial al Ministerio de Cultura o autorización ministerial; en el mensaje se aclaró que la consulta es sobre su faceta cinematográfica."
+      }
+    },
+    {
+      "filmId": 11,
+      "titulo": "Santicló: La Vaina de la Navidad",
+      "posterEnLedger": "/uploads/peliculas/1783276332078-Foto.jpeg",
+      "productoraSegunCatalogo": "Premium Latin Films",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
+      "observaciones": null
+    },
+    {
+      "filmId": 12,
+      "titulo": "I Love Bachata",
+      "posterEnLedger": "/uploads/peliculas/1783798841409-Foto.jpeg",
+      "productoraSegunCatalogo": "Producciones Coral",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "PALOMA_SALCEDO_CATALOGO_HISTORICO"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta del correo dirigido a Roberto Ángel; canal institucional utilizado no acredita intervención de Cultura ni permiso. Si hay respuesta, confirmar interlocutor privado autorizado para afiches.",
+      "observaciones": "Roberto Ángel Salcedo Sanz figura como director en CineRD; su cargo vigente es ministro de Cultura, pero la solicitud de afiches debe tramitarse por vías privadas de producción. El contacto de Paloma Salcedo procede de catálogo histórico y solo se asocia directamente a algunas películas; validar vigencia y facultades. La mención de coproductoras no cambia Productora del snapshot ni acredita derechos.",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/yo-amo-la-bachata-i-love-bachata-2011/"
+      ],
+      "productorasMencionadasEnFuentesPorVerificar": [
+        "Miranda Films",
+        "Producciones Coral"
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "rsalcedo@cultura.gob.do"
+        ],
+        "tipo": "CORREO_INSTITUCIONAL_UTILIZADO_POR_TITULAR",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; no se ha verificado si es canal apropiado para derechos privados",
+        "observacion": "No confundir envío a buzón de cultura.gob.do con solicitud oficial al Ministerio de Cultura o autorización ministerial; en el mensaje se aclaró que la consulta es sobre su faceta cinematográfica."
+      }
+    },
+    {
+      "filmId": 13,
+      "titulo": "Cristiano de la Secreta",
+      "posterEnLedger": "/uploads/peliculas/1783798435642-Foto.jpeg",
+      "productoraSegunCatalogo": "Panamericana",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "PANAMERICANA_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
+      "observaciones": null
+    },
+    {
+      "filmId": 14,
+      "titulo": "Los Rechazados",
+      "posterEnLedger": "/uploads/peliculas/1783797608909-Foto.jpeg",
+      "productoraSegunCatalogo": "Bougroup",
+      "productorasCorroboradasPorDgcine": [
+        "Bougroup"
+      ],
+      "distribuidorasMencionadasPorDgcine": [
+        "Caribbean Films Distribution"
+      ],
+      "fuentesAsociacionProduccion": [
+        "https://dgcine.gob.do/los-rechazados-operacion-submarino-ya-en-salas-de-cine-del-pais/"
+      ],
+      "estadoAsociacion": "FUENTE_DGCINE_PELICULA",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Localizar contacto verificado de la productora citada por DGCINE",
+      "observaciones": "DGCINE identifica a Bougroup como productora y a Caribbean Films Distribution como distribuidora."
+    },
+    {
+      "filmId": 15,
+      "titulo": "Tubérculo Gourmet",
+      "posterEnLedger": "/uploads/peliculas/1783796843841-Foto.jpeg",
+      "productoraSegunCatalogo": "Panamericana",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "PANAMERICANA_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
+      "observaciones": null
+    },
+    {
+      "filmId": 16,
+      "titulo": "Nueba Yol: ¡Por Fin Llegó Balbuena!",
+      "posterEnLedger": "/uploads/peliculas/1783796609802-Foto.jpeg",
+      "productoraSegunCatalogo": "Cigua Films",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Retomar búsqueda histórica de representante con DGCINE y fuentes del expediente anterior",
+      "observaciones": null
+    },
+    {
+      "filmId": 17,
+      "titulo": "Profe por Accidente",
+      "posterEnLedger": "/uploads/peliculas/1783798410690-Foto.jpeg",
+      "productoraSegunCatalogo": "Producciones Coral",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "PALOMA_SALCEDO_CATALOGO_HISTORICO"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta del correo dirigido a Roberto Ángel; canal institucional utilizado no acredita intervención de Cultura ni permiso. Si hay respuesta, confirmar interlocutor privado autorizado para afiches.",
+      "observaciones": "Roberto Ángel Salcedo Sanz figura como director en CineRD; su cargo vigente es ministro de Cultura, pero la solicitud de afiches debe tramitarse por vías privadas de producción. El contacto de Paloma Salcedo procede de catálogo histórico y solo se asocia directamente a algunas películas; validar vigencia y facultades. La mención de coproductoras no cambia Productora del snapshot ni acredita derechos.",
+      "fuentesRelacionDireccion": [
+        "https://www.diariolibre.com/revista/cine/profe-por-accidente-la-nueva-pelcula-de-robertico-salcedo-EPDL344077"
+      ],
+      "productorasMencionadasEnFuentesPorVerificar": [
+        "Miranda Films",
+        "Producciones Coral"
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "rsalcedo@cultura.gob.do"
+        ],
+        "tipo": "CORREO_INSTITUCIONAL_UTILIZADO_POR_TITULAR",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; no se ha verificado si es canal apropiado para derechos privados",
+        "observacion": "No confundir envío a buzón de cultura.gob.do con solicitud oficial al Ministerio de Cultura o autorización ministerial; en el mensaje se aclaró que la consulta es sobre su faceta cinematográfica."
+      }
+    },
+    {
+      "filmId": 18,
+      "titulo": "Lotoman 2.0",
+      "posterEnLedger": "/uploads/peliculas/1783797682156-Foto.jpeg",
+      "productoraSegunCatalogo": "Panamericana",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "PANAMERICANA_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
+      "observaciones": null
+    },
+    {
+      "filmId": 19,
+      "titulo": "Carlota la Más Barrial",
+      "posterEnLedger": "/uploads/peliculas/1783797240911-Foto.jpeg",
+      "productoraSegunCatalogo": "Dukesa Films",
+      "productorasCorroboradasPorDgcine": [
+        "Dukesa Films",
+        "La Aldea Estudio"
+      ],
+      "distribuidorasMencionadasPorDgcine": [
+        "Caribbean Film Distribution"
+      ],
+      "fuentesAsociacionProduccion": [
+        "https://dgcine.gob.do/dgcine-participa-en-la-premiere-decarlota-la-mas-barrial-que-llegara-a-los-cines-este-28-de-agosto/"
+      ],
+      "estadoAsociacion": "FUENTE_DGCINE_PELICULA",
+      "contactosCandidatos": [
+        "LA_ALDEA_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Verificar identidad/contacto del directorio y quién puede autorizar afiche específico",
+      "observaciones": "DGCINE cita dos casas productoras; no atribuye a ninguna los derechos del afiche."
+    },
+    {
+      "filmId": 20,
+      "titulo": "Un Macho de Mujer",
+      "posterEnLedger": "/uploads/peliculas/1783799220119-Foto.jpeg",
+      "productoraSegunCatalogo": "Producciones Coral",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "ALFONSO_RODRIGUEZ_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta de Alfonso Rodríguez o remitente designado; verificar entidad facultada para conceder permiso del afiche específico, sin asumir entrega.",
+      "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
+        "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "alfonsorod@kaluanafilms.com",
+          "pelidomsa@gmail.com"
+        ],
+        "tipo": "DOS_DESTINATARIOS_EN_UN_CORREO",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; sin comprobación de recepción"
+      }
+    },
+    {
+      "filmId": 21,
+      "titulo": "Medias Hermanas",
+      "posterEnLedger": "/uploads/peliculas/1783812531932-Foto.jpeg",
+      "productoraSegunCatalogo": "Caribbean Films",
+      "productorasCorroboradasPorDgcine": [
+        "Caribbean Films"
+      ],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [
+        "https://dgcine.gob.do/medias-hermanas-estrena-este-jueves-4-en-todos-los-cines/"
+      ],
+      "estadoAsociacion": "FUENTE_DGCINE_PELICULA",
+      "contactosCandidatos": [
+        "CARIBBEAN_FILMS_OFICIAL"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
+      "observaciones": "DGCINE identifica a Caribbean Films como productora."
+    },
+    {
+      "filmId": 23,
+      "titulo": "Sanky Panky 2",
+      "posterEnLedger": "/uploads/peliculas/1783797810292-Foto.jpeg",
+      "productoraSegunCatalogo": "Premium Latin Films",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
+      "observaciones": null
+    },
+    {
+      "filmId": 24,
+      "titulo": "Sanky Panky 3",
+      "posterEnLedger": "/uploads/peliculas/1783798331747-Foto.jpeg",
+      "productoraSegunCatalogo": "Piñolywood Studios",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
+      "observaciones": null
+    },
+    {
+      "filmId": 25,
+      "titulo": "Sanky Panky 4: De Safari",
+      "posterEnLedger": "/uploads/peliculas/1783797213911-Foto.jpeg",
+      "productoraSegunCatalogo": "Premium Latin Films",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
+      "observaciones": null
+    },
+    {
+      "filmId": 26,
+      "titulo": "Feo de día, Lindo de noche",
+      "posterEnLedger": "/uploads/peliculas/1783798154307-Foto.jpeg",
+      "productoraSegunCatalogo": "Kaluana Films",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "ALFONSO_RODRIGUEZ_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta de Alfonso Rodríguez o remitente designado; verificar entidad facultada para conceder permiso del afiche específico, sin asumir entrega.",
+      "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
+        "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "alfonsorod@kaluanafilms.com",
+          "pelidomsa@gmail.com"
+        ],
+        "tipo": "DOS_DESTINATARIOS_EN_UN_CORREO",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; sin comprobación de recepción"
+      }
+    },
+    {
+      "filmId": 27,
+      "titulo": "Lotoman 003: Volando Bajito",
+      "posterEnLedger": "/uploads/peliculas/1783798091036-Foto.jpeg",
+      "productoraSegunCatalogo": "Producciones Coral",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "PANAMERICANA_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
+      "observaciones": "La consulta enviada a Panamericana también menciona Lotoman 003 (2014), pero CineRD registra como productora a Producciones Coral. Se solicita orientación y posible vinculación; no modificar el crédito por enviar esta consulta."
+    },
+    {
+      "filmId": 28,
+      "titulo": "Teacher Mechy",
+      "posterEnLedger": "/uploads/peliculas/1783798245600-Foto.jpeg",
+      "productoraSegunCatalogo": "Caribbean Films",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "CARIBBEAN_FILMS_OFICIAL"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
+      "observaciones": null
+    },
+    {
+      "filmId": 29,
+      "titulo": "Baño de Mujeres",
+      "posterEnLedger": "/uploads/peliculas/1783383124522-Foto.jpeg",
+      "productoraSegunCatalogo": "Caribbean Films",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "CARIBBEAN_FILMS_OFICIAL"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
+      "observaciones": null
+    },
+    {
+      "filmId": 30,
+      "titulo": "El Diablo no duerme en su cama",
+      "posterEnLedger": "/uploads/peliculas/1783567506980-Foto.jpeg",
+      "productoraSegunCatalogo": "Estudio Quitasueño",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Corroborar empresa del catálogo con DGCINE y localizar su contacto",
+      "observaciones": null
+    },
+    {
+      "filmId": 31,
+      "titulo": "Entiérrenlo Parao",
+      "posterEnLedger": "/uploads/peliculas/1783794816825-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
+      "observaciones": null
+    },
+    {
+      "filmId": 32,
+      "titulo": "Los Rechazados 2: Operación Espacial ",
+      "posterEnLedger": "/uploads/peliculas/1783568078171-Foto.jpeg",
+      "productoraSegunCatalogo": "Bougroup",
+      "productorasCorroboradasPorDgcine": [
+        "Bougroup"
+      ],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [
+        "https://dgcine.gob.do/los-rechazados-2-lleva-la-comedia-y-la-ciencia-ficcion-a-nuevas-audiencias/"
+      ],
+      "estadoAsociacion": "FUENTE_DGCINE_PELICULA",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Localizar contacto verificado de la productora citada por DGCINE",
+      "observaciones": "DGCINE identifica a Bougroup como productora."
+    },
+    {
+      "filmId": 33,
+      "titulo": "Pueto Pa' Mi",
+      "posterEnLedger": "/uploads/peliculas/1783798271667-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
+      "observaciones": null
+    },
+    {
+      "filmId": 34,
+      "titulo": "Los Super",
+      "posterEnLedger": "/uploads/peliculas/1783797855020-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
+      "observaciones": null
+    },
+    {
+      "filmId": 36,
+      "titulo": "Nueba Yol 3: Bajo la Nueva Ley",
+      "posterEnLedger": "/uploads/peliculas/1783796667273-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
+      "observaciones": null
+    },
+    {
+      "filmId": 38,
+      "titulo": "La casa del kilómetro 5",
+      "posterEnLedger": "/uploads/peliculas/1783783342463-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
+      "observaciones": null
+    },
+    {
+      "filmId": 39,
+      "titulo": "Colao",
+      "posterEnLedger": "/uploads/peliculas/1783797333504-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [
+        "Caribbean Films"
+      ],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [
+        "https://dgcine.gob.do/pelicula-flow-calle-inspiradora-y-musical-llega-a-la-gran-pantalla/"
+      ],
+      "estadoAsociacion": "FUENTE_DGCINE_PELICULA",
+      "contactosCandidatos": [
+        "CARIBBEAN_FILMS_OFICIAL"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
+      "observaciones": "DGCINE incluye Colao entre las producciones de Caribbean Films; ficha del catálogo aún no tiene productora."
+    },
+    {
+      "filmId": 40,
+      "titulo": "Colao 2",
+      "posterEnLedger": "/uploads/peliculas/1783798771714-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
+      "observaciones": null
+    },
+    {
+      "filmId": 41,
+      "titulo": "Malos padres",
+      "posterEnLedger": "/uploads/peliculas/1783796426730-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
+      "observaciones": null
+    },
+    {
+      "filmId": 42,
+      "titulo": "Andrea",
+      "posterEnLedger": "/uploads/peliculas/1783799302768-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
+      "observaciones": null
+    },
+    {
+      "filmId": 44,
+      "titulo": "Playball",
+      "posterEnLedger": "/uploads/peliculas/1783799327983-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [
+        "ALFONSO_RODRIGUEZ_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta de Alfonso Rodríguez o remitente designado; verificar entidad facultada para conceder permiso del afiche específico, sin asumir entrega.",
+      "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. CineRD usa la variante abreviada «Alfonso Rodríguez Zorrilla» para dirección de Playball.",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
+        "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "alfonsorod@kaluanafilms.com",
+          "pelidomsa@gmail.com"
+        ],
+        "tipo": "DOS_DESTINATARIOS_EN_UN_CORREO",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; sin comprobación de recepción"
+      }
+    },
+    {
+      "filmId": 45,
+      "titulo": "Yuniol",
+      "posterEnLedger": "/uploads/peliculas/1783795712977-Foto.jpeg",
+      "productoraSegunCatalogo": "Antena Films",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "ALFONSO_RODRIGUEZ_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta de Alfonso Rodríguez o remitente designado; verificar entidad facultada para conceder permiso del afiche específico, sin asumir entrega.",
+      "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
+        "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "alfonsorod@kaluanafilms.com",
+          "pelidomsa@gmail.com"
+        ],
+        "tipo": "DOS_DESTINATARIOS_EN_UN_CORREO",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; sin comprobación de recepción"
+      }
+    },
+    {
+      "filmId": 47,
+      "titulo": "Pimp Bullies: Victimas de un Prostibulo",
+      "posterEnLedger": "/uploads/peliculas/1783795968674-Foto.jpeg",
+      "productoraSegunCatalogo": "Antena Films",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "ALFONSO_RODRIGUEZ_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta de Alfonso Rodríguez o remitente designado; verificar entidad facultada para conceder permiso del afiche específico, sin asumir entrega.",
+      "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
+        "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "alfonsorod@kaluanafilms.com",
+          "pelidomsa@gmail.com"
+        ],
+        "tipo": "DOS_DESTINATARIOS_EN_UN_CORREO",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; sin comprobación de recepción"
+      }
+    },
+    {
+      "filmId": 48,
+      "titulo": "Al Fin y al Cabo",
+      "posterEnLedger": "/uploads/peliculas/1783797561812-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [
+        "ALFONSO_RODRIGUEZ_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta de Alfonso Rodríguez o remitente designado; verificar entidad facultada para conceder permiso del afiche específico, sin asumir entrega.",
+      "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
+      "fuentesRelacionDireccion": [
+        "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
+        "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "alfonsorod@kaluanafilms.com",
+          "pelidomsa@gmail.com"
+        ],
+        "tipo": "DOS_DESTINATARIOS_EN_UN_CORREO",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; sin comprobación de recepción"
+      }
+    },
+    {
+      "filmId": 49,
+      "titulo": "Los Locos también Piensan",
+      "posterEnLedger": "/uploads/peliculas/1783798021948-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
+      "observaciones": null
+    },
+    {
+      "filmId": 50,
+      "titulo": "Hermanos",
+      "posterEnLedger": "/uploads/peliculas/1783801546223-Foto.jpeg",
+      "productoraSegunCatalogo": "Panamericana",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "PANAMERICANA_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
+      "observaciones": null
+    },
+    {
+      "filmId": 51,
+      "titulo": "Tubérculo Presidente",
+      "posterEnLedger": "/uploads/peliculas/1783801994734-Foto.jpeg",
+      "productoraSegunCatalogo": "Panamericana",
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "SOLO_CATALOGO_SIN_VERIFICAR",
+      "contactosCandidatos": [
+        "PANAMERICANA_DGCINE"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta y verificar competencia sobre el afiche de esta película; no actualizar permisos antes de contar con autorización escrita",
+      "observaciones": null
+    },
+    {
+      "filmId": 52,
+      "titulo": "Dos policías en apuros",
+      "posterEnLedger": "/uploads/peliculas/1783802104132-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
+      "observaciones": null
+    },
+    {
+      "filmId": 53,
+      "titulo": "La Musiquita por Dentro",
+      "posterEnLedger": "/uploads/peliculas/1783802250207-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
+      "observaciones": null
+    },
+    {
+      "filmId": 54,
+      "titulo": "Los Paracaidistas",
+      "posterEnLedger": "/uploads/peliculas/1783813960776-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Identificar productora/distribuidora en fuentes verificables y consultar directorio",
+      "observaciones": null
+    },
+    {
+      "filmId": 55,
+      "titulo": "El Plan Perfecto",
+      "posterEnLedger": "/uploads/peliculas/1793841671768-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [
+        "Miranda Films"
+      ],
+      "distribuidorasMencionadasPorDgcine": [
+        "Palacio del Cine"
+      ],
+      "fuentesAsociacionProduccion": [
+        "https://dgcine.gob.do/para-2017-hay-en-cartelera-20-peliculas-dominicanas/"
+      ],
+      "estadoAsociacion": "FUENTE_DGCINE_PELICULA",
+      "contactosCandidatos": [
+        "PALOMA_SALCEDO_CATALOGO_HISTORICO"
+      ],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Esperar respuesta del correo dirigido a Roberto Ángel; canal institucional utilizado no acredita intervención de Cultura ni permiso. Si hay respuesta, confirmar interlocutor privado autorizado para afiches.",
+      "observaciones": "DGCINE identifica a Miranda Films como productora, y Palacio del Cine como distribuidor; no acredita control de afiche. Roberto Ángel Salcedo Sanz figura como director en CineRD; su cargo vigente es ministro de Cultura, pero la solicitud de afiches debe tramitarse por vías privadas de producción. El contacto de Paloma Salcedo procede de catálogo histórico y solo se asocia directamente a algunas películas; validar vigencia y facultades. La mención de coproductoras no cambia Productora del snapshot ni acredita derechos.",
+      "fuentesRelacionDireccion": [
+        "https://dgcine.gob.do/para-2017-hay-en-cartelera-20-peliculas-dominicanas/",
+        "https://cinemadominicano.com/el-plan-perfecto-2017/"
+      ],
+      "productorasMencionadasEnFuentesPorVerificar": [
+        "Miranda Films",
+        "Vistalux Internacional",
+        "Producciones Coral"
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "rsalcedo@cultura.gob.do"
+        ],
+        "tipo": "CORREO_INSTITUCIONAL_UTILIZADO_POR_TITULAR",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; no se ha verificado si es canal apropiado para derechos privados",
+        "observacion": "No confundir envío a buzón de cultura.gob.do con solicitud oficial al Ministerio de Cultura o autorización ministerial; en el mensaje se aclaró que la consulta es sobre su faceta cinematográfica."
+      }
+    },
+    {
+      "filmId": 56,
+      "titulo": "La Lucha de Ana",
+      "posterEnLedger": "/uploads/peliculas/1793895363074-Foto.jpeg",
+      "productoraSegunCatalogo": null,
+      "productorasCorroboradasPorDgcine": [],
+      "distribuidorasMencionadasPorDgcine": [],
+      "fuentesAsociacionProduccion": [],
+      "estadoAsociacion": "PENDIENTE_IDENTIFICAR",
+      "contactosCandidatos": [],
+      "titularAfiche": "NO_IDENTIFICADO",
+      "derechosReproduccion": "NO_AUTORIZADOS",
+      "permisoUsoWebComercial": false,
+      "solicitudEstado": "NO_ENVIADA",
+      "solicitudFecha": null,
+      "respuesta": null,
+      "evidenciaPrivadaRef": null,
+      "siguienteAccion": "Retomar búsqueda histórica de representante con DGCINE y fuentes del expediente anterior",
+      "observaciones": null
+    }
+  ],
+  "enviosRegistrados": [
+    {
+      "empresa": "Panamericana de Producciones",
+      "contactoClave": "PANAMERICANA_DGCINE",
+      "destinatario": "contacto@panamericana.com.do",
+      "fechaEnvioReportada": "2026-11-10",
+      "estado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "asunto": "CineRD | Consulta sobre derechos de uso de afiches cinematográficos",
+      "filmIds": [
+        9,
+        13,
+        15,
+        18,
+        27,
+        50,
+        51
+      ],
+      "evidencia": "Declaración del remitente en conversación; no se adjuntó prueba técnica de entrega",
+      "acuseRecibo": null,
+      "respuesta": null,
+      "permisoConcedido": false,
+      "observacion": "El mensaje efectivamente redactado incorpora Lotoman 003 (2014), aunque el catálogo identifica a Producciones Coral como productora. Solicitar aclaración y no alterar créditos."
+    },
+    {
+      "empresa": "Caribbean Films",
+      "contactoClave": "CARIBBEAN_FILMS_OFICIAL",
+      "destinatario": "info@caribbeanfilms.com",
+      "fechaEnvioReportada": "2026-11-10",
+      "estado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "asunto": "CineRD | Solicitud de orientación sobre afiches y materiales promocionales",
+      "filmIds": [
+        21,
+        28,
+        29,
+        39
+      ],
+      "evidencia": "Declaración del remitente en conversación; no se adjuntó prueba técnica de entrega",
+      "acuseRecibo": null,
+      "respuesta": null,
+      "permisoConcedido": false,
+      "observacion": "Se consultó por Medias Hermanas, Teacher Mechy, Baño de Mujeres y Colao; no se ha acreditado que Caribbean Films administre cada afiche."
+    },
+    {
+      "empresa": "Bienvenido Alfonso Rodríguez Zorrilla — consulta cinematográfica",
+      "contactoClave": "ALFONSO_RODRIGUEZ_DGCINE",
+      "destinatario": "alfonsorod@kaluanafilms.com",
+      "destinatarios": [
+        "alfonsorod@kaluanafilms.com",
+        "pelidomsa@gmail.com"
+      ],
+      "fechaEnvioReportada": "2026-11-10",
+      "estado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "asunto": "CineRD | Consulta sobre derechos de afiches y materiales promocionales de sus producciones cinematográficas",
+      "filmIds": [
+        20,
+        26,
+        44,
+        45,
+        47,
+        48
+      ],
+      "evidencia": "Estado de envío del borrador del titular en conversación; no se adjuntó prueba técnica de entrega",
+      "acuseRecibo": null,
+      "respuesta": null,
+      "permisoConcedido": false,
+      "observacion": "Un correo con dos destinatarios, no dos comunicaciones distintas. Correos procedentes de ficha histórica DGCINE, vigencia y facultades sin verificar; consulta no supone autorización."
+    },
+    {
+      "empresa": "Roberto Ángel Salcedo Sanz — consulta sobre obras cinematográficas",
+      "contactoClave": null,
+      "destinatario": "rsalcedo@cultura.gob.do",
+      "destinatarios": [
+        "rsalcedo@cultura.gob.do"
+      ],
+      "fechaEnvioReportada": "2026-11-10",
+      "estado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "asunto": "CineRD | Consulta sobre derechos de afiches de producciones cinematográficas dominicanas",
+      "filmIds": [
+        10,
+        12,
+        17,
+        55
+      ],
+      "evidencia": "Estado de envío del borrador del titular en conversación; no se adjuntó prueba técnica de entrega",
+      "acuseRecibo": null,
+      "respuesta": null,
+      "permisoConcedido": false,
+      "observacion": "Se utilizó un correo de dominio institucional indicado por el titular. No se ha verificado entrega o adecuación para asuntos privados; no se interpreta como trámite ante Cultura ni autorización en nombre del Ministerio. El contacto histórico de Paloma Salcedo NO recibió este correo."
+    }
+  ],
+  "vinculosInterpretacionAlfonsoRodriguez": {
+    "actorIdCineRD": 32,
+    "estado": "CREDITOS_RECOGIDOS_DEL_CATALOGO_NO_DERECHOS",
+    "nota": "Las participaciones como actor no otorgan poder de autorizar afiches y no alteran solicitudes ya enviadas a Panamericana.",
+    "filmes": [
+      {
+        "filmId": 9,
+        "personaje": "Lic. Ramirez",
+        "tipoVinculo": "ACTUACION_SIN_DIRECCION",
+        "fuente": "database/seeds/catalog.snapshot.json: Actores[Id=32], ActoresPeliculas[PeliculaId=9, ActorId=32]"
+      },
+      {
+        "filmId": 18,
+        "personaje": "Lic. Ramirez",
+        "tipoVinculo": "ACTUACION_SIN_DIRECCION",
+        "fuente": "database/seeds/catalog.snapshot.json: Actores[Id=32], ActoresPeliculas[PeliculaId=18, ActorId=32]"
+      },
+      {
+        "filmId": 48,
+        "personaje": "Figura Alta",
+        "tipoVinculo": "ACTUACION_Y_DIRECCION",
+        "fuente": "database/seeds/catalog.snapshot.json: Actores[Id=32], ActoresPeliculas[PeliculaId=48, ActorId=32]"
+      }
+    ]
+  },
+  "vinculosInterpretacionRobertoAngel": {
+    "actorIdCineRD": 16,
+    "estado": "CREDITOS_DE_CATALOGO_NO_LICENCIAS",
+    "notas": "Director de cuatro películas dentro del catálogo (#10, #12, #17, #55); además actor en #12, #17, #20 y #55. Un Macho de Mujer (#20) figura bajo la dirección de Alfonso Rodríguez y está en otro expediente. Nunca deducir autorización gráfica por rol de actor, director, productor o ministro.",
+    "peliculasDirigidas": [
+      10,
+      12,
+      17,
+      55
+    ],
+    "peliculasConActuacion": [
+      {
+        "filmId": 12,
+        "personaje": "Marcos"
+      },
+      {
+        "filmId": 17,
+        "personaje": "Francisco"
+      },
+      {
+        "filmId": 20,
+        "personaje": "Ramón"
+      },
+      {
+        "filmId": 55,
+        "personaje": "Ricky"
+      }
+    ],
+    "fuenteCargoInstitucional": "https://cultura.gob.do/sobre-nosotros/despacho-del-ministro/",
+    "fuenteDirectorioCineasta": "https://dgcine.gob.do/directory-listado/roberto-angel-salcedo-sanz-3/",
+    "correosEnviados": 1,
+    "derechosDeAfiche": "NO_VERIFICADOS",
+    "canalUtilizadoReportado": "rsalcedo@cultura.gob.do (dominio institucional; no constituye una autorización ni una gestión ministerial)"
+  }
+}
