@@ -1,6 +1,6 @@
 # CineRD — Plantillas para localizar titulares y solicitar afiches
 
-**Edición:** 2026-11-10. **Estado:** el titular informó haber enviado **dos correos personalizados** el 10/11/2026 a Panamericana y Caribbean Films (plantillas A/B como antecedentes). Las plantillas C (DGCINE) y D (Alfonso Rodríguez) permanecen **NO ENVIADAS**. Los textos que aparecen debajo **no son copias literales certificadas** de los mensajes enviados.
+**Edición:** 2026-11-10. **Estado:** el titular informó haber enviado **dos correos personalizados** el 10/11/2026 a Panamericana y Caribbean Films (plantillas A/B como antecedentes). Las plantillas C (DGCINE), D (Alfonso Rodríguez) y E (Roberto Ángel Salcedo / equipo de producción) permanecen **NO ENVIADAS**. Los textos que aparecen debajo **no son copias literales certificadas** de los mensajes enviados.
 
 Las solicitudes futuras deben emitirse individualmente por el responsable de CineRD. **No identificar una productora como titular de los derechos del cartel sin confirmación expresa**. Un enlace del directorio no certifica vigencia del correo; no reenviar a terceros no autorizados. Archivar respuestas y contratos fuera del repositorio, y conservar en GitHub solo una referencia no confidencial.
 
@@ -121,6 +121,45 @@ Muchas gracias nuevamente.
 Atentamente,  
 Equipo CineRD  
 https://cinerd.pages.dev
+
+---
+
+## Solicitud E — Roberto Ángel Salcedo Sanz / equipo de producción (NO ENVIADA)
+
+**Destinatario:** pendiente de verificar. **No utilizar el correo del Ministerio de Cultura para solicitar licencias privadas.**  
+**Contacto histórico de producción por confirmar:** `salcedo.paloma@gmail.com` (Paloma Salcedo; citado en [catálogo histórico de cine dominicano](https://www.dominicanaonline.org/documentos/Cata%CC%81logoDePeli%CC%81culasDominicanasEspan%CC%83ol.pdf) para *I Love Bachata* y *Vamos de robo*).  
+**Asunto:** CineRD | Consulta de orientación sobre derechos de afiches de cuatro películas dominicanas
+
+Distinguido señor Roberto Ángel Salcedo:
+
+Reciba un cordial saludo.
+
+Mi nombre es Francis Jairo Matías Rosario, desarrollador de software y creador de CineRD (https://cinerd.pages.dev), un proyecto independiente en desarrollo dedicado a documentar las películas, los talentos y la historia del cine dominicano.
+
+Me permito dirigirme respetuosamente a usted por su trayectoria en la cinematografía dominicana. Conozco su actual responsabilidad al frente del Ministerio de Cultura; esta comunicación se refiere únicamente a su experiencia en producciones cinematográficas y no constituye una solicitud relacionada con sus funciones públicas.
+
+Actualmente estamos revisando la procedencia y las autorizaciones de materiales gráficos promocionales que podrían acompañar nuestras fichas informativas, en particular de cuatro películas que CineRD registra bajo su dirección:
+
+- I Love Bachata (2011).
+- Profe por Accidente (2013).
+- Vamos de robo (2014).
+- El Plan Perfecto (2017).
+
+Nuestro interés es identificar a las productoras, distribuidoras o personas con facultad para autorizar, por escrito, la reproducción digital no exclusiva de los afiches oficiales y fotografías promocionales específicos de estas obras. Contemplamos que, en el futuro, el sitio pueda incorporar publicidad digital, por lo que también necesitamos aclarar las condiciones aplicables a ese posible uso comercial.
+
+Si no corresponde a usted gestionar esas autorizaciones, agradecería cualquier orientación hacia el equipo de producción o representante adecuado. No solicitamos derechos de exhibición ni distribución de las películas.
+
+Mientras se aclaran estos permisos, CineRD mantiene excluidas las imágenes de terceros sin autorización documentada.
+
+Le agradezco de antemano su atención y cualquier orientación que pueda ofrecernos.
+
+Atentamente,
+
+Francis Jairo Matías Rosario  
+Creador y desarrollador de CineRD  
+https://cinerd.pages.dev
+
+**ESTADO: BORRADOR, NO ENVIADO.** El registro solo acredita vínculos cinematográficos y un contacto de producción histórico, no la titularidad de carteles ni la vigencia del correo. Antes de enviar se debe confirmar un canal legítimo, sin utilizar el despacho ministerial para esta solicitud de licencias.
 
 ---
 
