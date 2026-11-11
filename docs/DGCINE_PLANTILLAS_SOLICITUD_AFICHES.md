@@ -1,6 +1,6 @@
 # CineRD — Plantillas para localizar titulares y solicitar afiches
 
-**Edición:** 2026-11-10. **Estado:** el titular informó haber enviado **dos correos personalizados** el 10/11/2026 a Panamericana y Caribbean Films (plantillas A/B como antecedentes). Las plantillas C (DGCINE), D (Alfonso Rodríguez) y E (Roberto Ángel Salcedo / equipo de producción) permanecen **NO ENVIADAS**. Los textos que aparecen debajo **no son copias literales certificadas** de los mensajes enviados.
+**Edición:** 2026-11-10. **Estado:** el titular informó haber enviado **cuatro correos personalizados** el 10/11/2026: Panamericana (A), Caribbean Films (B), Alfonso Rodríguez (D) y Roberto Ángel Salcedo (E). La plantilla C (seguimiento a DGCINE) permanece **NO ENVIADA**. Los textos que aparecen debajo **no son copias literales certificadas** de los mensajes enviados.
 
 Las solicitudes futuras deben emitirse individualmente por el responsable de CineRD. **No identificar una productora como titular de los derechos del cartel sin confirmación expresa**. Un enlace del directorio no certifica vigencia del correo; no reenviar a terceros no autorizados. Archivar respuestas y contratos fuera del repositorio, y conservar en GitHub solo una referencia no confidencial.
 
@@ -10,6 +10,8 @@ Las solicitudes futuras deben emitirse individualmente por el responsable de Cin
 |---|---|---|---|---|
 | Enviado | `contacto@panamericana.com.do` | `CineRD \| Consulta sobre derechos de uso de afiches cinematográficos` | Lotoman, Lotoman 2.0, **Lotoman 003**, Cristiano de la Secreta, Tubérculo Gourmet, Hermanos, Tubérculo Presidente | Pendientes |
 | Enviado | `info@caribbeanfilms.com` | `CineRD \| Solicitud de orientación sobre afiches y materiales promocionales` | Medias Hermanas, Teacher Mechy, Baño de Mujeres, Colao | Pendientes |
+| Enviado | `alfonsorod@kaluanafilms.com`; `pelidomsa@gmail.com` (un mensaje) | `CineRD \| Consulta sobre derechos de afiches y materiales promocionales de sus producciones cinematográficas` | Un Macho de Mujer, Yuniol, Playball, Al Fin y al Cabo, Pimp Bullies, Feo de día, Lindo de noche | Pendientes |
+| Enviado | `rsalcedo@cultura.gob.do` (dominio institucional) | `CineRD \| Consulta sobre derechos de afiches de producciones cinematográficas dominicanas` | I Love Bachata, Profe por Accidente, Vamos de robo, El Plan Perfecto | Pendientes |
 
 **Diferencia importante:** el mensaje personalizado enviado a Panamericana añadió **Lotoman 003: Volando Bajito**, pero la productora almacenada en CineRD es **Producciones Coral**. La consulta es para aclarar interlocutores y derechos; **no** cambia ese crédito ni atribuye derechos a Panamericana. Los textos originales de estas plantillas eran propuestas previas, y no se deben tratar como transcripciones exactas de los correos remitidos. El remitente comunicó el envío; no se verificó el buzón ni un acuse.
 
@@ -98,7 +100,7 @@ Francis Jairo Matías Rosario
 Creador y desarrollador de CineRD  
 https://cinerd.pages.dev
 
-**ESTADO: BORRADOR, NO ENVIADO.** Esta plantilla no supone que el director sea propietario de los afiches ni que los datos institucionales de 2020 sigan vigentes.
+**ESTADO: MENSAJE ENVIADO SEGÚN EL TITULAR (10/11/2026).** La versión enviada se dirigió a `alfonsorod@kaluanafilms.com` y `pelidomsa@gmail.com` simultáneamente. El texto de arriba es una plantilla antecedente, no una copia certificada del mensaje remitido. No se deduce que el director posea los afiches ni que los datos de 2020 sigan vigentes.
 
 ---
 
@@ -159,7 +161,7 @@ Francis Jairo Matías Rosario
 Creador y desarrollador de CineRD  
 https://cinerd.pages.dev
 
-**ESTADO: BORRADOR, NO ENVIADO.** El registro solo acredita vínculos cinematográficos y un contacto de producción histórico, no la titularidad de carteles ni la vigencia del correo. Antes de enviar se debe confirmar un canal legítimo, sin utilizar el despacho ministerial para esta solicitud de licencias.
+**ESTADO: MENSAJE ENVIADO SEGÚN EL TITULAR (10/11/2026).** La versión enviada se dirigió a `rsalcedo@cultura.gob.do`, **no** al contacto de producción histórico `salcedo.paloma@gmail.com`. Se utilizó un correo de dominio institucional para una consulta declarada expresamente ajena a sus funciones ministeriales; esto no constituye una solicitud oficial de licencia a Cultura ni una autorización. La vigencia del destinatario, entrega y lectura no están verificadas.
 
 ---
 
@@ -172,7 +174,7 @@ No modificar `docs/media-rights-ledger.csv` solo por una respuesta con el nombre
 3. Territorio, duración, atribución, redimensionamiento y posibles limitaciones o revocación.
 4. Evidencia escrita almacenada fuera de GitHub, fecha de emisión y referencia documental no sensible para trazabilidad.
 
-Si la respuesta es «contacta a X», se registra **CONTACTO_REFERIDO**, jamás **AUTORIZADO**. Si no existe respuesta, conservar **ENVIADA_REPORTADA_POR_TITULAR / SIN RESPUESTA** para las dos consultas remitidas; usar **NO_ENVIADA** solo para las demás. Una declaración de envío no acredita entrega, lectura, titularidad ni licencia.
+Si la respuesta es «contacta a X», se registra **CONTACTO_REFERIDO**, jamás **AUTORIZADO**. Si no existe respuesta, conservar **ENVIADA_REPORTADA_POR_TITULAR / SIN RESPUESTA** para las cuatro consultas remitidas; usar **NO_ENVIADA** solo para las demás. Una declaración de envío no acredita entrega, lectura, titularidad ni licencia.
 
 ## Registro de seguimiento
 
@@ -181,4 +183,4 @@ Si la respuesta es «contacta a X», se registra **CONTACTO_REFERIDO**, jamás *
 - Libro legal vigente y protegido: [Ledger de 128 medios](media-rights-ledger.csv).
 - Antecedentes de gestión: [OUTREACH_DERECHOS.md](OUTREACH_DERECHOS.md).
 
-**Actualización del 10/11/2026:** el titular confirmó dos correos enviados. No hay acuse de entrega, respuesta ni licencia acreditados. La plantilla C a DGCINE continúa sin enviar.
+**Actualización del 10/11/2026:** el titular confirmó cuatro correos enviados; Alfonso fue destinatario de un mensaje dirigido a dos buzones y el mensaje a Roberto Ángel se dirigió a un correo de dominio institucional. No hay acuse de entrega, respuesta ni licencia acreditados. La plantilla C a DGCINE continúa sin enviar.
