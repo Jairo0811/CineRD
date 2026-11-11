@@ -80,7 +80,7 @@ test("DGCINE: las 46 rutas de afiches siguen en ledger sin permiso",()=>{
 test("DGCINE: cobertura de fuentes oficiales y próximos pasos por las 46 películas",()=>{
   assert.equal(matrix.filas.filter(x=>x.productoraSegunCatalogo).length,29);
   assert.equal(matrix.filas.filter(x=>x.productorasCorroboradasPorDgcine.length).length,6);
-  assert.equal(matrix.filas.filter(x=>x.contactosCandidatos.length).length,12);
+  assert.equal(matrix.filas.filter(x=>x.contactosCandidatos.length).length,18);
   for(const x of matrix.filas) assert.ok(x.siguienteAccion?.trim());
   assert.ok(!matrix.contactosPublicosCandidatos.PANAMERICANA_DGCINE.authorizationCapacityVerified);
 });
@@ -124,4 +124,33 @@ test("DGCINE: Lotoman 003 fue consultada a Panamericana sin falsear productora",
   assert.equal(row.estadoAsociacion,"SOLO_CATALOGO_SIN_VERIFICAR");
   assert.match(row.observaciones,/Producciones Coral/);
   assert.equal(row.titularAfiche,"NO_IDENTIFICADO");
+});
+
+test("DGCINE: seis películas de Alfonso Rodríguez son candidatos de consulta sin licencia",()=>{
+  const ids=[20,26,44,45,47,48];
+  const lead=matrix.contactosPublicosCandidatos.ALFONSO_RODRIGUEZ_DGCINE;
+  assert.ok(lead);
+  assert.equal(lead.publicEmail,"alfonsorod@kaluanafilms.com");
+  assert.equal(lead.alternatePublicEmail,"pelidomsa@gmail.com");
+  assert.equal(lead.authorizationCapacityVerified,false);
+  assert.equal(lead.emailDeliverabilityVerified,false);
+  assert.equal(lead.legalIdentityVerified,false);
+  assert.match(lead.directoryUrl,/^https:\/\/dgcine\.gob\.do\//);
+  const actual=matrix.filas.filter(f=>f.contactosCandidatos.includes("ALFONSO_RODRIGUEZ_DGCINE")).map(f=>f.filmId).sort((a,b)=>a-b);
+  assert.deepEqual(actual,ids);
+  for(const id of ids){
+    const film=matrix.filas.find(f=>f.filmId===id);
+    assert.equal(film.solicitudEstado,"NO_ENVIADA");
+    assert.equal(film.respuesta,null);
+    assert.equal(film.derechosReproduccion,"NO_AUTORIZADOS");
+    assert.equal(film.titularAfiche,"NO_IDENTIFICADO");
+    assert.equal(film.permisoUsoWebComercial,false);
+    assert.equal(film.fuentesRelacionDireccion.length,2);
+  }
+  assert.equal(matrix.filas.find(f=>f.filmId===20).productoraSegunCatalogo,"Producciones Coral");
+  assert.equal(matrix.filas.find(f=>f.filmId===26).productoraSegunCatalogo,"Kaluana Films");
+  assert.equal(matrix.filas.find(f=>f.filmId===44).productoraSegunCatalogo,null);
+  assert.equal(matrix.filas.find(f=>f.filmId===45).productoraSegunCatalogo,"Antena Films");
+  assert.equal(matrix.filas.find(f=>f.filmId===47).productoraSegunCatalogo,"Antena Films");
+  assert.equal(matrix.filas.find(f=>f.filmId===48).productoraSegunCatalogo,null);
 });
