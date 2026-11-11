@@ -31,12 +31,13 @@ test("DGCINE: el contacto candidato no se confunde con titularidad ni permiso",(
     assert.equal(x.titularAfiche,"NO_IDENTIFICADO");
     assert.equal(x.derechosReproduccion,"NO_AUTORIZADOS");
     assert.equal(x.permisoUsoWebComercial,false);
-    assert.equal(x.solicitudEstado,"NO_ENVIADA");
-    assert.equal(x.solicitudFecha,null);
+    const queried=new Set([9,13,15,18,27,50,51,21,28,29,39]).has(x.filmId);
+    assert.equal(x.solicitudEstado,queried?"ENVIADA_REPORTADA_POR_TITULAR":"NO_ENVIADA");
+    assert.equal(x.solicitudFecha,queried?"2026-11-10":null);
     assert.equal(x.respuesta,null);
     assert.equal(x.evidenciaPrivadaRef,null);
   }
-  assert.equal(matrix.estado,"INVESTIGACION_NO_CONTACTADA");
+  assert.equal(matrix.estado,"CONTACTO_INICIAL_REPORTADO_POR_TITULAR_SIN_RESPUESTA");
 });
 
 test("DGCINE: fuentes, contactos e identidades tienen trazabilidad y advertencias",()=>{
@@ -79,7 +80,48 @@ test("DGCINE: las 46 rutas de afiches siguen en ledger sin permiso",()=>{
 test("DGCINE: cobertura de fuentes oficiales y próximos pasos por las 46 películas",()=>{
   assert.equal(matrix.filas.filter(x=>x.productoraSegunCatalogo).length,29);
   assert.equal(matrix.filas.filter(x=>x.productorasCorroboradasPorDgcine.length).length,6);
-  assert.equal(matrix.filas.filter(x=>x.contactosCandidatos.length).length,11);
+  assert.equal(matrix.filas.filter(x=>x.contactosCandidatos.length).length,12);
   for(const x of matrix.filas) assert.ok(x.siguienteAccion?.trim());
   assert.ok(!matrix.contactosPublicosCandidatos.PANAMERICANA_DGCINE.authorizationCapacityVerified);
+});
+
+test("DGCINE: dos correos reportados el 10/11 sin acuse, respuesta ni licencia",()=>{
+  const records=matrix.enviosRegistrados;
+  assert.equal(records.length,2);
+  const byKey=new Map(records.map(r=>[r.contactoClave,r]));
+  const expected=[
+    ["PANAMERICANA_DGCINE","contacto@panamericana.com.do",[9,13,15,18,27,50,51]],
+    ["CARIBBEAN_FILMS_OFICIAL","info@caribbeanfilms.com",[21,28,29,39]]
+  ];
+  for(const [key,email,ids] of expected){
+    const rec=byKey.get(key);
+    assert.ok(rec,"Falta seguimiento de "+key);
+    assert.equal(rec.estado,"ENVIADA_REPORTADA_POR_TITULAR");
+    assert.equal(rec.fechaEnvioReportada,"2026-11-10");
+    assert.equal(rec.destinatario,email);
+    assert.deepEqual(rec.filmIds,ids);
+    assert.equal(rec.acuseRecibo,null);
+    assert.equal(rec.respuesta,null);
+    assert.equal(rec.permisoConcedido,false);
+    assert.match(rec.evidencia,/Declaración del remitente/);
+    for(const id of ids){
+      const row=matrix.filas.find(f=>f.filmId===id);
+      assert.equal(row.solicitudEstado,rec.estado);
+      assert.ok(row.contactosCandidatos.includes(key));
+      assert.equal(row.derechosReproduccion,"NO_AUTORIZADOS");
+      assert.equal(row.permisoUsoWebComercial,false);
+    }
+  }
+  assert.equal(matrix.filas.filter(f=>f.solicitudEstado==="ENVIADA_REPORTADA_POR_TITULAR").length,11);
+  assert.equal(matrix.filas.filter(f=>f.solicitudEstado==="NO_ENVIADA").length,35);
+});
+
+test("DGCINE: Lotoman 003 fue consultada a Panamericana sin falsear productora",()=>{
+  const row=matrix.filas.find(f=>f.filmId===27);
+  assert.equal(row.productoraSegunCatalogo,"Producciones Coral");
+  assert.equal(row.solicitudEstado,"ENVIADA_REPORTADA_POR_TITULAR");
+  assert.ok(row.contactosCandidatos.includes("PANAMERICANA_DGCINE"));
+  assert.equal(row.estadoAsociacion,"SOLO_CATALOGO_SIN_VERIFICAR");
+  assert.match(row.observaciones,/Producciones Coral/);
+  assert.equal(row.titularAfiche,"NO_IDENTIFICADO");
 });
