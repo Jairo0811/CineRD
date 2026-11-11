@@ -1,0 +1,53 @@
+name: CineRD SQL Server 2022 (isolated smoke)
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/sql-server-isolated.yml"
+      - "backend/scripts/sqlContainerIntegration.js"
+      - "backend/scripts/migrate.js"
+      - "database/migrations/**"
+      - "database/scripts/azure_schema_bootstrap.sql"
+      - "backend/package.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ephemeral-sqlserver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - name: Install Node dependencies
+        run: npm --prefix backend ci
+      - name: Launch disposable loopback SQL Server Developer
+        shell: bash
+        run: |
+          set -euo pipefail
+          pass="$(node -e "process.stdout.write('CiTest!'+require('node:crypto').randomBytes(24).toString('hex'))")"
+          echo "::add-mask::$pass"
+          echo "CINERD_SQL_CI_PASSWORD=$pass" >> "$GITHUB_ENV"
+          docker run --name cinerd-sql-ephemeral --detach \
+            --memory=4g \
+            --publish 127.0.0.1:14333:1433 \
+            --env ACCEPT_EULA=Y \
+            --env MSSQL_PID=Developer \
+            --env MSSQL_SA_PASSWORD="$pass" \
+            mcr.microsoft.com/mssql/server:2022-latest > /dev/null
+      - name: Bootstrap + migrate twice + transactional CRUD (isolated)
+        env:
+          GITHUB_ACTIONS: "true"
+          CINERD_EPHEMERAL_SQL_TEST: "yes"
+        run: node backend/scripts/sqlContainerIntegration.js
+      - name: Dispose transient SQL Server
+        if: always()
+        shell: bash
+        run: |
+          docker rm --force cinerd-sql-ephemeral >/dev/null 2>&1 || true
