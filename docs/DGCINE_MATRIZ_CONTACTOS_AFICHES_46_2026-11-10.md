@@ -12,7 +12,7 @@
 | Con nombre de productora en el snapshot | **29** |
 | Sin productora en el snapshot | **17** |
 | Con noticia DGCINE que menciona productora de esa película | **6** |
-| Con candidato de contacto público localizado | **18** |
+| Con candidato de contacto público localizado | **22** |
 | Afiches autorizados por esta investigación | **0** |
 | Películas mencionadas en los correos enviados | **11** |
 | Correos enviados reportados por el titular | **2** |
@@ -25,6 +25,7 @@
 | `LA_ALDEA_DGCINE` | LA ALDEA STUDIO, S.R.L. | `indiocine@gmail.com` | [Directorio DGCINE](https://dgcine.gob.do/directorio/directory-listing/la-aldea-studio-s-r-l-2/) | La noticia menciona «La Aldea Estudio»; coincidencia con «La Aldea Studio» aún por verificar. |
 | `CARIBBEAN_FILMS_OFICIAL` | Caribbean Films | `info@caribbeanfilms.com` · 809-688-8710 ext. 2021 | [Web corporativa](https://www.caribbeanfilms.com/) | Un buzón corporativo no garantiza autorización sobre materiales concretos. |
 | `ALFONSO_RODRIGUEZ_DGCINE` | Bienvenido Alfonso Rodríguez Zorrilla, productor | `alfonsorod@kaluanafilms.com` / `pelidomsa@gmail.com` | [Ficha personal DGCINE de 2020](https://dgcine.gob.do/directory-listado/bienvenido-alfonzo-rodriguez-zorrilla/) | Director/productor vinculado; la vigencia de ambos buzones y su capacidad de licenciar cada afiche son desconocidas. La ficha usa «Alfonzo». |
+| `PALOMA_SALCEDO_CATALOGO_HISTORICO` | Paloma Salcedo, contacto cinematográfico histórico | `salcedo.paloma@gmail.com` | [Catálogo histórico de películas dominicanas](https://www.dominicanaonline.org/documentos/Cata%CC%81logoDePeli%CC%81culasDominicanasEspan%CC%83ol.pdf) | No es correo del ministro ni acredita vigencia. Aparece como contacto de producción en fichas de I Love Bachata y Vamos de robo; no equivale a autorización para otras películas. |
 
 Los contactos se obtuvieron de publicaciones **públicas** de DGCINE o del sitio corporativo de la productora. **No se ha validado la entrega de mensajes ni la capacidad jurídica para licenciar material gráfico**. DGCINE lista asimismo [distribuidores cinematográficos](https://dgcine.gob.do/directorio/categoria/distribuidores-cinematograficos/), pero estar registrado como distribuidor tampoco acredita control sobre un afiche.
 
@@ -45,14 +46,14 @@ Los contactos se obtuvieron de publicaciones **públicas** de DGCINE o del sitio
 | 5 | Perico Ripiao | Cigua Films | No cotejada | Por localizar | Sin autorización |
 | 6 | Ladrones a Domicilio | Estudio Quitasueño | No cotejada | Por localizar | Sin autorización |
 | 9 | Lotoman | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
-| 10 | Vamos de robo | Producciones Coral | No cotejada | Por localizar | Sin autorización |
+| 10 | Vamos de robo | Producciones Coral | No cotejada | `PALOMA_SALCEDO_CATALOGO_HISTORICO` (producción, vigencia pendiente) | Sin autorización |
 | 11 | Santicló: La Vaina de la Navidad | Premium Latin Films | No cotejada | Por localizar | Sin autorización |
-| 12 | I Love Bachata | Producciones Coral | No cotejada | Por localizar | Sin autorización |
+| 12 | I Love Bachata | Producciones Coral | No cotejada | `PALOMA_SALCEDO_CATALOGO_HISTORICO` (producción, vigencia pendiente) | Sin autorización |
 | 13 | Cristiano de la Secreta | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 14 | Los Rechazados | Bougroup | Bougroup | Por localizar | Sin autorización |
 | 15 | Tubérculo Gourmet | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 16 | Nueba Yol: ¡Por Fin Llegó Balbuena! | Cigua Films | No cotejada | Por localizar | Sin autorización |
-| 17 | Profe por Accidente | Producciones Coral | No cotejada | Por localizar | Sin autorización |
+| 17 | Profe por Accidente | Producciones Coral | No cotejada | `PALOMA_SALCEDO_CATALOGO_HISTORICO` (producción, vigencia pendiente) | Sin autorización |
 | 18 | Lotoman 2.0 | Panamericana | No cotejada | `PANAMERICANA_DGCINE` | Consulta enviada 10/11; sin autorización |
 | 19 | Carlota la Más Barrial | Dukesa Films | Dukesa Films + La Aldea Estudio | `LA_ALDEA_DGCINE` | Sin autorización |
 | 20 | Un Macho de Mujer | Producciones Coral | No cotejada | `ALFONSO_RODRIGUEZ_DGCINE` (director, no titular acreditado) | Sin autorización |
@@ -85,7 +86,7 @@ Los contactos se obtuvieron de publicaciones **públicas** de DGCINE o del sitio
 | 52 | Dos policías en apuros | No registrada | No cotejada | Por localizar | Sin autorización |
 | 53 | La Musiquita por Dentro | No registrada | No cotejada | Por localizar | Sin autorización |
 | 54 | Los Paracaidistas | No registrada | No cotejada | Por localizar | Sin autorización |
-| 55 | El Plan Perfecto | No registrada | Miranda Films | Por localizar | Sin autorización |
+| 55 | El Plan Perfecto | No registrada | Miranda Films | `PALOMA_SALCEDO_CATALOGO_HISTORICO` (producción, vigencia pendiente) | Sin autorización |
 | 56 | La Lucha de Ana | No registrada | No cotejada | Por localizar | Sin autorización |
 
 **Interpretación:** las productoras del snapshot son datos históricos de CineRD, no verificaciones jurídicas; las seis filas con noticia DGCINE tienen una referencia adicional sobre producción, no sobre quién diseñó o posee el cartel. Las notas, URLs por película y vínculo al archivo de afiche constan en el [JSON de 46 filas](dgcine-afiches-contactos-46.json).
@@ -99,6 +100,18 @@ CineRD registra seis créditos de dirección: **#20 Un Macho de Mujer, #26 Feo d
 La [ficha de DGCINE publicada en enero de 2020](https://dgcine.gob.do/directory-listado/bienvenido-alfonzo-rodriguez-zorrilla/) proporciona dos correos históricos del cineasta: `alfonsorod@kaluanafilms.com` y `pelidomsa@gmail.com`. **Estado: contacto identificado, sin consulta enviada, sin vigencia comprobada y sin autorización**. Que una persona figure como director o productor **no demuestra propiedad del arte gráfico** de sus películas. Se mantiene cada productora tal como consta en CineRD, sin modificar `Productora`: Producciones Coral (#20), Kaluana Films (#26), Antena Films (#45/#47) y no registrada (#44/#48).
 
 **Acción pendiente:** consultar por el titular adecuado y permiso de reproducción comercial específico de cada afiche. Propuesta de mensaje en [plantillas de solicitud](DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md). **No enviar automáticamente ni inferir respuesta**.
+
+## Grupo Roberto Ángel Salcedo Sanz — cuatro películas como director
+
+De acuerdo con el catálogo CineRD, `#10 Vamos de robo` (2014), `#12 I Love Bachata` (2011), `#17 Profe por Accidente` (2013) y `#55 El Plan Perfecto` (2017) están bajo la dirección de **Roberto Ángel Salcedo Sanz**. La base muestra su participación como **actor** en `#12`, `#17`, `#20 Un Macho de Mujer` y `#55`. La película `#20` conserva a **Bienvenido Alfonso Rodríguez Zorrilla como director**, de modo que no se incorpora al grupo de dirección de Robertico.
+
+**Cargo actual comprobado:** [Ministerio de Cultura](https://cultura.gob.do/sobre-nosotros/despacho-del-ministro/) lo identifica como ministro, tras su nombramiento por Decreto 48-25. Es importante **separar la función institucional de las gestiones por propiedad intelectual privada**: su despacho no es la vía presunta para autorizar carteles.
+
+**Productoras y posibles interlocutores, según fuentes:** CineRD tiene `Producciones Coral` para #10, #12 y #17, y no indica productora para #55. [Cinema Dominicano (I Love Bachata)](https://cinemadominicano.com/yo-amo-la-bachata-i-love-bachata-2011/), [Diario Libre (Profe por Accidente)](https://www.diariolibre.com/revista/cine/profe-por-accidente-la-nueva-pelcula-de-robertico-salcedo-EPDL344077), [Cinema Dominicano (Vamos de robo)](https://cinemadominicano.com/vamos-de-robo-2014/) y [DGCINE (El Plan Perfecto)](https://dgcine.gob.do/para-2017-hay-en-cartelera-20-peliculas-dominicanas/) mencionan **Miranda Films** y/o **Producciones Coral**, con otras empresas según la obra. No confundir asociación con titularidad del arte ni modificar `Productora` en el snapshot sin expediente editorial.
+
+Un [catálogo cinematográfico histórico publicado en Dominicana Online](https://www.dominicanaonline.org/documentos/Cata%CC%81logoDePeli%CC%81culasDominicanasEspan%CC%83ol.pdf) identifica a **Paloma Salcedo** como contacto de producción en *I Love Bachata* y *Vamos de robo*; publica el correo `salcedo.paloma@gmail.com`. **No consta que sea un buzón vigente, un contacto para todas las películas o un representante facultado para licenciar cada cartel.** El contacto se registra solo como candidato a confirmar, sin enviarse ninguna comunicación.
+
+**Acción:** usar la [plantilla E, no enviada](DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md) y buscar primero confirmación de un canal de producción vigente. En todo caso, el mensaje debe solicitar **orientación** sobre el titular de los afiches, respetar al actual ministro y evitar cualquier petición relacionada con su cargo público. No se ha reconocido ningún permiso.
 
 ## Evidencias de producción en DGCINE
 
