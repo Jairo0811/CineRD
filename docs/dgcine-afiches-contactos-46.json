@@ -164,11 +164,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar contacto de producción y quién administra el cartel; preparar consulta profesional respetuosa, SIN ENVIAR; distinguir cineasta de cargo ministerial.",
+      "siguienteAccion": "Esperar respuesta del correo dirigido a Roberto Ángel; canal institucional utilizado no acredita intervención de Cultura ni permiso. Si hay respuesta, confirmar interlocutor privado autorizado para afiches.",
       "observaciones": "Roberto Ángel Salcedo Sanz figura como director en CineRD; su cargo vigente es ministro de Cultura, pero la solicitud de afiches debe tramitarse por vías privadas de producción. El contacto de Paloma Salcedo procede de catálogo histórico y solo se asocia directamente a algunas películas; validar vigencia y facultades. La mención de coproductoras no cambia Productora del snapshot ni acredita derechos.",
       "fuentesRelacionDireccion": [
         "https://cinemadominicano.com/vamos-de-robo-2014/",
@@ -177,7 +177,15 @@
       "productorasMencionadasEnFuentesPorVerificar": [
         "Miranda Films",
         "Producciones Coral"
-      ]
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "rsalcedo@cultura.gob.do"
+        ],
+        "tipo": "CORREO_INSTITUCIONAL_UTILIZADO_POR_TITULAR",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; no se ha verificado si es canal apropiado para derechos privados",
+        "observacion": "No confundir envío a buzón de cultura.gob.do con solicitud oficial al Ministerio de Cultura o autorización ministerial; en el mensaje se aclaró que la consulta es sobre su faceta cinematográfica."
+      }
     },
     {
       "filmId": 11,
@@ -214,11 +222,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar contacto de producción y quién administra el cartel; preparar consulta profesional respetuosa, SIN ENVIAR; distinguir cineasta de cargo ministerial.",
+      "siguienteAccion": "Esperar respuesta del correo dirigido a Roberto Ángel; canal institucional utilizado no acredita intervención de Cultura ni permiso. Si hay respuesta, confirmar interlocutor privado autorizado para afiches.",
       "observaciones": "Roberto Ángel Salcedo Sanz figura como director en CineRD; su cargo vigente es ministro de Cultura, pero la solicitud de afiches debe tramitarse por vías privadas de producción. El contacto de Paloma Salcedo procede de catálogo histórico y solo se asocia directamente a algunas películas; validar vigencia y facultades. La mención de coproductoras no cambia Productora del snapshot ni acredita derechos.",
       "fuentesRelacionDireccion": [
         "https://cinemadominicano.com/yo-amo-la-bachata-i-love-bachata-2011/"
@@ -226,7 +234,15 @@
       "productorasMencionadasEnFuentesPorVerificar": [
         "Miranda Films",
         "Producciones Coral"
-      ]
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "rsalcedo@cultura.gob.do"
+        ],
+        "tipo": "CORREO_INSTITUCIONAL_UTILIZADO_POR_TITULAR",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; no se ha verificado si es canal apropiado para derechos privados",
+        "observacion": "No confundir envío a buzón de cultura.gob.do con solicitud oficial al Ministerio de Cultura o autorización ministerial; en el mensaje se aclaró que la consulta es sobre su faceta cinematográfica."
+      }
     },
     {
       "filmId": 13,
@@ -333,11 +349,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar contacto de producción y quién administra el cartel; preparar consulta profesional respetuosa, SIN ENVIAR; distinguir cineasta de cargo ministerial.",
+      "siguienteAccion": "Esperar respuesta del correo dirigido a Roberto Ángel; canal institucional utilizado no acredita intervención de Cultura ni permiso. Si hay respuesta, confirmar interlocutor privado autorizado para afiches.",
       "observaciones": "Roberto Ángel Salcedo Sanz figura como director en CineRD; su cargo vigente es ministro de Cultura, pero la solicitud de afiches debe tramitarse por vías privadas de producción. El contacto de Paloma Salcedo procede de catálogo histórico y solo se asocia directamente a algunas películas; validar vigencia y facultades. La mención de coproductoras no cambia Productora del snapshot ni acredita derechos.",
       "fuentesRelacionDireccion": [
         "https://www.diariolibre.com/revista/cine/profe-por-accidente-la-nueva-pelcula-de-robertico-salcedo-EPDL344077"
@@ -345,7 +361,15 @@
       "productorasMencionadasEnFuentesPorVerificar": [
         "Miranda Films",
         "Producciones Coral"
-      ]
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "rsalcedo@cultura.gob.do"
+        ],
+        "tipo": "CORREO_INSTITUCIONAL_UTILIZADO_POR_TITULAR",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; no se ha verificado si es canal apropiado para derechos privados",
+        "observacion": "No confundir envío a buzón de cultura.gob.do con solicitud oficial al Ministerio de Cultura o autorización ministerial; en el mensaje se aclaró que la consulta es sobre su faceta cinematográfica."
+      }
     },
     {
       "filmId": 18,
@@ -413,16 +437,24 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar vigencia de ficha DGCINE y consultar al director/productor por titular y canal de autorización del afiche; correo todavía NO ENVIADO",
+      "siguienteAccion": "Esperar respuesta de Alfonso Rodríguez o remitente designado; verificar entidad facultada para conceder permiso del afiche específico, sin asumir entrega.",
       "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
       "fuentesRelacionDireccion": [
         "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
         "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
-      ]
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "alfonsorod@kaluanafilms.com",
+          "pelidomsa@gmail.com"
+        ],
+        "tipo": "DOS_DESTINATARIOS_EN_UN_CORREO",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; sin comprobación de recepción"
+      }
     },
     {
       "filmId": 21,
@@ -525,16 +557,24 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar vigencia de ficha DGCINE y consultar al director/productor por titular y canal de autorización del afiche; correo todavía NO ENVIADO",
+      "siguienteAccion": "Esperar respuesta de Alfonso Rodríguez o remitente designado; verificar entidad facultada para conceder permiso del afiche específico, sin asumir entrega.",
       "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
       "fuentesRelacionDireccion": [
         "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
         "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
-      ]
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "alfonsorod@kaluanafilms.com",
+          "pelidomsa@gmail.com"
+        ],
+        "tipo": "DOS_DESTINATARIOS_EN_UN_CORREO",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; sin comprobación de recepción"
+      }
     },
     {
       "filmId": 27,
@@ -847,16 +887,24 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar vigencia de ficha DGCINE y consultar al director/productor por titular y canal de autorización del afiche; correo todavía NO ENVIADO",
+      "siguienteAccion": "Esperar respuesta de Alfonso Rodríguez o remitente designado; verificar entidad facultada para conceder permiso del afiche específico, sin asumir entrega.",
       "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. CineRD usa la variante abreviada «Alfonso Rodríguez Zorrilla» para dirección de Playball.",
       "fuentesRelacionDireccion": [
         "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
         "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
-      ]
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "alfonsorod@kaluanafilms.com",
+          "pelidomsa@gmail.com"
+        ],
+        "tipo": "DOS_DESTINATARIOS_EN_UN_CORREO",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; sin comprobación de recepción"
+      }
     },
     {
       "filmId": 45,
@@ -873,16 +921,24 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar vigencia de ficha DGCINE y consultar al director/productor por titular y canal de autorización del afiche; correo todavía NO ENVIADO",
+      "siguienteAccion": "Esperar respuesta de Alfonso Rodríguez o remitente designado; verificar entidad facultada para conceder permiso del afiche específico, sin asumir entrega.",
       "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
       "fuentesRelacionDireccion": [
         "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
         "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
-      ]
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "alfonsorod@kaluanafilms.com",
+          "pelidomsa@gmail.com"
+        ],
+        "tipo": "DOS_DESTINATARIOS_EN_UN_CORREO",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; sin comprobación de recepción"
+      }
     },
     {
       "filmId": 47,
@@ -899,16 +955,24 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar vigencia de ficha DGCINE y consultar al director/productor por titular y canal de autorización del afiche; correo todavía NO ENVIADO",
+      "siguienteAccion": "Esperar respuesta de Alfonso Rodríguez o remitente designado; verificar entidad facultada para conceder permiso del afiche específico, sin asumir entrega.",
       "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
       "fuentesRelacionDireccion": [
         "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
         "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
-      ]
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "alfonsorod@kaluanafilms.com",
+          "pelidomsa@gmail.com"
+        ],
+        "tipo": "DOS_DESTINATARIOS_EN_UN_CORREO",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; sin comprobación de recepción"
+      }
     },
     {
       "filmId": 48,
@@ -925,16 +989,24 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar vigencia de ficha DGCINE y consultar al director/productor por titular y canal de autorización del afiche; correo todavía NO ENVIADO",
+      "siguienteAccion": "Esperar respuesta de Alfonso Rodríguez o remitente designado; verificar entidad facultada para conceder permiso del afiche específico, sin asumir entrega.",
       "observaciones": "Director vinculado a Bienvenido Alfonso Rodríguez Zorrilla según catálogo CineRD y retrospectiva/biografía publicada; la ficha DGCINE de productor ofrece contacto histórico. Consultar quién controla derechos del afiche sin atribuirle titularidad. ",
       "fuentesRelacionDireccion": [
         "https://cinemadominicano.com/biografia-de-la-semana-alfonso-rodriguez-zorrila/",
         "https://cinemadominicano.com/retrospectiva-de-alfonso-rodriguez-en-la-cinemateca/"
-      ]
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "alfonsorod@kaluanafilms.com",
+          "pelidomsa@gmail.com"
+        ],
+        "tipo": "DOS_DESTINATARIOS_EN_UN_CORREO",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; sin comprobación de recepción"
+      }
     },
     {
       "filmId": 49,
@@ -1081,11 +1153,11 @@
       "titularAfiche": "NO_IDENTIFICADO",
       "derechosReproduccion": "NO_AUTORIZADOS",
       "permisoUsoWebComercial": false,
-      "solicitudEstado": "NO_ENVIADA",
-      "solicitudFecha": null,
+      "solicitudEstado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "solicitudFecha": "2026-11-10",
       "respuesta": null,
       "evidenciaPrivadaRef": null,
-      "siguienteAccion": "Verificar contacto de producción y quién administra el cartel; preparar consulta profesional respetuosa, SIN ENVIAR; distinguir cineasta de cargo ministerial.",
+      "siguienteAccion": "Esperar respuesta del correo dirigido a Roberto Ángel; canal institucional utilizado no acredita intervención de Cultura ni permiso. Si hay respuesta, confirmar interlocutor privado autorizado para afiches.",
       "observaciones": "DGCINE identifica a Miranda Films como productora, y Palacio del Cine como distribuidor; no acredita control de afiche. Roberto Ángel Salcedo Sanz figura como director en CineRD; su cargo vigente es ministro de Cultura, pero la solicitud de afiches debe tramitarse por vías privadas de producción. El contacto de Paloma Salcedo procede de catálogo histórico y solo se asocia directamente a algunas películas; validar vigencia y facultades. La mención de coproductoras no cambia Productora del snapshot ni acredita derechos.",
       "fuentesRelacionDireccion": [
         "https://dgcine.gob.do/para-2017-hay-en-cartelera-20-peliculas-dominicanas/",
@@ -1095,7 +1167,15 @@
         "Miranda Films",
         "Vistalux Internacional",
         "Producciones Coral"
-      ]
+      ],
+      "contactoEnvioReportado": {
+        "destinatarios": [
+          "rsalcedo@cultura.gob.do"
+        ],
+        "tipo": "CORREO_INSTITUCIONAL_UTILIZADO_POR_TITULAR",
+        "confirmadoPor": "estado de envío del borrador redactado por el titular; no se ha verificado si es canal apropiado para derechos privados",
+        "observacion": "No confundir envío a buzón de cultura.gob.do con solicitud oficial al Ministerio de Cultura o autorización ministerial; en el mensaje se aclaró que la consulta es sobre su faceta cinematográfica."
+      }
     },
     {
       "filmId": 56,
@@ -1159,6 +1239,53 @@
       "respuesta": null,
       "permisoConcedido": false,
       "observacion": "Se consultó por Medias Hermanas, Teacher Mechy, Baño de Mujeres y Colao; no se ha acreditado que Caribbean Films administre cada afiche."
+    },
+    {
+      "empresa": "Bienvenido Alfonso Rodríguez Zorrilla — consulta cinematográfica",
+      "contactoClave": "ALFONSO_RODRIGUEZ_DGCINE",
+      "destinatario": "alfonsorod@kaluanafilms.com",
+      "destinatarios": [
+        "alfonsorod@kaluanafilms.com",
+        "pelidomsa@gmail.com"
+      ],
+      "fechaEnvioReportada": "2026-11-10",
+      "estado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "asunto": "CineRD | Consulta sobre derechos de afiches y materiales promocionales de sus producciones cinematográficas",
+      "filmIds": [
+        20,
+        26,
+        44,
+        45,
+        47,
+        48
+      ],
+      "evidencia": "Estado de envío del borrador del titular en conversación; no se adjuntó prueba técnica de entrega",
+      "acuseRecibo": null,
+      "respuesta": null,
+      "permisoConcedido": false,
+      "observacion": "Un correo con dos destinatarios, no dos comunicaciones distintas. Correos procedentes de ficha histórica DGCINE, vigencia y facultades sin verificar; consulta no supone autorización."
+    },
+    {
+      "empresa": "Roberto Ángel Salcedo Sanz — consulta sobre obras cinematográficas",
+      "contactoClave": null,
+      "destinatario": "rsalcedo@cultura.gob.do",
+      "destinatarios": [
+        "rsalcedo@cultura.gob.do"
+      ],
+      "fechaEnvioReportada": "2026-11-10",
+      "estado": "ENVIADA_REPORTADA_POR_TITULAR",
+      "asunto": "CineRD | Consulta sobre derechos de afiches de producciones cinematográficas dominicanas",
+      "filmIds": [
+        10,
+        12,
+        17,
+        55
+      ],
+      "evidencia": "Estado de envío del borrador del titular en conversación; no se adjuntó prueba técnica de entrega",
+      "acuseRecibo": null,
+      "respuesta": null,
+      "permisoConcedido": false,
+      "observacion": "Se utilizó un correo de dominio institucional indicado por el titular. No se ha verificado entrega o adecuación para asuntos privados; no se interpreta como trámite ante Cultura ni autorización en nombre del Ministerio. El contacto histórico de Paloma Salcedo NO recibió este correo."
     }
   ],
   "vinculosInterpretacionAlfonsoRodriguez": {
@@ -1216,7 +1343,8 @@
     ],
     "fuenteCargoInstitucional": "https://cultura.gob.do/sobre-nosotros/despacho-del-ministro/",
     "fuenteDirectorioCineasta": "https://dgcine.gob.do/directory-listado/roberto-angel-salcedo-sanz-3/",
-    "correosEnviados": 0,
-    "derechosDeAfiche": "NO_VERIFICADOS"
+    "correosEnviados": 1,
+    "derechosDeAfiche": "NO_VERIFICADOS",
+    "canalUtilizadoReportado": "rsalcedo@cultura.gob.do (dominio institucional; no constituye una autorización ni una gestión ministerial)"
   }
 }
