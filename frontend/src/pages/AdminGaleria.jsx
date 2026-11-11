@@ -1,3 +1,4 @@
+import { confirmarAccion } from "../utils/dialogos";
 import { useEffect, useMemo, useState } from "react";
 import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import api from "../services/api";
@@ -273,7 +274,7 @@ function AdminGaleria() {
       : TIPOS_MUSICA.has(item.Tipo)
         ? "este contenido musical"
         : "esta imagen";
-    if (!window.confirm(`¿Eliminar ${etiqueta} de la galería?`)) return;
+    if (!(await confirmarAccion(`¿Eliminar ${etiqueta} de la galería?`, { confirmar: "Sí, eliminar" }))) return;
 
     try {
       await api.delete(`/galeria/${item.Id}`);

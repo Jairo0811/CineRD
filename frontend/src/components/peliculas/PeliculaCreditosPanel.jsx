@@ -1,3 +1,4 @@
+import { confirmarAccion } from "../../utils/dialogos";
 import { useEffect, useMemo, useState } from "react";
 import api from "../../services/api";
 
@@ -62,7 +63,7 @@ function PeliculaCreditosPanel({ peliculaId }) {
   };
 
   const eliminar = async (credito) => {
-    if (!window.confirm(`¿Eliminar el crédito de ${credito.NombreArtistico || credito.NombreCompleto}?`)) return;
+    if (!(await confirmarAccion(`¿Eliminar el crédito de ${credito.NombreArtistico || credito.NombreCompleto}?`, { confirmar: "Sí, eliminar" }))) return;
     try {
       await api.delete(`/peliculas/${peliculaId}/creditos/${credito.Id}`);
       await cargar();
