@@ -5,11 +5,13 @@ require("dotenv").config();
 
 const repoRoot = path.resolve(__dirname, "../..");
 const migrationsDir = path.join(repoRoot, "database", "migrations");
+const SYSTEM_DATABASES = new Set(["master", "model", "msdb", "tempdb"]);
 
-const splitBatches = (content) => content.split(/^\s*GO\s*;?\s*$/gim).map((item) => item.trim()).filter(Boolean);
+const splitBatches = (content) =>
+  content.split(/^\s*GO\s*;?\s*$/gim).map((item) => item.trim()).filter(Boolean);
 
-// Reject USE instructions that would silently redirect migrations to another
-// database (especially dangerous when DB_DATABASE is an isolated E2E copy).
+// Keep the legacy safety guard for callers that explicitly parse a SQL script.
+// Actual migration files must additionally contain NO USE statements.
 const assertSafeDatabaseTarget = (content, configuredDatabase, file) => {
   const useInstructions = content.matchAll(/^\s*USE\s+(?:\[([^\]]+)\]|([A-Za-z0-9_]+))\s*;?\s*$/gim);
   for (const [, bracketName, plainName] of useInstructions) {
@@ -23,18 +25,59 @@ const assertSafeDatabaseTarget = (content, configuredDatabase, file) => {
   }
 };
 
-async function main() {
+const assertNoUseSwitch = (content, file) => {
+  const active = content
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/--[^\r\n]*/g, "");
+  if (/^\s*USE\b/gim.test(active)) {
+    throw new Error(
+      `Migración bloqueada: ${file} contiene USE. El destino debe fijarse por DB_DATABASE, ` +
+      "sin cambiar el contexto de conexión."
+    );
+  }
+};
+
+const assertTargetDatabase = (configured, connected) => {
+  if (!configured || SYSTEM_DATABASES.has(String(configured).trim().toLowerCase())) {
+    throw new Error("DB_DATABASE debe apuntar a una base de aplicación, no a una base de sistema.");
+  }
+  if (connected !== undefined &&
+      String(configured).trim().toLowerCase() !== String(connected).trim().toLowerCase()) {
+    throw new Error(
+      "Migración bloqueada: el nombre devuelto por DB_NAME() no coincide con DB_DATABASE."
+    );
+  }
+};
+
+function loadMigrations() {
+  const files = fs.readdirSync(migrationsDir)
+    .filter((name) => /^\d{3}_.*\.sql$/i.test(name)).sort();
+  if (!files.length) throw new Error("No se encontraron migraciones SQL.");
+  return files.map((file) => {
+    const content = fs.readFileSync(path.join(migrationsDir, file), "utf8");
+    assertNoUseSwitch(content, file);
+    const batches = splitBatches(content);
+    if (!batches.length) throw new Error(`Migración vacía: ${file}`);
+    return { file, content, batches };
+  });
+}
+
+async function main(argv = process.argv.slice(2)) {
+  if (argv.length > 1 || (argv.length === 1 && argv[0] !== "--check")) {
+    throw new Error("Uso: node backend/scripts/migrate.js [--check]");
+  }
+
+  // Offline preflight never opens a DB connection, never reads secrets and never writes.
+  const migrations = loadMigrations();
+  if (argv.includes("--check")) {
+    console.log(`✓ Preflight offline: ${migrations.length} migraciones sin USE, 0 cambios SQL.`);
+    return;
+  }
+
   const required = ["DB_USER", "DB_PASSWORD", "DB_SERVER", "DB_DATABASE"];
   const missing = required.filter((key) => !process.env[key]);
   if (missing.length) throw new Error(`Faltan variables de base de datos: ${missing.join(", ")}`);
-
-  // Inspect ALL files before opening SQL or running any batch; otherwise an
-  // earlier migration could already have been applied to the wrong database.
-  const files = fs.readdirSync(migrationsDir).filter((name) => /^\d{3}_.*\.sql$/i.test(name)).sort();
-  for (const file of files) {
-    const content = fs.readFileSync(path.join(migrationsDir, file), "utf8");
-    assertSafeDatabaseTarget(content, process.env.DB_DATABASE, file);
-  }
+  assertTargetDatabase(process.env.DB_DATABASE);
 
   const pool = await new sql.ConnectionPool({
     user: process.env.DB_USER,
@@ -49,9 +92,13 @@ async function main() {
   }).connect();
 
   try {
-    for (const file of files) {
-      const content = fs.readFileSync(path.join(migrationsDir, file), "utf8");
-      for (const batch of splitBatches(content)) await pool.request().batch(batch);
+    // Verify actual connection target BEFORE any DDL. No guessed database names.
+    const result = await pool.request().query("SELECT DB_NAME() AS activeDatabase");
+    const actualDatabase = result.recordset?.[0]?.activeDatabase;
+    if (!actualDatabase) throw new Error("Migración bloqueada: no se pudo confirmar DB_NAME().");
+    assertTargetDatabase(process.env.DB_DATABASE, actualDatabase);
+    for (const { file, batches } of migrations) {
+      for (const batch of batches) await pool.request().batch(batch);
       console.log(`✓ Migración aplicada/idempotente: ${file}`);
     }
   } finally {
@@ -66,4 +113,7 @@ if (require.main === module) {
   });
 }
 
-module.exports = { assertSafeDatabaseTarget, splitBatches, main };
+module.exports = {
+  assertSafeDatabaseTarget, assertNoUseSwitch, assertTargetDatabase,
+  splitBatches, loadMigrations, main,
+};

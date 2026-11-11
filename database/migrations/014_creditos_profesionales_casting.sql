@@ -1,5 +1,3 @@
-USE CRUDPeliculas;
-GO
 
 IF OBJECT_ID(N'dbo.CK_PeliculaCreditos_Tipo', N'C') IS NOT NULL
 BEGIN

@@ -1,5 +1,3 @@
-USE CRUDPeliculas;
-GO
 
 IF OBJECT_ID(N'dbo.Usuarios', N'U') IS NULL
 BEGIN

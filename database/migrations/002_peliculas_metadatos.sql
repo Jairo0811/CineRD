@@ -4,8 +4,6 @@
    Script idempotente para SQL Server
    ========================================================= */
 
-USE CRUDPeliculas;
-GO
 
 IF COL_LENGTH(N'dbo.Peliculas', N'Sinopsis') IS NULL
     ALTER TABLE dbo.Peliculas ADD Sinopsis NVARCHAR(MAX) NULL;

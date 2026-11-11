@@ -20,6 +20,8 @@ jobs:
           cache: npm
           cache-dependency-path: backend/package-lock.json
       - run: npm ci
+      - name: Offline SQL migrations preflight (no DB / no writes)
+        run: npm run migrate -- --check
       - run: npm test
       - name: Probar auditoría de integración local de solo lectura (sin SQL)
         run: node --test ../scripts/auditLocalCineRD.test.mjs
@@ -174,6 +176,8 @@ jobs:
           cache-dependency-path: backend/package-lock.json
       - name: Install backend packages (Windows)
         run: npm ci
+      - name: Preflight SQL migrations on Windows (offline)
+        run: npm run migrate -- --check
       - name: Run backend tests on Windows
         run: npm test
       - name: Test read-only local audit on Windows
