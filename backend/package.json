@@ -36,7 +36,8 @@
     "sql:backup:preview": "node scripts/backupLocalSql.js",
     "sql:backup": "node scripts/backupLocalSql.js",
     "crud:e2e:preview": "node scripts/checkCrudIsolated.js",
-    "crud:e2e": "node scripts/checkCrudIsolated.js"
+    "crud:e2e": "node scripts/checkCrudIsolated.js",
+    "migrate:check": "node scripts/migrate.js --check"
   },
   "keywords": [],
   "author": "",
