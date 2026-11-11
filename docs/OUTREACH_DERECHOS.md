@@ -1,7 +1,7 @@
 # CineRD — Contactos y gestión de permisos promocionales
 
 **Investigación:** 7 de noviembre de 2026.  
-**Estado:** referencias identificadas; **no se ha enviado ningún correo o mensaje** y ningún material figura autorizado.
+**Estado (10/11/2026):** DGCINE orientó al titular al directorio cinematográfico y el titular declaró enviados **dos correos**, uno a Panamericana y otro a Caribbean Films. **No hay respuestas ni permisos acreditados.** El cuadro de seguimiento histórico de cuatro películas se conserva sin nuevos envíos a esas empresas.
 
 El objetivo es solicitar permiso **no exclusivo** para afiches, fotos promocionales, imágenes de prensa y miniaturas alojadas en CineRD, contemplando su eventual monetización mediante anuncios. Estas referencias orientan el primer contacto: **identificar una productora no demuestra que controle los derechos del póster**.
 
@@ -13,9 +13,22 @@ Se abrió un expediente específico para **las 46 películas de CineRD**:
 
 - [Matriz tabular DGCINE](DGCINE_MATRIZ_CONTACTOS_AFICHES_46_2026-11-10.md).
 - [Matriz JSON con 46 fichas y estados controlados](dgcine-afiches-contactos-46.json).
-- [Tres correos de consulta preparados, ninguno enviado](DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md).
+- [Tres plantillas: dos consultas enviadas por el titular y una institucional aún no enviada](DGCINE_PLANTILLAS_SOLICITUD_AFICHES.md).
 
 Se localizaron tres contactos corporativos/registrales públicos como **candidatos**: Panamericana (directorio DGCINE), La Aldea Studio (directorio DGCINE, identidad por contrastar con el crédito) y Caribbean Films (web oficial). Se recopilaron seis relaciones película-productora corroboradas por noticias DGCINE. **No se cambia el ledger de 128 medios ni la configuración de anuncios**, y los nuevos contactos no se tratarán como titulares acreditados sin contrato.
+
+---
+
+## Seguimiento actualizado — dos correos enviados el 10 de noviembre de 2026
+
+El responsable de CineRD informó haber enviado solicitudes de orientación sobre derechos gráficos a los contactos públicos identificados. **Registro por declaración del remitente:** sin inspección de Gmail ni acuse técnico de entrega.
+
+| Destinatario | Correo | Películas consultadas | Envío declarado | Respuesta | Autorización |
+|---|---|---|---|---|---|
+| Panamericana de Producciones | `contacto@panamericana.com.do` | 7 títulos: #9, #13, #15, #18, #27, #50, #51 | 10/11/2026 | Pendiente | No |
+| Caribbean Films | `info@caribbeanfilms.com` | 4 títulos: #21, #28, #29, #39 | 10/11/2026 | Pendiente | No |
+
+**#27:** el remitente incluyó *Lotoman 003: Volando Bajito* en su correo a Panamericana. La productora de esa película en el catálogo sigue siendo **Producciones Coral**; su inclusión solo expresa una **consulta de atribución y permisos**, no una modificación del dato canónico. Para seguimiento por película, consultar la [matriz estructurada de 46 fichas](dgcine-afiches-contactos-46.json). La plantilla institucional dirigida a DGCINE no fue enviada de nuevo. Se mantiene el bloqueo de los 128 archivos multimedia sin permiso documentado.
 
 ---
 
